@@ -16,6 +16,7 @@ A checkbox can also be in an `indeterminate` (mixed) state — typically used wh
 - Use `mdc-checkbox` when the user can select **any number** of options from a list (zero, one, or many).
 - Use a single `mdc-checkbox` for a binary choice that does not need to take effect immediately (for example agreeing to terms before submitting a form).
 - Use `mdc-checkbox` inside `mdc-formfieldgroup` when several checkboxes belong to the same labeled group.
+- Use `mdc-checkbox` with a leading visual when an avatar or icon helps users distinguish otherwise similar options.
 
 ### When not to use
 
@@ -48,6 +49,18 @@ Minimal markup example:
 
 Listen for the `change` event to react to toggles; the new state is on `event.target.checked`.
 
+### Composition
+
+Place a noninteractive avatar or icon in the `leading-visual` slot when imagery helps identify an option. The slot renders between the checkbox control and the existing label and help-text container while leaving the label and help-text structure unchanged.
+
+```html
+<mdc-checkbox label="Alex Example" help-text="example.com">
+  <mdc-avatar slot="leading-visual" size="32" aria-hidden="true"></mdc-avatar>
+</mdc-checkbox>
+```
+
+Keep links, buttons, and other interactive elements out of `leading-visual`. Place independent actions outside `mdc-checkbox`.
+
 ### Content guidance
 
 - Write a clear, concise `label` that is explicit about what happens when the checkbox is selected; the label always trails the checkbox input. If a visible label cannot be shown (for example compact tables), supply `data-aria-label` instead.
@@ -74,6 +87,7 @@ Listen for the `change` event to react to toggles; the new state is on `event.ta
 - **Indeterminate isn't submitted** — the form value is the `value` (default `"on"`) when checked or `null` when unchecked; `indeterminate` has no submitted value, so resolve it before submission if it matters.
 - **Indeterminate is visual-only** — it is cleared automatically when the user toggles the checkbox, and is meant for parent rollups rather than an ordinary state.
 - **No inline group validation** — a single checkbox shows only its own error state. Use `mdc-formfieldgroup` for a flat group or [`mdc-checkboxtree`](../../checkboxtree/knowledge-base/checkboxtree.component.md) for a hierarchical group with shared validation text.
+- **Leading visuals stay decorative** — `leading-visual` toggles the checkbox but does not add an accessible name. Hide redundant visuals from assistive technology and place interactive controls outside the checkbox.
 
 ## Accessibility
 
@@ -86,6 +100,8 @@ Keyboard interaction follows the native checkbox pattern:
 - `Space` toggles the checked state and dispatches a `change` event.
 - `Enter` submits the surrounding form (default browser behavior).
 - `Tab` / `Shift+Tab` moves focus to/from the checkbox.
+
+Clicking the label or leading visual toggles the checkbox.
 
 When `disabled` is `true`, the input is removed from the tab order and the form value is not submitted. When `soft-disabled` is `true`, the input remains focusable but `Space` is suppressed, so assistive technologies can still discover the option. When `readonly` is `true`, toggling is suppressed but the current value is still submitted.
 
@@ -114,6 +130,7 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 #### Labeling
 
 - Provide a meaningful `label` — it is the default accessible name.
+- Keep `leading-visual` decorative; use `aria-hidden="true"` when the adjacent label already identifies the option.
 - When a visible label is not appropriate, set `data-aria-label` so the control still has an accessible name.
 - Use `help-text` with `help-text-type="error"` to communicate validation errors; the error icon and `aria-describedby` association are wired automatically.
 

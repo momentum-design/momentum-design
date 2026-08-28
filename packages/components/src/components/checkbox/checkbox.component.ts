@@ -1,5 +1,5 @@
 import { CSSResult, html, nothing, PropertyValueMap, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
@@ -26,6 +26,8 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  *
  * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
+ *
+ * @slot leading-visual - A decorative visual, such as an avatar or icon, displayed between the checkbox and text content.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -74,6 +76,9 @@ class Checkbox
    * @default false
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
+
+  /** @internal */
+  @state() private hasLeadingVisual = false;
 
   /**
    * Determines the visual style of the helper text.
@@ -212,6 +217,20 @@ class Checkbox
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
+  /** @internal */
+  private handleLeadingVisualClick(): void {
+    const hasBeenToggled = this.toggleState();
+    if (hasBeenToggled) {
+      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    }
+  }
+
+  /** @internal */
+  private handleLeadingVisualSlotChange(event: Event): void {
+    const slot = event.currentTarget as HTMLSlotElement;
+    this.hasLeadingVisual = slot.assignedElements({ flatten: true }).length > 0;
+  }
+
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
@@ -251,6 +270,7 @@ class Checkbox
         ?disabled="${this.disabled}"
         ?readonly="${this.readonly}"
         ?soft-disabled="${this.softDisabled}"
+        ?data-leading-visual="${this.hasLeadingVisual}"
       >
         <input
           id="${this.inputId}"
@@ -271,6 +291,12 @@ class Checkbox
           @keydown=${this.handleKeyDown}
         />
       </mdc-staticcheckbox>
+      <slot
+        name="leading-visual"
+        ?hidden="${!this.hasLeadingVisual}"
+        @click=${this.handleLeadingVisualClick}
+        @slotchange=${this.handleLeadingVisualSlotChange}
+      ></slot>
       ${this.renderLabelAndHelperText()}
     `;
   }
