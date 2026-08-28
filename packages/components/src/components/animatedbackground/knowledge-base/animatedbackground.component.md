@@ -27,7 +27,7 @@ The component does **not** autoplay on mount. You choose an `initial-pose` for t
 
 ## Guidelines
 
-### Layout and placement
+### Developer usage
 
 The host element fills its container (`position: absolute; inset: 0`) and does not affect pointer interaction on foreground UI (`pointer-events: none`). The **parent** must define the area the background should cover.
 
@@ -44,7 +44,7 @@ The host element fills its container (`position: absolute; inset: 0`) and does n
 
 Use a themed ancestor (for example `mdc-themeprovider` or `html.mds-theme-stable-darkWebex`) so uplift color tokens resolve at runtime.
 
-### Import and registration
+Import and register the component:
 
 ```tsx
 import '@momentum-design/components/dist/components/animatedbackground/index.js';
@@ -52,7 +52,7 @@ import '@momentum-design/components/dist/components/animatedbackground/index.js'
 import { Animatedbackground } from '@momentum-design/components/dist/react';
 ```
 
-### Typical integration pattern
+Typical integration pattern:
 
 1. Mount the component once as a persistent background layer.
 2. Set `initial-pose` to match the user's expected resting state (`collapsed` is the default).
@@ -97,16 +97,6 @@ background.setPose('collapsed', { animate: false });
 background.wakeUp();
 ```
 
-### Property and attribute reference
-
-| Option | Default | Description |
-| --- | --- | --- |
-| `initial-pose` | `collapsed` | Pose rendered on mount before any programmatic animation. One of: `hidden`, `wake`, `collapsed`, `expanded`, `disabled`. |
-
-Changing `initial-pose` after mount snaps the component to that pose. Programmatic animations do not write back to this attribute.
-
-### Storybook
-
 Open **Work In Progress → animatedbackground** in Storybook:
 
 | Story | Purpose |
@@ -118,18 +108,17 @@ Open **Work In Progress → animatedbackground** in Storybook:
 
 Use the **Actions** panel to inspect `gradientsettle` events fired by **Interactive Demo**.
 
-### Limitations (v1)
+### Property/Attribute details
 
-- **No autoplay** — `wakeUp()` is never called automatically; the host must invoke it.
-- **Dark theme only** — authoritative uplift tokens ship in stable dark; light theme stops are placeholders.
-- **Pose animation only** — gradient stop colors do not animate over time; only the pose offset translates.
-- **Decorative** — not exposed to assistive technology; do not use it to communicate application state.
+| Option | Default | Description |
+| --- | --- | --- |
+| `initial-pose` | `collapsed` | Pose rendered on mount before any programmatic animation. One of: `hidden`, `wake`, `collapsed`, `expanded`, `disabled`. |
 
-## Animations
+Changing `initial-pose` after mount snaps the component to that pose. Programmatic animations do not write back to this attribute.
 
 Animation is **pose interpolation**: the component translates a design-space offset through named poses. Colors and ellipse geometry are fixed; motion tokens control duration and easing.
 
-### Named poses
+Named poses:
 
 | Pose | Typical use |
 | --- | --- |
@@ -139,7 +128,7 @@ Animation is **pose interpolation**: the component translates a design-space off
 | `expanded` | Navigation or panel expanded |
 | `disabled` | Navigation or background disabled / off-canvas |
 
-### Public methods
+Public methods:
 
 | Method | Behavior |
 | --- | --- |
@@ -152,7 +141,7 @@ Animation is **pose interpolation**: the component translates a design-space off
 
 Starting a new animation cancels any in-flight transition; the current interpolated position becomes the next `from` value.
 
-### Events
+Custom events:
 
 | Event | Detail | React prop |
 | --- | --- | --- |
@@ -168,7 +157,7 @@ background.addEventListener('gradientsettle', (event) => {
 });
 ```
 
-### Motion token mapping
+Motion token mapping:
 
 | Animation | Duration token | Easing token |
 | --- | --- | --- |
@@ -177,17 +166,13 @@ background.addEventListener('gradientsettle', (event) => {
 
 Tokens are read from the themed ancestor at runtime. The render loop runs **only during active transitions** — at rest there is no continuous animation frame.
 
-### Reduced motion
-
 When `prefers-reduced-motion: reduce` is active:
 
 - The DOM/SVG fallback renderer is selected.
 - All durations collapse to an instant snap.
 - `wakeUp()` jumps directly to `collapsed` and fires one `gradientsettle`.
 
-## Render modes
-
-The component selects a render mode automatically on mount and when the reduced-motion preference changes.
+Render modes are selected automatically on mount and when the reduced-motion preference changes.
 
 | Condition | Renderer |
 | --- | --- |
@@ -199,8 +184,6 @@ Fallback is **silent** — no error UI is shown. Both paths share the same pose 
 **WebGL path:** Fullscreen triangle shader with three blurred elliptical gradient layers, grain overlay, 1280×720 design stage with cover scaling, DPR capped at 2.
 
 **DOM path:** SVG ellipses with CSS blur filters, grain overlay, same stage scaling via `ResizeObserver`.
-
-## Theme tokens
 
 Stop colors are read at runtime from CSS custom properties on the component host (inherited from the active theme):
 
@@ -224,11 +207,20 @@ Animation timing reads motion tokens:
 
 If tokens are missing, the component falls back to black stops and hardcoded motion defaults matching the POC values.
 
+### Limitations
+
+- **No autoplay** — `wakeUp()` is never called automatically; the host must invoke it.
+- **Dark theme only** — authoritative uplift tokens ship in stable dark; light theme stops are placeholders.
+- **Pose animation only** — gradient stop colors do not animate over time; only the pose offset translates.
+- **Decorative** — not exposed to assistive technology; do not use it to communicate application state.
+
 ## Accessibility
 
 ### Built-in features
 
 The animated background is **purely decorative**. Internal render layers (`canvas`, DOM stage) use `aria-hidden="true"`. The host is not focusable and uses `pointer-events: none` so foreground UI remains fully interactive.
+
+#### Internal ARIA managed by the component
 
 | Element | Attribute | Value |
 | --- | --- | --- |
@@ -238,10 +230,13 @@ The animated background is **purely decorative**. Internal render layers (`canva
 
 ### Implementation requirements
 
+#### Labeling
+
 - **Do not** rely on the background to communicate state to assistive technology. Drive accessible labels, announcements, and navigation state from foreground UI.
+- **Do not** add `aria-label` or `role="img"` unless product guidance explicitly requires it for a non-decorative use (not expected in v1).
+
 - **Respect reduced motion** — the component honors `prefers-reduced-motion: reduce` automatically; no consumer configuration is required.
 - **Provide container dimensions** — the component fills its parent; it does not infer viewport size on its own.
-- **Do not** add `aria-label` or `role="img"` unless product guidance explicitly requires it for a non-decorative use (not expected in v1).
 
 ## Related components
 

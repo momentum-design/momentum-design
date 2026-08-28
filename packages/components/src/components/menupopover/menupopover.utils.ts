@@ -7,7 +7,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from './menupopover.constants';
 import type MenuPopover from './menupopover.component';
 
-const SUBMENU_TRIGGER_TAGS = new Set([MENUITEM_TAGNAME, NAVMENUITEM_TAGNAME]);
+const SUBMENU_TRIGGER_TAGS = new Set<string>([MENUITEM_TAGNAME, NAVMENUITEM_TAGNAME]);
 
 /**
  * Checks if the given menu item is a valid menu item.

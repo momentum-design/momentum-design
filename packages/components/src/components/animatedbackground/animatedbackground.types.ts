@@ -1,5 +1,7 @@
 import type { TypedCustomEvent } from '../../utils/types';
 
+import type AnimatedBackground from './animatedbackground.component';
+
 export type PoseName = 'hidden' | 'wake' | 'collapsed' | 'expanded' | 'disabled';
 
 export type RenderMode = 'webgl' | 'dom';
@@ -35,7 +37,11 @@ export interface GradientSettleEventDetail {
   pose: PoseName;
 }
 
-export type GradientSettleEvent = TypedCustomEvent<HTMLElement, GradientSettleEventDetail>;
+export type GradientSettleEvent = TypedCustomEvent<AnimatedBackground, GradientSettleEventDetail>;
+
+export interface Events {
+  onGradientsettleEvent: GradientSettleEvent;
+}
 
 export interface MotionTokens {
   durationSustainedMs: number;
