@@ -10,7 +10,7 @@ const DEFAULTS = {
   GAP_SIZE: 7.5, // Gap size between the spinner and the track
   ERROR_ICON_SIZE: 2,
   SUCCESS_ICON_SIZE: 3,
-  ICON_LENGTH_UNIT: 'em',
+  ICON_LENGTH_UNIT: 'rem',
 } as const;
 
 const ICON_NAME = {
