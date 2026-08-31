@@ -47,15 +47,10 @@ const render: StoryFn = (args, { updateArgs }) => {
             <h3 class="motionDemoSectionTitle">Button</h3>
             <p class="motionDemoSectionHint">Hover or focus for token-based hover transitions.</p>
             <div class="motionDemoRow">
-              <mdc-button color="primary" icon-start="plus-bold">Primary</mdc-button>
-              <mdc-button color="secondary" icon-start="settings-bold">Secondary</mdc-button>
+              <mdc-button color="positive" icon-start="plus-bold">Primary</mdc-button>
+              <mdc-button variant="secondary" color="negative" icon-start="settings-bold">Secondary</mdc-button>
+              <mdc-button variant="tertiary" color="accent" icon-start="settings-bold">Tertiary</mdc-button>
             </div>
-          </section>
-
-          <section class="motionDemoSection">
-            <h3 class="motionDemoSectionTitle">Button simple</h3>
-            <p class="motionDemoSectionHint">Hover for background and border transitions.</p>
-            <mdc-buttonsimple>Simple button</mdc-buttonsimple>
           </section>
 
           <section class="motionDemoSection">
