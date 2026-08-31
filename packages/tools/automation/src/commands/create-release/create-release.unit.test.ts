@@ -96,11 +96,11 @@ describe('Create Release', () => {
     expect(results).toEqual('Released: release complete');
   });
 
-  it('should release the valid package if body has " in it', async () => {
+  it('should release the valid package if body has double quotes and backticks in it', async () => {
     gitPRDescriptionSpy = jest.spyOn(Git, 'getPullRequestDetails').mockImplementation(() => Promise.resolve([
       {
         title: 'fake-pr-title',
-        body: 'fake-pr-body including <img alt="test ..."/>',
+        body: 'fake-pr-body including ```html\r\n<img alt="test ..."/>\r\n```',
         html_url: 'https://github.com/fake-pr-link',
       },
     ]));
@@ -124,7 +124,7 @@ describe('Create Release', () => {
       );
     const mockNotes = [
       '## fake-pr-title\r\n',
-      'fake-pr-body including <img alt=\\"test ...\\"/>\r\n',
+      'fake-pr-body including \\`\\`\\`html\r\n<img alt=\\"test ...\\"/>\r\n\\`\\`\\`\r\n',
       ' ### PR Link:\n',
       'https://github.com/fake-pr-link\r\n',
       ' ### Package:\n',
