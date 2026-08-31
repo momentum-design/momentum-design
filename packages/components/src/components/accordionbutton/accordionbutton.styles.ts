@@ -29,8 +29,37 @@ const styles = css`
     align-items: center;
   }
 
-  :host::part(body-section) {
+  .body-section {
     width: 100%;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: var(--mds-transition-collapse), var(--mds-transition-fade-out);
+  }
+
+  :host([expanded]) .body-section {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transition: var(--mds-transition-expand), var(--mds-transition-fade-in);
+  }
+
+  @starting-style {
+    :host([expanded][data-motion-ready]) .body-section {
+      grid-template-rows: 0fr;
+      opacity: 0;
+    }
+  }
+
+  .body-section-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .body-section,
+    :host([expanded]) .body-section {
+      transition: none;
+    }
   }
 
   :host([variant='default'][expanded])::part(header-section) {
@@ -58,13 +87,19 @@ const styles = css`
     background-color: unset;
   }
 
-  :host([size='small'])::part(header-section),
-  :host([size='small'])::part(body-section) {
+  :host([size='small'])::part(header-section) {
     padding: 1rem;
   }
 
-  :host([size='large'])::part(header-section),
-  :host([size='large'])::part(body-section) {
+  :host([size='small']) .body-section-inner {
+    padding: 1rem;
+  }
+
+  :host([size='large'])::part(header-section) {
+    padding: 1.5rem;
+  }
+
+  :host([size='large']) .body-section-inner {
     padding: 1.5rem;
   }
 

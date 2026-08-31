@@ -182,6 +182,26 @@
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
+    "expand": {
+      "description": "Panel expand — grid-template-rows from collapsed to open",
+      "type": "transition",
+      "properties": [
+        "grid-template-rows"
+      ],
+      "duration": "{motion.duration.normal}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "collapse": {
+      "description": "Panel collapse — grid-template-rows from open to collapsed",
+      "type": "transition",
+      "properties": [
+        "grid-template-rows"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.exit}",
+      "delay": "{motion.delay.none}"
+    },
     "slideEntrance": {
       "description": "Overlay slide entrance — transform, opacity, and display; direction is set by the consuming component",
       "type": "transition",

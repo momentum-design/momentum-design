@@ -27,6 +27,7 @@
         "font-size",
         "font-weight",
         "gap",
+        "grid-template-rows",
         "height",
         "letter-spacing",
         "max-height",

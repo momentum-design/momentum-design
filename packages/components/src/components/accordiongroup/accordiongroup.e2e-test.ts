@@ -239,7 +239,7 @@ test.describe('AccordionGroup Feature Scenarios', () => {
           await componentsPage.page.keyboard.press(KEYS.ENTER);
           await expect(accordionButtons.nth(1)).toHaveAttribute('expanded');
           await expect(accordionButtons.nth(1).locator('[part="body-section"]')).toBeVisible();
-          await expect(accordionButtons.first().locator('[part="body-section"]')).not.toBeVisible();
+          await expect(accordionButtons.first().locator('[part="body-section"]')).not.toBeAttached();
           await expect(accordionGroup.locator('mdc-accordionbutton:not([expanded])')).toHaveCount(2);
         });
 

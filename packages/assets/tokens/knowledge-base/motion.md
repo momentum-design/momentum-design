@@ -123,7 +123,9 @@ reference a duration or easing token, and comes in one of four shapes:
   `--mds-animation-*` custom property (e.g. `buttonLoadingSpinPulse` =
   `buttonLoadingSpin` + `buttonLoadingPulse`).
 
-Animations are currently scoped to `button`, `checkbox`, and reusable text/scale
+Animations currently cover `button`, `checkbox`, overlay enter/exit
+(`fadeIn` / `fadeOut`, `slideEntrance` / `slideExit`), panel height
+(`expand` / `collapse` on `grid-template-rows`), and reusable text/scale
 primitives (`textChange`, `growShrink`). Because each one
 references core tokens rather than raw values, retuning a duration or easing at
 the core layer updates every animation that uses it.
