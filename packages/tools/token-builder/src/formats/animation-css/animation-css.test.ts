@@ -111,6 +111,11 @@ describe('@momentum-design/token-builder - formats.AnimationCssFormat', () => {
     it('@keyframes block should appear before the selector block', () => {
       expect(output.indexOf('@keyframes')).toBeLessThan(output.indexOf('.mds-animation'));
     });
+
+    it('should append a prefers-reduced-motion override block', () => {
+      expect(output).toContain('@media (prefers-reduced-motion: reduce)');
+      expect(output).toContain('--mds-animation-button-loading-spin: none;');
+    });
   });
 
   describe('formatter — transitionCompound token', () => {

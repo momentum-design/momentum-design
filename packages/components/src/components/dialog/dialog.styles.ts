@@ -26,13 +26,12 @@ const styles = css`
     bottom: 50%;
     transform: translateX(50%) translateY(50%);
 
-    // Animation Backdrop
     --mdc-backdrop-mixin-transition-in: var(--mds-transition-fade-in);
     --mdc-backdrop-mixin-transition-out: var(--mds-transition-fade-out);
 
-    // Animating Dialog
     display: none;
     opacity: 0;
+    
     transition: var(--mds-transition-fade-out);
     transition-behavior: allow-discrete;
   }
@@ -70,14 +69,12 @@ const styles = css`
     display: flex;
     opacity: 1;
 
-    // Animating Dialog
     transition: var(--mds-transition-fade-in);
     transition-behavior: allow-discrete;
   }
 
   @starting-style {
     :host([visible]) {
-      // Animating Dialog; needed for overcoming display: none; issue
       opacity: 0;
     }
   }

@@ -1,5 +1,5 @@
 export { CONSTANTS } from './common';
-export { AnimationCssFormat, AnimationScssFormat, JsonMinimalFormat } from './formats';
+export { AnimationCssFormat, AnimationScssFormat, JsonMinimalFormat, MotionCssFormat } from './formats';
 export { AnimationParser } from './parsers';
 export { Dictionary, File, Platform, TokenBuilder } from './models';
 export { ElevationTransform, PxToRemTransform } from './transforms';

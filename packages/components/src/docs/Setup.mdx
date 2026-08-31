@@ -73,10 +73,14 @@ yarn add @momentum-design/components
   ```
 
 - Wrap your application or component tree with the
-  [**Theme Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-themeprovider--docs)
+  [**Motion Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/providers-motion-provider--docs)
+  (when using token-based motion),
+  [**Theme Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-themeprovider--docs),
   and
   [**Icon Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-iconprovider--docs)
-  components to ensure proper theming and icon configuration.
+  components. Use `mdc-motionprovider` to scope `mds-motion` and `mds-animation`
+  on its host — do not duplicate those classes on `<body>` when the motion
+  provider is present.
 - Verify that your build configuration supports file loaders for CSS and WOFF2
   files.
 - Test the components in different themes to ensure they render correctly.

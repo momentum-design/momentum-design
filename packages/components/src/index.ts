@@ -43,6 +43,7 @@ import List from './components/list';
 import Listheader from './components/listheader';
 import ListItem from './components/listitem';
 import Marker from './components/marker';
+import MotionProvider from './components/motionprovider';
 import MenuBar from './components/menubar';
 import MenuItem from './components/menuitem';
 import MenuItemCheckbox from './components/menuitemcheckbox';
@@ -193,6 +194,7 @@ export {
   Listheader,
   ListItem,
   Marker,
+  MotionProvider,
   MenuBar,
   MenuItem,
   MenuItemCheckbox,

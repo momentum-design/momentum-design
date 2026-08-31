@@ -42,9 +42,10 @@ describe('Motion tokens (post-build)', () => {
   it('all platform outputs should have the same token count', () => {
     const counts = {};
 
-    // CSS
+    // CSS — count tokens in the main block only (reduced-motion overrides duplicate names)
     const css = fs.readFileSync(PLATFORM_FILES.css, 'utf8');
-    counts.css = (css.match(TOKEN_COUNT_PATTERNS.css) || []).length;
+    const cssMainBlock = css.split('@media (prefers-reduced-motion: reduce)')[0];
+    counts.css = (cssMainBlock.match(TOKEN_COUNT_PATTERNS.css) || []).length;
 
     // SCSS
     const scss = fs.readFileSync(PLATFORM_FILES.scss, 'utf8');
@@ -82,6 +83,13 @@ describe('Motion tokens (post-build)', () => {
     varLines.forEach((line) => {
       expect(line.trim()).toMatch(/^--mds-motion-/);
     });
+  });
+
+  it('CSS output should include prefers-reduced-motion overrides', () => {
+    const css = fs.readFileSync(PLATFORM_FILES.css, 'utf8');
+    expect(css).toContain('@media (prefers-reduced-motion: reduce)');
+    expect(css).toContain('--mds-motion-duration-instant: 0ms;');
+    expect(css).not.toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*--mds-motion-easing-standard: 0ms;/);
   });
 
   it('no platform output should have empty values', () => {

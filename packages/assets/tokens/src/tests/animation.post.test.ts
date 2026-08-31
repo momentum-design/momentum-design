@@ -41,6 +41,12 @@ describe('Animation tokens (post-build)', () => {
     expect(css).toContain('Do not edit directly');
   });
 
+  it('CSS output should include prefers-reduced-motion overrides', () => {
+    expect(css).toContain('@media (prefers-reduced-motion: reduce)');
+    expect(css).toContain('--mds-transition-button-background: none;');
+    expect(css).toContain('--mds-animation-button-loading-spin: none;');
+  });
+
   it('transition tokens should emit --mds-transition-* variables', () => {
     const transitionTokens = Object.entries(source).filter(
       ([, t]) => t.type === 'transition' || t.type === 'transitionCompound',
@@ -97,7 +103,8 @@ describe('Animation tokens (post-build)', () => {
   });
 
   it('total CSS variable count should match total token count in source', () => {
-    const varLines = css.split('\n').filter((l) => l.trim().startsWith('--'));
+    const cssMainBlock = css.split('@media (prefers-reduced-motion: reduce)')[0];
+    const varLines = cssMainBlock.split('\n').filter((l) => l.trim().startsWith('--'));
     const sourceTokenCount = Object.keys(source).length;
     expect(varLines.length).toBe(sourceTokenCount);
   });

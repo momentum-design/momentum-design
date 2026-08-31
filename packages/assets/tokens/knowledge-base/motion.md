@@ -144,7 +144,12 @@ Authoritative source: `packages/assets/tokens/src/motion/animation.json`.
 - **Easing by direction** — `entrance` for appearing, `exit` for disappearing,
   `standard` as the default, `linear` only for continuous loops.
 - **Respect reduced motion** — honor `prefers-reduced-motion`; reduce or remove
-  non-essential animation for users who request it.
+  non-essential animation for users who request it. Shipped CSS under
+  `.mds-motion` and `.mds-animation` includes `@media (prefers-reduced-motion: reduce)`
+  overrides (durations/delays/staggers to `0ms`; transition/animation shorthands to
+  `none`). Applications can also wrap content in
+  [`mdc-motionprovider`](../../../components/src/components/motionprovider/knowledge-base/motionprovider.component.md)
+  to toggle token scope with `motion="full" | "reduce" | "system"`.
 
 > **Note:** these tokens are published under `.mds-motion` and `.mds-animation`
 > and are consumable directly by name (e.g. `var(--mds-animation-button-loading-spin)`),

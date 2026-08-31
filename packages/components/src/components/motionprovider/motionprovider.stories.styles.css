@@ -1,0 +1,38 @@
+.motionDemo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.motionDemoSections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.motionDemoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.motionDemoSectionTitle {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mds-color-theme-text-primary-normal);
+}
+
+.motionDemoSectionHint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--mds-color-theme-text-secondary-normal);
+}
+
+.motionDemoRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
