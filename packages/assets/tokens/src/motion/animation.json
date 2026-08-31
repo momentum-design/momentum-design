@@ -160,14 +160,25 @@
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
-    "fadeInOut": {
-      "description": "Dialog entrance — fades in when appearing",
+    "fadeIn": {
+      "description": "Overlay fade entrance — opacity and display when appearing",
       "type": "transition",
       "properties": [
         "opacity",
         "display"
       ],
-      "duration": "{motion.duration.relaxed}",
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "fadeOut": {
+      "description": "Overlay fade exit — opacity and display when disappearing",
+      "type": "transition",
+      "properties": [
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },

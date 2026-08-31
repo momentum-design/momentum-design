@@ -6,8 +6,9 @@ import { OVERLAY_BACKDROP_Z_INDEX_OFFSET, OVERLAY_TRIGGER_Z_INDEX_OFFSET } from 
 
 import type { Constructor } from './index.types';
 
-const DEFAULT_BACKDROP_TRANSITION = 'opacity 450ms cubic-bezier(0.44, 0, 0, 1)';
-const BACKDROP_TRANSITION_DURATION_FALLBACK_MS = 450;
+const DEFAULT_BACKDROP_TRANSITION_IN = 'opacity 200ms cubic-bezier(0.44, 0, 0, 1)';
+const DEFAULT_BACKDROP_TRANSITION_OUT = 'opacity 100ms cubic-bezier(0.44, 0, 0, 1)';
+const BACKDROP_TRANSITION_DURATION_FALLBACK_MS = 100;
 
 export declare abstract class BackdropMixinInterface {
   abstract zIndex: number;
@@ -90,10 +91,13 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
     }
 
     /** @internal */
-    private getBackdropTransition(): string {
-      const transition = getComputedStyle(this).getPropertyValue('--mdc-backdrop-mixin-transition').trim();
+    private getBackdropTransition(direction: 'in' | 'out'): string {
+      const customProperty =
+        direction === 'in' ? '--mdc-backdrop-mixin-transition-in' : '--mdc-backdrop-mixin-transition-out';
+      const transition = getComputedStyle(this).getPropertyValue(customProperty).trim();
+      const fallback = direction === 'in' ? DEFAULT_BACKDROP_TRANSITION_IN : DEFAULT_BACKDROP_TRANSITION_OUT;
 
-      return transition || DEFAULT_BACKDROP_TRANSITION;
+      return transition || fallback;
     }
 
     /** @internal */
@@ -177,7 +181,8 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
         ? 'transparent'
         : getComputedStyle(this).getPropertyValue('--mdc-backdrop-mixin-background-color') ||
           `var(--mds-color-theme-common-overlays-secondary-normal)`;
-      const transition = this.getBackdropTransition();
+      const enterTransition = this.getBackdropTransition('in');
+      const exitTransition = this.getBackdropTransition('out');
       styleElement.textContent = `
         .${classNamePrefix}-backdrop {
           position: fixed;
@@ -188,13 +193,15 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
           background: ${bgColor};
           z-index: ${this.zIndex + OVERLAY_BACKDROP_Z_INDEX_OFFSET};
           opacity: 0;
-          transition: ${transition};
+          transition: ${exitTransition};
         }
         .${classNamePrefix}-backdrop.${visibleClassName} {
           opacity: 1;
+          transition: ${enterTransition};
         }
         @media (prefers-reduced-motion: reduce) {
-          .${classNamePrefix}-backdrop {
+          .${classNamePrefix}-backdrop,
+          .${classNamePrefix}-backdrop.${visibleClassName} {
             transition: none;
           }
         }

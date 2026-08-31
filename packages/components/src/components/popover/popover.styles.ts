@@ -16,7 +16,8 @@ const styles = css`
     --mdc-popover-max-height: auto;
     --mdc-popover-backdrop-color: var(--mds-color-theme-common-overlays-secondary-normal);
     --mdc-backdrop-mixin-background-color: var(--mdc-popover-backdrop-color);
-    --mdc-backdrop-mixin-transition: var(--mds-transition-fade-in-out);
+    --mdc-backdrop-mixin-transition-in: var(--mds-transition-fade-in);
+    --mdc-backdrop-mixin-transition-out: var(--mds-transition-fade-out);
 
     display: none;
     position: absolute;

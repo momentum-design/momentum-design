@@ -27,12 +27,13 @@ const styles = css`
     transform: translateX(50%) translateY(50%);
 
     // Animation Backdrop
-    --mdc-backdrop-mixin-transition: var(--mds-transition-fade-in-out);
+    --mdc-backdrop-mixin-transition-in: var(--mds-transition-fade-in);
+    --mdc-backdrop-mixin-transition-out: var(--mds-transition-fade-out);
 
     // Animating Dialog
     display: none;
     opacity: 0;
-    transition: var(--mds-transition-fade-in-out);
+    transition: var(--mds-transition-fade-out);
     transition-behavior: allow-discrete;
   }
 
@@ -70,7 +71,7 @@ const styles = css`
     opacity: 1;
 
     // Animating Dialog
-    transition: var(--mds-transition-fade-in-out);
+    transition: var(--mds-transition-fade-in);
     transition-behavior: allow-discrete;
   }
 
