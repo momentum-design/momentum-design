@@ -58,12 +58,13 @@ const SHARDS = {
 const SHARD_TIERS = Object.keys(SHARDS).map(Number);
 const shardPath = (tier) => path.join(REPO_ROOT, KNOWLEDGE_BASE_DIR, SHARDS[tier].file);
 
-const ASSET_DIR_NAMES = new Set(['images']);
+const ALLOWED_SUBDIR_NAMES = new Set(['images', 'skills']);
 const COMPONENTS_TIER3_PREFIX = 'packages/components/src/components/';
 
 const TIER3_DIR_RE = new RegExp(`^${COMPONENTS_TIER3_PREFIX}(?<component>[^/]+)/${KNOWLEDGE_BASE_DIR}$`);
 const TIER2_DIR_RE = new RegExp(`^packages/(?<pkgPath>.+)/${KNOWLEDGE_BASE_DIR}$`);
 const TIER1_DIR_RE = new RegExp(`^${KNOWLEDGE_BASE_DIR}$`);
+const TIER1_SKILL_README_RE = new RegExp(`^${KNOWLEDGE_BASE_DIR}/skills/[^/]+/README\\.md$`);
 
 // Glob roots for tier discovery. `scripts/`, `config/`, `.github/`, `.vscode/`,
 // `scratch/` are intentionally excluded so the generator's own `knowledge-base`
@@ -71,13 +72,18 @@ const TIER1_DIR_RE = new RegExp(`^${KNOWLEDGE_BASE_DIR}$`);
 const TOPIC_FILE_EXTENSION = '.md';
 const KB_DIR_GLOBS = [
   `${KNOWLEDGE_BASE_DIR}/`,
+  `${KNOWLEDGE_BASE_DIR}/skills/*/`,
   `packages/*/${KNOWLEDGE_BASE_DIR}/`,
   `packages/*/*/${KNOWLEDGE_BASE_DIR}/`,
   `packages/components/src/components/*/${KNOWLEDGE_BASE_DIR}/`,
 ];
-// Derive the topic-file globs from the directory globs so the two stay in
-// lockstep; only `TOPIC_FILE_EXTENSION` and the dir list need to be edited.
-const TOPIC_GLOBS = KB_DIR_GLOBS.map((dir) => `${dir}*${TOPIC_FILE_EXTENSION}`);
+const TOPIC_GLOBS = [
+  `${KNOWLEDGE_BASE_DIR}/*${TOPIC_FILE_EXTENSION}`,
+  `${KNOWLEDGE_BASE_DIR}/skills/*/README${TOPIC_FILE_EXTENSION}`,
+  `packages/*/${KNOWLEDGE_BASE_DIR}/*${TOPIC_FILE_EXTENSION}`,
+  `packages/*/*/${KNOWLEDGE_BASE_DIR}/*${TOPIC_FILE_EXTENSION}`,
+  `packages/components/src/components/*/${KNOWLEDGE_BASE_DIR}/*${TOPIC_FILE_EXTENSION}`,
+];
 const GLOB_IGNORE = ['**/node_modules/**', '**/dist/**', '**/build/**', '**/.yarn/**'];
 
 function tierForFile(relPosix) {
@@ -89,7 +95,7 @@ function tierForFile(relPosix) {
     return { tier: 3, component };
   }
 
-  if (TIER1_DIR_RE.test(dir)) {
+  if (TIER1_DIR_RE.test(dir) || TIER1_SKILL_README_RE.test(relPosix)) {
     return { tier: 1 };
   }
 
@@ -206,16 +212,16 @@ function collectTopics({ topicConstraintsConfig }) {
   const seenIds = new Set();
   const seenWebsitePaths = new Map();
 
-  // Detect unexpected non-asset subdirectories inside any knowledge-base folder.
+  // Detect unexpected subdirectories inside any knowledge-base folder.
   // Use targeted globs that mirror TOPIC_GLOBS rather than `**/knowledge-base/`
   // to avoid a full recursive scan of the repo.
   for (const kbDir of discoverKbDirs()) {
     const entries = fs.readdirSync(path.join(REPO_ROOT, kbDir), { withFileTypes: true });
     for (const entry of entries) {
-      if (entry.isDirectory() && !ASSET_DIR_NAMES.has(entry.name)) {
+      if (entry.isDirectory() && !ALLOWED_SUBDIR_NAMES.has(entry.name)) {
         errors.push(
           `Unexpected subdirectory "${entry.name}" in ${kbDir}. ` +
-            `Only asset folders (${[...ASSET_DIR_NAMES].join(', ')}) are allowed; topic files must be flat.`,
+            `Only configured supporting folders (${[...ALLOWED_SUBDIR_NAMES].join(', ')}) are allowed; topic files must be flat.`,
         );
       }
     }
