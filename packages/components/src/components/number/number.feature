@@ -16,12 +16,12 @@ Feature: Number Component
     When I enter a number less than the minimum and commit the change
     Then the value should automatically be set to the minimum
 
-  Scenario: Showing the steppers
-    Given the "show-steppers" attribute is set on the number component
+  Scenario: Showing the steppers by default
+    Given the number component is rendered without the "hide-steppers" attribute
     Then the increment and decrement stepper buttons should be displayed next to the input field
 
   Scenario: Hiding the steppers
-    Given the "show-steppers" attribute is not set on the number component
+    Given the "hide-steppers" attribute is set on the number component
     Then the increment and decrement stepper buttons should not be displayed
 
   Scenario: Incrementing the value with the plus stepper

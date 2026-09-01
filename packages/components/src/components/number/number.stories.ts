@@ -30,7 +30,7 @@ const render = (args: Args) => html` <mdc-number
   min="${ifDefined(args.min)}"
   max="${ifDefined(args.max)}"
   step="${ifDefined(args.step)}"
-  ?show-steppers="${args['show-steppers']}"
+  ?hide-steppers="${args['hide-steppers']}"
   increment-aria-label="${ifDefined(args['increment-aria-label'])}"
   decrement-aria-label="${ifDefined(args['decrement-aria-label'])}"
 ></mdc-number>`;
@@ -43,6 +43,8 @@ const meta: Meta = {
 
   args: {
     name: 'number',
+    'increment-aria-label': 'Increment',
+    'decrement-aria-label': 'Decrement',
   },
   argTypes: {
     id: {
@@ -102,9 +104,11 @@ const meta: Meta = {
       control: 'number',
       description: 'The amount that the value changes for each increment/decrement.',
     },
-    'show-steppers': {
+    'hide-steppers': {
       control: 'boolean',
-      description: 'When set to true, renders increment and decrement stepper buttons alongside the input field.',
+      description:
+        'Increment and decrement stepper buttons are shown alongside the input field by default. ' +
+        'Set this to true to hide them.',
     },
     'increment-aria-label': {
       control: 'text',
@@ -138,7 +142,7 @@ export const Example: StoryObj = {
   },
 };
 
-export const WithSteppers: StoryObj = {
+export const WithoutSteppers: StoryObj = {
   args: {
     class: 'custom-classname',
     label: 'Quantity',
@@ -147,9 +151,7 @@ export const WithSteppers: StoryObj = {
     min: 0,
     max: 10,
     step: 1,
-    'show-steppers': true,
-    'increment-aria-label': 'Increment',
-    'decrement-aria-label': 'Decrement',
+    'hide-steppers': true,
     'help-text': 'Enter a value between 0 and 10',
     'help-text-type': 'default',
   },
@@ -169,6 +171,8 @@ export const AllVariants: StoryObj = {
             help-text="Helper text"
             placeholder="Placeholder"
             value="${validation}_value"
+            increment-aria-label="Increment"
+            decrement-aria-label="Decrement"
           ></mdc-number>`,
       )}
       <mdc-number
@@ -177,6 +181,8 @@ export const AllVariants: StoryObj = {
         help-text-type="default"
         required
         placeholder="Number is required"
+        increment-aria-label="Increment"
+        decrement-aria-label="Decrement"
       ></mdc-number>
       <mdc-number
         label="Label"
@@ -185,6 +191,8 @@ export const AllVariants: StoryObj = {
         readonly
         placeholder="Placeholder"
         value="42"
+        increment-aria-label="Increment"
+        decrement-aria-label="Decrement"
       ></mdc-number>
       <mdc-number
         label="Label"
@@ -193,6 +201,8 @@ export const AllVariants: StoryObj = {
         disabled
         placeholder="Placeholder"
         value="42"
+        increment-aria-label="Increment"
+        decrement-aria-label="Decrement"
       ></mdc-number>
       <mdc-number
         label="Label"
@@ -202,7 +212,6 @@ export const AllVariants: StoryObj = {
         min="0"
         max="10"
         step="1"
-        show-steppers
         value="5"
         increment-aria-label="Increment"
         decrement-aria-label="Decrement"
@@ -215,7 +224,6 @@ export const AllVariants: StoryObj = {
         min="0"
         max="10"
         step="1"
-        show-steppers
         disabled
         value="5"
         increment-aria-label="Increment"
@@ -229,10 +237,17 @@ export const AllVariants: StoryObj = {
         min="0"
         max="100"
         step="5"
-        show-steppers
         value="10"
         increment-aria-label="Increment"
         decrement-aria-label="Decrement"
+      ></mdc-number>
+      <mdc-number
+        label="Label"
+        help-text="Steppers hidden"
+        help-text-type="default"
+        placeholder="Placeholder"
+        value="5"
+        hide-steppers
       ></mdc-number>
     </div>`,
 };
@@ -268,7 +283,6 @@ export const FormFieldNumber: StoryObj = {
     min: 0,
     max: 10,
     step: 1,
-    'show-steppers': true,
     required: true,
     'help-text': 'Enter a value between 0 and 10',
     'help-text-type': 'default',

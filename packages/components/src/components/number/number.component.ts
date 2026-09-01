@@ -29,7 +29,7 @@ import styles from './number.styles';
  * @slot input - Slot for the input element. If not provided, the input field will be rendered.
  * @slot input-leading-icon - Slot for the leading icon before the input field. If not provided, the `leadingIcon` property will be used to render the leading icon.
  * @slot input-prefix-text - Slot for the prefix text before the input field. If not provided, the `prefixText` property will be used to render the prefix text.
- * @slot trailing-button - Slot for the trailing content. If not provided, the increment/decrement steppers will be rendered when `showSteppers` is set to true, otherwise the clear button will be rendered when `trailingButton` is set to true.
+ * @slot trailing-button - Slot for the trailing content. If not provided, the increment/decrement steppers are rendered by default; set `hideSteppers` to true to render the clear button instead (when `trailingButton` is set to true).
  *
  * @csspart input-container - The container that wraps the input field, leading icon, prefix text, and trailing content.
  * @csspart input-section - The container that wraps the input field and prefix text.
@@ -76,10 +76,11 @@ class Number extends Input {
   @property({ type: globalThis.Number, attribute: 'step' }) step: number = DEFAULTS.STEP;
 
   /**
-   * When set to true, renders increment and decrement stepper buttons alongside the input field.
+   * Increment and decrement stepper buttons are shown alongside the input field by default.
+   * Set this to true to hide them.
    * @default false
    */
-  @property({ type: Boolean, attribute: 'show-steppers' }) showSteppers = false;
+  @property({ type: Boolean, attribute: 'hide-steppers' }) hideSteppers = false;
 
   /**
    * Aria label for the increment stepper button.
@@ -215,11 +216,11 @@ class Number extends Input {
   }
 
   /**
-   * Renders the decrement/increment steppers in place of the default trailing (clear) button
-   * when `showSteppers` is set, matching the Figma "Number Input" design.
+   * Renders the decrement/increment steppers in place of the default trailing (clear) button,
+   * matching the Figma "Number Input" design, unless `hideSteppers` is set.
    */
   protected override renderTrailingButton(show = false) {
-    if (!this.showSteppers) {
+    if (this.hideSteppers) {
       return super.renderTrailingButton(show);
     }
     return html`
