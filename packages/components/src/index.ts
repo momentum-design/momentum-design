@@ -49,6 +49,7 @@ import MenuItemRadio from './components/menuitemradio';
 import MenuPopover from './components/menupopover';
 import MenuSection from './components/menusection';
 import NavMenuItem from './components/navmenuitem';
+import Number from './components/number';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Password from './components/password';
@@ -198,6 +199,7 @@ export {
   MenuPopover,
   MenuSection,
   NavMenuItem,
+  Number,
   OptGroup,
   Option,
   Password,

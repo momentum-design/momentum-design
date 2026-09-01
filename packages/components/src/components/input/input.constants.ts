@@ -24,6 +24,7 @@ const INPUT_TYPE = {
   PASSWORD: 'password',
   TEXT: 'text',
   SEARCH: 'search',
+  NUMBER: 'number',
 } as const;
 
 const PREFIX_TEXT_OPTIONS = {
