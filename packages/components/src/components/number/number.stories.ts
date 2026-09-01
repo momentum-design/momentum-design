@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
 const render = (args: Args) => html` <mdc-number
@@ -153,6 +153,88 @@ export const WithSteppers: StoryObj = {
     'help-text': 'Enter a value between 0 and 10',
     'help-text-type': 'default',
   },
+};
+
+export const AllVariants: StoryObj = {
+  argTypes: {
+    ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
+  },
+  render: () =>
+    html` <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+      ${Object.values(VALIDATION).map(
+        validation =>
+          html`<mdc-number
+            help-text-type="${validation}"
+            label="Label"
+            help-text="Helper text"
+            placeholder="Placeholder"
+            value="${validation}_value"
+          ></mdc-number>`,
+      )}
+      <mdc-number
+        label="Label"
+        help-text="Helper text"
+        help-text-type="default"
+        required
+        placeholder="Number is required"
+      ></mdc-number>
+      <mdc-number
+        label="Label"
+        help-text="Helper text"
+        help-text-type="default"
+        readonly
+        placeholder="Placeholder"
+        value="42"
+      ></mdc-number>
+      <mdc-number
+        label="Label"
+        help-text="Helper text"
+        help-text-type="default"
+        disabled
+        placeholder="Placeholder"
+        value="42"
+      ></mdc-number>
+      <mdc-number
+        label="Label"
+        help-text="Enter a value between 0 and 10"
+        help-text-type="default"
+        placeholder="Placeholder"
+        min="0"
+        max="10"
+        step="1"
+        show-steppers
+        value="5"
+        increment-aria-label="Increment"
+        decrement-aria-label="Decrement"
+      ></mdc-number>
+      <mdc-number
+        label="Label"
+        help-text="Enter a value between 0 and 10"
+        help-text-type="default"
+        placeholder="Placeholder"
+        min="0"
+        max="10"
+        step="1"
+        show-steppers
+        disabled
+        value="5"
+        increment-aria-label="Increment"
+        decrement-aria-label="Decrement"
+      ></mdc-number>
+      <mdc-number
+        label="Label"
+        help-text="Values step by 5"
+        help-text-type="default"
+        placeholder="Placeholder"
+        min="0"
+        max="100"
+        step="5"
+        show-steppers
+        value="10"
+        increment-aria-label="Increment"
+        decrement-aria-label="Decrement"
+      ></mdc-number>
+    </div>`,
 };
 
 export const FormFieldNumber: StoryObj = {
