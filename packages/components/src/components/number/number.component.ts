@@ -9,6 +9,21 @@ import { DEFAULTS } from './number.constants';
 import styles from './number.styles';
 
 /**
+ * Parses the `step` attribute, allowing the native `any` sentinel (no step-mismatch validation)
+ * alongside numeric values. `type: globalThis.Number` can't express this, hence the custom converter.
+ */
+const stepConverter = {
+  fromAttribute: (value: string | null): number | 'any' => {
+    if (value === DEFAULTS.STEP_ANY) {
+      return DEFAULTS.STEP_ANY;
+    }
+    const parsed = value === null ? NaN : parseFloat(value);
+    return globalThis.Number.isNaN(parsed) ? DEFAULTS.STEP : parsed;
+  },
+  toAttribute: (value: number | 'any') => String(value),
+};
+
+/**
  * @tagname mdc-number
  *
  * @event input - (React: onInput) This event is dispatched when the value of the number field changes (every press).
@@ -70,10 +85,11 @@ class Number extends Input {
 
   /**
    * The amount that the value changes for each increment/decrement, whether from the
-   * steppers or the up/down arrow keys.
+   * steppers or the up/down arrow keys. Set to `'any'` to allow any decimal value with no
+   * step-mismatch validation.
    * @default 1
    */
-  @property({ type: globalThis.Number, attribute: 'step' }) step: number = DEFAULTS.STEP;
+  @property({ attribute: 'step', converter: stepConverter }) step: number | 'any' = DEFAULTS.STEP;
 
   /**
    * Increment and decrement stepper buttons are shown alongside the input field by default.
@@ -125,7 +141,7 @@ class Number extends Input {
     } else {
       inputElement.max = String(this.max);
     }
-    inputElement.step = String(this.step);
+    inputElement.step = this.step === DEFAULTS.STEP_ANY ? DEFAULTS.STEP_ANY : String(this.step);
   }
 
   /**

@@ -101,8 +101,10 @@ const meta: Meta = {
       description: 'The maximum value that the number field will accept.',
     },
     step: {
-      control: 'number',
-      description: 'The amount that the value changes for each increment/decrement.',
+      control: 'text',
+      description:
+        'The amount that the value changes for each increment/decrement. Set to "any" to allow any ' +
+        'decimal value with no step-mismatch validation.',
     },
     'hide-steppers': {
       control: 'boolean',
@@ -153,6 +155,20 @@ export const WithoutSteppers: StoryObj = {
     step: 1,
     'hide-steppers': true,
     'help-text': 'Enter a value between 0 and 10',
+    'help-text-type': 'default',
+  },
+};
+
+export const AnyStep: StoryObj = {
+  args: {
+    class: 'custom-classname',
+    label: 'Price',
+    name: 'price',
+    value: '9.99',
+    step: 'any',
+    'increment-aria-label': 'Increment',
+    'decrement-aria-label': 'Decrement',
+    'help-text': 'Any decimal value is accepted',
     'help-text-type': 'default',
   },
 };

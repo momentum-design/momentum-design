@@ -6,6 +6,7 @@ const TAG_NAME = utils.constructTagName('number');
 
 const DEFAULTS = {
   STEP: 1,
+  STEP_ANY: 'any',
   INCREMENT_ICON: 'plus-bold' as Extract<IconNames, 'plus-bold'>,
   DECREMENT_ICON: 'minus-bold' as Extract<IconNames, 'minus-bold'>,
   STEPPER_BUTTON_VARIANT: BUTTON_VARIANTS.TERTIARY,

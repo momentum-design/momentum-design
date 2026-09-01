@@ -39,6 +39,16 @@ Feature: Number Component
     When I click the plus or minus stepper button
     Then the value should change by that custom step amount
 
+  Scenario: Stepping in decimal increments
+    Given the number component is rendered with a "step" attribute set to a decimal value
+    When I click the plus or minus stepper button
+    Then the value should change precisely by that decimal amount
+
+  Scenario: Allowing any decimal value
+    Given the number component is rendered with the "step" attribute set to "any"
+    When I type a decimal value that does not align to a whole step
+    Then the value should be accepted without a step-mismatch validation error
+
   Scenario: Incrementing the value with the up arrow key
     Given the number component is rendered and focused
     When I press the up arrow key
