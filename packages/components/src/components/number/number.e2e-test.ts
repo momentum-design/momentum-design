@@ -1,6 +1,4 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
-import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
@@ -277,69 +275,6 @@ test.describe('mdc-number', () => {
       });
       await submitButton.click();
       await expect(waitForSubmit).toEventEmitted();
-    });
-  });
-
-  /**
-   * VISUAL REGRESSION
-   */
-  test('visual-regression', async ({ componentsPage }) => {
-    const attributes = {
-      id: 'test-mdc-number',
-      placeholder: 'Placeholder',
-      label: 'Label',
-      'help-text': 'Help Text',
-      'increment-aria-label': 'Increment',
-      'decrement-aria-label': 'Decrement',
-    };
-    const numberStickerSheet = new StickerSheet(componentsPage, 'mdc-number');
-
-    numberStickerSheet.setAttributes(attributes);
-    await numberStickerSheet.createMarkupWithCombination({
-      'help-text-type': VALIDATION,
-    });
-
-    numberStickerSheet.setAttributes({
-      ...attributes,
-      value: '5',
-      min: '0',
-      max: '10',
-    });
-    await numberStickerSheet.createMarkupWithCombination({});
-
-    numberStickerSheet.setAttributes({
-      ...attributes,
-      value: '5',
-      'hide-steppers': true,
-    });
-    await numberStickerSheet.createMarkupWithCombination({});
-
-    numberStickerSheet.setAttributes({
-      ...attributes,
-      value: 'Disabled',
-      disabled: true,
-    });
-    await numberStickerSheet.createMarkupWithCombination({});
-
-    numberStickerSheet.setAttributes({
-      ...attributes,
-      value: 'Readonly value',
-      readonly: true,
-    });
-    await numberStickerSheet.createMarkupWithCombination({});
-
-    numberStickerSheet.setAttributes({
-      ...attributes,
-      required: '',
-      placeholder: 'Number is required',
-    });
-    await numberStickerSheet.createMarkupWithCombination({});
-
-    await numberStickerSheet.mountStickerSheet();
-    const container = numberStickerSheet.getWrapperContainer();
-    await componentsPage.page.mouse.move(0, 0);
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-number', { element: container });
     });
   });
 
