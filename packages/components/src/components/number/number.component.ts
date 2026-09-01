@@ -8,9 +8,12 @@ import type { InputType } from '../input/input.types';
 import { DEFAULTS } from './number.constants';
 import styles from './number.styles';
 
+// The class below is named `Number`, which shadows the global `Number` constructor within this file.
+const GlobalNumber = globalThis.Number;
+
 /**
  * Parses the `step` attribute, allowing the native `any` sentinel (no step-mismatch validation)
- * alongside numeric values. `type: globalThis.Number` can't express this, hence the custom converter.
+ * alongside numeric values. `type: GlobalNumber` can't express this, hence the custom converter.
  */
 const stepConverter = {
   fromAttribute: (value: string | null): number | 'any' => {
@@ -18,7 +21,7 @@ const stepConverter = {
       return DEFAULTS.STEP_ANY;
     }
     const parsed = value === null ? NaN : parseFloat(value);
-    return globalThis.Number.isNaN(parsed) ? DEFAULTS.STEP : parsed;
+    return GlobalNumber.isNaN(parsed) ? DEFAULTS.STEP : parsed;
   },
   toAttribute: (value: number | 'any') => String(value),
 };
@@ -74,14 +77,12 @@ class Number extends Input {
   /**
    * The minimum value that the number field will accept.
    */
-  // `type: globalThis.Number` is used instead of the bare `Number` identifier, since the class name
-  // `Number` shadows the global constructor within this file.
-  @property({ type: globalThis.Number, attribute: 'min' }) min?: number;
+  @property({ type: GlobalNumber, attribute: 'min' }) min?: number;
 
   /**
    * The maximum value that the number field will accept.
    */
-  @property({ type: globalThis.Number, attribute: 'max' }) max?: number;
+  @property({ type: GlobalNumber, attribute: 'max' }) max?: number;
 
   /**
    * The amount that the value changes for each increment/decrement, whether from the
@@ -158,7 +159,7 @@ class Number extends Input {
       return;
     }
     const numericValue = parseFloat(this.value);
-    if (globalThis.Number.isNaN(numericValue)) {
+    if (GlobalNumber.isNaN(numericValue)) {
       return;
     }
     let clamped = numericValue;
@@ -240,7 +241,9 @@ class Number extends Input {
       return super.renderTrailingButton(show);
     }
     return html`
-      <div part="stepper-buttons">${this.renderStepperButton('decrement')} ${this.renderStepperButton('increment')}</div>
+      <div part="stepper-buttons">
+        ${this.renderStepperButton('decrement')} ${this.renderStepperButton('increment')}
+      </div>
     `;
   }
 
