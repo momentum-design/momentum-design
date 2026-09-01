@@ -8,32 +8,33 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
-const render = (args: Args) => html` <mdc-number
-  @input="${action('oninput')}"
-  @change="${action('onchange')}"
-  @focus="${action('onfocus')}"
-  @blur="${action('onblur')}"
-  label="${args.label}"
-  help-text="${args['help-text']}"
-  help-text-type="${args['help-text-type']}"
-  name="${args.name}"
-  value="${args.value}"
-  id="${args.id}"
-  class="${args.class}"
-  style="${args.style}"
-  ?required="${args.required}"
-  ?disabled="${args.disabled}"
-  ?readonly="${args.readonly}"
-  placeholder="${args.placeholder}"
-  validation-message="${args['validation-message']}"
-  data-aria-label="${ifDefined(args['data-aria-label'])}"
-  min="${ifDefined(args.min)}"
-  max="${ifDefined(args.max)}"
-  step="${ifDefined(args.step)}"
-  ?hide-steppers="${args['hide-steppers']}"
-  increment-aria-label="${ifDefined(args['increment-aria-label'])}"
-  decrement-aria-label="${ifDefined(args['decrement-aria-label'])}"
-></mdc-number>`;
+const render = (args: Args) =>
+  html` <mdc-number
+    @input="${action('oninput')}"
+    @change="${action('onchange')}"
+    @focus="${action('onfocus')}"
+    @blur="${action('onblur')}"
+    label="${args.label}"
+    help-text="${args['help-text']}"
+    help-text-type="${args['help-text-type']}"
+    name="${args.name}"
+    value="${args.value}"
+    id="${args.id}"
+    class="${args.class}"
+    style="${args.style}"
+    ?required="${args.required}"
+    ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    placeholder="${args.placeholder}"
+    validation-message="${args['validation-message']}"
+    data-aria-label="${ifDefined(args['data-aria-label'])}"
+    min="${ifDefined(args.min)}"
+    max="${ifDefined(args.max)}"
+    step="${ifDefined(args.step)}"
+    ?hide-steppers="${args['hide-steppers']}"
+    increment-aria-label="${ifDefined(args['increment-aria-label'])}"
+    decrement-aria-label="${ifDefined(args['decrement-aria-label'])}"
+  ></mdc-number>`;
 
 const meta: Meta = {
   title: 'Components/number',
