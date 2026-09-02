@@ -1,4 +1,3 @@
-// AI-Assisted
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
@@ -76,4 +75,3 @@ class StatusMessage extends Component {
 }
 
 export default StatusMessage;
-// End AI-Assisted

@@ -275,7 +275,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     return buildISODate(this.internalMonth, this.internalDay, this.internalYear);
   }
 
-  // AI-Assisted: keep input spinbuttons aligned with valid min/max date boundaries.
+  // Keep input spinbuttons aligned with valid min/max date boundaries.
   private getParsedMin(): Date | undefined {
     return this.min ? (parseISO(this.min) ?? undefined) : undefined;
   }
@@ -349,7 +349,6 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (currentValue <= range.min) return range.isMinConstrained ? range.min : range.max;
     return currentValue - 1;
   }
-  // End AI-Assisted
 
   private syncFormValue(): void {
     const val = this.value || this.internalToValue();

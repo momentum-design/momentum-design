@@ -572,7 +572,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       });
     });
 
-    // AI-Assisted
     await test.step('Disabled menuitem with submenu ignores click and keyboard interactions', async () => {
       const html = `
         <div id="menupopover-test-wrapper">
@@ -646,7 +645,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await componentsPage.page.keyboard.press('Enter');
       await expect(keyboardSubmenu).not.toBeVisible();
     });
-    // End AI-Assisted
 
     await test.step('Backdrop attribute with hide on outside click', async () => {
       await componentsPage.mount({
@@ -678,7 +676,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await expect(popover2).toBeVisible();
     });
 
-    // AI-Assisted
     await test.step('Backdrop click stops event propagation', async () => {
       await componentsPage.mount({
         html: `
@@ -747,7 +744,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await expect(submenu).not.toBeVisible();
       await expect(menuPopover1).not.toBeVisible();
     });
-    // End AI-Assisted
 
     // Group: Menuitem types: checkbox and radio (with grouped navigation)
     await test.step('Menuitem types: checkbox and radio', async () => {

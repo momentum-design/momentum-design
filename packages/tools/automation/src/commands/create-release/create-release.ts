@@ -55,8 +55,8 @@ class CreateRelease extends Command {
       const pullRequestDescription = await Git.getPullRequestDetails(latestCommit.commit);
       const releaseNotes = '## $title\r\n$body';
 
-      // escaping double quotes in the body to avoid breakages in the pipeline
-      const escapedBody = pullRequestDescription[0].body.replace(/"/g, '\\"');
+      // escaping double quotes and backticks in the body to avoid breakages in the pipeline
+      const escapedBody = pullRequestDescription[0].body.replace(/(["`])/g, '\\$1');
       const notes = releaseNotes
         .replace('$title', pullRequestDescription[0].title)
         .replace('$body', escapedBody)

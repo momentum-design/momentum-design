@@ -1,4 +1,55 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import dynamicImport from 'vite-plugin-dynamic-import';
+
+const componentsRoot = fileURLToPath(new URL('../..', import.meta.url));
+const distComponentsRoot = path.resolve(componentsRoot, 'dist/components');
+const srcComponentsRoot = path.resolve(componentsRoot, 'src/components');
+
+const distReactSegment = `${path.sep}packages${path.sep}components${path.sep}dist${path.sep}react${path.sep}`;
+
+function preferSourceComponentsInStorybook() {
+  const cleanSpecifier = value => value.split('?')[0].split('#')[0];
+  const isFile = candidate => {
+    try {
+      return fs.statSync(candidate).isFile();
+    } catch {
+      return false;
+    }
+  };
+  const resolveSourceFile = target => {
+    const candidates = [
+      `${target}.ts`,
+      `${target}.tsx`,
+      `${target}.js`,
+      `${target}.jsx`,
+      path.join(target, 'index.ts'),
+      path.join(target, 'index.tsx'),
+      path.join(target, 'index.js'),
+      path.join(target, 'index.jsx'),
+    ];
+
+    return candidates.find(isFile) ?? null;
+  };
+
+  return {
+    name: 'mdc-prefer-source-components-in-storybook',
+    enforce: 'pre',
+    resolveId(source, importer) {
+      if (!importer || !importer.includes(distReactSegment)) return null;
+      if (!source.startsWith('../../components/')) return null;
+
+      const resolvedDistTarget = path.resolve(path.dirname(cleanSpecifier(importer)), cleanSpecifier(source));
+      const sourceRelativePath = path.relative(distComponentsRoot, resolvedDistTarget);
+
+      if (sourceRelativePath.startsWith('..')) return null;
+      const sourceTarget = path.resolve(srcComponentsRoot, sourceRelativePath);
+      return resolveSourceFile(sourceTarget);
+    },
+  };
+}
 
 const config = {
   stories: ['../../src/docs/*.mdx', '../../src/**/*.accessibility.mdx', '../../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -24,7 +75,12 @@ const config = {
     return mergeConfig(config, {
       // adding dynamic import to support dynamic icon import
       // in icon component
-      plugins: [dynamicImport({})],
+      plugins: [preferSourceComponentsInStorybook(), dynamicImport({})],
+      server: {
+        watch: {
+          ignored: ['**/packages/components/dist/custom-elements.json'],
+        },
+      },
     });
   },
   docs: {

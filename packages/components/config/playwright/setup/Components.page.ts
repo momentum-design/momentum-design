@@ -40,7 +40,6 @@ type SetledCallback = (url: string, error: ReturnType<PlaywrightRequest['failure
  * used for Momentum components E2E testing
  */
 class ComponentsPage {
-  // AI-Assisted
   /**
    * Reference-counting map of icon (.svg) URLs currently in-flight.
    * A URL's count is incremented on each request event and decremented on
@@ -60,7 +59,6 @@ class ComponentsPage {
    * Callbacks to notify `waitForPendingIcons` when all pending requests settle.
    */
   private pendingIconSettleCallbacks: Set<SetledCallback> = new Set();
-  // End AI-Assisted
 
   constructor(page: Page, testInfo: TestInfo) {
     this.page = page;
@@ -102,7 +100,6 @@ class ComponentsPage {
     await this.navigate();
   }
 
-  // AI-Assisted
   /**
    * Starts persistently tracking all icon (.svg) network requests on the page.
    *
@@ -152,7 +149,6 @@ class ComponentsPage {
       }
     });
   }
-  // End AI-Assisted
 
   /**
    * **TearDown function**
@@ -348,7 +344,6 @@ class ComponentsPage {
     );
   }
 
-  // AI-Assisted
   /**
    * Waits for all currently pending icon (.svg) network requests to finish.
    *
@@ -404,7 +399,6 @@ class ComponentsPage {
       return true;
     });
   }
-  // End AI-Assisted
 
   /**
    * Check if a promise times out after a certain amount of time

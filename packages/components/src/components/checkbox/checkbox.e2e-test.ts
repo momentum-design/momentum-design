@@ -1,4 +1,5 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 
@@ -177,6 +178,23 @@ test('mdc-checkbox', async ({ componentsPage }) => {
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
+    checkboxStickerSheet.setAttributes({
+      checked: true,
+      label: 'Alex Example',
+      'help-text': 'example.com',
+      'toggletip-text': 'This participant is connected from a video device.',
+      'info-icon-aria-label': 'About Alex Example',
+    });
+    checkboxStickerSheet.setChildren(`
+      <mdc-avatar
+        slot="leading-visual"
+        size="32"
+        src="${imageFixtures.avatar}"
+        presence="on-device"
+      ></mdc-avatar>
+    `);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+
     await checkboxStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of checkbox sizes stickersheet', async () => {
@@ -191,6 +209,19 @@ test('mdc-checkbox', async ({ componentsPage }) => {
    */
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('checkbox-default');
+
+    await componentsPage.mount({
+      html: `
+        <div role="group" aria-label="Meeting participants">
+          <mdc-checkbox label="Alex Example" help-text="example.com">
+            <span slot="leading-visual" data-testid="leading-visual" aria-hidden="true">AE</span>
+          </mdc-checkbox>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    await expect(componentsPage.page.getByTestId('leading-visual')).toBeVisible();
+    await componentsPage.accessibility.checkForA11yViolations('checkbox-leading-visual');
   });
 
   /**
@@ -239,6 +270,15 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       const icon = componentsPage.page.locator('mdc-icon');
       await icon.waitFor();
       await expect(icon).toHaveAttribute('name', 'check-bold');
+    });
+
+    await test.step('should apply the host tabindex to the native input', async () => {
+      const input = checkbox.locator('input[type="checkbox"]');
+      await componentsPage.setAttributes(checkbox, { tabindex: '-1' });
+      await expect(input).toHaveAttribute('tabindex', '-1');
+
+      await componentsPage.removeAttribute(checkbox, 'tabindex');
+      await expect(input).toHaveAttribute('tabindex', '0');
     });
 
     await test.step('should have disabled attribute when the disabled attribute is passed', async () => {
@@ -310,6 +350,34 @@ test('mdc-checkbox', async ({ componentsPage }) => {
 
       await checkbox.click();
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+    });
+
+    await test.step('checkbox should be checked once when the leading visual is clicked', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-checkbox label="Alex Example">
+            <span slot="leading-visual" data-testid="leading-visual" aria-hidden="true">AE</span>
+          </mdc-checkbox>
+        `,
+        clearDocument: true,
+      });
+      const checkbox = componentsPage.page.locator('mdc-checkbox');
+      const input = checkbox.locator('input[type="checkbox"]');
+
+      await checkbox.evaluate(element => {
+        const checkboxWithCounter = element as HTMLElement & { changeEventCount: number };
+        checkboxWithCounter.changeEventCount = 0;
+        checkboxWithCounter.addEventListener('change', () => {
+          checkboxWithCounter.changeEventCount += 1;
+        });
+      });
+
+      await checkbox.getByTestId('leading-visual').click();
+
+      await expect(input).toBeChecked();
+      expect(
+        await checkbox.evaluate(element => (element as HTMLElement & { changeEventCount: number }).changeEventCount),
+      ).toBe(1);
     });
 
     await test.step('checkbox should be focused but not change state when readonly', async () => {

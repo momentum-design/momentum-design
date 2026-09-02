@@ -1,4 +1,3 @@
-# AI-Assisted
 Feature: NavMenuItem Navigation and User Interaction
 
   Background:
@@ -220,5 +219,3 @@ Feature: NavMenuItem Navigation and User Interaction
       When the navmenuitem is rendered
       Then an arrow indicator should be displayed
       And the arrow should indicate expandable content
-
-# End AI-Assisted

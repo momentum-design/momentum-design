@@ -12,13 +12,19 @@ repository managed by Yarn Workspaces and is published to npm at
 ## General Guidelines
 
 - Use [TypeScript](https://www.typescriptlang.org/) for all code.
-- Start all AI-generated code with `// AI-Assisted` and end with
-  `// End AI-Assisted`.
-- Follow the coding conventions in `packages/components/conventions/*.md`.
+- Read the [components conventions index](conventions/README.md) completely
+  before changing component files. Then read only the applicable convention
+  documents; do not preload the directory.
+- When creating a new component, follow the
+  [create-component skill](../../.github/skills/create-component/SKILL.md).
 - Prefer existing mixins in `packages/components/src/utils/mixins/` to extend
   functionality.
 - Icons are rendered using the `mdc-icon` component (e.g.,
   `<mdc-icon name="icon-name"></mdc-icon>`).
+- When using Figma or other design references, always replace names, email
+  addresses, domains, and other identifying strings with obviously fictional
+  test data in component code, stories, tests, and documentation. Use values
+  such as `Alex Example`, `alex@example.com`, and `example.com`.
 
 ## Build and Dev Commands
 
@@ -113,15 +119,13 @@ Refer to [lit.dev](https://lit.dev).
   configuration.
 - **Consistent naming**: Follow established patterns for similar functionality
   across components.
-- **Type safety**: Use TypeScript interfaces and enums for better developer
-  experience.
+- **Type safety**: Follow the applicable package conventions for public APIs and
+  finite value sets.
 - **Backward compatibility**: Consider migration paths when changing public
   APIs.
 
 ### Accessibility (A11Y)
 
-- Always include proper ARIA attributes (`aria-live`, `aria-busy`, `role`,
-  etc.).
 - Ensure screen reader compatibility with meaningful announcements.
 - Support keyboard navigation where applicable.
 - Test with actual assistive technologies, not just automated tools.

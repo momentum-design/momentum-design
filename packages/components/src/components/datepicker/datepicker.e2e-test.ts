@@ -144,7 +144,7 @@ test.describe('mdc-datepicker', () => {
         await expect(daySpinbutton).toBeFocused();
       });
 
-      // AI-Assisted: cover datepicker input clamping against valid min/max boundaries.
+      // Cover datepicker input clamping against valid min/max boundaries.
       test('should clamp typed dates after max to the max date', async ({ componentsPage }) => {
         const datepicker = await setup({
           componentsPage,
@@ -229,7 +229,6 @@ test.describe('mdc-datepicker', () => {
         await expect(yearSpinbutton).toHaveValue('9999');
         await expect(datepicker).toHaveAttribute('value', '9999-07-15');
       });
-      // End AI-Assisted
     });
 
     test.describe('calendar popover', () => {
@@ -263,7 +262,6 @@ test.describe('mdc-datepicker', () => {
         await expect(popover).not.toHaveAttribute('visible');
       });
 
-      // AI-Assisted
       test('should select a week when selection mode changes from its default', async ({ componentsPage }) => {
         const datepicker = await setup({
           componentsPage,
@@ -284,7 +282,6 @@ test.describe('mdc-datepicker', () => {
         await expect(datepicker).toHaveAttribute('value', '2025-07-13');
         await expect(datepicker).toHaveAttribute('end-value', '2025-07-19');
       });
-      // End AI-Assisted
     });
 
     test.describe('disabled state', () => {
@@ -513,7 +510,6 @@ test.describe('mdc-datepicker', () => {
     });
   });
 
-  // AI-Assisted
   test.describe('visual regression', () => {
     test('should match screenshot for empty single-date input', async ({ componentsPage }) => {
       await setup({
@@ -624,5 +620,4 @@ test.describe('mdc-datepicker', () => {
       });
     });
   });
-  // End AI-Assisted
 });
