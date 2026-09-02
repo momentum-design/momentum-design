@@ -9,6 +9,7 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
   PRIMARY_BUTTON_COLORS,
+  SECONDARY_BUTTON_COLORS,
 } from '../button/button.constants';
 import { KEYS } from '../../utils/keys';
 
@@ -224,7 +225,7 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
     await buttonlinkSheet.createMarkupWithCombination({
       variant: { secondary: BUTTON_VARIANTS.SECONDARY },
       size,
-      color: BUTTON_COLORS,
+      color: SECONDARY_BUTTON_COLORS,
     });
   };
   return { buttonlinkSheet, commonMount };

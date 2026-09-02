@@ -46,8 +46,6 @@ Minimal markup example:
 
 <mdc-button variant="secondary" prefix-icon="download-bold" size="32">Download</mdc-button>
 
-<mdc-button variant="secondary" color="overlay" prefix-icon="more-bold" size="32">More options</mdc-button>
-
 <mdc-button variant="tertiary" prefix-icon="more-bold" size="32" aria-label="More options"></mdc-button>
 ```
 

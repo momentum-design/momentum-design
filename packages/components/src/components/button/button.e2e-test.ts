@@ -12,6 +12,7 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
   PRIMARY_BUTTON_COLORS,
+  SECONDARY_BUTTON_COLORS,
   TERTIARY_BUTTON_COLORS,
 } from './button.constants';
 
@@ -265,7 +266,7 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
     await buttonSheet.createMarkupWithCombination({
       variant: { secondary: BUTTON_VARIANTS.SECONDARY },
       size,
-      color: BUTTON_COLORS,
+      color: SECONDARY_BUTTON_COLORS,
     });
   };
   return { buttonSheet, commonMount };
@@ -731,7 +732,7 @@ test.describe.parallel('mdc-button', () => {
   test('soft-disabled button with color should not change background on hover', async ({ componentsPage }) => {
     const variantColorCombinations = [
       { variant: BUTTON_VARIANTS.PRIMARY, colors: Object.values(PRIMARY_BUTTON_COLORS) },
-      { variant: BUTTON_VARIANTS.SECONDARY, colors: Object.values(BUTTON_COLORS) },
+      { variant: BUTTON_VARIANTS.SECONDARY, colors: Object.values(SECONDARY_BUTTON_COLORS) },
     ];
 
     for (const { variant, colors } of variantColorCombinations) {
