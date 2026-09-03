@@ -437,7 +437,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
 
       # The Playwright browser-server container is started/stopped as an explicit step here
       # rather than being managed by Playwright's own `webServer` lifecycle hooks (see
