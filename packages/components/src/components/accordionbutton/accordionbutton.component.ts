@@ -110,6 +110,9 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
   private collapseUnmountScheduled = false;
 
   /** @internal */
+  private motionReadyFrame?: number;
+
+  /** @internal */
   private onReducedMotionChange = (): void => {
     if (this.prefersReducedMotion() && !this.expanded) {
       this.finishCollapseIfNeeded();
@@ -126,12 +129,19 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
     this.reducedMotionQuery?.removeEventListener('change', this.onReducedMotionChange);
     this.reducedMotionQuery = undefined;
     this.clearCollapseUnmountTimer();
+    if (this.motionReadyFrame !== undefined) {
+      cancelAnimationFrame(this.motionReadyFrame);
+      this.motionReadyFrame = undefined;
+    }
     super.disconnectedCallback();
   }
 
   protected override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
-    this.setAttribute(DATA_MOTION_READY, '');
+    this.motionReadyFrame = requestAnimationFrame(() => {
+      this.motionReadyFrame = undefined;
+      this.setAttribute(DATA_MOTION_READY, '');
+    });
   }
 
   /**

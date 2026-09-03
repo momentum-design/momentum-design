@@ -13,9 +13,7 @@ type AnimatedBackgroundHost = HTMLElement & {
   collapse: () => void;
   disable: () => void;
   setPose: (name: PoseName, options?: { animate?: boolean }) => void;
-  animationController: {
-    getCurrentOffset(): PoseOffset;
-  };
+  getPoseOffset: () => PoseOffset;
 };
 
 type SetupOptions = {
@@ -88,7 +86,7 @@ const readPoseOffset = async (
 ): Promise<PoseOffset | null> =>
   animatedBackground.evaluate(element => {
     const host = element as AnimatedBackgroundHost;
-    return host.animationController?.getCurrentOffset() ?? null;
+    return host.getPoseOffset?.() ?? null;
   });
 
 const readDomPoseOffset = async (
@@ -148,7 +146,7 @@ const runAnimationAndWait = async (
 
       return new Promise<number>((resolve, reject) => {
         const start = performance.now();
-        let timer: ReturnType<typeof window.setTimeout>;
+        let timer = 0;
 
         const onSettle = (event: Event) => {
           const { detail } = event as CustomEvent<{ pose: PoseName }>;
@@ -208,7 +206,7 @@ test('mdc-animatedbackground setPose without animation', async ({ componentsPage
     await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
   });
 
-  await test.step('WebGL path applies pose offset via animation controller', async () => {
+  await test.step('WebGL path applies pose offset via public getPoseOffset API', async () => {
     const animatedBackground = await setup({ componentsPage, initialPose: 'collapsed', reducedMotion: false });
 
     if (!(await usesWebGLRenderer(animatedBackground))) {
@@ -320,7 +318,7 @@ test('mdc-animatedbackground motion durations align with motion tokens', async (
           const animationStart = performance.now();
 
           const pollWakePose = () => {
-            const offset = host.animationController.getCurrentOffset();
+            const offset = host.getPoseOffset();
             const atWakePose =
               Math.abs(offset.x - wakePose.x) < 2 &&
               Math.abs(offset.y - wakePose.y) < 2;

@@ -1,4 +1,5 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+import type { Locator } from '@playwright/test';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { Size } from '../accordiongroup/accordiongroup.types';
 import { KEYS } from '../../utils/keys';
@@ -6,7 +7,7 @@ import { SIZE } from '../accordiongroup/accordiongroup.constants';
 import { ROLE } from '../../utils/roles';
 
 import type { Variant } from './accordionbutton.types';
-import { VARIANT, TOGGLE_POSITION } from './accordionbutton.constants';
+import { DATA_MOTION_READY, VARIANT, TOGGLE_POSITION } from './accordionbutton.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -23,6 +24,20 @@ const defaultHeaderText = 'Accordion Header';
 const defaultPrefixIcon = 'placeholder-bold';
 const defaultContent =
   'Lorem ipsum sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
+
+const readBodyPanelStyles = async (content: Locator) =>
+  content.evaluate(el => {
+    const style = getComputedStyle(el);
+    return {
+      opacity: style.opacity,
+      gridTemplateRows: style.gridTemplateRows,
+    };
+  });
+
+const expectFullyOpenPanelStyles = (styles: { opacity: string; gridTemplateRows: string }): void => {
+  expect(Number.parseFloat(styles.opacity)).toBe(1);
+  expect(styles.gridTemplateRows).not.toMatch(/^0(?:fr|px)/);
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -200,9 +215,11 @@ test.describe('AccordionButton Feature Scenarios', () => {
         // Collapse
         waitForShown = await componentsPage.waitForEvent(accordionButton, 'shown');
         await headerButton.click();
-        await expect(waitForShown).toEventEmitted();
+        await Promise.all([
+          expect(waitForShown).toEventEmitted(),
+          expect(content).toBeAttached(),
+        ]);
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
-        await expect(content).toBeAttached();
         await expect(content).not.toBeAttached();
       });
 
@@ -333,6 +350,20 @@ test.describe('AccordionButton Feature Scenarios', () => {
      * EXPAND / COLLAPSE MOTION
      */
     await test.step('expand and collapse motion', async () => {
+      await test.step('first paint with expanded skips enter animation', async () => {
+        const { accordionButton, content } = await setup({
+          componentsPage,
+          expanded: true,
+          children: defaultContent,
+        });
+
+        await expect(content).toBeAttached();
+        expectFullyOpenPanelStyles(await readBodyPanelStyles(content));
+
+        await expect(accordionButton).toHaveAttribute(DATA_MOTION_READY, '');
+        expectFullyOpenPanelStyles(await readBodyPanelStyles(content));
+      });
+
       await test.step('body stays attached during collapse then unmounts', async () => {
         const { headerButton, headerButtonSection, content, accordionButton } = await setup({
           componentsPage,
@@ -342,9 +373,38 @@ test.describe('AccordionButton Feature Scenarios', () => {
         await expect(content).toBeVisible();
         const waitForShown = await componentsPage.waitForEvent(accordionButton, 'shown');
         await headerButton.click();
-        await expect(waitForShown).toEventEmitted();
+        await Promise.all([
+          expect(waitForShown).toEventEmitted(),
+          expect(content).toBeAttached(),
+        ]);
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(content).not.toBeAttached();
+      });
+
+      await test.step('programmatic collapse keeps body attached during motion then unmounts', async () => {
+        const { accordionButton, headerButtonSection, content } = await setup({
+          componentsPage,
+          expanded: true,
+          children: defaultContent,
+        });
+
+        await expect(content).toBeVisible();
+        await accordionButton.evaluate((el: HTMLElement) => {
+          el.removeAttribute('expanded');
+        });
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(content).toBeAttached();
+
+        // Collapse uses motion.duration.fast (200ms); body must not unmount in the first frame.
+        await content.evaluate(async el => {
+          await new Promise(resolve => {
+            setTimeout(resolve, 50);
+          });
+          if (!el.isConnected) {
+            throw new Error('body-section detached before collapse motion could finish');
+          }
+        });
+
         await expect(content).not.toBeAttached();
       });
 

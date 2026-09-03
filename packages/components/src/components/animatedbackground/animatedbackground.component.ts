@@ -12,6 +12,7 @@ import type {
   BackgroundRenderer,
   GradientSettleEventDetail,
   PoseName,
+  PoseOffset,
   SetPoseOptions,
 } from './animatedbackground.types';
 import { DomBackgroundRenderer } from './render/dom-renderer';
@@ -141,6 +142,13 @@ class AnimatedBackground extends Component {
    */
   public nudge(dx: number, dy: number): void {
     this.animationController.nudge(dx, dy, this.animationController.getCurrentPoseName());
+  }
+
+  /**
+   * Returns the current design-space pose offset applied to the background.
+   */
+  public getPoseOffset(): PoseOffset {
+    return this.animationController.getCurrentOffset();
   }
 
   protected override updated(changedProperties: PropertyValues): void {
