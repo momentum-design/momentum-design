@@ -7,7 +7,8 @@ import type { PopoverPlacement } from '../popover/popover.types';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from './menupopover.constants';
 import type MenuPopover from './menupopover.component';
 
-const SUBMENU_TRIGGER_TAGS = new Set<string>([MENUITEM_TAGNAME, NAVMENUITEM_TAGNAME]);
+const isSubmenuTriggerTag = (tagName: string): boolean =>
+  tagName === MENUITEM_TAGNAME || tagName === NAVMENUITEM_TAGNAME;
 
 /**
  * Checks if the given menu item is a valid menu item.
@@ -67,7 +68,7 @@ const calculateSubmenuOffset = (
   placement: PopoverPlacement,
   panelGap = POPOVER_DEFAULTS.OFFSET,
 ): number | null => {
-  if (!SUBMENU_TRIGGER_TAGS.has(triggerElement.tagName.toLowerCase())) {
+  if (!isSubmenuTriggerTag(triggerElement.tagName.toLowerCase())) {
     return null;
   }
 
