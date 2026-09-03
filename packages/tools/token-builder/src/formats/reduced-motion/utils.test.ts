@@ -41,7 +41,7 @@ describe('@momentum-design/token-builder - formats.reducedMotion.utils', () => {
         ),
       ]);
 
-      const output = buildReducedMotionAnimationBlock('.mds-animation', dictionary);
+      const output = buildReducedMotionAnimationBlock('.mds-animation', dictionary as never);
 
       expect(output).toContain('@media (prefers-reduced-motion: reduce)');
       expect(output).toContain('.mds-animation {');

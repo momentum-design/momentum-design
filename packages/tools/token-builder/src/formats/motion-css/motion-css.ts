@@ -1,5 +1,4 @@
-import StyleDictionary from 'style-dictionary';
-import { Format as SDFormat, Formatter as SDFormatter } from 'style-dictionary';
+import StyleDictionary, { Format as SDFormat, Formatter as SDFormatter } from 'style-dictionary';
 
 import { buildReducedMotionMotionCoreBlock } from '../reduced-motion/utils';
 

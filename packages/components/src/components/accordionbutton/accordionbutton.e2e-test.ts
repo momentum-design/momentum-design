@@ -1,5 +1,6 @@
-import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import type { Locator } from '@playwright/test';
+
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { Size } from '../accordiongroup/accordiongroup.types';
 import { KEYS } from '../../utils/keys';

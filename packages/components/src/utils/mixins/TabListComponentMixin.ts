@@ -163,10 +163,12 @@ export const TabListComponentMixin = <T extends Constructor<Component>>(superCla
 
       if (previousTab && origins.outgoing) {
         previousTab.setIndicatorTransformOrigin(origins.outgoing);
+        // eslint-disable-next-line no-void -- force reflow so transform-origin applies before animation
         void previousTab.offsetWidth;
       }
 
       newTab.setIndicatorTransformOrigin(origins.incoming);
+      // eslint-disable-next-line no-void -- force reflow so transform-origin applies before animation
       void newTab.offsetWidth;
     }
 

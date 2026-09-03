@@ -1,5 +1,6 @@
-import type { MotionMode } from './motionprovider.types';
 import utils from '../../utils/tag-name';
+
+import type { MotionMode } from './motionprovider.types';
 
 const TAG_NAME = utils.constructTagName('motionprovider');
 
