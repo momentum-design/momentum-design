@@ -90,6 +90,19 @@ const styles = css`
     --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
+  :host([variant='secondary'][color='overlay']) {
+    --mdc-button-background: var(--mds-color-theme-overlay-button-secondary-normal);
+    --mdc-button-text-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-button-border-color: var(--mds-color-theme-outline-button-normal);
+  }
+  :host([variant='secondary'][color='overlay']:hover) {
+    --mdc-button-background: var(--mds-color-theme-overlay-button-secondary-hover);
+  }
+  :host([variant='secondary'][color='overlay']:active),
+  :host([variant='secondary'][color='overlay'].pressed) {
+    --mdc-button-background: var(--mds-color-theme-overlay-button-secondary-pressed);
+  }
+
   :host([variant='tertiary']) {
     --mdc-button-border-color: transparent;
     --mdc-button-text-color: var(--mds-color-theme-text-primary-normal);
@@ -288,6 +301,13 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-button-border-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-button-background: var(--mds-color-theme-button-secondary-disabled);
+    cursor: auto;
+  }
+  :host([variant='secondary'][color='overlay'][disabled]),
+  :host([variant='secondary'][color='overlay'][soft-disabled]) {
+    --mdc-button-text-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-button-border-color: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-button-background: var(--mds-color-theme-overlay-button-secondary-normal);
     cursor: auto;
   }
   :host([variant='tertiary'][disabled]),

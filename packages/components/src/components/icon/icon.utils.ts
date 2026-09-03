@@ -25,6 +25,9 @@ const fetchIcon = async (request: Request): Promise<Response> =>
     return response;
   });
 
+// Map of in-flight fetch promises keyed by URL to deduplicate concurrent requests
+const pendingFetches = new Map<string, Promise<string>>();
+
 /**
  * Fetches a dynamic SVG icon based on the provided `url`, `name` and `fileExtension`.
  * The fetch is aborted if the signal is aborted.
@@ -50,7 +53,8 @@ const svgFetch = async ({ url, name, fileExtension, cacheStrategy, cacheName, re
   // abort the previous fetch request if it is still pending
   // and create a new signal
   const signal = renewSignal();
-  const request = new Request(`${url}/${name}.${fileExtension}`, {
+  const iconUrl = `${url}/${name}.${fileExtension}`;
+  const request = new Request(iconUrl, {
     signal,
   });
 
@@ -69,11 +73,17 @@ const svgFetch = async ({ url, name, fileExtension, cacheStrategy, cacheName, re
           return responseFromCache;
         }
 
+        // **Check for in-flight fetch for same URL**
+        const pending = pendingFetches.get(iconUrl);
+        if (pending) {
+          return pending;
+        }
+
         // **Otherwise, fetch and cache if successful**
         // Both fetchIcon() and iconsCache.set() "consume" the request,
         // so we need to make a copy.
         // (see https://developer.mozilla.org/en-US/docs/Web/API/Request/clone)
-        return fetchIcon(request.clone()).then(response => {
+        const fetchPromise = fetchIcon(new Request(iconUrl)).then(response => {
           // This avoids caching responses that we know are errors
           // (i.e. HTTP status code of 4xx or 5xx).
           if (response.status < 400 && response.headers.has('content-type')) {
@@ -82,7 +92,11 @@ const svgFetch = async ({ url, name, fileExtension, cacheStrategy, cacheName, re
             return iconsCache.set?.(request, response.clone()).then(() => response.text());
           }
           return response.text();
+        }).finally(() => {
+          pendingFetches.delete(iconUrl);
         });
+        pendingFetches.set(iconUrl, fetchPromise);
+        return fetchPromise;
       })
       .catch(error => {
         // Note that a HTTP error response (e.g. 404) will NOT trigger

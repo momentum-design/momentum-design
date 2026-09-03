@@ -94,3 +94,12 @@ Feature: Tablist component
     When I press Enter or Space on the arrow buttons
     Then the tablist should visually update to show the scrolled tabs
     And there should be no accessibility violations
+
+  Scenario: Select tab after scrolling with arrow button via mouse click
+    Given the tablist component is rendered in a small viewport
+    And the first tab is active
+    When I click the forward arrow button to scroll
+    And I click the last tab
+    Then the last tab should be active and have aria-selected "true"
+    And the active-tab-id should be "meetings-tab"
+    And the last tab should be focused

@@ -2385,6 +2385,128 @@
               "description": ""
             }
           }
+        },
+        "caption": {
+          "background": {
+            "dark": {
+              "green": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.green.90}",
+                "description": "HEX: #0E2B20\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.blue.90}",
+                "description": "HEX: #0A274A\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.90}",
+                "description": "HEX: #3B1840\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.yellow.90}",
+                "description": "HEX: #36220C\nUsed for closed-caption component"
+              }
+            },
+            "light": {
+              "green": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.green.10}",
+                "description": "HEX: #CEF5EB\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.blue.10}",
+                "description": "HEX: #DBF0FF\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.10}",
+                "description": "HEX: #FCF2FC\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.yellow.10}",
+                "description": "HEX: #FFEBC2\nUsed for closed-caption component"
+              }
+            }
+          },
+          "text": {
+            "dark": {
+              "normal": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.95}",
+                "description": "HEX: #000000 95%\nUsed for closed-caption component"
+              },
+              "green": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.green.40}",
+                "description": "HEX: #3CC29A\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.blue.40}",
+                "description": "HEX: #64B4FA\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.40}",
+                "description": "HEX: #F294F1\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.yellow.40}",
+                "description": "HEX: #F2990A\nUsed for closed-caption component"
+              }
+            },
+            "light": {
+              "normal": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.white-alpha.95}",
+                "description": "HEX: #FFFFFF 95%\nUsed for closed-caption component"
+              },
+              "green": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.green.70}",
+                "description": "HEX: #185E46\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.blue.70}",
+                "description": "HEX: #0353A8\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.70}",
+                "description": "HEX: #932099\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.yellow.70}",
+                "description": "HEX: #7D4705\nUsed for closed-caption component"
+              }
+            }
+          }
         }
       },
       "scrollbar": {

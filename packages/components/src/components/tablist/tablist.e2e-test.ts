@@ -417,6 +417,19 @@ test('mdc-tablist', async ({ componentsPage }) => {
         });
         await expect(arrowButtons.last()).toBeFocused();
       });
+
+      await test.step(`Given a tablist component with 5 tabs and a smaller viewport,
+        user can select a tab after scrolling with the forward arrow button via mouse click`, async () => {
+        await componentsPage.page.setViewportSize({ width: 320, height: 450 });
+        await setup({ componentsPage, 'active-tab-id': 'calls-tab' });
+        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'calls-tab');
+        await arrowButtons.last().click();
+        await tabs.last().click();
+        await expect(tabs.last()).toHaveAttribute('aria-selected', 'true');
+        await expect(tabs.last()).toHaveAttribute('active');
+        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'meetings-tab');
+        await expect(tabs.last()).toBeFocused();
+      });
     }
   });
 });
