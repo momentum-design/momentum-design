@@ -195,6 +195,12 @@ test('mdc-checkbox', async ({ componentsPage }) => {
     `);
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
+    checkboxStickerSheet.setAttributes({
+      checked: true,
+      label: 'Alex Example',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+
     await checkboxStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of checkbox sizes stickersheet', async () => {
