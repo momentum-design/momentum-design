@@ -34,6 +34,7 @@ const styles = [
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      align-self: center;
     }
 
     :host::part(label) {
