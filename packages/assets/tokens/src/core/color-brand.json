@@ -1,0 +1,286 @@
+{
+  "color": {
+    "core": {
+      "brand": {
+        "medium-blue": {
+          "95": {
+            "value": "#0F214D",
+            "type": "color",
+            "description": "Medium Blue 95 — darkest"
+          },
+          "90": {
+            "value": "#12275C",
+            "type": "color",
+            "description": "Medium Blue 90"
+          },
+          "80": {
+            "value": "#15337D",
+            "type": "color",
+            "description": "Medium Blue 80"
+          },
+          "70": {
+            "value": "#0E3A99",
+            "type": "color",
+            "description": "Medium Blue 70"
+          },
+          "60": {
+            "value": "#124FC9",
+            "type": "color",
+            "description": "Medium Blue 60"
+          },
+          "50": {
+            "value": "#1869FF",
+            "type": "color",
+            "description": "Medium Blue 50 — base/primary shade for this palette"
+          },
+          "40": {
+            "value": "#478EFF",
+            "type": "color",
+            "description": "Medium Blue 40"
+          },
+          "30": {
+            "value": "#75AAFF",
+            "type": "color",
+            "description": "Medium Blue 30"
+          },
+          "20": {
+            "value": "#91BFFF",
+            "type": "color",
+            "description": "Medium Blue 20"
+          },
+          "10": {
+            "value": "#B8D5FF",
+            "type": "color",
+            "description": "Medium Blue 10"
+          },
+          "5": {
+            "value": "#E0EEFF",
+            "type": "color",
+            "description": "Medium Blue 05 — lightest"
+          }
+        },
+        "cisco-blue": {
+          "95": {
+            "value": "#01242E",
+            "type": "color",
+            "description": "Cisco Blue 95 — darkest"
+          },
+          "90": {
+            "value": "#013545",
+            "type": "color",
+            "description": "Cisco Blue 90"
+          },
+          "80": {
+            "value": "#015269",
+            "type": "color",
+            "description": "Cisco Blue 80"
+          },
+          "70": {
+            "value": "#027494",
+            "type": "color",
+            "description": "Cisco Blue 70"
+          },
+          "60": {
+            "value": "#11A5CF",
+            "type": "color",
+            "description": "Cisco Blue 60"
+          },
+          "50": {
+            "value": "#02C8FF",
+            "type": "color",
+            "description": "Cisco Blue 50 — base/primary shade for this palette"
+          },
+          "40": {
+            "value": "#45D4FF",
+            "type": "color",
+            "description": "Cisco Blue 40"
+          },
+          "30": {
+            "value": "#7AE2FF",
+            "type": "color",
+            "description": "Cisco Blue 30"
+          },
+          "20": {
+            "value": "#A8ECFF",
+            "type": "color",
+            "description": "Cisco Blue 20"
+          },
+          "10": {
+            "value": "#CCF4FF",
+            "type": "color",
+            "description": "Cisco Blue 10"
+          },
+          "5": {
+            "value": "#EBFBFF",
+            "type": "color",
+            "description": "Cisco Blue 05 — lightest"
+          }
+        },
+        "magenta": {
+          "95": {
+            "value": "#240D19",
+            "type": "color",
+            "description": "Magenta 95 — darkest"
+          },
+          "90": {
+            "value": "#401028",
+            "type": "color",
+            "description": "Magenta 90"
+          },
+          "80": {
+            "value": "#591638",
+            "type": "color",
+            "description": "Magenta 80"
+          },
+          "70": {
+            "value": "#80174B",
+            "type": "color",
+            "description": "Magenta 70"
+          },
+          "60": {
+            "value": "#BD0D5F",
+            "type": "color",
+            "description": "Magenta 60"
+          },
+          "50": {
+            "value": "#FF007F",
+            "type": "color",
+            "description": "Magenta 50 — base/primary shade for this palette"
+          },
+          "40": {
+            "value": "#FF4FA4",
+            "type": "color",
+            "description": "Magenta 40"
+          },
+          "30": {
+            "value": "#FF7DBA",
+            "type": "color",
+            "description": "Magenta 30"
+          },
+          "20": {
+            "value": "#FFB2D6",
+            "type": "color",
+            "description": "Magenta 20"
+          },
+          "10": {
+            "value": "#FFDBEC",
+            "type": "color",
+            "description": "Magenta 10"
+          },
+          "5": {
+            "value": "#FFF2F9",
+            "type": "color",
+            "description": "Magenta 05 — lightest"
+          }
+        },
+        "orange": {
+          "95": {
+            "value": "#291A02",
+            "type": "color",
+            "description": "Orange 95 — darkest (brand; not color.core.orange)"
+          },
+          "90": {
+            "value": "#472C02",
+            "type": "color",
+            "description": "Orange 90 (brand)"
+          },
+          "80": {
+            "value": "#6E4303",
+            "type": "color",
+            "description": "Orange 80 (brand)"
+          },
+          "70": {
+            "value": "#A16205",
+            "type": "color",
+            "description": "Orange 70 (brand)"
+          },
+          "60": {
+            "value": "#D97A00",
+            "type": "color",
+            "description": "Orange 60 (brand)"
+          },
+          "50": {
+            "value": "#FF9000",
+            "type": "color",
+            "description": "Orange 50 — base/primary shade for this palette (brand)"
+          },
+          "40": {
+            "value": "#FFA838",
+            "type": "color",
+            "description": "Orange 40 (brand)"
+          },
+          "30": {
+            "value": "#FFC278",
+            "type": "color",
+            "description": "Orange 30 (brand)"
+          },
+          "20": {
+            "value": "#FFD7A6",
+            "type": "color",
+            "description": "Orange 20 (brand)"
+          },
+          "10": {
+            "value": "#FFEDD6",
+            "type": "color",
+            "description": "Orange 10 (brand)"
+          },
+          "5": {
+            "value": "#FFF8F0",
+            "type": "color",
+            "description": "Orange 05 — lightest (brand)"
+          }
+        },
+        "gradient": {
+          "primary": {
+            "value": {
+              "gradientType": "linear",
+              "rotation": 90,
+              "stops": [
+                {
+                  "position": 0.05,
+                  "color": "#0A60FF"
+                },
+                {
+                  "position": 0.35,
+                  "color": "{color.core.brand.cisco-blue.50}"
+                },
+                {
+                  "position": 0.45,
+                  "color": "{color.core.brand.cisco-blue.50}"
+                },
+                {
+                  "position": 0.75,
+                  "color": "{color.core.brand.magenta.50}"
+                },
+                {
+                  "position": 0.95,
+                  "color": "{color.core.brand.orange.50}"
+                }
+              ]
+            },
+            "type": "gradient",
+            "description": "Cisco brand primary gradient — multi-color secondary palette blend. Source: Webex Uplift 1CDL (4002:52019). #0A60FF is gradient-only (not in solid brand ramps)."
+          },
+          "secondary-blue": {
+            "value": {
+              "gradientType": "linear",
+              "rotation": 90,
+              "stops": [
+                {
+                  "position": 0,
+                  "color": "#0A60FF"
+                },
+                {
+                  "position": 1,
+                  "color": "{color.core.brand.cisco-blue.50}"
+                }
+              ]
+            },
+            "type": "gradient",
+            "description": "Cisco brand secondary blue gradient — derived from primary. Source: Webex Uplift 1CDL (4002:52020). #0A60FF is gradient-only (not in solid brand ramps)."
+          }
+        }
+      }
+    }
+  }
+}
