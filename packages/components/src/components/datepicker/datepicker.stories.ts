@@ -40,6 +40,7 @@ const render = (args: Args) => html`
     locale-spinbutton-description="${ifDefined(args['locale-spinbutton-description'])}"
     locale-prev-month-label="${ifDefined(args['locale-prev-month-label'])}"
     locale-next-month-label="${ifDefined(args['locale-next-month-label'])}"
+    locale-range-start-selected-label="${ifDefined(args['locale-range-start-selected-label'])}"
     append-to="${ifDefined(args['append-to'])}"
     backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
   ></mdc-datepicker>
@@ -108,6 +109,7 @@ const meta: Meta = {
     'locale-spinbutton-description': { control: 'text' },
     'locale-prev-month-label': { control: 'text' },
     'locale-next-month-label': { control: 'text' },
+    'locale-range-start-selected-label': { control: 'text' },
     'append-to': {
       control: 'text',
     },
@@ -178,6 +180,7 @@ export const DefaultVariant: StoryObj = {
     required: true,
     'help-text': 'Select a start and end date',
     'locale-today-label': 'Today',
+    'locale-range-start-selected-label': 'Start date selected. Select an end date.',
   },
 };
 

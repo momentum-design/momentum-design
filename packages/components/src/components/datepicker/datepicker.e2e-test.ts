@@ -17,6 +17,7 @@ interface SetupOptions {
   helpTextType?: string;
   min?: string;
   max?: string;
+  rangeStartSelectedLabel?: string;
 }
 
 const setup = async (args: SetupOptions) => {
@@ -42,6 +43,7 @@ const setup = async (args: SetupOptions) => {
         locale-year-label="Year"
         locale-calendar-label="Open calendar"
         locale-today-label="Today"
+        ${restArgs.rangeStartSelectedLabel ? `locale-range-start-selected-label="${restArgs.rangeStartSelectedLabel}"` : ''}
       ></mdc-datepicker>
     `,
     clearDocument: true,
@@ -327,6 +329,22 @@ test.describe('mdc-datepicker', () => {
         await expect(trigger).toBeVisible();
       });
 
+      test('should forward the range start announcement to the calendar', async ({ componentsPage }) => {
+        const announcement = 'Start date selected. Select an end date.';
+        const datepicker = await setup({
+          componentsPage,
+          label: 'Date range',
+          variant: 'default',
+          selectionMode: 'range',
+          rangeStartSelectedLabel: announcement,
+        });
+
+        await expect(datepicker.locator('mdc-calendar')).toHaveAttribute(
+          'locale-range-start-selected-label',
+          announcement,
+        );
+      });
+
       test('should display selected date range', async ({ componentsPage }) => {
         const datepicker = await setup({
           componentsPage,
@@ -387,6 +405,35 @@ test.describe('mdc-datepicker', () => {
 
         const calendar = datepicker.locator('mdc-calendar');
         await expect(calendar).toBeVisible();
+      });
+
+      test('should cancel an incomplete range when the popover is dismissed', async ({ componentsPage }) => {
+        const datepicker = await setup({
+          componentsPage,
+          label: 'Date range',
+          variant: 'default',
+          selectionMode: 'range',
+          value: '2025-07-10',
+          endValue: '2025-07-20',
+        });
+
+        const trigger = datepicker.locator('[role="combobox"]');
+        const popover = datepicker.locator('mdc-popover');
+        const calendar = datepicker.locator('mdc-calendar');
+
+        await trigger.click();
+        await calendar.locator('[data-date="2025-07-15"]').click();
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(popover).not.toHaveAttribute('visible');
+
+        await trigger.click();
+        await expect(calendar).toHaveAttribute('value', '2025-07-10');
+        await expect(calendar).toHaveAttribute('end-value', '2025-07-20');
+        await calendar.locator('[data-date="2025-07-18"]').click();
+
+        await expect(popover).toHaveAttribute('visible');
+        await expect(datepicker).toHaveAttribute('value', '2025-07-10');
+        await expect(datepicker).toHaveAttribute('end-value', '2025-07-20');
       });
     });
   });

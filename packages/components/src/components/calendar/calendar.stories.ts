@@ -20,6 +20,7 @@ const render = (args: Args) => html`
     locale-today-label="${ifDefined(args['locale-today-label'])}"
     locale-prev-month-label="${ifDefined(args['locale-prev-month-label'])}"
     locale-next-month-label="${ifDefined(args['locale-next-month-label'])}"
+    locale-range-start-selected-label="${ifDefined(args['locale-range-start-selected-label'])}"
   ></mdc-calendar>
 `;
 
@@ -70,6 +71,10 @@ const meta: Meta = {
       control: 'text',
       description: 'Localized aria-label for the next month button',
     },
+    'locale-range-start-selected-label': {
+      control: 'text',
+      description: 'Localized announcement made after the range start date is selected',
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -109,6 +114,7 @@ export const RangeSelection: StoryObj = {
     'end-value': '2025-07-20',
     'selection-mode': SELECTION_MODE.RANGE,
     locale: 'en-US',
+    'locale-range-start-selected-label': 'Start date selected. Select an end date.',
   },
 };
 
