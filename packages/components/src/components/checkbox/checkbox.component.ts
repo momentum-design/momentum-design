@@ -1,5 +1,5 @@
 import { CSSResult, html, nothing, PropertyValueMap, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
@@ -9,6 +9,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { ModifiedEventMixin } from '../../utils/mixins/lifecycle/ModifiedEventMixin';
 
 import styles from './checkbox.styles';
 import type { CheckboxValidationType } from './checkbox.types';
@@ -26,6 +27,8 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
  *
+ * @slot leading-visual - A decorative visual, such as an avatar or icon, displayed between the checkbox and text content.
+ *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
  * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
@@ -42,10 +45,23 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  */
 class Checkbox
   extends KeyDownHandledMixin(
-    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+    KeyToActionMixin(
+      AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ModifiedEventMixin(FormfieldWrapper)))),
+    ),
   )
   implements AssociatedFormControl
 {
+  /**
+   * Controls the tab order of the native checkbox input.
+   * @default 0
+   */
+  @property({
+    converter: {
+      fromAttribute: value => (value === null ? 0 : Number(value)),
+    },
+  })
+  override tabIndex = 0;
+
   /**
    * Determines whether the checkbox is checked (selected) or unchecked.
    * @default false
@@ -60,6 +76,9 @@ class Checkbox
    * @default false
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
+
+  /** @internal */
+  @state() private hasLeadingVisual = false;
 
   /**
    * Determines the visual style of the helper text.
@@ -139,16 +158,22 @@ class Checkbox
    * the checked property is toggled and the indeterminate property is set to false.
    * @internal
    */
-  private toggleState(): void {
+  private toggleState(): boolean {
     if (!this.disabled && !this.softDisabled && !this.readonly) {
       this.checked = !this.checked;
       this.indeterminate = false;
+      return true;
     }
+    return false;
   }
 
   override click() {
     super.click();
-    this.toggleState();
+    const hasBeenToggled = this.toggleState();
+    if (hasBeenToggled) {
+      // Host clicks bypass the native input, so dispatch the equivalent change event.
+      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    }
   }
 
   /**
@@ -172,7 +197,10 @@ class Checkbox
     }
     if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
       if (!(this.readonly || this.softDisabled) && action === ACTIONS.ENTER) {
-        this.toggleState();
+        const hasBeenToggled = this.toggleState();
+        if (hasBeenToggled) {
+          this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+        }
         this.keyDownEventHandled();
       }
     }
@@ -189,6 +217,20 @@ class Checkbox
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
+  /** @internal */
+  private handleLeadingVisualClick(): void {
+    const hasBeenToggled = this.toggleState();
+    if (hasBeenToggled) {
+      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    }
+  }
+
+  /** @internal */
+  private handleLeadingVisualSlotChange(event: Event): void {
+    const slot = event.currentTarget as HTMLSlotElement;
+    this.hasLeadingVisual = slot.assignedElements({ flatten: true }).length > 0;
+  }
+
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
@@ -199,6 +241,16 @@ class Checkbox
       } else {
         this.internals.states.delete('checked');
       }
+    }
+
+    if (
+      changedProperties.has('checked') ||
+      changedProperties.has('disabled') ||
+      changedProperties.has('indeterminate') ||
+      changedProperties.has('readonly') ||
+      changedProperties.has('softDisabled')
+    ) {
+      this.dispatchModifiedEvent('state');
     }
   }
 
@@ -218,6 +270,7 @@ class Checkbox
         ?disabled="${this.disabled}"
         ?readonly="${this.readonly}"
         ?soft-disabled="${this.softDisabled}"
+        ?data-leading-visual="${this.hasLeadingVisual}"
       >
         <input
           id="${this.inputId}"
@@ -232,12 +285,18 @@ class Checkbox
           .disabled="${this.disabled}"
           ?readonly="${this.readonly}"
           aria-label="${this.dataAriaLabel ?? ''}"
-          tabindex="${this.disabled ? -1 : 0}"
+          tabindex="${this.disabled ? -1 : this.tabIndex}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />
       </mdc-staticcheckbox>
+      <slot
+        name="leading-visual"
+        ?hidden="${!this.hasLeadingVisual}"
+        @click=${this.handleLeadingVisualClick}
+        @slotchange=${this.handleLeadingVisualSlotChange}
+      ></slot>
       ${this.renderLabelAndHelperText()}
     `;
   }

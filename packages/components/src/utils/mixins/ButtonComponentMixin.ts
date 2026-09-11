@@ -8,6 +8,7 @@ import {
   DEFAULTS,
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
+  PRIMARY_BUTTON_COLORS,
   TERTIARY_BUTTON_COLORS,
 } from '../../components/button/button.constants';
 import type {
@@ -76,9 +77,11 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(superClas
      * - `negative`: For destructive or error actions
      * - `accent`: For informational actions
      * - `promotional`: For promotional actions
+     * - `overlay`: For secondary buttons placed over images, video, or other non-uniform backgrounds
      * - `default`: For standard actions
      *
      * Note: Tertiary buttons only support default, accent, and negative colors.
+     * Overlay color is only supported for secondary buttons.
      * @default default
      */
     @property({ type: String })
@@ -103,15 +106,18 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(superClas
      * Sets the color attribute for the button.
      * Defaults to DEFAULTS.COLOR if invalid or if the color is not supported for the current variant.
      * Tertiary buttons only support default, accent, and negative colors.
+     * Overlay color is only supported for secondary buttons.
      *
      * @param color - The color to set.
      */
     protected setColor(color: ButtonColor) {
       const isValidColor = Object.values(BUTTON_COLORS).includes(color);
+      const isPrimaryUnsupported =
+        this.variant === BUTTON_VARIANTS.PRIMARY && !Object.values(PRIMARY_BUTTON_COLORS).includes(color as any);
       const isTertiaryUnsupported =
         this.variant === BUTTON_VARIANTS.TERTIARY && !Object.values(TERTIARY_BUTTON_COLORS).includes(color as any);
 
-      if (!isValidColor || isTertiaryUnsupported) {
+      if (!isValidColor || isPrimaryUnsupported || isTertiaryUnsupported) {
         this.setAttribute('color', `${DEFAULTS.COLOR}`);
       } else {
         this.setAttribute('color', color);

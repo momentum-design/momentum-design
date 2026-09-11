@@ -4,9 +4,12 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import '../avatar';
 import '../button';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
+import { PRESENCE_TYPE } from '../presence/presence.constants';
 
 import type Checkbox from './checkbox.component';
 import { CHECKBOX_VALIDATION } from './checkbox.constants';
@@ -147,6 +150,26 @@ export const Indeterminate: StoryObj = {
     indeterminate: true,
     'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
+};
+
+export const LeadingVisual: StoryObj = {
+  render: () => html`
+    <mdc-checkbox
+      checked
+      label="Alex Example"
+      help-text="example.com"
+      toggletip-text="This participant is connected from a video device."
+      info-icon-aria-label="About Alex Example"
+    >
+      <mdc-avatar
+        slot="leading-visual"
+        size="32"
+        src=${imageFixtures.avatar}
+        presence=${PRESENCE_TYPE.ON_DEVICE}
+      ></mdc-avatar>
+    </mdc-checkbox>
+  `,
+  ...hideAllControls(),
 };
 
 export const DisabledVariants: StoryObj = {

@@ -212,6 +212,15 @@
       "component": "checkbox"
     },
     {
+      "id": "tier3/packages/components/src/components/checkboxtree/knowledge-base/checkboxtree.component",
+      "tier": 3,
+      "path": "packages/components/src/components/checkboxtree/knowledge-base/checkboxtree.component.md",
+      "title": "Checkbox Tree",
+      "summary": "Usage, guidelines, and accessibility for the mdc-checkboxtree component — a recursive checkbox group with hierarchical selection and mixed parent states.",
+      "canonical": null,
+      "component": "checkboxtree"
+    },
+    {
       "id": "tier3/packages/components/src/components/chip/knowledge-base/chip.component",
       "tier": 3,
       "path": "packages/components/src/components/chip/knowledge-base/chip.component.md",

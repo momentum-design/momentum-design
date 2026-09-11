@@ -34,11 +34,27 @@ const styles = [
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      align-self: center;
     }
 
     :host::part(label) {
       word-break: break-word;
       white-space: normal;
+    }
+
+    slot[name='leading-visual'] {
+      align-self: center;
+      cursor: pointer;
+      display: flex;
+      margin-inline: 0.25rem;
+    }
+
+    slot[name='leading-visual'][hidden] {
+      display: none;
+    }
+
+    [part='static-checkbox'][data-leading-visual] {
+      align-self: center;
     }
 
     :host::part(label),

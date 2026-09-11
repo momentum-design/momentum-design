@@ -54,6 +54,7 @@ Minimal markup example:
   selection-mode="range"
   value="2026-06-10"
   end-value="2026-06-14"
+  locale-range-start-selected-label="Start date selected. Select an end date."
 ></mdc-calendar>
 ```
 
@@ -73,13 +74,14 @@ Listen for `date-selected` to receive the picked value(s) and `month-changed` to
 | `locale` | BCP 47 string (default `en-US`) driving the week start day, weekday names, month/year heading, and each cell's accessible date. Set it to the UI language. |
 | `min` / `max` | Inclusive ISO bounds; days outside the window are disabled and month navigation is clipped to the same window. |
 | `show-today-button` | Renders a Today button below the grid that jumps focus and selection to the current date. Use it when quickly returning to today is common. |
+| `locale-range-start-selected-label` | Supplies the localized instruction announced after the first date in a range is selected. Use a short sentence that confirms the start date and directs the user to select an end date. |
 
 ### Limitations
 
 - **Single month only** — the grid shows one month at a time; multi-month and year-picker views are not part of this component.
 - **Continuous range only** — individual dates cannot be disabled; only a `min`/`max` window constrains selection.
 - **No clear affordance** — a range commits on the second click with no built-in clear; re-click a day to start a new range.
-- **Locale labels required** — without the `locale-*-label` props the icon-only navigation and Today buttons have empty accessible names.
+- **Locale labels required** — without the applicable `locale-*-label` props, the icon-only navigation and Today buttons have empty accessible names, and range selection has no start-date instruction. Supply every label used by the selected mode.
 
 ## Accessibility
 
@@ -94,6 +96,10 @@ The day cells sit in a `role="grid"` with weekday headers as `role="columnheader
 
 A single roving `tabindex="0"` sits on the focused cell (all others are `-1`), so the grid takes one tab stop. Navigating across a month boundary updates the displayed month and restores focus after the re-render. Disabled cells (outside `min`/`max`) are skipped and cannot be selected.
 
+In `range` mode, the first activation anchors the range. Moving the pointer previews the range through the hovered date, while keyboard navigation previews it through the focused date. The preview works in either direction and clears when the pointer leaves the grid; the second activation commits the normalized start and end dates. Preview dates remain provisional and are not exposed as selected to assistive technology.
+
+When `mdc-calendar` is used inside `mdc-datepicker`, dismissing the popover cancels an incomplete range. Reopening the popover restores the last committed range, or an empty selection when no range has been committed, so the next activation selects a new start date.
+
 #### Internal ARIA managed by the component
 
 | Element | Attribute | Value |
@@ -106,6 +112,7 @@ A single roving `tabindex="0"` sits on the focused cell (all others are `-1`), s
 | Day cell | `aria-disabled` | `true` when outside `min`/`max` |
 | Day cell | `aria-current` | `date` for today |
 | Nav / Today `mdc-button` | `aria-label` | Mirrors the matching `locale-*-label` |
+| `mdc-screenreaderannouncer` | `aria-live` | `polite`; announces `locale-range-start-selected-label` after the first range date is selected |
 
 ### Implementation requirements
 
@@ -117,6 +124,7 @@ A single roving `tabindex="0"` sits on the focused cell (all others are `-1`), s
 #### Labeling
 
 - Provide `locale-today-label`, `locale-prev-month-label`, and `locale-next-month-label` so the icon-only navigation and Today buttons have accessible names.
+- In `range` mode, provide `locale-range-start-selected-label` so screen-reader users hear that the first date is set and an end date is required.
 - When the surrounding UI already conveys the calendar's purpose (e.g. "Departure date"), wrap the calendar in an element with a specific `aria-label` and let the grid's own label supply the month/year context.
 
 ## Related components

@@ -10,6 +10,7 @@ interface SetupOptions {
   locale?: string;
   min?: string;
   max?: string;
+  rangeStartSelectedLabel?: string;
 }
 
 const setup = async (args: SetupOptions) => {
@@ -27,6 +28,7 @@ const setup = async (args: SetupOptions) => {
         locale-today-label="Today"
         locale-prev-month-label="Go to previous month"
         locale-next-month-label="Go to next month"
+        ${restArgs.rangeStartSelectedLabel ? `locale-range-start-selected-label="${restArgs.rangeStartSelectedLabel}"` : ''}
       ></mdc-calendar>
     `,
     clearDocument: true,
@@ -132,6 +134,63 @@ test.describe('mdc-calendar', () => {
       const saturday = calendar.locator('[data-date="2025-07-19"]');
       await expect(saturday).toHaveAttribute('aria-selected', 'true');
     });
+
+    test('should preview a range on pointer hover without committing it', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-15',
+        selectionMode: 'range',
+      });
+
+      const day10 = calendar.locator('[data-date="2025-07-10"]');
+      const day15 = calendar.locator('[data-date="2025-07-15"]');
+      const day20 = calendar.locator('[data-date="2025-07-20"]');
+
+      await day10.click();
+      await day20.hover();
+
+      await expect(calendar).toHaveAttribute('value', '2025-07-10');
+      await expect(calendar).toHaveAttribute('end-value', '');
+      await expect(day10).toHaveAttribute('aria-selected', 'true');
+      await expect(day15).toHaveAttribute('aria-selected', 'false');
+      await expect(day20).toHaveAttribute('aria-selected', 'false');
+    });
+
+    test('should normalize and commit a reverse range on the second click', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-15',
+        selectionMode: 'range',
+      });
+
+      const day10 = calendar.locator('[data-date="2025-07-10"]');
+      const day15 = calendar.locator('[data-date="2025-07-15"]');
+      const day20 = calendar.locator('[data-date="2025-07-20"]');
+
+      await day20.click();
+      await day10.hover();
+      await expect(day15).toHaveAttribute('aria-selected', 'false');
+
+      await day10.click();
+      await expect(calendar).toHaveAttribute('value', '2025-07-10');
+      await expect(calendar).toHaveAttribute('end-value', '2025-07-20');
+      await expect(day15).toHaveAttribute('aria-selected', 'true');
+    });
+
+    test('should announce that an end date is required after selecting a range start', async ({ componentsPage }) => {
+      const announcement = 'Start date selected. Select an end date.';
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-15',
+        selectionMode: 'range',
+        rangeStartSelectedLabel: announcement,
+      });
+
+      await calendar.locator('[data-date="2025-07-10"]').click();
+
+      const liveAnnouncement = componentsPage.page.locator('#mdc-screenreaderannouncer-identity p');
+      await expect(liveAnnouncement).toHaveText(announcement);
+    });
   });
 
   test.describe('keyboard navigation', () => {
@@ -162,6 +221,32 @@ test.describe('mdc-calendar', () => {
       await grid.press('Enter');
 
       const day16 = calendar.locator('[data-date="2025-07-16"]');
+      await expect(day16).toHaveAttribute('aria-selected', 'true');
+    });
+
+    test('should preview and commit a range using keyboard focus', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-15',
+        selectionMode: 'range',
+      });
+
+      const grid = calendar.locator('[role="grid"]');
+      const day15 = calendar.locator('[data-date="2025-07-15"]');
+      const day16 = calendar.locator('[data-date="2025-07-16"]');
+      const day17 = calendar.locator('[data-date="2025-07-17"]');
+      await day15.focus();
+
+      await grid.press('Enter');
+      await grid.press('ArrowRight');
+      await grid.press('ArrowRight');
+
+      await expect(day17).toBeFocused();
+      await expect(day16).toHaveAttribute('aria-selected', 'false');
+      await expect(calendar).toHaveAttribute('end-value', '');
+
+      await grid.press('Enter');
+      await expect(calendar).toHaveAttribute('end-value', '2025-07-17');
       await expect(day16).toHaveAttribute('aria-selected', 'true');
     });
   });
@@ -265,6 +350,26 @@ test.describe('mdc-calendar', () => {
 
       await test.step('range spanning rows', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-calendar-range-multirow', { element: calendar });
+      });
+    });
+
+    test('should match screenshot with a provisional range', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-15',
+        selectionMode: 'range',
+        locale: 'en-US',
+      });
+
+      await calendar.locator('[data-date="2025-07-10"]').click();
+      const grid = calendar.locator('[role="grid"]');
+      await grid.press('ArrowDown');
+      await grid.press('ArrowRight');
+      await grid.press('ArrowRight');
+      await grid.press('ArrowRight');
+
+      await test.step('provisional range', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-calendar-range-preview', { element: calendar });
       });
     });
 

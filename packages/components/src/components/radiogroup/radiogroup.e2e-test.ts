@@ -7,6 +7,7 @@ type SetupOptions = {
   name?: string;
   label?: string;
   'help-text'?: string;
+  'aria-label'?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -18,6 +19,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.name ? `name="${restArgs.name}"` : ''}
           ${restArgs.label ? `label="${restArgs.label}"` : ''}
           ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
+          ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
         >
           <mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
           <mdc-radio label="Premium Plan" value="premium-plan" disabled></mdc-radio>
@@ -79,23 +81,33 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    const radioGroup = await setup({ componentsPage });
+    const radioGroup = await setup({ componentsPage, 'aria-label': 'Plan selection' });
+    const groupHeader = radioGroup.locator('[part="group-header"]');
+
+    await test.step('should not render a group header without a visible label or help text', async () => {
+      await expect(groupHeader).toHaveCount(0);
+    });
+
     // For label
     await test.step('should have label text when the label text attribute is passed', async () => {
       await componentsPage.setAttributes(radioGroup, { label: 'Label Text' });
+      await expect(groupHeader).toHaveCount(1);
       const labelElement = componentsPage.page.locator('mdc-text[id="heading-id"]');
       const groupLabelText = await labelElement.nth(0).textContent();
       expect(groupLabelText?.trim()).toBe('Label Text');
       await componentsPage.removeAttribute(radioGroup, 'label');
+      await expect(groupHeader).toHaveCount(0);
     });
 
     // For help text
     await test.step('should have help text when the help text attribute is passed', async () => {
       await componentsPage.setAttributes(radioGroup, { 'help-text': 'Help Text' });
+      await expect(groupHeader).toHaveCount(1);
       const mdcText = componentsPage.page.locator('mdc-text').getByText('Help Text');
       const textContent = await mdcText.textContent();
       expect(textContent?.trim()).toBe('Help Text');
       await componentsPage.removeAttribute(radioGroup, 'help-text');
+      await expect(groupHeader).toHaveCount(0);
     });
 
     // For radio count

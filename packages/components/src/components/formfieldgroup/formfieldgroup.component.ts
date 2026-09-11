@@ -1,5 +1,5 @@
 import type { CSSResult } from 'lit';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 
 import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -73,7 +73,9 @@ class FormfieldGroup extends FormfieldWrapper {
 
   public override render() {
     return html`
-      <div part="group-header">${this.renderLabel()} ${this.renderHelperText()}</div>
+      ${this.label || this.helpText
+        ? html`<div part="group-header">${this.renderLabel()} ${this.renderHelperText()}</div>`
+        : nothing}
       <slot></slot>
     `;
   }

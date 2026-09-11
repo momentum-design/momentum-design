@@ -21,6 +21,10 @@ repository managed by Yarn Workspaces and is published to npm at
   functionality.
 - Icons are rendered using the `mdc-icon` component (e.g.,
   `<mdc-icon name="icon-name"></mdc-icon>`).
+- When using Figma or other design references, always replace names, email
+  addresses, domains, and other identifying strings with obviously fictional
+  test data in component code, stories, tests, and documentation. Use values
+  such as `Alex Example`, `alex@example.com`, and `example.com`.
 
 ## Build and Dev Commands
 

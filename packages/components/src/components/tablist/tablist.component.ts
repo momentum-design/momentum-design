@@ -104,6 +104,10 @@ class TabList extends ListNavigationMixin(
    */
   @state() private showBackwardArrowButton: boolean = false;
 
+  private readonly boundHandleFocus = (event: FocusEvent): void => {
+    void this.handleFocus(event);
+  };
+
   /**
    * @internal
    */
@@ -210,12 +214,12 @@ class TabList extends ListNavigationMixin(
       this.activeTabId = getFirstTab(this.navItems)?.tabId;
     }
 
-    this.tabsContainer?.addEventListener('focusin', this.handleFocus.bind(this));
+    this.tabsContainer?.addEventListener('focusin', this.boundHandleFocus);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.tabsContainer?.removeEventListener('focusin', this.handleFocus);
+    this.tabsContainer?.removeEventListener('focusin', this.boundHandleFocus);
   }
 
   /**
@@ -246,6 +250,12 @@ class TabList extends ListNavigationMixin(
      * This also covers the case when previous focus was on a tab that belongs to another tablist.
      */
     if (event.relatedTarget instanceof Tab || !(event.target instanceof Tab)) {
+      return;
+    }
+
+    // After scrolling with arrow buttons, focus moves from the button to the clicked tab.
+    // Do not redirect that focus back to the currently active tab.
+    if (event.relatedTarget instanceof Button) {
       return;
     }
 
