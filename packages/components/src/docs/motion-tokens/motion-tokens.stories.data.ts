@@ -99,6 +99,14 @@ function buildBorderColorTransition(entry: AnimationTokenEntry): string | undefi
   return `border-color ${duration} ${easing} ${delay || '0ms'}`;
 }
 
+function buildFadeInDemoTransition(): string {
+  const duration = resolveMotionValue('{motion.duration.normal}');
+  const easing = resolveMotionValue('{motion.easing.entrance}');
+  const delay = resolveMotionValue('{motion.delay.none}');
+
+  return `opacity ${duration} ${easing} ${delay}, display ${duration} ${easing} ${delay}`;
+}
+
 export function buildMotionPrimitiveTokens(): MotionPrimitiveToken[] {
   return MOTION_CATEGORIES.flatMap(category => {
     const entries = motionSource.motion[category] as Record<string, MotionTokenEntry>;
@@ -146,6 +154,87 @@ export const animationTokens = buildAnimationTokens();
 export const objectStateAnimationTokens = OBJECT_STATE_TOKEN_NAMES.map(
   name => animationTokens.find(token => token.name === name)!,
 );
+
+export type LayoutPlaybackMode = 'reverse' | 'sequence';
+
+export type LayoutPreviewVariant =
+  | 'growShrink'
+  | 'fadeInOut'
+  | 'expandCollapse'
+  | 'slideEntranceExit';
+
+export interface LayoutAnimationDemo {
+  id: string;
+  title: string;
+  description: string;
+  previewVariant: LayoutPreviewVariant;
+  playback: LayoutPlaybackMode;
+  metadataToken: AnimationToken;
+  metadataDurationValue?: string;
+  entranceToken: AnimationToken;
+  entranceDemoProperties?: string[];
+  entranceTransition?: string;
+  exitToken?: AnimationToken;
+  exitDemoProperties?: string[];
+}
+
+function getAnimationToken(name: string): AnimationToken {
+  const token = animationTokens.find(entry => entry.name === name);
+
+  if (!token) {
+    throw new Error(`Animation token not found: ${name}`);
+  }
+
+  return token;
+}
+
+export const layoutAnimationDemos: LayoutAnimationDemo[] = [
+  {
+    id: 'growShrink',
+    title: 'growShrink',
+    description: getAnimationToken('growShrink').description,
+    previewVariant: 'growShrink',
+    playback: 'reverse',
+    metadataToken: getAnimationToken('growShrink'),
+    entranceToken: getAnimationToken('growShrink'),
+  },
+  {
+    id: 'fadeInOut',
+    title: 'fadeIn/Out',
+    description: getAnimationToken('fadeIn').description,
+    previewVariant: 'fadeInOut',
+    playback: 'sequence',
+    metadataToken: getAnimationToken('fadeIn'),
+    metadataDurationValue: resolveMotionValue('{motion.duration.normal}'),
+    entranceToken: getAnimationToken('fadeIn'),
+    entranceDemoProperties: ['opacity'],
+    entranceTransition: buildFadeInDemoTransition(),
+    exitToken: getAnimationToken('fadeOut'),
+    exitDemoProperties: ['opacity'],
+  },
+  {
+    id: 'expandCollapse',
+    title: 'expand/collapse',
+    description: getAnimationToken('expand').description,
+    previewVariant: 'expandCollapse',
+    playback: 'sequence',
+    metadataToken: getAnimationToken('expand'),
+    entranceToken: getAnimationToken('expand'),
+    exitToken: getAnimationToken('collapse'),
+  },
+  {
+    id: 'slideEntranceExit',
+    title: 'slideEntrance/Exit',
+    description: getAnimationToken('slideEntrance').description,
+    previewVariant: 'slideEntranceExit',
+    playback: 'sequence',
+    metadataToken: getAnimationToken('slideEntrance'),
+    entranceToken: getAnimationToken('slideEntrance'),
+    entranceDemoProperties: ['transform'],
+    exitToken: getAnimationToken('slideExit'),
+    exitDemoProperties: ['transform'],
+  },
+];
 
 export const motionPrimitivesByCategory = Object.fromEntries(
   MOTION_CATEGORIES.map(category => [

@@ -4,14 +4,15 @@ import { html, type TemplateResult } from 'lit';
 import { hideAllControls } from '../../../config/storybook/utils';
 
 import '../../components/button';
-import '../../components/chip';
 import '../../components/icon';
 import '../../components/motionprovider';
 
 import {
+  layoutAnimationDemos,
   motionPrimitivesByCategory,
   objectStateAnimationTokens,
   type AnimationToken,
+  type LayoutAnimationDemo,
   type MotionPrimitiveToken,
 } from './motion-tokens.stories.data';
 import './motion-tokens.styles.css';
@@ -22,7 +23,9 @@ import {
   FADING_IN_CLASS,
   FADING_OUT_CLASS,
   handleAnimationTokenTransitionEnd,
+  handleLayoutAnimationTransitionEnd,
   playAnimationToken,
+  playLayoutAnimation,
   replayEnter,
   replayExit,
 } from './motion-tokens.stories.utils';
@@ -372,10 +375,6 @@ const renderAnimationTokenCard = (token: AnimationToken): TemplateResult => html
     <div class="motionTokensAnimationPreview">
       ${renderAnimationPreview(token)}
     </div>
-    <div class="motionTokensAnimationChips">
-      <mdc-chip color="cobalt" label="Duration: ${token.durationValue}"></mdc-chip>
-      <mdc-chip color="lime" label="Easing: ${token.easingLabel}"></mdc-chip>
-    </div>
     <p class="motionTokensCardDescription">${token.description}</p>
   </article>
 `;
@@ -384,6 +383,95 @@ const renderAnimationSection = (title: string, tokens: AnimationToken[]): Templa
   <section>
     <h3>${title}</h3>
     <div class="motionTokensGrid">${tokens.map(renderAnimationTokenCard)}</div>
+  </section>
+`;
+
+const renderLayoutPlayButton = (demo: LayoutAnimationDemo): TemplateResult => html`
+  <mdc-button
+    class="motionTokensAnimationPlayButton"
+    size="32"
+    variant="secondary"
+    prefix-icon="play-bold"
+    aria-label="Play ${demo.title} animation"
+    @click=${(event: Event) =>
+      playLayoutAnimation(
+        event,
+        demo.playback,
+        demo.entranceDemoProperties ?? demo.entranceToken.demoProperties,
+        demo.exitDemoProperties ?? demo.exitToken?.demoProperties,
+      )}
+  ></mdc-button>
+`;
+
+const renderLayoutPreview = (demo: LayoutAnimationDemo): TemplateResult => {
+  const transitionEndHandler = (event: TransitionEvent) =>
+    handleLayoutAnimationTransitionEnd(
+      event,
+      demo.playback,
+      demo.entranceDemoProperties ?? demo.entranceToken.demoProperties,
+      demo.exitDemoProperties ?? demo.exitToken?.demoProperties,
+    );
+
+  const previewClass =
+    demo.previewVariant === 'slideEntranceExit'
+      ? 'motionTokensAnimationPreview motionTokensAnimationPreview--slide'
+      : 'motionTokensAnimationPreview';
+
+  const objectModifiers: Record<LayoutAnimationDemo['previewVariant'], string> = {
+    growShrink: 'motionTokensAnimationObject',
+    fadeInOut: 'motionTokensAnimationObject motionTokensAnimationObject--fade',
+    expandCollapse: 'motionTokensAnimationExpandCollapse',
+    slideEntranceExit: 'motionTokensAnimationObject motionTokensAnimationObject--slide',
+  };
+
+  if (demo.previewVariant === 'expandCollapse') {
+    return html`
+      <div class=${previewClass}>
+        <div
+          class=${objectModifiers[demo.previewVariant]}
+          data-animation-target
+          @transitionend=${transitionEndHandler}
+        >
+          <div class="motionTokensAnimationExpandCollapseInner">
+            <div class="motionTokensAnimationExpandCollapseSurface"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  return html`
+    <div class=${previewClass}>
+      <div
+        class=${objectModifiers[demo.previewVariant]}
+        data-animation-target
+        @transitionend=${transitionEndHandler}
+      >
+        <mdc-icon class="motionTokensAnimationIcon" name="launch-regular"></mdc-icon>
+      </div>
+    </div>
+  `;
+};
+
+const renderLayoutAnimationCard = (demo: LayoutAnimationDemo): TemplateResult => html`
+  <article
+    class="motionTokensAnimationCard motionTokensAnimationCard--${demo.previewVariant}"
+    data-animation-card
+    style=${demo.entranceTransition ? `--demo-fade-in-transition: ${demo.entranceTransition}` : ''}
+  >
+    <header class="motionTokensAnimationCardHeader">
+      <h4 class="title">${demo.title}</h4>
+      ${renderLayoutPlayButton(demo)}
+    </header>
+    ${renderLayoutPreview(demo)}
+    <p class="motionTokensCardDescription">${demo.description}</p>
+  </article>
+`;
+
+const renderLayoutSection = (title: string, demos: LayoutAnimationDemo[]): TemplateResult => html`
+  <section>
+    <h3>${title}</h3>
+    <div class="motionTokensGrid">${demos.map(renderLayoutAnimationCard)}</div>
   </section>
 `;
 
@@ -463,6 +551,7 @@ export const Example: StoryObj = {
             Animation tokens combine the core motion tokens to transition specific properties. These are combined to animate our components as well as as parts of the user’s interface. .
           </p>
           ${renderAnimationSection('Object state', objectStateAnimationTokens)}
+          ${renderLayoutSection('Layout', layoutAnimationDemos)}
         </section>
       </div>
     </mdc-motionprovider>

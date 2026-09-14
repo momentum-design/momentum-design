@@ -75,12 +75,16 @@ export const ANIMATION_HOLD_MS = 2000;
 export const ANIMATION_CYCLING_CLASS = 'is-cycling';
 export const ANIMATION_ACTIVE_CLASS = 'is-active';
 
-type AnimationPhase = 'forward' | 'hold' | 'reverse';
+export type LayoutPlaybackMode = 'reverse' | 'sequence';
+
+type AnimationPhase = 'forward' | 'hold' | 'reverse' | 'exit';
 
 interface AnimationCycleState {
+  mode: LayoutPlaybackMode;
   phase: AnimationPhase;
   completedProperties: Set<string>;
-  properties: string[];
+  activeProperties: string[];
+  exitProperties?: string[];
   holdTimeoutId?: ReturnType<typeof setTimeout>;
 }
 
@@ -157,7 +161,7 @@ function getMaxTransitionDurationMs(target: HTMLElement): number {
     .reduce((max, value) => Math.max(max, Number.isNaN(value) ? 0 : value), 0);
 }
 
-function runInstantAnimationCycle(card: HTMLElement): void {
+function beginAnimationHold(card: HTMLElement, onHoldComplete: () => void): void {
   const state = animationCycleStates.get(card);
 
   if (!state) {
@@ -166,12 +170,113 @@ function runInstantAnimationCycle(card: HTMLElement): void {
 
   state.phase = 'hold';
   card.setAttribute('data-animation-phase', 'hold');
-  state.holdTimeoutId = setTimeout(() => {
-    state.phase = 'reverse';
-    card.setAttribute('data-animation-phase', 'reverse');
-    card.classList.remove(ANIMATION_ACTIVE_CLASS);
+  state.holdTimeoutId = setTimeout(onHoldComplete, ANIMATION_HOLD_MS);
+}
+
+function runInstantForwardHold(card: HTMLElement, onHoldComplete: () => void): void {
+  beginAnimationHold(card, onHoldComplete);
+}
+
+function startAnimationCycle(
+  card: HTMLElement,
+  mode: LayoutPlaybackMode,
+  forwardProperties: string[],
+): void {
+  clearAnimationCycle(card);
+  card.classList.add(ANIMATION_CYCLING_CLASS);
+  card.setAttribute('data-animation-phase', 'forward');
+  animationCycleStates.set(card, {
+    mode,
+    phase: 'forward',
+    completedProperties: new Set(),
+    activeProperties: forwardProperties,
+  });
+  setPlayButtonDisabled(card, true);
+  card.classList.add(ANIMATION_ACTIVE_CLASS);
+}
+
+function beginExitPhase(card: HTMLElement, exitProperties: string[]): void {
+  const state = animationCycleStates.get(card);
+
+  if (!state) {
+    return;
+  }
+
+  const target = getAnimationTarget(card);
+
+  state.phase = 'exit';
+  state.completedProperties.clear();
+  state.activeProperties = exitProperties;
+
+  requestAnimationFrame(() => {
+    card.setAttribute('data-animation-phase', 'exit');
+    target?.getBoundingClientRect();
+
+    requestAnimationFrame(() => {
+      card.classList.remove(ANIMATION_ACTIVE_CLASS);
+      target?.getBoundingClientRect();
+    });
+  });
+}
+
+function handlePhaseTransitionComplete(card: HTMLElement): void {
+  const state = animationCycleStates.get(card);
+
+  if (!state || state.phase === 'hold') {
+    return;
+  }
+
+  if (state.phase === 'forward') {
+    if (state.mode === 'reverse') {
+      beginAnimationHold(card, () => {
+        state.phase = 'reverse';
+        card.setAttribute('data-animation-phase', 'reverse');
+        card.classList.remove(ANIMATION_ACTIVE_CLASS);
+      });
+      return;
+    }
+
+    beginAnimationHold(card, () => {
+      if (!state.exitProperties) {
+        completeAnimationCycle(card);
+        return;
+      }
+
+      beginExitPhase(card, state.exitProperties);
+    });
+    return;
+  }
+
+  if (state.phase === 'reverse' || state.phase === 'exit') {
     completeAnimationCycle(card);
-  }, ANIMATION_HOLD_MS);
+  }
+}
+
+function trackTransitionEnd(
+  card: HTMLElement,
+  event: TransitionEvent,
+  properties: string[],
+): void {
+  const normalizedProperty = normalizeTransitionProperty(event.propertyName, properties);
+
+  if (!normalizedProperty) {
+    return;
+  }
+
+  const state = animationCycleStates.get(card);
+
+  if (!state || state.phase === 'hold') {
+    return;
+  }
+
+  state.completedProperties.add(normalizedProperty);
+
+  if (!properties.every(property => state.completedProperties.has(property))) {
+    return;
+  }
+
+  state.completedProperties.clear();
+  handlePhaseTransitionComplete(card);
 }
 
 export function playAnimationToken(event: Event, properties: string[]): void {
@@ -188,20 +293,72 @@ export function playAnimationToken(event: Event, properties: string[]): void {
     return;
   }
 
-  clearAnimationCycle(card);
-  card.classList.add(ANIMATION_CYCLING_CLASS);
-  card.setAttribute('data-animation-phase', 'forward');
-  animationCycleStates.set(card, {
-    phase: 'forward',
-    completedProperties: new Set(),
-    properties,
-  });
-  setPlayButtonDisabled(card, true);
-  card.classList.add(ANIMATION_ACTIVE_CLASS);
+  startAnimationCycle(card, 'reverse', properties);
 
   requestAnimationFrame(() => {
     if (getMaxTransitionDurationMs(target) === 0) {
-      runInstantAnimationCycle(card);
+      runInstantForwardHold(card, () => {
+        const state = animationCycleStates.get(card);
+
+        if (!state) {
+          return;
+        }
+
+        state.phase = 'reverse';
+        card.setAttribute('data-animation-phase', 'reverse');
+        card.classList.remove(ANIMATION_ACTIVE_CLASS);
+      });
+    }
+  });
+}
+
+export function playLayoutAnimation(
+  event: Event,
+  playback: LayoutPlaybackMode,
+  entranceProperties: string[],
+  exitProperties?: string[],
+): void {
+  if (playback === 'reverse') {
+    playAnimationToken(event, entranceProperties);
+    return;
+  }
+
+  const button = event.currentTarget as HTMLElement;
+  const card = button.closest('[data-animation-card]');
+
+  if (!(card instanceof HTMLElement) || card.classList.contains(ANIMATION_CYCLING_CLASS)) {
+    return;
+  }
+
+  const target = getAnimationTarget(card);
+
+  if (!target || !exitProperties) {
+    return;
+  }
+
+  startAnimationCycle(card, 'sequence', entranceProperties);
+  const state = animationCycleStates.get(card);
+
+  if (state) {
+    state.exitProperties = exitProperties;
+  }
+
+  requestAnimationFrame(() => {
+    if (getMaxTransitionDurationMs(target) === 0) {
+      runInstantForwardHold(card, () => {
+        if (!exitProperties) {
+          completeAnimationCycle(card);
+          return;
+        }
+
+        beginExitPhase(card, exitProperties);
+
+        requestAnimationFrame(() => {
+          if (getMaxTransitionDurationMs(target) === 0) {
+            completeAnimationCycle(card);
+          }
+        });
+      });
     }
   });
 }
@@ -218,41 +375,37 @@ export function handleAnimationTokenTransitionEnd(event: TransitionEvent, proper
     return;
   }
 
-  const normalizedProperty = normalizeTransitionProperty(event.propertyName, properties);
+  trackTransitionEnd(card, event, properties);
+}
 
-  if (!normalizedProperty) {
+export function handleLayoutAnimationTransitionEnd(
+  event: TransitionEvent,
+  _playback: LayoutPlaybackMode,
+  entranceProperties: string[],
+  exitProperties?: string[],
+): void {
+  if (event.target !== event.currentTarget) {
+    return;
+  }
+
+  const target = event.currentTarget as HTMLElement;
+  const card = target.closest('[data-animation-card]');
+
+  if (!(card instanceof HTMLElement)) {
     return;
   }
 
   const state = animationCycleStates.get(card);
 
-  if (!state || state.phase === 'hold') {
+  if (!state) {
+    handleAnimationTokenTransitionEnd(event, entranceProperties);
     return;
   }
 
-  state.completedProperties.add(normalizedProperty);
+  const properties =
+    state.phase === 'exit' && exitProperties ? exitProperties : state.activeProperties;
 
-  if (!state.properties.every(property => state.completedProperties.has(property))) {
-    return;
-  }
-
-  state.completedProperties.clear();
-
-  if (state.phase === 'forward') {
-    state.phase = 'hold';
-    card.setAttribute('data-animation-phase', 'hold');
-    state.holdTimeoutId = setTimeout(() => {
-      state.phase = 'reverse';
-      card.setAttribute('data-animation-phase', 'reverse');
-      card.classList.remove(ANIMATION_ACTIVE_CLASS);
-    }, ANIMATION_HOLD_MS);
-
-    return;
-  }
-
-  if (state.phase === 'reverse') {
-    completeAnimationCycle(card);
-  }
+  trackTransitionEnd(card, event, properties);
 }
 
 export function replayEnter(element: HTMLElement, className = 'is-active'): void {
