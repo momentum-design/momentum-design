@@ -4,37 +4,37 @@
       "instant": {
         "value": "100ms",
         "type": "duration",
-        "description": "Direct user feedback — press scale, toggle, focus ring"
+        "description": "Direct user feedback: press, toggle, focus, color shift. So fast it feels simultaneous with the action."
       },
       "fast": {
         "value": "200ms",
         "type": "duration",
-        "description": "Immediate response — dropdown open, hover, button background"
+        "description": "Immediate response: dropdown open, hover lift. Fast enough to not feel like waiting, slow enough to register direction."
       },
       "normal": {
         "value": "300ms",
         "type": "duration",
-        "description": "System choreography — accordion expand, stagger, carousel"
+        "description": "State changes: accordion expand, tab indicator slide, entrance sweep, checkmark draw. Motion becomes visible here — the eye tracks it."
       },
       "relaxed": {
         "value": "450ms",
         "type": "duration",
-        "description": "Dramatic entrances — dialog pop, sheet reveal, page transitions"
+        "description": "System events: dialog entrance, notifications. The motion takes its time because the change is significant and the user needs to orient."
       },
       "slow": {
         "value": "600ms",
         "type": "duration",
-        "description": "Deliberate slow reveals — onboarding sequences, hero sections"
+        "description": "Major layout restructuring: app frame collapse/expand, full-view transitions. Long enough to follow the whole environment reorganizing without losing track."
       },
       "sustained": {
         "value": "1200ms",
         "type": "duration",
-        "description": "Long, environmental change rather than a UI event"
+        "description": "Ambient presence: the assistant glow rising or setting, background atmosphere shifts. Long enough to feel like an environmental change rather than a UI event."
       },
       "extended": {
         "value": "2400ms",
         "type": "duration",
-        "description": "Twice the duration of sustained motion because the distance is roughly twice as far"
+        "description": "Ambient travel: the glow repositioning across the viewport. Twice the duration of sustained motion because the distance is roughly twice as far."
       }
     },
     "easing": {
