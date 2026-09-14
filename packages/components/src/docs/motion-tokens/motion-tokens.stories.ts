@@ -119,19 +119,33 @@ const renderPlayButton = (isExit = false): TemplateResult => html`
   ></mdc-button>
 `;
 
+const EASING_DEMO_COLORS: Record<string, string> = {
+  entrance: 'var(--mds-color-theme-text-success-normal)',
+  exit: 'var(--mds-color-theme-text-warning-normal)',
+  linear: 'var(--mds-color-theme-text-error-normal)',
+};
+
+const getEasingDemoColor = (tokenName: string): string =>
+  EASING_DEMO_COLORS[tokenName] ?? 'var(--mds-color-theme-text-accent-normal)';
+
 interface TokenCardOptions {
   isExit?: boolean;
   initialActive?: boolean;
   aboveHeader?: TemplateResult;
+  cardStyle?: string;
 }
 
 const renderTokenCard = (
   token: MotionPrimitiveToken | AnimationToken,
   meta: string,
   stage: TemplateResult,
-  { isExit = false, initialActive = false, aboveHeader }: TokenCardOptions = {},
+  { isExit = false, initialActive = false, aboveHeader, cardStyle }: TokenCardOptions = {},
 ): TemplateResult => html`
-  <article class="motionTokensCard ${initialActive ? 'is-active' : ''}" data-motion-card>
+  <article
+    class="motionTokensCard ${initialActive ? 'is-active' : ''}"
+    data-motion-card
+    style=${cardStyle ?? ''}
+  >
     ${aboveHeader}
     <div class="motionTokensCardHeader">
       <h4 class="title">${token.name}</h4>
@@ -243,7 +257,10 @@ const renderEasingCard = (token: MotionPrimitiveToken): TemplateResult =>
         ></div>
       </div>
     `,
-    { aboveHeader: renderEasingGraph(token) },
+    {
+      aboveHeader: renderEasingGraph(token),
+      cardStyle: `--motion-tokens-demo-color: ${getEasingDemoColor(token.name)}`,
+    },
   );
 
 const renderDelayCard = (token: MotionPrimitiveToken): TemplateResult =>
