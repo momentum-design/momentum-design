@@ -147,3 +147,4 @@ plan.md
 
 # Context Documents
 .docs/*
+.cursorindexingignore/*

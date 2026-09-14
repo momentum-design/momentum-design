@@ -6,7 +6,7 @@
       "properties": [
         "background-color"
       ],
-      "duration": "{motion.duration.normal}",
+      "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
@@ -17,70 +17,19 @@
         "border-color",
         "box-shadow"
       ],
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
-    },
-    "buttonIcon": {
-      "description": "Button icon color and transform transition",
-      "type": "transition",
-      "properties": [
-        "color",
-        "transform"
-      ],
       "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
-    "buttonFocusRing": {
-      "description": "Button focus ring appearance",
+    "objectColor": {
+      "description": "Object color transition on state change",
       "type": "transition",
       "properties": [
-        "box-shadow",
-        "outline"
+        "color"
       ],
-      "duration": "{motion.duration.instant}",
+      "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
-    },
-    "buttonLoadingSpin": {
-      "description": "Button loading spinner - continuous rotation for button loading states",
-      "type": "keyframe",
-      "keyframes": [
-        {
-          "propertyName": "transform",
-          "from": "rotate(0deg)",
-          "to": "rotate(360deg)"
-        }
-      ],
-      "duration": "{motion.duration.slow}",
-      "easing": "{motion.easing.linear}",
-      "delay": "{motion.delay.none}",
-      "iterationCount": "infinite"
-    },
-    "buttonLoadingPulse": {
-      "description": "Button loading pulse - opacity animation for button skeleton/loading state",
-      "type": "keyframe",
-      "keyframes": [
-        {
-          "propertyName": "opacity",
-          "from": "1",
-          "to": "0.4"
-        }
-      ],
-      "duration": "{motion.duration.slow}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}",
-      "iterationCount": "infinite"
-    },
-    "buttonLoadingSpinPulse": {
-      "description": "Button loading state combining spin and pulse keyframe animations",
-      "type": "keyframeCompound",
-      "animations": [
-        "buttonLoadingSpin",
-        "buttonLoadingPulse"
-      ],
-      "composition": "parallel"
     },
     "growShrink": {
       "description": "Scale along the inline axis — transform transition for grow-in effects",

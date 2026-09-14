@@ -133,13 +133,13 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
   });
 
   describe('pattern', () => {
-    it('should match motion/animation.json paths', () => {
-      expect(parser.pattern.test('src/motion/animation.json')).toBe(true);
-      expect(parser.pattern.test('/abs/path/motion/animation.json')).toBe(true);
+    it('should match animation/animation.json paths', () => {
+      expect(parser.pattern.test('src/animation/animation.json')).toBe(true);
+      expect(parser.pattern.test('/abs/path/animation/animation.json')).toBe(true);
     });
 
     it('should not match unrelated paths', () => {
-      expect(parser.pattern.test('src/motion/complete.json')).toBe(false);
+      expect(parser.pattern.test('src/animation/complete.json')).toBe(false);
       expect(parser.pattern.test('src/core/color.json')).toBe(false);
     });
   });
@@ -148,7 +148,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     let result: any;
 
     beforeEach(() => {
-      result = parser.parser({ contents: PARSER_INPUT.transition, filePath: 'motion/animation.json' });
+      result = parser.parser({ contents: PARSER_INPUT.transition, filePath: 'animation/animation.json' });
     });
 
     it('should inject a value string composed from properties, duration, easing and delay', () => {
@@ -169,7 +169,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     let result: any;
 
     beforeEach(() => {
-      result = parser.parser({ contents: PARSER_INPUT.keyframe, filePath: 'motion/animation.json' });
+      result = parser.parser({ contents: PARSER_INPUT.keyframe, filePath: 'animation/animation.json' });
     });
 
     it('should inject a value string including duration, easing, delay, iterationCount and keyframe name', () => {
@@ -188,7 +188,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
   describe('parser — transitionCompound token', () => {
     it('should expand compound by concatenating the parts of each referenced primitive', () => {
       const result = parser.parser(
-        { contents: PARSER_INPUT.transitionCompound, filePath: 'motion/animation.json' },
+        { contents: PARSER_INPUT.transitionCompound, filePath: 'animation/animation.json' },
       ) as any;
       expect(result.animation.surfaceHover.value).toBe(
         'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
@@ -202,7 +202,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     let result: any;
 
     beforeEach(() => {
-      result = parser.parser({ contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' });
+      result = parser.parser({ contents: PARSER_INPUT.keyframeCompound, filePath: 'animation/animation.json' });
     });
 
     it('should expand compound to a comma-separated animation shorthand list', () => {
@@ -232,7 +232,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
           },
         },
       });
-      expect(() => parser.parser({ contents: badInput, filePath: 'motion/animation.json' })).toThrow(
+      expect(() => parser.parser({ contents: badInput, filePath: 'animation/animation.json' })).toThrow(
         'AnimationParser: compound token "bad" references unknown animation "doesNotExist".',
       );
     });
