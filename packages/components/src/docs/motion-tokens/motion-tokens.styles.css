@@ -201,15 +201,6 @@ p.motionTokensCardDescription {
   border-radius: 12px;
 }
 
-.motionTokensEasingGraphBackground {
-  fill: var(--mds-color-theme-background-solid-secondary-normal);
-}
-
-.motionTokensEasingGraphGridDot {
-  fill: var(--mds-color-theme-outline-secondary-normal);
-  opacity: 0.45;
-}
-
 .motionTokensEasingGraphHandle {
   stroke: var(--mds-color-theme-outline-primary-normal);
   stroke-width: 1;
@@ -287,17 +278,60 @@ p.motionTokensCardDescription {
   opacity: 1;
 }
 
-.motionTokensDelayBox {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.375rem;
-  background: var(--mds-color-theme-text-accent-normal);
-  opacity: 0;
-  transition:
-    opacity var(--mds-motion-duration-normal) var(--mds-motion-easing-standard) var(--demo-delay);
+.motionTokensDelayTrack {
+  position: relative;
+  flex: 1;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--mds-color-theme-outline-secondary-normal);
 }
 
-.motionTokensCard.is-active .motionTokensDelayBox {
+.motionTokensDelaySquare,
+.motionTokensDelayCircle {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.motionTokensDelaySquare {
+  z-index: 1;
+  border-radius: 0.375rem;
+  border: 3px solid var(--mds-color-theme-outline-secondary-normal);
+  background: transparent;
+  transition: left 1s linear;
+}
+
+.motionTokensDelayCircle {
+  z-index: 0;
+  border-radius: 50%;
+  background: var(--motion-tokens-demo-color);
+  transition: left 1s linear var(--demo-delay);
+}
+
+.motionTokensCard.is-active .motionTokensDelaySquare,
+.motionTokensCard.is-active .motionTokensDelayCircle {
+  left: 100%;
+}
+
+.motionTokensCard.is-fading-out .motionTokensDelaySquare,
+.motionTokensCard.is-fading-out .motionTokensDelayCircle {
+  opacity: 0;
+  transition: opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-exit);
+}
+
+.motionTokensCard.is-fading-in .motionTokensDelaySquare,
+.motionTokensCard.is-fading-in .motionTokensDelayCircle {
+  left: 0;
+  opacity: 0;
+  transition: opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-entrance);
+}
+
+.motionTokensCard.is-fading-in.is-fading-in-visible .motionTokensDelaySquare,
+.motionTokensCard.is-fading-in.is-fading-in-visible .motionTokensDelayCircle {
   opacity: 1;
 }
 
@@ -325,79 +359,111 @@ p.motionTokensCardDescription {
   transform: translateY(0);
 }
 
-.motionTokensTransitionStage {
+.motionTokensAnimationCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.motionTokensAnimationCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.motionTokensAnimationCardHeader .title {
   flex: 1;
-  min-width: 0;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
 }
 
-.motionTokensTransitionBox {
-  min-height: 3rem;
-  padding: 0.75rem;
-  border-radius: 0.375rem;
-  border: 0.0625rem solid var(--mds-color-theme-outline-secondary-normal);
-  background: var(--mds-color-theme-background-solid-tertiary-normal);
-  color: var(--mds-color-theme-text-secondary-normal);
-  font-size: 0.8125rem;
+.motionTokensAnimationPlayButton {
+  flex-shrink: 0;
 }
 
-.motionTokensCard.is-active .motionTokensTransitionBox--background {
-  background: var(--mds-color-theme-text-accent-normal);
+.motionTokensAnimationPreview,
+.motionTokensEasingGraph {
+  background-color: var(--mds-color-theme-background-solid-secondary-normal);
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--mds-color-theme-outline-secondary-normal) 45%, transparent) 1px,
+    transparent 0.75px
+  );
+  background-size: 16px 16px;
+}
+
+.motionTokensAnimationPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 17.1875rem;
+  padding: 2.75rem 1.25rem;
+  border: 1px solid var(--mds-color-theme-outline-secondary-normal);
+  border-radius: 0.75rem;
+}
+
+.motionTokensAnimationObject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  border: 1px solid var(--mds-color-theme-outline-primary-normal);
+  border-radius: 0.75rem;
+  background: var(--mds-color-theme-background-solid-secondary-normal);
+}
+
+.motionTokensAnimationIcon {
+  --mdc-icon-size: 2.5rem;
   color: var(--mds-color-theme-text-primary-normal);
 }
 
-.motionTokensCard.is-active .motionTokensTransitionBox--border {
-  border-color: var(--mds-color-theme-outline-theme-normal);
-  box-shadow: var(--mds-elevation-2);
+.motionTokensAnimationText {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  color: var(--mds-color-theme-text-primary-normal);
 }
 
-.motionTokensCard.is-active .motionTokensTransitionBox--color {
+.motionTokensAnimationChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.motionTokensAnimationCard--backgroundColor .motionTokensAnimationObject {
+  transition: var(--mds-transition-background-color);
+}
+
+.motionTokensAnimationCard--backgroundColor.is-active .motionTokensAnimationObject {
+  background: var(--mds-color-theme-text-accent-normal);
+}
+
+.motionTokensAnimationCard--borderColor .motionTokensAnimationObject {
+  transition: var(--demo-border-transition);
+}
+
+.motionTokensAnimationCard--borderColor.is-active .motionTokensAnimationObject {
+  border-color: var(--mds-color-theme-outline-theme-normal);
+}
+
+.motionTokensAnimationCard--objectColor .motionTokensAnimationIcon {
+  transition: var(--mds-transition-object-color);
+}
+
+.motionTokensAnimationCard--objectColor.is-active .motionTokensAnimationIcon {
   color: var(--mds-color-theme-text-accent-normal);
 }
 
-.motionTokensTransitionBox--scale {
-  transform: scaleX(0.6);
-  transform-origin: left center;
+.motionTokensAnimationCard--textChange .motionTokensAnimationText {
+  transition: var(--mds-transition-text-change);
 }
 
-.motionTokensCard.is-active .motionTokensTransitionBox--scale {
-  transform: scaleX(1);
-}
-
-.motionTokensTransitionBox--text {
-  font-weight: 400;
-}
-
-.motionTokensCard.is-active .motionTokensTransitionBox--text {
-  color: var(--mds-color-theme-text-primary-normal);
+.motionTokensAnimationCard--textChange.is-active .motionTokensAnimationText {
   font-weight: 600;
-}
-
-.motionTokensTransitionBox--fade {
-  opacity: 0;
-}
-
-.motionTokensCard.is-active .motionTokensTransitionBox--fade {
-  opacity: 1;
-}
-
-.motionTokensExpandPanel {
-  display: grid;
-  grid-template-rows: 0fr;
-  overflow: hidden;
-}
-
-.motionTokensExpandPanel>.motionTokensExpandPanelInner {
-  overflow: hidden;
-}
-
-.motionTokensCard.is-active .motionTokensExpandPanel {
-  grid-template-rows: 1fr;
-}
-
-.motionTokensSlideBox {
-  transform: translateY(100%);
-}
-
-.motionTokensCard.is-active .motionTokensSlideBox {
-  transform: translateY(0);
+  color: var(--mds-color-theme-text-accent-normal);
 }

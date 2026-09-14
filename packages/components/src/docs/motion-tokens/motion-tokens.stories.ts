@@ -4,11 +4,13 @@ import { html, type TemplateResult } from 'lit';
 import { hideAllControls } from '../../../config/storybook/utils';
 
 import '../../components/button';
+import '../../components/chip';
+import '../../components/icon';
 import '../../components/motionprovider';
 
 import {
-  animationTokens,
   motionPrimitivesByCategory,
+  objectStateAnimationTokens,
   type AnimationToken,
   type MotionPrimitiveToken,
 } from './motion-tokens.stories.data';
@@ -19,6 +21,8 @@ import {
   completeDurationFadeIn,
   FADING_IN_CLASS,
   FADING_OUT_CLASS,
+  handleAnimationTokenTransitionEnd,
+  playAnimationToken,
   replayEnter,
   replayExit,
 } from './motion-tokens.stories.utils';
@@ -108,6 +112,40 @@ const handleEasingShapeTransitionEnd = (event: TransitionEvent): void => {
   }
 };
 
+const handleDelayShapeTransitionEnd = (event: TransitionEvent): void => {
+  if (event.target !== event.currentTarget) {
+    return;
+  }
+
+  const shape = event.currentTarget as HTMLElement;
+  const card = shape.closest('[data-motion-card]');
+
+  if (!(card instanceof HTMLElement)) {
+    return;
+  }
+
+  const isCircle = shape.classList.contains('motionTokensDelayCircle');
+
+  if (
+    event.propertyName === 'left' &&
+    isCircle &&
+    card.classList.contains('is-active') &&
+    !card.classList.contains(FADING_OUT_CLASS)
+  ) {
+    card.classList.add(FADING_OUT_CLASS);
+    return;
+  }
+
+  if (event.propertyName === 'opacity' && isCircle && card.classList.contains(FADING_OUT_CLASS)) {
+    beginDurationFadeIn(card);
+    return;
+  }
+
+  if (event.propertyName === 'opacity' && isCircle && card.classList.contains(FADING_IN_CLASS)) {
+    completeDurationFadeIn(card);
+  }
+};
+
 const renderPlayButton = (isExit = false): TemplateResult => html`
   <mdc-button
     class="motionTokensPlayButton"
@@ -120,9 +158,10 @@ const renderPlayButton = (isExit = false): TemplateResult => html`
 `;
 
 const EASING_DEMO_COLORS: Record<string, string> = {
+  standard: 'var(--mds-color-theme-text-warning-normal)',
   entrance: 'var(--mds-color-theme-text-success-normal)',
-  exit: 'var(--mds-color-theme-text-warning-normal)',
-  linear: 'var(--mds-color-theme-text-error-normal)',
+  exit: 'var(--mds-color-theme-text-error-normal)',
+  linear: 'var(--mds-color-theme-text-accent-normal)',
 };
 
 const getEasingDemoColor = (tokenName: string): string =>
@@ -177,8 +216,6 @@ const renderEasingGraph = (token: MotionPrimitiveToken): TemplateResult => {
     return html``;
   }
 
-  const gridPatternId = `motionTokensEasingGrid-${token.name}`;
-
   return html`
     <svg
       class="motionTokensEasingGraph"
@@ -186,18 +223,6 @@ const renderEasingGraph = (token: MotionPrimitiveToken): TemplateResult => {
       role="img"
       aria-label="Easing curve for ${token.name}"
     >
-      <defs>
-        <pattern
-          id="${gridPatternId}"
-          width="8"
-          height="8"
-          patternUnits="userSpaceOnUse"
-        >
-          <circle class="motionTokensEasingGraphGridDot" cx="4" cy="4" r="0.75"></circle>
-        </pattern>
-      </defs>
-      <rect class="motionTokensEasingGraphBackground" width="100" height="100" rx="8"></rect>
-      <rect class="motionTokensEasingGraphGrid" width="100" height="100" rx="8" fill="url(#${gridPatternId})"></rect>
       <line
         class="motionTokensEasingGraphHandle"
         x1="${geometry.start.x}"
@@ -268,86 +293,99 @@ const renderDelayCard = (token: MotionPrimitiveToken): TemplateResult =>
     token,
     token.value,
     html`
-      <div style="--demo-delay: var(${token.cssVar})">
-        <div class="motionTokensDelayBox"></div>
+      <div class="motionTokensDelayTrack" style="--demo-delay: var(${token.cssVar})">
+        <div class="motionTokensDelaySquare"></div>
+        <div
+          class="motionTokensDelayCircle"
+          @transitionend=${handleDelayShapeTransitionEnd}
+        ></div>
       </div>
     `,
-    { initialActive: true },
   );
 
-const renderStaggerCard = (token: MotionPrimitiveToken): TemplateResult =>
-  renderTokenCard(
-    token,
-    token.value,
-    html`
-      <div class="motionTokensStaggerList" style="--stagger-delay: var(${token.cssVar})">
-        ${[0, 1, 2, 3, 4].map(
-          index => html`
-            <div class="motionTokensStaggerItem" style="--item-index: ${index}"></div>
-          `,
-        )}
-      </div>
-    `,
-    { initialActive: true },
-  );
+const renderAnimationPlayButton = (token: AnimationToken): TemplateResult => html`
+  <mdc-button
+    class="motionTokensAnimationPlayButton"
+    size="32"
+    variant="secondary"
+    prefix-icon="play-bold"
+    aria-label="Play ${token.name} animation"
+    @click=${(event: Event) => playAnimationToken(event, token.demoProperties)}
+  ></mdc-button>
+`;
 
-const transitionModifier = (token: AnimationToken): string => {
-  switch (token.name) {
-    case 'backgroundColor':
-      return 'motionTokensTransitionBox--background';
-    case 'borderColor':
-      return 'motionTokensTransitionBox--border';
-    case 'objectColor':
-      return 'motionTokensTransitionBox--color';
-    case 'growShrink':
-      return 'motionTokensTransitionBox--scale';
-    case 'textChange':
-      return 'motionTokensTransitionBox--text';
-    case 'fadeIn':
-    case 'fadeOut':
-      return 'motionTokensTransitionBox--fade';
-    case 'expand':
-    case 'collapse':
-      return 'motionTokensExpandPanel';
-    case 'slideEntrance':
-    case 'slideExit':
-      return 'motionTokensSlideBox';
-    default:
-      return 'motionTokensTransitionBox';
-  }
-};
+const renderObjectContainer = (token: AnimationToken): TemplateResult => {
+  const transitionEndHandler = (event: TransitionEvent) =>
+    handleAnimationTokenTransitionEnd(event, token.demoProperties);
 
-const renderTransitionStage = (token: AnimationToken): TemplateResult => {
-  const modifier = transitionModifier(token);
-  const isExpand = token.name === 'expand' || token.name === 'collapse';
-
-  if (isExpand) {
+  if (token.name === 'objectColor') {
     return html`
-      <div class="motionTokensTransitionStage">
-        <div class="${modifier}" style="transition: var(${token.cssVar})">
-          <div class="motionTokensExpandPanelInner">
-            <div class="motionTokensTransitionBox">Panel content expands and collapses using grid rows.</div>
-          </div>
-        </div>
+      <div class="motionTokensAnimationObject">
+        <mdc-icon
+          class="motionTokensAnimationIcon"
+          name="launch-regular"
+          data-animation-target
+          @transitionend=${transitionEndHandler}
+        ></mdc-icon>
       </div>
     `;
   }
 
   return html`
     <div
-      class="motionTokensTransitionStage motionTokensTransitionBox ${modifier}"
-      style="transition: var(${token.cssVar})"
+      class="motionTokensAnimationObject"
+      data-animation-target
+      @transitionend=${transitionEndHandler}
     >
-      ${token.name === 'textChange' ? 'Inactive label' : 'Preview'}
+      <mdc-icon class="motionTokensAnimationIcon" name="launch-regular"></mdc-icon>
     </div>
   `;
 };
 
-const renderTransitionCard = (token: AnimationToken): TemplateResult =>
-  renderTokenCard(token, token.properties.join(', '), renderTransitionStage(token), {
-    isExit: token.isExit,
-    initialActive: token.isExit,
-  });
+const renderAnimationPreview = (token: AnimationToken): TemplateResult => {
+  if (token.name === 'textChange') {
+    return html`
+      <p
+        class="motionTokensAnimationText"
+        data-animation-target
+        @transitionend=${(event: TransitionEvent) =>
+          handleAnimationTokenTransitionEnd(event, token.demoProperties)}
+      >
+        This is an example.
+      </p>
+    `;
+  }
+
+  return renderObjectContainer(token);
+};
+
+const renderAnimationTokenCard = (token: AnimationToken): TemplateResult => html`
+  <article
+    class="motionTokensAnimationCard motionTokensAnimationCard--${token.name}"
+    data-animation-card
+    style=${token.borderColorTransition ? `--demo-border-transition: ${token.borderColorTransition}` : ''}
+  >
+    <header class="motionTokensAnimationCardHeader">
+      <h4 class="title">${token.name}</h4>
+      ${renderAnimationPlayButton(token)}
+    </header>
+    <div class="motionTokensAnimationPreview">
+      ${renderAnimationPreview(token)}
+    </div>
+    <div class="motionTokensAnimationChips">
+      <mdc-chip color="cobalt" label="Duration: ${token.durationValue}"></mdc-chip>
+      <mdc-chip color="lime" label="Easing: ${token.easingLabel}"></mdc-chip>
+    </div>
+    <p class="motionTokensCardDescription">${token.description}</p>
+  </article>
+`;
+
+const renderAnimationSection = (title: string, tokens: AnimationToken[]): TemplateResult => html`
+  <section>
+    <h3>${title}</h3>
+    <div class="motionTokensGrid">${tokens.map(renderAnimationTokenCard)}</div>
+  </section>
+`;
 
 const renderPrimitiveSection = (
   title: string,
@@ -424,7 +462,7 @@ export const Example: StoryObj = {
           <p>
             Animation tokens combine the core motion tokens to transition specific properties. These are combined to animate our components as well as as parts of the user’s interface. .
           </p>
-          <div class="motionTokensGrid">${animationTokens.map(renderTransitionCard)}</div>
+          ${renderAnimationSection('Object state', objectStateAnimationTokens)}
         </section>
       </div>
     </mdc-motionprovider>
