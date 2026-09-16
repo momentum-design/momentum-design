@@ -1,34 +1,16 @@
 {
   "border-radius": {
     "theme": {
-      "none": {
-        "parent": "theme/stable/fluid/border-radius",
-        "type": "other",
-        "value": "0",
-        "description": ""
-      },
-      "small": {
-        "parent": "theme/stable/fluid/border-radius",
+      "chip": {
+        "parent": "theme/stable/highcontrast/border-radius",
         "type": "other",
         "value": "0.25rem",
         "description": ""
       },
-      "medium": {
-        "parent": "theme/stable/fluid/border-radius",
+      "input": {
+        "parent": "theme/stable/highcontrast/border-radius",
         "type": "other",
         "value": "0.5rem",
-        "description": ""
-      },
-      "large": {
-        "parent": "theme/stable/fluid/border-radius",
-        "type": "other",
-        "value": "1.25rem",
-        "description": ""
-      },
-      "half-height": {
-        "parent": "theme/stable/fluid/border-radius",
-        "type": "other",
-        "value": "50%",
         "description": ""
       }
     }
