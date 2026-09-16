@@ -138,6 +138,9 @@ packages/components/playwright-temp
 # JetBrains IDEs
 .idea/
 
+# Cursor local skills
+.cursor/skills/
+
 # Figma Code Connect
 figma-react.config.json
 figma-webcomponent.config.json
