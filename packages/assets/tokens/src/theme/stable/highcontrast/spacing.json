@@ -1,0 +1,90 @@
+{
+  "spacing": {
+    "theme": {
+      "none": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "0",
+        "description": ""
+      },
+      "micro": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "0.0625rem",
+        "description": ""
+      },
+      "xxx-small": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "0.125rem",
+        "description": ""
+      },
+      "xx-small": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "0.25rem",
+        "description": ""
+      },
+      "x-small": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "0.375rem",
+        "description": ""
+      },
+      "small": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "0.5rem",
+        "description": ""
+      },
+      "medium": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "0.75rem",
+        "description": ""
+      },
+      "large": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "1rem",
+        "description": ""
+      },
+      "x-large": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "1.25rem",
+        "description": ""
+      },
+      "xx-large": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "1.5rem",
+        "description": ""
+      },
+      "xxx-large": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "2rem",
+        "description": ""
+      },
+      "big": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "2.5rem",
+        "description": ""
+      },
+      "x-big": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "3rem",
+        "description": ""
+      },
+      "xx-big": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "4rem",
+        "description": ""
+      }
+    }
+  }
+}

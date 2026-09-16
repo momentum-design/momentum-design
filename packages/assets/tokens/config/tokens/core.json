@@ -51,7 +51,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/dark.json",
-        "theme/stable/border-radius.json"
+        "theme/stable/border-radius.json",
+        "theme/stable/spacing.json"
       ]
     },
     {
@@ -65,7 +66,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/light.json",
-        "theme/stable/border-radius.json"
+        "theme/stable/border-radius.json",
+        "theme/stable/spacing.json"
       ]
     },
     {
@@ -79,7 +81,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/fluid/dark.json",
-        "theme/stable/fluid/border-radius.json"
+        "theme/stable/fluid/border-radius.json",
+        "theme/stable/fluid/spacing.json"
       ]
     },
     {
@@ -93,7 +96,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/fluid/light.json",
-        "theme/stable/fluid/border-radius.json"
+        "theme/stable/fluid/border-radius.json",
+        "theme/stable/fluid/spacing.json"
       ]
     },
     {
@@ -108,7 +112,8 @@
         "core/value.json",
         "theme/stable/highcontrast/hc_common.json",
         "theme/stable/highcontrast/hc_dark.json",
-        "theme/stable/highcontrast/border-radius.json"
+        "theme/stable/highcontrast/border-radius.json",
+        "theme/stable/highcontrast/spacing.json"
       ]
     },
     {
@@ -123,7 +128,8 @@
         "core/value.json",
         "theme/stable/highcontrast/hc_common.json",
         "theme/stable/highcontrast/hc_light.json",
-        "theme/stable/highcontrast/border-radius.json"
+        "theme/stable/highcontrast/border-radius.json",
+        "theme/stable/highcontrast/spacing.json"
       ]
     },
     {

@@ -12,6 +12,7 @@
         "core/value.json",
         "theme/stable/dark.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/dark/indigo.json"
       ]
     },
@@ -27,6 +28,7 @@
         "core/value.json",
         "theme/stable/dark.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/dark/jade.json"
       ]
     },
@@ -42,6 +44,7 @@
         "core/value.json",
         "theme/stable/dark.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/dark/bronze.json"
       ]
     },
@@ -57,6 +60,7 @@
         "core/value.json",
         "theme/stable/dark.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/dark/rose.json"
       ]
     },
@@ -72,6 +76,7 @@
         "core/value.json",
         "theme/stable/dark.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/dark/lavender.json"
       ]
     },
@@ -87,6 +92,7 @@
         "core/value.json",
         "theme/stable/light.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/light/indigo.json"
       ]
     },
@@ -102,6 +108,7 @@
         "core/value.json",
         "theme/stable/light.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/light/jade.json"
       ]
     },
@@ -117,6 +124,7 @@
         "core/value.json",
         "theme/stable/light.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/light/bronze.json"
       ]
     },
@@ -132,6 +140,7 @@
         "core/value.json",
         "theme/stable/light.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/light/rose.json"
       ]
     },
@@ -147,6 +156,7 @@
         "core/value.json",
         "theme/stable/light.json",
         "theme/stable/border-radius.json",
+        "theme/stable/spacing.json",
         "additionaltheme/light/lavender.json"
       ]
     }
