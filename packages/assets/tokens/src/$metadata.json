@@ -9,6 +9,7 @@
     "core/border",
     "core/radius",
     "core/size",
+    "core/color-brand",
     "theme/momentum/spacing",
     "theme/fluid/spacing",
     "theme/momentum/border",

@@ -327,7 +327,8 @@
       "core/spacing": "enabled",
       "core/border": "enabled",
       "core/radius": "enabled",
-      "core/size": "enabled"
+      "core/size": "enabled",
+      "core/color-brand": "enabled"
     },
     "group": "core",
     "$figmaCollectionId": "VariableCollectionId:1393:5179",
