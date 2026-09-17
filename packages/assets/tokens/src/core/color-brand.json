@@ -232,52 +232,43 @@
         },
         "gradient": {
           "primary": {
-            "value": {
-              "gradientType": "linear",
-              "rotation": 90,
-              "stops": [
-                {
-                  "position": 0.05,
-                  "color": "#0A60FF"
-                },
-                {
-                  "position": 0.35,
-                  "color": "{color.core.brand.cisco-blue.50}"
-                },
-                {
-                  "position": 0.45,
-                  "color": "{color.core.brand.cisco-blue.50}"
-                },
-                {
-                  "position": 0.75,
-                  "color": "{color.core.brand.magenta.50}"
-                },
-                {
-                  "position": 0.95,
-                  "color": "{color.core.brand.orange.50}"
-                }
-              ]
+            "0": {
+              "value": "#0A60FF",
+              "type": "color",
+              "description": "Brand primary gradient stop 0. Gradient-only hex (not in solid brand ramps)."
             },
-            "type": "gradient",
-            "description": "Cisco brand primary gradient — multi-color secondary palette blend. Source: Webex Uplift 1CDL (4002:52019). #0A60FF is gradient-only (not in solid brand ramps)."
+            "1": {
+              "value": "#02C8FF",
+              "type": "color",
+              "description": "Brand primary gradient stop 1. Same hex as color.core.brand.cisco-blue.50."
+            },
+            "2": {
+              "value": "#02C8FF",
+              "type": "color",
+              "description": "Brand primary gradient stop 2. Same hex as color.core.brand.cisco-blue.50."
+            },
+            "3": {
+              "value": "#FF007F",
+              "type": "color",
+              "description": "Brand primary gradient stop 3. Same hex as color.core.brand.magenta.50."
+            },
+            "4": {
+              "value": "#FF9000",
+              "type": "color",
+              "description": "Brand primary gradient stop 4. Same hex as color.core.brand.orange.50."
+            }
           },
           "secondary-blue": {
-            "value": {
-              "gradientType": "linear",
-              "rotation": 90,
-              "stops": [
-                {
-                  "position": 0,
-                  "color": "#0A60FF"
-                },
-                {
-                  "position": 1,
-                  "color": "{color.core.brand.cisco-blue.50}"
-                }
-              ]
+            "0": {
+              "value": "#0A60FF",
+              "type": "color",
+              "description": "Brand secondary-blue gradient stop 0. Gradient-only hex (not in solid brand ramps)."
             },
-            "type": "gradient",
-            "description": "Cisco brand secondary blue gradient — derived from primary. Source: Webex Uplift 1CDL (4002:52020). #0A60FF is gradient-only (not in solid brand ramps)."
+            "1": {
+              "value": "#02C8FF",
+              "type": "color",
+              "description": "Brand secondary-blue gradient stop 1. Same hex as color.core.brand.cisco-blue.50."
+            }
           }
         }
       }
