@@ -1,0 +1,22 @@
+{
+  "blur": {
+    "20": {
+      "parent": "core/blur",
+      "type": "other",
+      "value": "10px",
+      "description": ""
+    },
+    "200": {
+      "parent": "core/blur",
+      "type": "other",
+      "value": "100px",
+      "description": ""
+    },
+    "800": {
+      "parent": "core/blur",
+      "type": "other",
+      "value": "400px",
+      "description": ""
+    }
+  }
+}

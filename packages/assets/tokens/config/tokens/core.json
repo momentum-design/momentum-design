@@ -15,6 +15,34 @@
       ]
     },
     {
+      "destination": "spacing/complete",
+      "cssSelector": ".mds-spacing",
+      "targets": [
+        "core/spacing.json"
+      ]
+    },
+    {
+      "destination": "size/complete",
+      "cssSelector": ".mds-size",
+      "targets": [
+        "core/size.json"
+      ]
+    },
+    {
+      "destination": "border-radius/complete",
+      "cssSelector": ".mds-border-radius",
+      "targets": [
+        "core/border-radius.json"
+      ]
+    },
+    {
+      "destination": "blur/complete",
+      "cssSelector": ".mds-blur",
+      "targets": [
+        "core/blur.json"
+      ]
+    },
+    {
       "destination": "theme/webex/dark-complete",
       "filters": {
         "types": [

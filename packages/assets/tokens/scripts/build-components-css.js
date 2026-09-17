@@ -23,6 +23,10 @@ const lightRoseTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/li
 const effects = glob.sync(path.posix.join(distCSSFolder, "/effect/*.css"));
 const elevation = glob.sync(path.posix.join(distCSSFolder, "/elevation/*.css"));
 const typography = glob.sync(path.posix.join(distCSSFolder, "/typography/*.css"));
+const spacing = glob.sync(path.posix.join(distCSSFolder, "/spacing/*.css"));
+const size = glob.sync(path.posix.join(distCSSFolder, "/size/*.css"));
+const borderRadius = glob.sync(path.posix.join(distCSSFolder, "/border-radius/*.css"));
+const blur = glob.sync(path.posix.join(distCSSFolder, "/blur/*.css"));
 
 const motion = glob.sync(path.posix.join(distCSSFolder, "/motion/*.css"));
 const animation = glob.sync(path.posix.join(distCSSFolder, "/animation/*.css"));
@@ -45,6 +49,10 @@ const tokens = [
   ...typography,
   ...effects,
   ...elevation,
+  ...spacing,
+  ...size,
+  ...borderRadius,
+  ...blur,
   ...motion,
   ...animation,
 ];

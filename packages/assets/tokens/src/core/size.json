@@ -1,0 +1,124 @@
+{
+  "size": {
+    "4": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "4px",
+      "description": ""
+    },
+    "8": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "8px",
+      "description": ""
+    },
+    "12": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "12px",
+      "description": ""
+    },
+    "14": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "14px",
+      "description": ""
+    },
+    "16": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "16px",
+      "description": ""
+    },
+    "20": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "20px",
+      "description": ""
+    },
+    "24": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "24px",
+      "description": ""
+    },
+    "28": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "28px",
+      "description": ""
+    },
+    "32": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "32px",
+      "description": ""
+    },
+    "36": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "36px",
+      "description": ""
+    },
+    "40": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "40px",
+      "description": ""
+    },
+    "44": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "44px",
+      "description": ""
+    },
+    "48": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "48px",
+      "description": ""
+    },
+    "52": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "52px",
+      "description": ""
+    },
+    "56": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "56px",
+      "description": ""
+    },
+    "64": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "64px",
+      "description": ""
+    },
+    "72": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "72px",
+      "description": ""
+    },
+    "88": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "88px",
+      "description": ""
+    },
+    "100": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "100px",
+      "description": ""
+    },
+    "124": {
+      "parent": "core/size",
+      "type": "other",
+      "value": "124px",
+      "description": ""
+    }
+  }
+}

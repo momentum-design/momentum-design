@@ -1,0 +1,64 @@
+{
+  "border-radius": {
+    "0": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "0px",
+      "description": ""
+    },
+    "2": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "2px",
+      "description": ""
+    },
+    "4": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "4px",
+      "description": ""
+    },
+    "8": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "8px",
+      "description": ""
+    },
+    "12": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "12px",
+      "description": ""
+    },
+    "14": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "14px",
+      "description": ""
+    },
+    "20": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "20px",
+      "description": ""
+    },
+    "50": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "50px",
+      "description": ""
+    },
+    "100": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "100px",
+      "description": ""
+    },
+    "full": {
+      "parent": "core/border-radius",
+      "type": "other",
+      "value": "50%",
+      "description": ""
+    }
+  }
+}
