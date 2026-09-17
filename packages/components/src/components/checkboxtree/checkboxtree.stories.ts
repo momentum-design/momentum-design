@@ -69,7 +69,8 @@ const meta: Meta = {
     'info-icon-aria-label': { control: 'text' },
     children: {
       control: false,
-      description: 'Direct mdc-checkbox children and recursively nested mdc-checkboxtree groups.',
+      description:
+        'Any content. To let an mdc-checkbox control a descendant mdc-checkboxtree, place the tree immediately after the checkbox.',
     },
     ...hideControls(['disabled', 'readonly', 'soft-disabled']),
     ...classArgType,

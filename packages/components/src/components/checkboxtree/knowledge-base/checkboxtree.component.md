@@ -62,9 +62,10 @@ Listen for the bubbling `change` event from the affected `mdc-checkbox`. Read `e
 
 ### Composition
 
-- Place only direct `mdc-checkbox` and `mdc-checkboxtree` elements in each tree's default slot.
-- Associate descendants by placing one nested tree immediately after its parent checkbox. Whitespace and comments are
-  allowed; another element between the checkbox and tree breaks the association.
+- Place any content in the default slot. The component manages descendant `mdc-checkbox` elements; other content remains
+  unaffected.
+- To make an `mdc-checkbox` control a descendant `mdc-checkboxtree`, render the tree immediately after the checkbox under
+  the same parent. Whitespace and comments are allowed; another element between them prevents the association.
 - Repeat the same checkbox-then-tree sequence at each level. Every nested tree adds one logical indentation step and can
   contain more nested trees.
 - Put the visible `label`, helper text, required indicator, validation state, and optional information toggletip on the
