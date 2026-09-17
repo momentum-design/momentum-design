@@ -72,6 +72,36 @@
       ]
     },
     {
+      "destination": "theme/fluid/dark",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-fluid-dark",
+      "targets": [
+        "core/value.json",
+        "core/color-brand.json",
+        "theme/stable/dark.json",
+        "theme/fluid/dark.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/light",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-fluid-light",
+      "targets": [
+        "core/value.json",
+        "core/color-brand.json",
+        "theme/stable/light.json",
+        "theme/fluid/light.json"
+      ]
+    },
+    {
       "destination": "theme/webex/hc-dark-stable",
       "filters": {
         "types": [

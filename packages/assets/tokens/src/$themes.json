@@ -817,7 +817,8 @@
     },
     "selectedTokenSets": {
       "core/value": "source",
-      "theme/stable/dark": "enabled"
+      "theme/stable/dark": "enabled",
+      "core/color-brand": "source"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
     "$figmaModeId": "17173:1",
@@ -1194,7 +1195,8 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "core/value": "source",
-      "theme/stable/light": "enabled"
+      "theme/stable/light": "enabled",
+      "core/color-brand": "source"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
     "$figmaModeId": "17173:2",
@@ -2421,17 +2423,17 @@
   },
   {
     "id": "3097d4049bc9d9b10d39a239a7bcd9304fc74d73",
-    "name": "momentum",
+    "name": "stable",
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "core/spacing": "source",
       "core/border": "source",
       "core/radius": "source",
       "core/size": "source",
-      "theme/momentum/spacing": "enabled",
-      "theme/momentum/border": "enabled",
-      "theme/momentum/radius": "enabled",
-      "theme/momentum/size": "enabled"
+      "theme/stable/spacing": "enabled",
+      "theme/stable/border": "enabled",
+      "theme/stable/radius": "enabled",
+      "theme/stable/size": "enabled"
     },
     "group": "theme/product"
   },
@@ -2444,15 +2446,39 @@
       "core/border": "source",
       "core/radius": "source",
       "core/size": "source",
-      "theme/momentum/spacing": "source",
-      "theme/momentum/border": "source",
-      "theme/momentum/radius": "source",
-      "theme/momentum/size": "source",
       "theme/fluid/spacing": "enabled",
       "theme/fluid/border": "enabled",
       "theme/fluid/radius": "enabled",
-      "theme/fluid/size": "enabled"
+      "theme/fluid/size": "enabled",
+      "theme/stable/spacing": "source",
+      "theme/stable/border": "source",
+      "theme/stable/radius": "source",
+      "theme/stable/size": "source"
     },
     "group": "theme/product"
+  },
+  {
+    "id": "2ee9c1fd51f03392c14d6b67ee5155cbc3ecc533",
+    "name": "fluid-dark",
+    "$figmaStyleReferences": {},
+    "selectedTokenSets": {
+      "core/value": "source",
+      "core/color-brand": "source",
+      "theme/stable/dark": "source",
+      "theme/fluid/dark": "enabled"
+    },
+    "group": "theme/fluid"
+  },
+  {
+    "id": "55a5ab37c310ed366dd7d4b21b352c0d13323102",
+    "name": "fluid-light",
+    "$figmaStyleReferences": {},
+    "selectedTokenSets": {
+      "core/value": "source",
+      "core/color-brand": "source",
+      "theme/stable/light": "source",
+      "theme/fluid/light": "enabled"
+    },
+    "group": "theme/fluid"
   }
 ]
