@@ -21,7 +21,7 @@ import styles from './checkboxtree.styles';
  * @dependency mdc-text
  * @dependency mdc-toggletip
  *
- * @slot default - Direct `mdc-checkbox` children and nested `mdc-checkboxtree` descendants. A nested tree belongs to the checkbox immediately before it.
+ * @slot default - Any content. To let an `mdc-checkbox` control a descendant `mdc-checkboxtree`, place the tree immediately after the checkbox.
  * @slot label - Slot for the visible group label. If omitted, the `label` property is used.
  * @slot toggletip - Slot for the label's information button and toggletip.
  * @slot help-icon - Slot for the helper or validation icon.

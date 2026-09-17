@@ -48,6 +48,15 @@
       "summary": "How to build adaptive UIs with Momentum — the consumer-owned breakpoint model, the shared responsive context provider, and the reflow and zoom bar every layout must clear.",
       "canonical": null,
       "websitePath": "guidelines/responsive-design"
+    },
+    {
+      "id": "tier1/knowledge-base/skills/momentum-concierge/README",
+      "tier": 1,
+      "path": "knowledge-base/skills/momentum-concierge/README.md",
+      "title": "Momentum Concierge",
+      "summary": "Portable agent instructions for answering Momentum Design questions from canonical knowledge-base guidance, including retrieval, response, and feedback rules.",
+      "canonical": null,
+      "websitePath": "skills/momentum-concierge"
     }
   ]
 }
