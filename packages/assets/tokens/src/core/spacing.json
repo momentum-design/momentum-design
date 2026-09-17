@@ -1,0 +1,49 @@
+{
+  "spacing": {
+    "0": {
+      "value": "0",
+      "type": "dimension",
+      "description": "0px — flush, collapsed gaps"
+    },
+    "4": {
+      "value": "0.25rem",
+      "type": "dimension",
+      "description": "4px — tight rhythm step"
+    },
+    "8": {
+      "value": "0.5rem",
+      "type": "dimension",
+      "description": "8px — default control gap and list padding"
+    },
+    "12": {
+      "value": "0.75rem",
+      "type": "dimension",
+      "description": "12px — medium inset"
+    },
+    "16": {
+      "value": "1rem",
+      "type": "dimension",
+      "description": "16px — section and container padding"
+    },
+    "24": {
+      "value": "1.5rem",
+      "type": "dimension",
+      "description": "24px — block spacing"
+    },
+    "32": {
+      "value": "2rem",
+      "type": "dimension",
+      "description": "32px — spacious inset and overlay context"
+    },
+    "48": {
+      "value": "3rem",
+      "type": "dimension",
+      "description": "48px — extra-large section break"
+    },
+    "64": {
+      "value": "4rem",
+      "type": "dimension",
+      "description": "64px — maximum layout rhythm step"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "radius": {
+    "theme": {
+      "none": {
+        "value": "{radius.0}",
+        "type": "dimension",
+        "description": "No rounding; flat edge in compound shapes (accordion, combobox, nav joins)"
+      },
+      "subtle": {
+        "value": "{radius.2}",
+        "type": "dimension",
+        "description": "Barely softened corners on small square elements (checkbox, sm date/time pickers)"
+      },
+      "small": {
+        "value": "{radius.4}",
+        "type": "dimension",
+        "description": "Compact rounding (chips, icons, inputchip, tab partials)"
+      },
+      "medium": {
+        "value": "{radius.8}",
+        "type": "dimension",
+        "description": "Default surface rounding (card, input, dialog, listitem, toast)"
+      },
+      "large": {
+        "value": "{radius.12}",
+        "type": "dimension",
+        "description": "More prominent rounding (statictoggle, softer bounded controls)"
+      },
+      "pill": {
+        "value": "{radius.20}",
+        "type": "dimension",
+        "description": "Capsule / pill silhouette (button pill, buttongroup, sidenav, nav)"
+      },
+      "full": {
+        "value": "{radius.full}",
+        "type": "dimension",
+        "description": "True circle (avatar, radio, slider thumb, presence)"
+      }
+    }
+  }
+}
