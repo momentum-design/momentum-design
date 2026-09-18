@@ -218,6 +218,7 @@ class Number extends Input {
    */
   protected renderStepperButton(direction: 'increment' | 'decrement') {
     const isIncrement = direction === 'increment';
+
     return html`
       <mdc-button
         part="stepper-button"
@@ -228,6 +229,7 @@ class Number extends Input {
         aria-label="${isIncrement ? this.incrementAriaLabel : this.decrementAriaLabel}"
         ?disabled=${this.disabled || this.readonly}
         @click=${isIncrement ? this.handleIncrement : this.handleDecrement}
+        tabindex="-1"
       ></mdc-button>
     `;
   }

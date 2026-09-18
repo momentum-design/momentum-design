@@ -21,6 +21,7 @@ type SetupOptions = {
   helpText?: string;
   helpTextType?: string;
   validationMessage?: string;
+  toggletipText?: string;
   secondButtonForFocus?: boolean;
 };
 
@@ -47,6 +48,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
       ${restArgs.validationMessage ? `validation-message="${restArgs.validationMessage}"` : ''}
+      ${restArgs.toggletipText ? `toggletip-text="${restArgs.toggletipText}"` : ''}
       ></mdc-number>
       ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
@@ -150,18 +152,19 @@ test.describe('mdc-number', () => {
    * INTERACTIONS
    */
   test('interactions', async ({ componentsPage }) => {
-    await test.step('should the component be focusable with tab, then the steppers', async () => {
-      const number = await setup({ componentsPage, ...defaultSetupOptions });
+    await test.step('should tab from the toggletip to the input, leaving the steppers out of the tab order', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, toggletipText: 'More information' });
+      const infoButton = number.locator('mdc-button[part="info-icon-btn"]');
       const inputEl = number.locator('input');
-      const decrementButton = number.locator('mdc-button[part="stepper-button"]').first();
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const secondButton = componentsPage.page.locator('mdc-button:has-text("Second Button")');
 
       await componentsPage.actionability.pressTab();
+      await expect(infoButton).toBeFocused();
+      await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
+      // The steppers have tabindex="-1", so focus skips them and leaves the component.
       await componentsPage.actionability.pressTab();
-      await expect(decrementButton).toBeFocused();
-      await componentsPage.actionability.pressTab();
-      await expect(incrementButton).toBeFocused();
+      await expect(secondButton).toBeFocused();
     });
 
     await test.step('should increment the value by step when clicking the increment stepper', async () => {
