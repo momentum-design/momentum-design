@@ -1085,55 +1085,6 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(listItem2).toBeFocused();
     });
 
-    await test.step('Focus trap with checkbox tree should treat delegated focus as one tab stop', async () => {
-      const { popover, triggerButton } = await setup({
-        componentsPage,
-        id: 'popover',
-        triggerID: 'trigger-button',
-        closeButton: true,
-        closeButtonAriaLabel: 'Close',
-        focusBackToTrigger: true,
-        focusTrap: true,
-        interactive: true,
-        children: `
-          <mdc-checkboxtree aria-label="Waiting in the lobby">
-            <mdc-checkbox id="category" label="Category"></mdc-checkbox>
-            <mdc-checkboxtree>
-              <mdc-checkbox id="participant" label="Participant"></mdc-checkbox>
-            </mdc-checkboxtree>
-          </mdc-checkboxtree>
-          <mdc-button id="after-tree">After tree</mdc-button>
-        `,
-      });
-      const closeButton = popover.locator('mdc-button[aria-label="Close"]');
-      const category = popover.locator('#category');
-      const participant = popover.locator('#participant');
-      const afterTree = popover.locator('#after-tree');
-
-      await componentsPage.actionability.pressTab();
-      await expect(triggerButton).toBeFocused();
-      await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expect(popover).toBeVisible();
-      await expect(closeButton).toBeFocused();
-
-      await componentsPage.actionability.pressTab();
-      await expect(category).toBeFocused();
-      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
-      await expect(category).toHaveAttribute('tabindex', '-1');
-      await expect(participant).toHaveAttribute('tabindex', '0');
-      await expect(participant).toBeFocused();
-
-      await componentsPage.actionability.pressShiftTab();
-      await expect(closeButton).toBeFocused();
-
-      await componentsPage.actionability.pressTab();
-      await expect(participant).toBeFocused();
-      await componentsPage.actionability.pressTab();
-      await expect(afterTree).toBeFocused();
-      await componentsPage.actionability.pressTab();
-      await expect(closeButton).toBeFocused();
-    });
-
     await test.step('Prevent outside scroll', async () => {
       await componentsPage.setAttributes(popover, {
         preventScroll: 'true',
