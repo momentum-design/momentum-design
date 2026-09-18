@@ -29,20 +29,21 @@ const styles = [
       display: contents;
     }
 
-    :host(:hover)::part(static-radio) {
+    :host(:hover)::part(radio-indicator) {
       --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-inactive-hover);
+      cursor: pointer;
     }
 
-    :host(:active)::part(static-radio) {
+    :host(:active)::part(radio-indicator) {
       --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-inactive-pressed);
     }
 
-    :host([checked]:hover)::part(static-radio) {
+    :host([checked]:hover)::part(radio-indicator) {
       --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-control-active-hover);
       --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-active-hover);
     }
 
-    :host([checked]:active)::part(static-radio) {
+    :host([checked]:active)::part(radio-indicator) {
       --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-control-active-pressed);
       --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-active-pressed);
     }
