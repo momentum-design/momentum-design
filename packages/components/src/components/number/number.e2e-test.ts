@@ -346,6 +346,25 @@ test.describe('mdc-number', () => {
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-number', { element: container });
     });
+
+    await test.step('should keep native spin buttons hidden while the input is focused and hovered', async () => {
+      const number = await setup({
+        componentsPage,
+        ...defaultSetupOptions,
+        value: '5',
+        min: 0,
+        max: 10,
+        secondButtonForFocus: false,
+      });
+      const inputEl = number.locator('input');
+      await inputEl.click();
+      await inputEl.hover();
+      await componentsPage.visualRegression.takeScreenshot('mdc-number-focused', {
+        source: 'userflow',
+        fileNameSuffix: 'native-spin-buttons-hidden',
+        element: number,
+      });
+    });
   });
 
   /**
