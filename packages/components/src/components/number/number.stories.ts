@@ -27,6 +27,10 @@ const render = (args: Args) =>
     ?readonly="${args.readonly}"
     placeholder="${args.placeholder}"
     validation-message="${args['validation-message']}"
+    toggletip-text="${ifDefined(args['toggletip-text'])}"
+    toggletip-placement="${ifDefined(args['toggletip-placement'])}"
+    toggletip-strategy="${ifDefined(args['toggletip-strategy'])}"
+    info-icon-aria-label="${ifDefined(args['info-icon-aria-label'])}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     min="${ifDefined(args.min)}"
     max="${ifDefined(args.max)}"
@@ -79,6 +83,24 @@ const meta: Meta = {
       control: 'text',
       description:
         'Custom validation message that will override the default message and displayed when the number field is invalid.',
+    },
+    'toggletip-text': {
+      control: 'text',
+      description:
+        'The toggletip text that is displayed when the info icon next to the label is clicked or pressed. ' +
+        'When set, an info icon button and toggletip are rendered next to the label.',
+    },
+    'toggletip-placement': {
+      control: 'text',
+      description: 'The placement of the toggletip that is displayed when the info icon is clicked or pressed.',
+    },
+    'toggletip-strategy': {
+      control: 'text',
+      description: 'The positioning strategy for the toggletip.',
+    },
+    'info-icon-aria-label': {
+      control: 'text',
+      description: 'Aria label for the info icon that is displayed next to the label when toggletip-text is set.',
     },
     readonly: {
       control: 'boolean',
@@ -142,6 +164,8 @@ export const Example: StoryObj = {
     'help-text': 'Helper text',
     'help-text-type': 'default',
     'validation-message': '',
+    'toggletip-text': 'Enter a whole number.',
+    'info-icon-aria-label': 'More information',
   },
 };
 
