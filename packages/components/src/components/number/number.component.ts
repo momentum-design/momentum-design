@@ -116,7 +116,26 @@ class Number extends Input {
     super.firstUpdated(changedProperties);
 
     this.syncNumberConstraints();
+    this.inputElement?.addEventListener('beforeinput', this.handleBeforeInput as EventListener);
   }
+
+  /**
+   * Blocks insertion of non-numeric characters, including the `e`/`E`/`+` that native
+   * `type="number"` still accepts (and the arbitrary letters Firefox allows). Typed text arrives
+   * in `data`; pasted/dropped text arrives in `dataTransfer`. Deletions, caret navigation and IME
+   * composition carry neither, so they pass through. The sign (`-`) and decimal point (`.`) are
+   * numeric structural characters, so they are allowed and left to native range/step validation.
+   */
+  private handleBeforeInput = (event: InputEvent) => {
+    const inserted = event.data ?? event.dataTransfer?.getData('text') ?? '';
+    if (inserted === '') {
+      return;
+    }
+
+    if (!/^[\d.-]*$/.test(inserted)) {
+      event.preventDefault();
+    }
+  };
 
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.updated(changedProperties);

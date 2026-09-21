@@ -318,6 +318,16 @@ test.describe('mdc-number', () => {
       await expect(inputEl).toHaveValue('42');
     });
 
+    await test.step('should reject non-numeric characters typed into the field', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions });
+      const inputEl = number.locator('input');
+
+      await inputEl.click();
+      // Letters and the native-number extras e/E/+ are dropped; digits, the sign and the decimal point are kept.
+      await inputEl.pressSequentially('-1a2E3e+4.5');
+      await expect(inputEl).toHaveValue('-1234.5');
+    });
+
     await test.step('should not step or focus the input when disabled, skipping the whole component', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '5', disabled: true });
       const inputEl = number.locator('input');
