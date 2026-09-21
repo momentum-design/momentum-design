@@ -213,6 +213,42 @@ test.describe('mdc-number', () => {
       await expect(inputEl).toHaveValue('0');
     });
 
+    await test.step('should hold a fractional boundary and never step past it with step="any"', async () => {
+      const number = await setup({
+        componentsPage,
+        ...defaultSetupOptions,
+        value: '0.5',
+        min: 0.5,
+        max: 9.5,
+        step: 'any',
+      });
+      const inputEl = number.locator('input');
+      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const decrementButton = number.locator('mdc-button[part="stepper-button"]').first();
+
+      // Decrementing at the fractional min must clamp to the min, not round back up past it.
+      await decrementButton.click();
+      await expect(inputEl).toHaveValue('0.5');
+
+      // Incrementing at the fractional max must clamp to the max, not round back down past it.
+      await inputEl.fill('9.5');
+      await incrementButton.click();
+      await expect(inputEl).toHaveValue('9.5');
+    });
+
+    await test.step('should not emit input/change when a stepper click is clamped at the boundary', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, value: '10', max: 10, step: 5 });
+      const inputEl = number.locator('input');
+      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+
+      const waitForInput = await componentsPage.waitForEvent(number, 'input');
+      const waitForChange = await componentsPage.waitForEvent(number, 'change');
+      await incrementButton.click();
+      await expect(inputEl).toHaveValue('10');
+      await expect(waitForInput).not.toEventEmitted();
+      await expect(waitForChange).not.toEventEmitted();
+    });
+
     await test.step('should increment/decrement the value with the up/down arrow keys', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 2 });
       const inputEl = number.locator('input');

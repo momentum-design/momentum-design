@@ -163,20 +163,18 @@ class Number extends Input {
    */
   private stepBy(delta: 1 | -1) {
     const inputElement = this.inputElement as HTMLInputElement;
+    const previousValue = inputElement.value;
 
     if (this.step === DEFAULTS.STEP_ANY) {
       const current = GlobalNumber.isNaN(inputElement.valueAsNumber) ? 0 : inputElement.valueAsNumber;
-      let next = current + delta;
+      // Round in the direction of travel before clamping; rounding after clamping can push the
+      // value past a fractional min/max in the wrong direction.
+      let next = delta === 1 ? Math.floor(current + delta) : Math.ceil(current + delta);
       if (this.min !== undefined) {
         next = Math.max(next, this.min);
       }
       if (this.max !== undefined) {
         next = Math.min(next, this.max);
-      }
-      if (delta === 1) {
-        next = Math.floor(next);
-      } else {
-        next = Math.ceil(next);
       }
       inputElement.valueAsNumber = next;
     } else if (delta === 1) {
@@ -185,19 +183,21 @@ class Number extends Input {
       inputElement.stepDown();
     }
 
-    this.syncValueFromInputElement();
+    // Steppers that clamp at min/max leave the value unchanged; matching native spin buttons,
+    // no input/change events are emitted in that case.
+    if (inputElement.value !== previousValue) {
+      this.syncValueFromInputElement();
+    }
   }
 
   /**
-   * stepUp()/stepDown() update the input element's value without dispatching input/change events,
-   * so the component's own value and events need to be synced manually.
+   * stepUp()/stepDown() and valueAsNumber update the input element's value without dispatching
+   * input/change events. Replaying them on the input replays the native flow so the base Input
+   * handlers sync the value, form value and validity, then re-dispatch to consumers.
    */
   private syncValueFromInputElement() {
-    this.value = this.inputElement.value;
-    this.internals.setFormValue(this.value);
-    this.checkValidity();
-    this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
-    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    this.inputElement.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true }));
+    this.inputElement.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   /**
