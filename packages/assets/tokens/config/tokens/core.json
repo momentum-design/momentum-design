@@ -78,7 +78,7 @@
           "theme"
         ]
       },
-      "cssSelector": ".mds-theme-fluid-dark",
+      "cssSelector": ".mds-theme-darkFluid",
       "targets": [
         "core/value.json",
         "core/color-brand.json",
@@ -93,7 +93,7 @@
           "theme"
         ]
       },
-      "cssSelector": ".mds-theme-fluid-light",
+      "cssSelector": ".mds-theme-lightFluid",
       "targets": [
         "core/value.json",
         "core/color-brand.json",
