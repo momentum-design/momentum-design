@@ -20,6 +20,7 @@ const stepConverter = {
     if (value === DEFAULTS.STEP_ANY) {
       return DEFAULTS.STEP_ANY;
     }
+
     const parsed = value === null ? NaN : parseFloat(value);
     return GlobalNumber.isNaN(parsed) ? DEFAULTS.STEP : parsed;
   },
@@ -113,11 +114,13 @@ class Number extends Input {
 
   protected override firstUpdated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.firstUpdated(changedProperties);
+
     this.syncNumberConstraints();
   }
 
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.updated(changedProperties);
+
     if (changedProperties.has('min') || changedProperties.has('max') || changedProperties.has('step')) {
       this.syncNumberConstraints();
     }
@@ -131,17 +134,21 @@ class Number extends Input {
     if (!this.inputElement) {
       return;
     }
+
     const inputElement = this.inputElement as HTMLInputElement;
+
     if (this.min === undefined) {
       inputElement.removeAttribute('min');
     } else {
       inputElement.min = String(this.min);
     }
+
     if (this.max === undefined) {
       inputElement.removeAttribute('max');
     } else {
       inputElement.max = String(this.max);
     }
+
     inputElement.step = this.step === DEFAULTS.STEP_ANY ? DEFAULTS.STEP_ANY : String(this.step);
   }
 
@@ -151,6 +158,7 @@ class Number extends Input {
    */
   protected override onChange(event: Event) {
     super.onChange(event);
+
     this.clampToRange();
   }
 
@@ -158,10 +166,12 @@ class Number extends Input {
     if (this.value === '') {
       return;
     }
+
     const numericValue = parseFloat(this.value);
     if (GlobalNumber.isNaN(numericValue)) {
       return;
     }
+
     let clamped = numericValue;
     if (this.max !== undefined && numericValue > this.max) {
       clamped = this.max;
@@ -169,6 +179,7 @@ class Number extends Input {
     if (this.min !== undefined && numericValue < this.min) {
       clamped = this.min;
     }
+
     if (clamped !== numericValue) {
       this.value = String(clamped);
       this.inputElement.value = this.value;
@@ -179,6 +190,7 @@ class Number extends Input {
 
   private handleIncrement = () => {
     const inputElement = this.inputElement as HTMLInputElement;
+
     try {
       inputElement.stepUp();
     } catch {
@@ -186,11 +198,13 @@ class Number extends Input {
         inputElement.value = String(this.max);
       }
     }
+
     this.syncValueFromInputElement();
   };
 
   private handleDecrement = () => {
     const inputElement = this.inputElement as HTMLInputElement;
+
     try {
       inputElement.stepDown();
     } catch {
@@ -242,6 +256,7 @@ class Number extends Input {
     if (this.hideSteppers) {
       return super.renderTrailingButton(show);
     }
+
     return html`
       <div part="stepper-buttons">
         ${this.renderStepperButton('decrement')} ${this.renderStepperButton('increment')}
