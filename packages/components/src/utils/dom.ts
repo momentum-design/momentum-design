@@ -257,6 +257,8 @@ export const findFocusable = (
       }
     }
 
+    if (element.shadowRoot?.delegatesFocus) return 'continue';
+
     return isMatchAny(element, includeSelectors) || (isTabbable(element) && isInteractiveElement(element))
       ? 'focusable'
       : 'continue';
