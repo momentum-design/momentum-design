@@ -152,68 +152,41 @@ class Number extends Input {
     inputElement.step = this.step === DEFAULTS.STEP_ANY ? DEFAULTS.STEP_ANY : String(this.step);
   }
 
+  private handleIncrement = () => this.stepBy(1);
+
+  private handleDecrement = () => this.stepBy(-1);
+
   /**
-   * Clamps the value to the min/max range once a change is committed (on blur or Enter).
-   * Typing beyond the range is allowed while editing; native input events do not clamp on their own.
+   * stepUp()/stepDown() throw for step="any", so in that case the steppers add/subtract 1 and
+   * clamp (matching native spin buttons); any value is already step-valid, so no alignment is
+   * needed. Otherwise the native step algorithm handles stepping and step-base alignment.
    */
-  protected override onChange(event: Event) {
-    super.onChange(event);
-
-    this.clampToRange();
-  }
-
-  private clampToRange() {
-    if (this.value === '') {
-      return;
-    }
-
-    const numericValue = parseFloat(this.value);
-    if (GlobalNumber.isNaN(numericValue)) {
-      return;
-    }
-
-    let clamped = numericValue;
-    if (this.max !== undefined && numericValue > this.max) {
-      clamped = this.max;
-    }
-    if (this.min !== undefined && numericValue < this.min) {
-      clamped = this.min;
-    }
-
-    if (clamped !== numericValue) {
-      this.value = String(clamped);
-      this.inputElement.value = this.value;
-      this.internals.setFormValue(this.value);
-      this.checkValidity();
-    }
-  }
-
-  private handleIncrement = () => {
+  private stepBy(delta: 1 | -1) {
     const inputElement = this.inputElement as HTMLInputElement;
 
-    try {
-      inputElement.stepUp();
-    } catch {
-      if (this.max !== undefined) {
-        inputElement.value = String(this.max);
-      }
-    }
-
-    this.syncValueFromInputElement();
-  };
-
-  private handleDecrement = () => {
-    const inputElement = this.inputElement as HTMLInputElement;
-
-    try {
-      inputElement.stepDown();
-    } catch {
+    if (this.step === DEFAULTS.STEP_ANY) {
+      const current = GlobalNumber.isNaN(inputElement.valueAsNumber) ? 0 : inputElement.valueAsNumber;
+      let next = current + delta;
       if (this.min !== undefined) {
-        inputElement.value = String(this.min);
+        next = Math.max(next, this.min);
       }
+      if (this.max !== undefined) {
+        next = Math.min(next, this.max);
+      }
+      if (delta === 1) {
+        next = Math.floor(next);
+      } else {
+        next = Math.ceil(next);
+      }
+      inputElement.valueAsNumber = next;
+    } else if (delta === 1) {
+      inputElement.stepUp();
+    } else {
+      inputElement.stepDown();
     }
+
     this.syncValueFromInputElement();
-  };
+  }
 
   /**
    * stepUp()/stepDown() update the input element's value without dispatching input/change events,

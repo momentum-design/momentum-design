@@ -6,6 +6,7 @@ import { KEYS } from '../../utils/keys';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   id?: string;
+  name?: string;
   value?: string;
   placeholder?: string;
   required?: boolean;
@@ -33,6 +34,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
     ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
       <mdc-number
       id="${restArgs.id}"
+      ${restArgs.name ? `name="${restArgs.name}"` : ''}
       ${restArgs.value !== undefined ? `value="${restArgs.value}"` : ''}
       ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
       ${restArgs.required ? 'required' : ''}
@@ -222,53 +224,89 @@ test.describe('mdc-number', () => {
       await expect(inputEl).toHaveValue('4');
     });
 
-    await test.step('should clamp the value to the maximum once the change is committed', async () => {
-      const number = await setup({ componentsPage, ...defaultSetupOptions, max: 10, secondButtonForFocus: true });
+    await test.step('should not step past the min/max with the up/down arrow keys', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, value: '10', min: 0, max: 10, step: 5 });
+      const inputEl = number.locator('input');
+
+      await inputEl.click();
+      await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+      await expect(inputEl).toHaveValue('10');
+      await inputEl.fill('0');
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(inputEl).toHaveValue('0');
+    });
+
+    await test.step('should step by 1 via the steppers when step is "any"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 'any' });
+      const inputEl = number.locator('input');
+      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const decrementButton = number.locator('mdc-button[part="stepper-button"]').first();
+
+      await incrementButton.click();
+      await expect(inputEl).toHaveValue('5');
+      await decrementButton.click();
+      await expect(inputEl).toHaveValue('4');
+      // step="any" is preserved, so the value never suffers a step mismatch.
+      await inputEl.fill('4.25');
+      const stepMismatch = await inputEl.evaluate((el: HTMLInputElement) => el.validity.stepMismatch);
+      expect(stepMismatch).toBe(false);
+    });
+
+    await test.step('should keep a value above max on commit and report rangeOverflow (native behavior)', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, max: 10 });
       const inputEl = number.locator('input');
 
       await inputEl.fill('42');
       await componentsPage.actionability.pressTab();
-      await expect(inputEl).toHaveValue('10');
+      await expect(inputEl).toHaveValue('42');
+      const rangeOverflow = await inputEl.evaluate((el: HTMLInputElement) => el.validity.rangeOverflow);
+      expect(rangeOverflow).toBe(true);
     });
 
-    await test.step('should clamp the value to the minimum once the change is committed', async () => {
-      const number = await setup({ componentsPage, ...defaultSetupOptions, min: 0, secondButtonForFocus: true });
+    await test.step('should keep a value below min on commit and report rangeUnderflow (native behavior)', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, min: 0 });
       const inputEl = number.locator('input');
 
       await inputEl.fill('-42');
       await componentsPage.actionability.pressTab();
-      await expect(inputEl).toHaveValue('0');
+      await expect(inputEl).toHaveValue('-42');
+      const rangeUnderflow = await inputEl.evaluate((el: HTMLInputElement) => el.validity.rangeUnderflow);
+      expect(rangeUnderflow).toBe(true);
     });
 
-    await test.step('should not clamp while typing, only once the change is committed', async () => {
-      const number = await setup({ componentsPage, ...defaultSetupOptions, max: 10, secondButtonForFocus: true });
+    await test.step('should not modify an out-of-range value while typing', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, max: 10 });
       const inputEl = number.locator('input');
 
       await inputEl.fill('42');
       await expect(inputEl).toHaveValue('42');
     });
 
-    await test.step('should the steppers not be focusable or clickable when disabled', async () => {
+    await test.step('should not step or focus the input when disabled, skipping the whole component', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '5', disabled: true });
       const inputEl = number.locator('input');
       const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const secondButton = componentsPage.page.locator('mdc-button:has-text("Second Button")');
 
       await expect(incrementButton).toBeDisabled();
+      await incrementButton.click({ force: true });
+      await expect(inputEl).toHaveValue('5');
       await componentsPage.actionability.pressTab();
-      await expect(inputEl).not.toBeFocused();
+      await expect(secondButton).toBeFocused();
     });
 
-    await test.step('should the steppers not be focusable or clickable when readonly', async () => {
+    await test.step('should not step when readonly', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '5', readonly: true });
       const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
       const inputEl = number.locator('input');
 
       await expect(incrementButton).toBeDisabled();
+      await incrementButton.click({ force: true });
       await expect(inputEl).toHaveValue('5');
     });
 
     await test.step('should submit the current value as part of a form', async () => {
-      const form = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 2 }, true);
+      const form = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 2, name: 'quantity' }, true);
       const mdcNumber = form.locator('mdc-number');
       const incrementButton = mdcNumber.locator('mdc-button[part="stepper-button"]').last();
       const submitButton = form.locator('mdc-button[type="submit"]');
@@ -280,6 +318,9 @@ test.describe('mdc-number', () => {
       });
       await submitButton.click();
       await expect(waitForSubmit).toEventEmitted();
+
+      const submittedValue = await form.evaluate((formEl: HTMLFormElement) => new FormData(formEl).get('quantity'));
+      expect(submittedValue).toBe('6');
     });
   });
 
@@ -374,7 +415,24 @@ test.describe('mdc-number', () => {
    * ACCESSIBILITY
    */
   test('accessibility', async ({ componentsPage }) => {
-    await setup({ componentsPage, ...defaultSetupOptions });
-    await componentsPage.accessibility.checkForA11yViolations('number-default');
+    await test.step('default', async () => {
+      await setup({ componentsPage, ...defaultSetupOptions });
+      await componentsPage.accessibility.checkForA11yViolations('number-default');
+    });
+
+    await test.step('required', async () => {
+      await setup({ componentsPage, ...defaultSetupOptions, required: true });
+      await componentsPage.accessibility.checkForA11yViolations('number-required');
+    });
+
+    await test.step('disabled', async () => {
+      await setup({ componentsPage, ...defaultSetupOptions, value: '5', disabled: true });
+      await componentsPage.accessibility.checkForA11yViolations('number-disabled');
+    });
+
+    await test.step('error validation', async () => {
+      await setup({ componentsPage, ...defaultSetupOptions, helpTextType: 'error', helpText: 'Error message' });
+      await componentsPage.accessibility.checkForA11yViolations('number-error');
+    });
   });
 });
