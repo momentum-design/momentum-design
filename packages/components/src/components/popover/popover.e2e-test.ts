@@ -1861,6 +1861,56 @@ test('mdc-popover', async ({ componentsPage }) => {
       expect(Math.floor(centeredOffsetBBox.x)).toEqual(132);
       expect(Math.floor(centeredOffsetBBox.y)).toEqual(227);
     });
+
+    await test.step('should flip before its offset moves it outside the viewport', async () => {
+      await componentsPage.mount({
+        html: `
+          <div>
+            <button
+              id="viewport-edge-trigger"
+              style="position: fixed; top: 100px; left: 200px;"
+            >
+              Trigger
+            </button>
+            <mdc-popover
+              id="viewport-edge-popover"
+              triggerID="viewport-edge-trigger"
+              placement="top"
+              show-arrow
+              animation-frame
+              style="height: 40px;"
+            >
+              Popover content
+            </mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const trigger = componentsPage.page.locator('#viewport-edge-trigger');
+      const popover = componentsPage.page.locator('#viewport-edge-popover');
+
+      await trigger.click();
+      await expect(popover).toBeVisible();
+      await expect(async () => {
+        const [triggerBox, popoverBox] = await Promise.all([trigger.boundingBox(), popover.boundingBox()]);
+        // Popover is above the trigger.
+        expect(popoverBox!.y + popoverBox!.height).toBeLessThanOrEqual(triggerBox!.y);
+      }).toPass();
+      await componentsPage.visualRegression.takeScreenshot('mdc-popover-flip-top');
+
+      await trigger.evaluate((element: HTMLElement) => {
+        const { style } = element;
+        style.top = '50px';
+      });
+
+      await expect(async () => {
+        const [triggerBox, popoverBox] = await Promise.all([trigger.boundingBox(), popover.boundingBox()]);
+        // Popover is below the trigger.
+        expect(popoverBox!.y).toBeGreaterThanOrEqual(triggerBox!.y + triggerBox!.height);
+      }).toPass();
+      await componentsPage.visualRegression.takeScreenshot('mdc-popover-flip-bottom');
+    });
   });
 
   /**

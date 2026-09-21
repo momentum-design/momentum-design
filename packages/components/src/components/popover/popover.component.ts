@@ -1104,11 +1104,22 @@ class Popover
         : Array.from(document.querySelectorAll(this.boundary));
     const rootBoundary = this.boundaryRoot;
 
+    let arrowOffset = 0;
+    if (this.showArrow) {
+      this.arrowElement = this.renderRoot.querySelector('div[part="popover-arrow"]');
+      if (this.arrowElement) {
+        const arrowLen = this.arrowElement.offsetHeight;
+        arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
+      }
+    }
+
     const middleware: ReturnType<typeof shift>[] = [];
 
     if (this.inline) {
       middleware.push(inlineMiddleware());
     }
+
+    middleware.push(offset(typeof this.offset === 'number' ? this.offset + arrowOffset : this.offset));
 
     middleware.push(
       shift({
@@ -1151,17 +1162,9 @@ class Popover
       );
     }
 
-    let arrowOffset = 0;
-    if (this.showArrow) {
-      this.arrowElement = this.renderRoot.querySelector('div[part="popover-arrow"]');
-      if (this.arrowElement) {
-        const arrowLen = this.arrowElement.offsetHeight;
-        arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
-        middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
-      }
+    if (this.showArrow && this.arrowElement) {
+      middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
     }
-
-    middleware.push(offset(typeof this.offset === 'number' ? this.offset + arrowOffset : this.offset));
 
     this.floatingUICleanupFunction = autoUpdate(
       triggerElement,
