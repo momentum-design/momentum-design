@@ -1,0 +1,41 @@
+{
+  "spacing": {
+    "theme": {
+      "pad-inline": {
+        "value": "{spacing.12}",
+        "type": "dimension",
+        "description": "Horizontal padding inside interactive controls"
+      },
+      "pad-block": {
+        "value": "{spacing.8}",
+        "type": "dimension",
+        "description": "Vertical padding inside interactive controls"
+      },
+      "gap-tight": {
+        "value": "{spacing.4}",
+        "type": "dimension",
+        "description": "Minimum separation between related children (icon ↔ label, chip internals)"
+      },
+      "gap": {
+        "value": "{spacing.8}",
+        "type": "dimension",
+        "description": "Default separation between related children"
+      },
+      "gap-loose": {
+        "value": "{spacing.24}",
+        "type": "dimension",
+        "description": "Separation between blocks or sections"
+      },
+      "inset": {
+        "value": "{spacing.16}",
+        "type": "dimension",
+        "description": "Default padding inside a surface boundary"
+      },
+      "inset-tight": {
+        "value": "{spacing.8}",
+        "type": "dimension",
+        "description": "Compact padding inside a surface boundary"
+      }
+    }
+  }
+}

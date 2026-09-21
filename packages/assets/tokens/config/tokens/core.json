@@ -4,7 +4,8 @@
       "destination": "core/complete",
       "cssSelector": ".mds-core",
       "targets": [
-        "core/value.json"
+        "core/value.json",
+        "core/color-brand.json"
       ]
     },
     {
@@ -24,6 +25,7 @@
       "cssSelector": ".mds-theme-webex-dark",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "theme/webex/dark.json"
       ]
     },
@@ -37,6 +39,7 @@
       "cssSelector": ".mds-theme-webex-light",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "theme/webex/light.json"
       ]
     },
@@ -50,6 +53,7 @@
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "theme/stable/dark.json"
       ]
     },
@@ -63,7 +67,38 @@
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "theme/stable/light.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/dark",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-fluid-dark",
+      "targets": [
+        "core/value.json",
+        "core/color-brand.json",
+        "theme/stable/dark.json",
+        "theme/fluid/dark.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/light",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-fluid-light",
+      "targets": [
+        "core/value.json",
+        "core/color-brand.json",
+        "theme/stable/light.json",
+        "theme/fluid/light.json"
       ]
     },
     {
@@ -76,6 +111,7 @@
       "cssSelector": ".mds-theme-stable-hcDarkWebex",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "theme/stable/highcontrast/hc_common.json",
         "theme/stable/highcontrast/hc_dark.json"
       ]
@@ -90,6 +126,7 @@
       "cssSelector": ".mds-theme-stable-hcLightWebex",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "theme/stable/highcontrast/hc_common.json",
         "theme/stable/highcontrast/hc_light.json"
       ]
@@ -104,6 +141,7 @@
       "cssSelector": ".mds-theme-aaos-day",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "aaos/common.json",
         "aaos/day.json"
       ]
@@ -118,6 +156,7 @@
       "cssSelector": ".mds-theme-aaos-night",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "aaos/common.json",
         "aaos/night.json"
       ]
