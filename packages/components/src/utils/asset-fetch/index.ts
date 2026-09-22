@@ -9,22 +9,22 @@ interface Args {
   cacheName?: string;
   renewSignal: () => AbortSignal;
   /**
-   * Human readable name of the asset kind, used in error messages only
-   * (e.g. `icon`, `illustration`, `brand visual`).
-   * @default asset
+   * The kind of asset being fetched (e.g. `icon`, `illustration`, `brand visual`).
+   * Used in error messages and to namespace the in-flight request map, so that two
+   * asset kinds resolving the same url never share a pending request.
    */
-  assetType?: string;
+  assetType: string;
 }
 
 /**
  * Utility function for fetching an asset from the provided `request`.
  * It will throw an error if the response is not ok.
  * @param request - The request object to fetch the asset
- * @param assetType - Human readable name of the asset kind, used in the error message
+ * @param assetType - The kind of asset being fetched, used in the error message
  * @returns Promise<Response> - The response from the fetch
  * @throws Error if the response is not ok
  */
-const fetchAsset = async (request: Request, assetType: string): Promise<Response> =>
+const requestAsset = async (request: Request, assetType: string): Promise<Response> =>
   fetch(request).then(response => {
     if (!response.ok) {
       throw new Error(`There was a problem while fetching the ${assetType}!`);
@@ -32,11 +32,13 @@ const fetchAsset = async (request: Request, assetType: string): Promise<Response
     return response;
   });
 
-// Map of in-flight fetch promises keyed by URL to deduplicate concurrent requests
+// Map of in-flight fetch promises used to deduplicate concurrent requests.
+// The key is namespaced by asset type, since this map is shared by every asset kind and
+// two of them may legitimately resolve to the same url.
 const pendingFetches = new Map<string, Promise<string>>();
 
 /**
- * Fetches a dynamic SVG asset based on the provided `url`, `name` and `fileExtension`.
+ * Fetches a dynamic asset based on the provided `url`, `name` and `fileExtension`.
  * The fetch is aborted if the signal is aborted.
  *
  * This function also includes the logic to cache the fetched asset using the In Memory Cache or Web Cache API.
@@ -55,24 +57,25 @@ const pendingFetches = new Map<string, Promise<string>>();
  * It is used to cancel the fetch when the component is disconnected or updated.
  * @param cacheStrategy - The cache strategy to use.
  * @param cacheName - The cache name to use.
- * @param assetType - Human readable name of the asset kind, used in error messages.
+ * @param assetType - The kind of asset being fetched.
  *
  * @returns Response string from the fetch
  * @throws Error if the response is not ok
  */
-const svgFetch = async ({
+const assetFetch = async ({
   url,
   name,
   fileExtension,
   cacheStrategy,
   cacheName,
   renewSignal,
-  assetType = 'asset',
+  assetType,
 }: Args): Promise<string> => {
   // abort the previous fetch request if it is still pending
   // and create a new signal
   const signal = renewSignal();
   const assetUrl = `${url}/${name}.${fileExtension}`;
+  const pendingKey = `${assetType}:${assetUrl}`;
   const request = new Request(assetUrl, {
     signal,
   });
@@ -80,7 +83,7 @@ const svgFetch = async ({
   // if there is no cache defined (cacheName and cacheStrategy properly set),
   // fetch the asset and return the response
   if (!cacheName || !cacheStrategy || !['in-memory-cache', 'web-cache-api'].includes(cacheStrategy)) {
-    return fetchAsset(request, assetType).then(response => response.text());
+    return requestAsset(request, assetType).then(response => response.text());
   }
 
   return assetsCache(cacheName, cacheStrategy).then(cache =>
@@ -92,17 +95,17 @@ const svgFetch = async ({
           return responseFromCache;
         }
 
-        // **Check for in-flight fetch for same URL**
-        const pending = pendingFetches.get(assetUrl);
+        // **Check for in-flight fetch for the same asset**
+        const pending = pendingFetches.get(pendingKey);
         if (pending) {
           return pending;
         }
 
         // **Otherwise, fetch and cache if successful**
-        // Both fetchAsset() and cache.set() "consume" the request,
+        // Both requestAsset() and cache.set() "consume" the request,
         // so we need to make a copy.
         // (see https://developer.mozilla.org/en-US/docs/Web/API/Request/clone)
-        const fetchPromise = fetchAsset(new Request(assetUrl), assetType)
+        const fetchPromise = requestAsset(new Request(assetUrl), assetType)
           .then(response => {
             // This avoids caching responses that we know are errors
             // (i.e. HTTP status code of 4xx or 5xx).
@@ -114,9 +117,9 @@ const svgFetch = async ({
             return response.text();
           })
           .finally(() => {
-            pendingFetches.delete(assetUrl);
+            pendingFetches.delete(pendingKey);
           });
-        pendingFetches.set(assetUrl, fetchPromise);
+        pendingFetches.set(pendingKey, fetchPromise);
         return fetchPromise;
       })
       .catch(error => {
@@ -129,4 +132,4 @@ const svgFetch = async ({
   );
 };
 
-export { svgFetch };
+export { assetFetch };

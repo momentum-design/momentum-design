@@ -3,7 +3,7 @@ import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
-import { svgFetch } from '../../utils/asset-fetch';
+import { assetFetch } from '../../utils/asset-fetch';
 import IllustrationProvider from '../illustrationprovider/illustrationprovider.component';
 import { ROLE } from '../../utils/roles';
 
@@ -93,7 +93,7 @@ class Illustration extends Component {
         };
 
         // fetch illustration data (including caching logic)
-        return svgFetch({
+        return assetFetch({
           url,
           name: this.name,
           fileExtension,

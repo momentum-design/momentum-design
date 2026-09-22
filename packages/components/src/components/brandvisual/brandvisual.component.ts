@@ -3,7 +3,7 @@ import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
-import { svgFetch } from '../../utils/asset-fetch';
+import { assetFetch } from '../../utils/asset-fetch';
 import BrandVisualProvider from '../brandvisualprovider/brandvisualprovider.component';
 import type { CacheStrategy } from '../brandvisualprovider/brandvisualprovider.types';
 
@@ -116,7 +116,7 @@ class Brandvisual extends Component {
       return this.abortController.signal;
     };
 
-    return svgFetch({
+    return assetFetch({
       url,
       name: this.name as string,
       fileExtension,

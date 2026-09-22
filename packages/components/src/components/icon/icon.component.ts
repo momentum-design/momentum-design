@@ -3,7 +3,7 @@ import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
-import { svgFetch } from '../../utils/asset-fetch';
+import { assetFetch } from '../../utils/asset-fetch';
 import IconProvider from '../iconprovider/iconprovider.component';
 
 import styles from './icon.styles';
@@ -108,7 +108,7 @@ class Icon extends Component {
         };
 
         // fetch icon data (including caching logic)
-        return svgFetch({
+        return assetFetch({
           url,
           name: this.name,
           fileExtension,
