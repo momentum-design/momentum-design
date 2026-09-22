@@ -98,9 +98,14 @@ test.describe('mdc-numberinput', () => {
       await expect(helpText).toHaveText('Help Text');
     });
 
-    await test.step('should the input be of type number', async () => {
+    await test.step('should use number type and numeric input mode', async () => {
       const inputEl = number.locator('input');
       await expect(inputEl).toHaveAttribute('type', 'number');
+      await expect(inputEl).toHaveAttribute('inputmode', 'numeric');
+
+      await componentsPage.setAttributes(number, { inputmode: 'decimal' });
+      await expect(inputEl).toHaveAttribute('inputmode', 'decimal');
+      await componentsPage.removeAttribute(number, 'inputmode');
     });
 
     await test.step('should render steppers by default, labeled by increment/decrement-aria-label', async () => {

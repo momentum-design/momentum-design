@@ -12,7 +12,7 @@ import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin'
 import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { CharacterLimitMixin } from '../../utils/mixins/CharacterLimitMixin';
 
-import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
+import type { AutoCapitalizeType, AutoCompleteType, InputModeType, InputType } from './input.types';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import styles from './input.styles';
 /**
@@ -125,6 +125,11 @@ class Input
    * @default 'off'
    */
   @property({ type: String }) autocomplete: AutoCompleteType = AUTO_COMPLETE.OFF;
+
+  /**
+   * Hints at the type of data that might be entered by the user and the corresponding virtual keyboard.
+   */
+  @property({ type: String }) inputmode?: InputModeType;
 
   /**
    * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).
@@ -413,6 +418,7 @@ class Input
       maxlength=${ifDefined(this.maxlength)}
       autocapitalize=${this.autocapitalize}
       autocomplete=${this.autocomplete}
+      inputmode=${ifDefined(this.inputmode)}
       dirname=${ifDefined(this.dirname)}
       pattern=${ifDefined(this.pattern)}
       list=${ifDefined(this.list)}

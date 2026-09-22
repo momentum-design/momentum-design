@@ -7,6 +7,7 @@ import { action } from 'storybook/actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import { INPUT_MODE } from '../input/input.constants';
 
 const render = (args: Args) =>
   html` <mdc-numberinput
@@ -32,6 +33,7 @@ const render = (args: Args) =>
     toggletip-strategy="${ifDefined(args['toggletip-strategy'])}"
     info-icon-aria-label="${ifDefined(args['info-icon-aria-label'])}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
+    inputmode="${ifDefined(args.inputmode)}"
     min="${ifDefined(args.min)}"
     max="${ifDefined(args.max)}"
     step="${ifDefined(args.step)}"
@@ -66,6 +68,10 @@ const meta: Meta = {
     },
     value: {
       control: 'text',
+    },
+    inputmode: {
+      control: 'select',
+      options: Object.values(INPUT_MODE),
     },
     label: {
       control: 'text',

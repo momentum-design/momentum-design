@@ -12,7 +12,7 @@ import { disableControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Input from './input.component';
-import { AUTO_CAPITALIZE } from './input.constants';
+import { AUTO_CAPITALIZE, INPUT_MODE } from './input.constants';
 
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
@@ -51,6 +51,7 @@ const render = (args: Args) => {
     autocapitalize="${args.autocapitalize}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     autocomplete="${ifDefined(args.autocomplete)}"
+    inputmode="${ifDefined(args.inputmode)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
@@ -130,6 +131,10 @@ const meta: Meta = {
     },
     autocomplete: {
       control: 'text',
+    },
+    inputmode: {
+      control: 'select',
+      options: Object.values(INPUT_MODE),
     },
     dirname: {
       control: 'text',

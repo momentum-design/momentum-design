@@ -2,8 +2,8 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import Input from '../input/input.component';
-import { INPUT_TYPE } from '../input/input.constants';
-import type { InputType } from '../input/input.types';
+import { INPUT_MODE, INPUT_TYPE } from '../input/input.constants';
+import type { InputModeType, InputType } from '../input/input.types';
 
 import { DEFAULTS } from './numberinput.constants';
 import styles from './numberinput.styles';
@@ -71,6 +71,12 @@ const stepConverter = {
  * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
  */
 class NumberInput extends Input {
+  /**
+   * Hints that a numeric virtual keyboard should be displayed.
+   * @default 'numeric'
+   */
+  @property({ type: String }) override inputmode: InputModeType = INPUT_MODE.NUMERIC;
+
   /**
    * The minimum value that the number field will accept.
    */
