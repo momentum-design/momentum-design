@@ -82,7 +82,15 @@
       "targets": [
         "core/value.json",
         "core/color-brand.json",
-        "theme/stable/dark.json"
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
+        "theme/stable/dark.json",
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json"
       ]
     },
     {
@@ -96,7 +104,15 @@
       "targets": [
         "core/value.json",
         "core/color-brand.json",
-        "theme/stable/light.json"
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
+        "theme/stable/light.json",
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json"
       ]
     },
     {
@@ -110,8 +126,20 @@
       "targets": [
         "core/value.json",
         "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
         "theme/stable/dark.json",
-        "theme/fluid/dark.json"
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json",
+        "theme/fluid/dark.json",
+        "theme/fluid/spacing.json",
+        "theme/fluid/border.json",
+        "theme/fluid/radius.json",
+        "theme/fluid/size.json"
       ]
     },
     {
@@ -125,8 +153,20 @@
       "targets": [
         "core/value.json",
         "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
         "theme/stable/light.json",
-        "theme/fluid/light.json"
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json",
+        "theme/fluid/light.json",
+        "theme/fluid/spacing.json",
+        "theme/fluid/border.json",
+        "theme/fluid/radius.json",
+        "theme/fluid/size.json"
       ]
     },
     {
@@ -140,10 +180,16 @@
       "targets": [
         "core/value.json",
         "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
         "theme/stable/highcontrast/hc_common.json",
         "theme/stable/highcontrast/hc_dark.json",
-        "theme/stable/highcontrast/border-radius.json",
-        "theme/stable/highcontrast/spacing.json"
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json"
       ]
     },
     {
@@ -157,10 +203,16 @@
       "targets": [
         "core/value.json",
         "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
         "theme/stable/highcontrast/hc_common.json",
         "theme/stable/highcontrast/hc_light.json",
-        "theme/stable/highcontrast/border-radius.json",
-        "theme/stable/highcontrast/spacing.json"
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json"
       ]
     },
     {
