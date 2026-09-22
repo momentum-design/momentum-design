@@ -423,7 +423,7 @@ export const InputWithCharacterCounter: StoryObj = {
 export const SlottedInputElement: StoryObj = {
   render: () => html`
     <mdc-input>
-      <input slot="input" type="number" aria-label="Custom aria-label on slotted input element" value="42" />
+      <input slot="input" type="tel" aria-label="Phone number" value="+1 202-555-0147" />
     </mdc-input>
   `,
   parameters: {

@@ -18,32 +18,32 @@ Feature: Number Input Component
     Then the entered value should remain unchanged
     And the component should report a range underflow validation error
 
-  Scenario: Showing the steppers by default
-    Given the number component is rendered without the "hide-steppers" attribute
-    Then the increment and decrement stepper buttons should be displayed next to the input field
+  Scenario: Showing the spinner buttons by default
+    Given the number component is rendered without the "hide-spinner-buttons" attribute
+    Then the increment and decrement spinner buttons should be displayed next to the input field
 
-  Scenario: Hiding the steppers
-    Given the "hide-steppers" attribute is set on the number component
-    Then the increment and decrement stepper buttons should not be displayed
+  Scenario: Hiding the spinner buttons
+    Given the "hide-spinner-buttons" attribute is set on the number component
+    Then the increment and decrement spinner buttons should not be displayed
 
-  Scenario: Incrementing the value with the plus stepper
-    Given the number component is rendered with the steppers shown
-    When I click the plus stepper button
+  Scenario: Incrementing the value with the plus spinner button
+    Given the number component is rendered with the spinner buttons shown
+    When I click the plus spinner button
     Then the value should increase by the "step" amount
 
-  Scenario: Decrementing the value with the minus stepper
-    Given the number component is rendered with the steppers shown
-    When I click the minus stepper button
+  Scenario: Decrementing the value with the minus spinner button
+    Given the number component is rendered with the spinner buttons shown
+    When I click the minus spinner button
     Then the value should decrease by the "step" amount
 
   Scenario: Adjusting the step amount
     Given the number component is rendered with a "step" attribute set to a custom value
-    When I click the plus or minus stepper button
+    When I click the plus or minus spinner button
     Then the value should change by that custom step amount
 
   Scenario: Stepping in decimal increments
     Given the number component is rendered with a "step" attribute set to a decimal value
-    When I click the plus or minus stepper button
+    When I click the plus or minus spinner button
     Then the value should change precisely by that decimal amount
 
   Scenario: Allowing any decimal value

@@ -129,7 +129,7 @@ class Input
   /**
    * Hints at the type of data that might be entered by the user and the corresponding virtual keyboard.
    */
-  @property({ type: String }) inputmode?: InputModeType;
+  @property({ type: String, reflect: true }) inputmode?: InputModeType;
 
   /**
    * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).

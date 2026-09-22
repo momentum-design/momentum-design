@@ -37,7 +37,7 @@ const render = (args: Args) =>
     min="${ifDefined(args.min)}"
     max="${ifDefined(args.max)}"
     step="${ifDefined(args.step)}"
-    ?hide-steppers="${args['hide-steppers']}"
+    ?hide-spinner-buttons="${args['hide-spinner-buttons']}"
     increment-aria-label="${ifDefined(args['increment-aria-label'])}"
     decrement-aria-label="${ifDefined(args['decrement-aria-label'])}"
   ></mdc-numberinput>`;
@@ -135,10 +135,10 @@ const meta: Meta = {
         'The amount that the value changes for each increment/decrement. Set to "any" to allow any ' +
         'decimal value with no step-mismatch validation.',
     },
-    'hide-steppers': {
+    'hide-spinner-buttons': {
       control: 'boolean',
       description:
-        'Increment and decrement stepper buttons are shown alongside the input field by default. ' +
+        'Increment and decrement spinner buttons are shown alongside the input field by default. ' +
         'Set this to true to hide them.',
     },
     'increment-aria-label': {
@@ -187,7 +187,7 @@ export const Example: StoryObj = {
   },
 };
 
-export const WithoutSteppers: StoryObj = {
+export const WithoutSpinnerButtons: StoryObj = {
   args: {
     class: 'custom-classname',
     label: 'Quantity',
@@ -196,7 +196,7 @@ export const WithoutSteppers: StoryObj = {
     min: 0,
     max: 10,
     step: 1,
-    'hide-steppers': true,
+    'hide-spinner-buttons': true,
     'help-text': 'Enter a value between 0 and 10',
     'help-text-type': 'default',
   },
@@ -302,17 +302,35 @@ export const AllVariants: StoryObj = {
       ></mdc-numberinput>
       <mdc-numberinput
         label="Label"
-        help-text="Steppers hidden"
+        help-text="Spinner buttons hidden"
         help-text-type="default"
         placeholder="Placeholder"
         value="5"
-        hide-steppers
+        hide-spinner-buttons
       ></mdc-numberinput>
     </div>`,
 };
 
 export const FormFieldNumber: StoryObj = {
   render: (args: any) => {
+    const restoreHelpText = (form: HTMLFormElement) => {
+      const numberInput = form.querySelector('mdc-numberinput');
+      numberInput?.setAttribute('help-text-type', args['help-text-type'] || VALIDATION.DEFAULT);
+    };
+
+    const handleInvalid = (event: Event) => {
+      const numberInput = event.target as HTMLElement;
+      numberInput.setAttribute('help-text-type', VALIDATION.ERROR);
+    };
+
+    const handleInput = (event: Event) => {
+      const form = event.currentTarget as HTMLFormElement;
+      const numberInput = form.querySelector('mdc-numberinput');
+      if (numberInput?.validity.valid) {
+        restoreHelpText(form);
+      }
+    };
+
     const handleSubmit = (event: Event) => {
       event.preventDefault();
       const form = event.target as HTMLFormElement;
@@ -321,8 +339,15 @@ export const FormFieldNumber: StoryObj = {
       action('Form Submitted')({ value: selectedValue });
     };
 
+    const invalidListener = { handleEvent: handleInvalid, capture: true };
+
     return html`
-      <form @submit=${handleSubmit}>
+      <form
+        @submit=${handleSubmit}
+        @invalid=${invalidListener}
+        @input=${handleInput}
+        @reset=${(event: Event) => restoreHelpText(event.currentTarget as HTMLFormElement)}
+      >
         <fieldset>
           <legend>Form Example</legend>
           ${render(args)}

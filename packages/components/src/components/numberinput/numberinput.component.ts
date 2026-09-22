@@ -9,22 +9,6 @@ import { DEFAULTS } from './numberinput.constants';
 import styles from './numberinput.styles';
 
 /**
- * Parses the `step` attribute, allowing the native `any` sentinel (no step-mismatch validation)
- * alongside numeric values. `type: Number` can't express this, hence the custom converter.
- */
-const stepConverter = {
-  fromAttribute: (value: string | null): number | 'any' => {
-    if (value === DEFAULTS.STEP_ANY) {
-      return DEFAULTS.STEP_ANY;
-    }
-
-    const parsed = value === null ? NaN : parseFloat(value);
-    return Number.isNaN(parsed) ? DEFAULTS.STEP : parsed;
-  },
-  toAttribute: (value: number | 'any') => String(value),
-};
-
-/**
  * @tagname mdc-numberinput
  *
  * @event input - (React: onInput) This event is dispatched when the value of the number field changes (every press).
@@ -44,13 +28,13 @@ const stepConverter = {
  * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
  * @slot input-leading-icon - Slot for the leading icon before the input field. If not provided, the `leadingIcon` property will be used to render the leading icon.
  * @slot input-prefix-text - Slot for the prefix text before the input field. If not provided, the `prefixText` property will be used to render the prefix text.
- * @slot trailing-button - Slot for the trailing content. If not provided, the increment/decrement steppers are rendered by default; set `hideSteppers` to true to render the clear button instead (when `trailingButton` is set to true).
+ * @slot trailing-button - Slot for the trailing content. If not provided, the increment/decrement spinner buttons are rendered by default; set `hideSpinnerButtons` to true to render the clear button instead (when `trailingButton` is set to true).
  *
  * @csspart input-container - The container that wraps the input field, leading icon, prefix text, and trailing content.
  * @csspart input-section - The container that wraps the input field and prefix text.
  * @csspart input-text - The input field element.
- * @csspart stepper-buttons - The container that wraps the increment and decrement stepper buttons.
- * @csspart stepper-button - Each of the increment/decrement stepper button elements.
+ * @csspart spinner-buttons - The container that wraps the increment and decrement spinner buttons.
+ * @csspart spinner-button - Each of the increment/decrement spinner button elements.
  * @csspart label - The label element.
  * @csspart helper-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element.
@@ -75,7 +59,7 @@ class NumberInput extends Input {
    * Hints that a numeric virtual keyboard should be displayed.
    * @default 'numeric'
    */
-  @property({ type: String }) override inputmode: InputModeType = INPUT_MODE.NUMERIC;
+  @property({ type: String, reflect: true }) override inputmode: InputModeType = INPUT_MODE.NUMERIC;
 
   /**
    * The minimum value that the number field will accept.
@@ -89,27 +73,41 @@ class NumberInput extends Input {
 
   /**
    * The amount that the value changes for each increment/decrement, whether from the
-   * steppers or the up/down arrow keys. Set to `'any'` to allow any decimal value with no
+   * spinner buttons or the up/down arrow keys. Set to `'any'` to allow any decimal value with no
    * step-mismatch validation.
    * @default 1
    */
-  @property({ attribute: 'step', converter: stepConverter }) step: number | 'any' = DEFAULTS.STEP;
+  @property({
+    attribute: 'step',
+    converter: {
+      fromAttribute: (value: string | null): number | 'any' => {
+        if (value === DEFAULTS.STEP_ANY) {
+          return DEFAULTS.STEP_ANY;
+        }
+
+        const parsed = value === null ? NaN : parseFloat(value);
+        return Number.isNaN(parsed) ? DEFAULTS.STEP : parsed;
+      },
+      toAttribute: (value: number | 'any') => String(value),
+    },
+  })
+  step: number | 'any' = DEFAULTS.STEP;
 
   /**
-   * Increment and decrement stepper buttons are shown alongside the input field by default.
+   * Increment and decrement spinner buttons are shown alongside the input field by default.
    * Set this to true to hide them.
    * @default false
    */
-  @property({ type: Boolean, attribute: 'hide-steppers' }) hideSteppers = false;
+  @property({ type: Boolean, attribute: 'hide-spinner-buttons' }) hideSpinnerButtons = false;
 
   /**
-   * Aria label for the increment stepper button.
+   * Aria label for the increment spinner button.
    * @default ''
    */
   @property({ type: String, attribute: 'increment-aria-label' }) incrementAriaLabel = '';
 
   /**
-   * Aria label for the decrement stepper button.
+   * Aria label for the decrement spinner button.
    * @default ''
    */
   @property({ type: String, attribute: 'decrement-aria-label' }) decrementAriaLabel = '';
@@ -179,7 +177,7 @@ class NumberInput extends Input {
   private handleDecrement = () => this.stepBy(-1);
 
   /**
-   * stepUp()/stepDown() throw for step="any", so in that case the steppers add/subtract 1 and
+   * stepUp()/stepDown() throw for step="any", so in that case the spinner buttons add/subtract 1 and
    * clamp (matching native spin buttons); any value is already step-valid, so no alignment is
    * needed. Otherwise the native step algorithm handles stepping and step-base alignment.
    */
@@ -205,7 +203,7 @@ class NumberInput extends Input {
       inputElement.stepDown();
     }
 
-    // Steppers that clamp at min/max leave the value unchanged; matching native spin buttons,
+    // Spinner buttons that clamp at min/max leave the value unchanged; matching native spin buttons,
     // no input/change events are emitted in that case.
     if (inputElement.value !== previousValue) {
       this.syncValueFromInputElement();
@@ -223,17 +221,22 @@ class NumberInput extends Input {
   }
 
   /**
-   * Renders a single increment or decrement stepper button.
+   * Renders a single increment or decrement spinner button.
+   *
+   * The buttons are given `tabindex="-1"` so they are not in the tab order, matching native
+   * spin buttons: they are redundant pointer affordances for the `ArrowUp`/`ArrowDown` stepping
+   * already available from the focused input, so keyboard users reach the same behaviour without
+   * two extra tab stops per field.
    */
-  protected renderStepperButton(direction: 'increment' | 'decrement') {
+  protected renderSpinnerButton(direction: 'increment' | 'decrement') {
     const isIncrement = direction === 'increment';
 
     return html`
       <mdc-button
-        part="stepper-button"
+        part="spinner-button"
         class="own-focus-ring"
-        variant=${DEFAULTS.STEPPER_BUTTON_VARIANT}
-        size="${DEFAULTS.STEPPER_BUTTON_SIZE}"
+        variant=${DEFAULTS.SPINNER_BUTTON_VARIANT}
+        size="${DEFAULTS.SPINNER_BUTTON_SIZE}"
         prefix-icon="${isIncrement ? DEFAULTS.INCREMENT_ICON : DEFAULTS.DECREMENT_ICON}"
         aria-label="${isIncrement ? this.incrementAriaLabel : this.decrementAriaLabel}"
         ?disabled=${this.disabled || this.readonly}
@@ -244,17 +247,16 @@ class NumberInput extends Input {
   }
 
   /**
-   * Renders the decrement/increment steppers in place of the default trailing (clear) button,
-   * matching the Figma "Number Input" design, unless `hideSteppers` is set.
+   * Renders the decrement/increment spinner buttons in place of the default trailing (clear) button
    */
   protected override renderTrailingButton(show = false) {
-    if (this.hideSteppers) {
+    if (this.hideSpinnerButtons) {
       return super.renderTrailingButton(show);
     }
 
     return html`
-      <div part="stepper-buttons">
-        ${this.renderStepperButton('decrement')} ${this.renderStepperButton('increment')}
+      <div part="spinner-buttons">
+        ${this.renderSpinnerButton('decrement')} ${this.renderSpinnerButton('increment')}
       </div>
     `;
   }

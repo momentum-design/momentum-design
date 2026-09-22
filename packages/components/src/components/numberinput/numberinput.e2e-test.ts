@@ -15,7 +15,7 @@ type SetupOptions = {
   min?: number;
   max?: number;
   step?: number | 'any';
-  hideSteppers?: boolean;
+  hideSpinnerButtons?: boolean;
   incrementAriaLabel?: string;
   decrementAriaLabel?: string;
   label?: string;
@@ -43,7 +43,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.min !== undefined ? `min="${restArgs.min}"` : ''}
       ${restArgs.max !== undefined ? `max="${restArgs.max}"` : ''}
       ${restArgs.step !== undefined ? `step="${restArgs.step}"` : ''}
-      ${restArgs.hideSteppers ? 'hide-steppers' : ''}
+      ${restArgs.hideSpinnerButtons ? 'hide-spinner-buttons' : ''}
       ${restArgs.incrementAriaLabel ? `increment-aria-label="${restArgs.incrementAriaLabel}"` : ''}
       ${restArgs.decrementAriaLabel ? `decrement-aria-label="${restArgs.decrementAriaLabel}"` : ''}
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
@@ -108,19 +108,19 @@ test.describe('mdc-numberinput', () => {
       await componentsPage.removeAttribute(number, 'inputmode');
     });
 
-    await test.step('should render steppers by default, labeled by increment/decrement-aria-label', async () => {
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
-      const decrementButton = number.locator('mdc-button[part="stepper-button"]').first();
+    await test.step('should render spinner buttons by default, labeled by increment/decrement-aria-label', async () => {
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
+      const decrementButton = number.locator('mdc-button[part="spinner-button"]').first();
       await expect(incrementButton).toBeVisible();
       await expect(decrementButton).toBeVisible();
       await expect(incrementButton).toHaveAttribute('aria-label', 'Increment');
       await expect(decrementButton).toHaveAttribute('aria-label', 'Decrement');
     });
 
-    await test.step('should hide the steppers when hide-steppers is set', async () => {
-      await componentsPage.setAttributes(number, { 'hide-steppers': '' });
-      await expect(number.locator('mdc-button[part="stepper-button"]')).toHaveCount(0);
-      await componentsPage.removeAttribute(number, 'hide-steppers');
+    await test.step('should hide the spinner buttons when hide-spinner-buttons is set', async () => {
+      await componentsPage.setAttributes(number, { 'hide-spinner-buttons': '' });
+      await expect(number.locator('mdc-button[part="spinner-button"]')).toHaveCount(0);
+      await componentsPage.removeAttribute(number, 'hide-spinner-buttons');
     });
 
     await test.step('should the min, max and step attributes be reflected on the native input', async () => {
@@ -159,7 +159,7 @@ test.describe('mdc-numberinput', () => {
    * INTERACTIONS
    */
   test('interactions', async ({ componentsPage }) => {
-    await test.step('should tab from the toggletip to the input, leaving the steppers out of the tab order', async () => {
+    await test.step('should tab from the toggletip to the input, leaving the spinner buttons out of the tab order', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, toggletipText: 'More information' });
       const infoButton = number.locator('mdc-button[part="info-icon-btn"]');
       const inputEl = number.locator('input');
@@ -169,15 +169,15 @@ test.describe('mdc-numberinput', () => {
       await expect(infoButton).toBeFocused();
       await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
-      // The steppers have tabindex="-1", so focus skips them and leaves the component.
+      // The spinner buttons have tabindex="-1", so focus skips them and leaves the component.
       await componentsPage.actionability.pressTab();
       await expect(secondButton).toBeFocused();
     });
 
-    await test.step('should increment the value by step when clicking the increment stepper', async () => {
+    await test.step('should increment the value by step when clicking the increment spinner button', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 2 });
       const inputEl = number.locator('input');
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
 
       const waitForInput = await componentsPage.waitForEvent(number, 'input');
       const waitForChange = await componentsPage.waitForEvent(number, 'change');
@@ -187,19 +187,19 @@ test.describe('mdc-numberinput', () => {
       await expect(waitForChange).toEventEmitted();
     });
 
-    await test.step('should decrement the value by step when clicking the decrement stepper', async () => {
+    await test.step('should decrement the value by step when clicking the decrement spinner button', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 2 });
       const inputEl = number.locator('input');
-      const decrementButton = number.locator('mdc-button[part="stepper-button"]').first();
+      const decrementButton = number.locator('mdc-button[part="spinner-button"]').first();
 
       await decrementButton.click();
       await expect(inputEl).toHaveValue('2');
     });
 
-    await test.step('should clamp the increment stepper to the maximum and stay there on further clicks', async () => {
+    await test.step('should clamp the increment spinner button to the maximum and stay there on further clicks', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '5', max: 10, step: 5 });
       const inputEl = number.locator('input');
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
 
       await incrementButton.click();
       await expect(inputEl).toHaveValue('10');
@@ -207,10 +207,10 @@ test.describe('mdc-numberinput', () => {
       await expect(inputEl).toHaveValue('10');
     });
 
-    await test.step('should clamp the decrement stepper to the minimum and stay there on further clicks', async () => {
+    await test.step('should clamp the decrement spinner button to the minimum and stay there on further clicks', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '5', min: 0, step: 5 });
       const inputEl = number.locator('input');
-      const decrementButton = number.locator('mdc-button[part="stepper-button"]').first();
+      const decrementButton = number.locator('mdc-button[part="spinner-button"]').first();
 
       await decrementButton.click();
       await expect(inputEl).toHaveValue('0');
@@ -228,8 +228,8 @@ test.describe('mdc-numberinput', () => {
         step: 'any',
       });
       const inputEl = number.locator('input');
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
-      const decrementButton = number.locator('mdc-button[part="stepper-button"]').first();
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
+      const decrementButton = number.locator('mdc-button[part="spinner-button"]').first();
 
       // Decrementing at the fractional min must clamp to the min, not round back up past it.
       await decrementButton.click();
@@ -241,10 +241,10 @@ test.describe('mdc-numberinput', () => {
       await expect(inputEl).toHaveValue('9.5');
     });
 
-    await test.step('should not emit input/change when a stepper click is clamped at the boundary', async () => {
+    await test.step('should not emit input/change when a spinner button click is clamped at the boundary', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '10', max: 10, step: 5 });
       const inputEl = number.locator('input');
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
 
       const waitForInput = await componentsPage.waitForEvent(number, 'input');
       const waitForChange = await componentsPage.waitForEvent(number, 'change');
@@ -277,11 +277,11 @@ test.describe('mdc-numberinput', () => {
       await expect(inputEl).toHaveValue('0');
     });
 
-    await test.step('should step by 1 via the steppers when step is "any"', async () => {
+    await test.step('should step by 1 via the spinner buttons when step is "any"', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 'any' });
       const inputEl = number.locator('input');
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
-      const decrementButton = number.locator('mdc-button[part="stepper-button"]').first();
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
+      const decrementButton = number.locator('mdc-button[part="spinner-button"]').first();
 
       await incrementButton.click();
       await expect(inputEl).toHaveValue('5');
@@ -350,7 +350,7 @@ test.describe('mdc-numberinput', () => {
     await test.step('should not step or focus the input when disabled, skipping the whole component', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '5', disabled: true });
       const inputEl = number.locator('input');
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
       const secondButton = componentsPage.page.locator('mdc-button:has-text("Second Button")');
 
       await expect(incrementButton).toBeDisabled();
@@ -362,7 +362,7 @@ test.describe('mdc-numberinput', () => {
 
     await test.step('should not step when readonly', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '5', readonly: true });
-      const incrementButton = number.locator('mdc-button[part="stepper-button"]').last();
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
       const inputEl = number.locator('input');
 
       await expect(incrementButton).toBeDisabled();
@@ -373,7 +373,7 @@ test.describe('mdc-numberinput', () => {
     await test.step('should submit the current value as part of a form', async () => {
       const form = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 2, name: 'quantity' }, true);
       const mdcNumber = form.locator('mdc-numberinput');
-      const incrementButton = mdcNumber.locator('mdc-button[part="stepper-button"]').last();
+      const incrementButton = mdcNumber.locator('mdc-button[part="spinner-button"]').last();
       const submitButton = form.locator('mdc-button[type="submit"]');
 
       await incrementButton.click();
@@ -424,7 +424,7 @@ test.describe('mdc-numberinput', () => {
     numberStickerSheet.setAttributes({
       ...attributes,
       value: '5',
-      'hide-steppers': true,
+      'hide-spinner-buttons': true,
     });
     await numberStickerSheet.createMarkupWithCombination({});
 
