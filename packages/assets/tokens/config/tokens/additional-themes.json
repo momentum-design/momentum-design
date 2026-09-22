@@ -11,7 +11,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/dark.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/dark/indigo.json"
       ]
@@ -27,7 +28,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/dark.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/dark/jade.json"
       ]
@@ -43,7 +45,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/dark.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/dark/bronze.json"
       ]
@@ -59,7 +62,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/dark.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/dark/rose.json"
       ]
@@ -75,7 +79,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/dark.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/dark/lavender.json"
       ]
@@ -91,7 +96,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/light.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/light/indigo.json"
       ]
@@ -107,7 +113,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/light.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/light/jade.json"
       ]
@@ -123,7 +130,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/light.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/light/bronze.json"
       ]
@@ -139,7 +147,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/light.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/light/rose.json"
       ]
@@ -155,7 +164,8 @@
       "targets": [
         "core/value.json",
         "theme/stable/light.json",
-        "theme/stable/border-radius.json",
+        "core/radius.json",
+        "theme/stable/radius.json",
         "theme/stable/spacing.json",
         "additionaltheme/light/lavender.json"
       ]

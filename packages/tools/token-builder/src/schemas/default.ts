@@ -1,6 +1,5 @@
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
 import * as CoreColorSchema from './json/core/color.json';
-import * as CoreBorderRadiusSchema from './json/core/border-radius.json';
 import * as CoreBorderWidthSchema from './json/core/border-width.json';
 import * as ThemeWebexCommonSchema from './json/theme/webex/common.json';
 import * as ThemeWebexDarkSchema from './json/theme/webex/dark.json';
@@ -17,10 +16,6 @@ import * as CoreTypeDisplaySchema from './json/core/type/display.json';
 type TypeConversionWorkaround = SomeJSONSchema & { $ref: string };
 
 const SCHEMA_MAP = [
-  {
-    fileName: 'core/border-radius.json',
-    jsonSchema: CoreBorderRadiusSchema as unknown as TypeConversionWorkaround,
-  },
   {
     fileName: 'core/spacing.json',
     jsonSchema: CoreSpacingSchema as unknown as TypeConversionWorkaround,

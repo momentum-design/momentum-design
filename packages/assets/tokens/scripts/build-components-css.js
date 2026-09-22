@@ -24,7 +24,7 @@ const elevation = glob.sync(path.posix.join(distCSSFolder, "/elevation/*.css"));
 const typography = glob.sync(path.posix.join(distCSSFolder, "/typography/*.css"));
 const spacing = glob.sync(path.posix.join(distCSSFolder, "/spacing/*.css"));
 const size = glob.sync(path.posix.join(distCSSFolder, "/size/*.css"));
-const borderRadius = glob.sync(path.posix.join(distCSSFolder, "/border-radius/*.css"));
+const radius = glob.sync(path.posix.join(distCSSFolder, "/radius/*.css"));
 const blur = glob.sync(path.posix.join(distCSSFolder, "/blur/*.css"));
 
 const motion = glob.sync(path.posix.join(distCSSFolder, "/motion/*.css"));
@@ -49,7 +49,7 @@ const tokens = [
   ...elevation,
   ...spacing,
   ...size,
-  ...borderRadius,
+  ...radius,
   ...blur,
   ...motion,
   ...animation,
