@@ -1,7 +1,7 @@
 import utils from '../../utils/tag-name';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 
-const TAG_NAME = utils.constructTagName('number');
+const TAG_NAME = utils.constructTagName('numberinput');
 
 const DEFAULTS = {
   STEP: 1,

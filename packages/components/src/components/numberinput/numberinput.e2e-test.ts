@@ -32,7 +32,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
     html: `
     ${isForm ? '<form>' : ''}
     ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
-      <mdc-number
+      <mdc-numberinput
       id="${restArgs.id}"
       ${restArgs.name ? `name="${restArgs.name}"` : ''}
       ${restArgs.value !== undefined ? `value="${restArgs.value}"` : ''}
@@ -51,7 +51,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
       ${restArgs.validationMessage ? `validation-message="${restArgs.validationMessage}"` : ''}
       ${restArgs.toggletipText ? `toggletip-text="${restArgs.toggletipText}"` : ''}
-      ></mdc-number>
+      ></mdc-numberinput>
       ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
@@ -60,19 +60,19 @@ const setup = async (args: SetupOptions, isForm = false) => {
   if (isForm) {
     const form = componentsPage.page.locator('form');
     await form.waitFor();
-    await form.locator('mdc-number input').waitFor();
+    await form.locator('mdc-numberinput input').waitFor();
     return form;
   }
-  const number = componentsPage.page.locator('mdc-number');
+  const number = componentsPage.page.locator('mdc-numberinput');
   await number.waitFor();
   return number;
 };
 
-test.describe('mdc-number', () => {
+test.describe('mdc-numberinput', () => {
   test.use({ viewport: { width: 800, height: 1500 } });
 
   const defaultSetupOptions = {
-    id: 'test-mdc-number',
+    id: 'test-mdc-numberinput',
     placeholder: 'Placeholder',
     label: 'Label',
     helpText: 'Help Text',
@@ -88,7 +88,7 @@ test.describe('mdc-number', () => {
     const number = await setup({ componentsPage, ...defaultSetupOptions });
 
     await test.step('should attributes be present in the component', async () => {
-      await expect(number).toHaveAttribute('id', 'test-mdc-number');
+      await expect(number).toHaveAttribute('id', 'test-mdc-numberinput');
       await expect(number).toHaveAttribute('placeholder', 'Placeholder');
       await expect(number).toHaveAttribute('label', 'Label');
       const label = number.locator('label');
@@ -353,7 +353,7 @@ test.describe('mdc-number', () => {
 
     await test.step('should submit the current value as part of a form', async () => {
       const form = await setup({ componentsPage, ...defaultSetupOptions, value: '4', step: 2, name: 'quantity' }, true);
-      const mdcNumber = form.locator('mdc-number');
+      const mdcNumber = form.locator('mdc-numberinput');
       const incrementButton = mdcNumber.locator('mdc-button[part="stepper-button"]').last();
       const submitButton = form.locator('mdc-button[type="submit"]');
 
@@ -380,14 +380,14 @@ test.describe('mdc-number', () => {
     test.setTimeout(60_000);
 
     const attributes = {
-      id: 'test-mdc-number',
+      id: 'test-mdc-numberinput',
       placeholder: 'Placeholder',
       label: 'Label',
       'help-text': 'Help Text',
       'increment-aria-label': 'Increment',
       'decrement-aria-label': 'Decrement',
     };
-    const numberStickerSheet = new StickerSheet(componentsPage, 'mdc-number');
+    const numberStickerSheet = new StickerSheet(componentsPage, 'mdc-numberinput');
 
     numberStickerSheet.setAttributes(attributes);
     await numberStickerSheet.createMarkupWithCombination({
@@ -434,7 +434,7 @@ test.describe('mdc-number', () => {
     const container = numberStickerSheet.getWrapperContainer();
     await componentsPage.page.mouse.move(0, 0);
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-number', { element: container });
+      await componentsPage.visualRegression.takeScreenshot('mdc-numberinput', { element: container });
     });
 
     await test.step('should keep native spin buttons hidden while the input is focused and hovered', async () => {
@@ -449,7 +449,7 @@ test.describe('mdc-number', () => {
       const inputEl = number.locator('input');
       await inputEl.click();
       await inputEl.hover();
-      await componentsPage.visualRegression.takeScreenshot('mdc-number-focused', {
+      await componentsPage.visualRegression.takeScreenshot('mdc-numberinput-focused', {
         source: 'userflow',
         fileNameSuffix: 'native-spin-buttons-hidden',
         element: number,
@@ -463,22 +463,22 @@ test.describe('mdc-number', () => {
   test('accessibility', async ({ componentsPage }) => {
     await test.step('default', async () => {
       await setup({ componentsPage, ...defaultSetupOptions });
-      await componentsPage.accessibility.checkForA11yViolations('number-default');
+      await componentsPage.accessibility.checkForA11yViolations('numberinput-default');
     });
 
     await test.step('required', async () => {
       await setup({ componentsPage, ...defaultSetupOptions, required: true });
-      await componentsPage.accessibility.checkForA11yViolations('number-required');
+      await componentsPage.accessibility.checkForA11yViolations('numberinput-required');
     });
 
     await test.step('disabled', async () => {
       await setup({ componentsPage, ...defaultSetupOptions, value: '5', disabled: true });
-      await componentsPage.accessibility.checkForA11yViolations('number-disabled');
+      await componentsPage.accessibility.checkForA11yViolations('numberinput-disabled');
     });
 
     await test.step('error validation', async () => {
       await setup({ componentsPage, ...defaultSetupOptions, helpTextType: 'error', helpText: 'Error message' });
-      await componentsPage.accessibility.checkForA11yViolations('number-error');
+      await componentsPage.accessibility.checkForA11yViolations('numberinput-error');
     });
   });
 });

@@ -5,15 +5,12 @@ import Input from '../input/input.component';
 import { INPUT_TYPE } from '../input/input.constants';
 import type { InputType } from '../input/input.types';
 
-import { DEFAULTS } from './number.constants';
-import styles from './number.styles';
-
-// The class below is named `Number`, which shadows the global `Number` constructor within this file.
-const GlobalNumber = globalThis.Number;
+import { DEFAULTS } from './numberinput.constants';
+import styles from './numberinput.styles';
 
 /**
  * Parses the `step` attribute, allowing the native `any` sentinel (no step-mismatch validation)
- * alongside numeric values. `type: GlobalNumber` can't express this, hence the custom converter.
+ * alongside numeric values. `type: Number` can't express this, hence the custom converter.
  */
 const stepConverter = {
   fromAttribute: (value: string | null): number | 'any' => {
@@ -22,13 +19,13 @@ const stepConverter = {
     }
 
     const parsed = value === null ? NaN : parseFloat(value);
-    return GlobalNumber.isNaN(parsed) ? DEFAULTS.STEP : parsed;
+    return Number.isNaN(parsed) ? DEFAULTS.STEP : parsed;
   },
   toAttribute: (value: number | 'any') => String(value),
 };
 
 /**
- * @tagname mdc-number
+ * @tagname mdc-numberinput
  *
  * @event input - (React: onInput) This event is dispatched when the value of the number field changes (every press).
  * @event change - (React: onChange) This event is dispatched when the value of the number field changes (on blur).
@@ -74,16 +71,16 @@ const stepConverter = {
  * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
  */
-class Number extends Input {
+class NumberInput extends Input {
   /**
    * The minimum value that the number field will accept.
    */
-  @property({ type: GlobalNumber, attribute: 'min' }) min?: number;
+  @property({ type: Number, attribute: 'min' }) min?: number;
 
   /**
    * The maximum value that the number field will accept.
    */
-  @property({ type: GlobalNumber, attribute: 'max' }) max?: number;
+  @property({ type: Number, attribute: 'max' }) max?: number;
 
   /**
    * The amount that the value changes for each increment/decrement, whether from the
@@ -185,7 +182,7 @@ class Number extends Input {
     const previousValue = inputElement.value;
 
     if (this.step === DEFAULTS.STEP_ANY) {
-      const current = GlobalNumber.isNaN(inputElement.valueAsNumber) ? 0 : inputElement.valueAsNumber;
+      const current = Number.isNaN(inputElement.valueAsNumber) ? 0 : inputElement.valueAsNumber;
       // Round in the direction of travel before clamping; rounding after clamping can push the
       // value past a fractional min/max in the wrong direction.
       let next = delta === 1 ? Math.floor(current + delta) : Math.ceil(current + delta);
@@ -263,4 +260,4 @@ class Number extends Input {
   public static override styles: Array<CSSResult> = [...Input.styles, ...styles];
 }
 
-export default Number;
+export default NumberInput;

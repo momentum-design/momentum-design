@@ -1,4 +1,4 @@
-import { Number } from "../../../../dist/react";
+import { NumberInput } from "../../../../dist/react";
 import figma from "@figma/code-connect";
 
 figma.connect(
@@ -6,7 +6,7 @@ figma.connect(
   {
     props: {},
     example: (props) => {
-      return <Number {...props}/>
+      return <NumberInput {...props}/>
     },
   },
 )

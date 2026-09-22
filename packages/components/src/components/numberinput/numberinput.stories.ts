@@ -9,7 +9,7 @@ import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
 const render = (args: Args) =>
-  html` <mdc-number
+  html` <mdc-numberinput
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
@@ -38,12 +38,12 @@ const render = (args: Args) =>
     ?hide-steppers="${args['hide-steppers']}"
     increment-aria-label="${ifDefined(args['increment-aria-label'])}"
     decrement-aria-label="${ifDefined(args['decrement-aria-label'])}"
-  ></mdc-number>`;
+  ></mdc-numberinput>`;
 
 const meta: Meta = {
-  title: 'Components/number',
+  title: 'Components/numberinput',
   tags: ['autodocs'],
-  component: 'mdc-number',
+  component: 'mdc-numberinput',
   render,
 
   args: {
@@ -218,7 +218,7 @@ export const AllVariants: StoryObj = {
     html` <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
       ${Object.values(VALIDATION).map(
         validation =>
-          html`<mdc-number
+          html`<mdc-numberinput
             help-text-type="${validation}"
             label="Label"
             help-text="Helper text"
@@ -226,9 +226,9 @@ export const AllVariants: StoryObj = {
             value="${validation}_value"
             increment-aria-label="Increment"
             decrement-aria-label="Decrement"
-          ></mdc-number>`,
+          ></mdc-numberinput>`,
       )}
-      <mdc-number
+      <mdc-numberinput
         label="Label"
         help-text="Helper text"
         help-text-type="default"
@@ -236,8 +236,8 @@ export const AllVariants: StoryObj = {
         placeholder="Number is required"
         increment-aria-label="Increment"
         decrement-aria-label="Decrement"
-      ></mdc-number>
-      <mdc-number
+      ></mdc-numberinput>
+      <mdc-numberinput
         label="Label"
         help-text="Helper text"
         help-text-type="default"
@@ -246,8 +246,8 @@ export const AllVariants: StoryObj = {
         value="42"
         increment-aria-label="Increment"
         decrement-aria-label="Decrement"
-      ></mdc-number>
-      <mdc-number
+      ></mdc-numberinput>
+      <mdc-numberinput
         label="Label"
         help-text="Helper text"
         help-text-type="default"
@@ -256,8 +256,8 @@ export const AllVariants: StoryObj = {
         value="42"
         increment-aria-label="Increment"
         decrement-aria-label="Decrement"
-      ></mdc-number>
-      <mdc-number
+      ></mdc-numberinput>
+      <mdc-numberinput
         label="Label"
         help-text="Enter a value between 0 and 10"
         help-text-type="default"
@@ -268,8 +268,8 @@ export const AllVariants: StoryObj = {
         value="5"
         increment-aria-label="Increment"
         decrement-aria-label="Decrement"
-      ></mdc-number>
-      <mdc-number
+      ></mdc-numberinput>
+      <mdc-numberinput
         label="Label"
         help-text="Enter a value between 0 and 10"
         help-text-type="default"
@@ -281,8 +281,8 @@ export const AllVariants: StoryObj = {
         value="5"
         increment-aria-label="Increment"
         decrement-aria-label="Decrement"
-      ></mdc-number>
-      <mdc-number
+      ></mdc-numberinput>
+      <mdc-numberinput
         label="Label"
         help-text="Values step by 5"
         help-text-type="default"
@@ -293,15 +293,15 @@ export const AllVariants: StoryObj = {
         value="10"
         increment-aria-label="Increment"
         decrement-aria-label="Decrement"
-      ></mdc-number>
-      <mdc-number
+      ></mdc-numberinput>
+      <mdc-numberinput
         label="Label"
         help-text="Steppers hidden"
         help-text-type="default"
         placeholder="Placeholder"
         value="5"
         hide-steppers
-      ></mdc-number>
+      ></mdc-numberinput>
     </div>`,
 };
 
