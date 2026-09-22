@@ -42,7 +42,6 @@ const stepConverter = {
  * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
  * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
  * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
- * @slot input - Slot for the input element. If not provided, the input field will be rendered.
  * @slot input-leading-icon - Slot for the leading icon before the input field. If not provided, the `leadingIcon` property will be used to render the leading icon.
  * @slot input-prefix-text - Slot for the prefix text before the input field. If not provided, the `prefixText` property will be used to render the prefix text.
  * @slot trailing-button - Slot for the trailing content. If not provided, the increment/decrement steppers are rendered by default; set `hideSteppers` to true to render the clear button instead (when `trailingButton` is set to true).
@@ -166,6 +165,7 @@ class NumberInput extends Input {
     }
 
     inputElement.step = this.step === DEFAULTS.STEP_ANY ? DEFAULTS.STEP_ANY : String(this.step);
+    this.setInputValidity();
   }
 
   private handleIncrement = () => this.stepBy(1);

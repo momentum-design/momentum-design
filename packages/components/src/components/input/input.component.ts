@@ -227,7 +227,7 @@ class Input
     }
   }
 
-  private setInputValidity() {
+  protected setInputValidity() {
     this.inputElement.setCustomValidity('');
     if (!this.inputElement.validity.valid && this.validationMessage) {
       this.inputElement.setCustomValidity(this.validationMessage);

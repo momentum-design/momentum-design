@@ -318,6 +318,20 @@ test.describe('mdc-numberinput', () => {
       await expect(inputEl).toHaveValue('42');
     });
 
+    await test.step('should update form validity when numeric constraints change', async () => {
+      const form = await setup({ componentsPage, ...defaultSetupOptions, value: '5', name: 'quantity' }, true);
+      const number = form.locator('mdc-numberinput');
+
+      await componentsPage.setAttributes(number, { max: '10' });
+      await expect(form.evaluate((element: HTMLFormElement) => element.checkValidity())).resolves.toBe(true);
+
+      await componentsPage.setAttributes(number, { max: '3' });
+      await expect(form.evaluate((element: HTMLFormElement) => element.checkValidity())).resolves.toBe(false);
+      await expect(
+        number.evaluate((element: HTMLElement & { validity: ValidityState }) => element.validity.rangeOverflow),
+      ).resolves.toBe(true);
+    });
+
     await test.step('should reject non-numeric characters typed into the field', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions });
       const inputEl = number.locator('input');

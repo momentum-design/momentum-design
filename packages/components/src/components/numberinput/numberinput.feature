@@ -1,5 +1,5 @@
-Feature: Number Component
-  As a user, I want to enter and adjust a numeric value using the number component.
+Feature: Number Input Component
+  As a user, I want to enter and adjust a numeric value using the number input component.
 
   Scenario: Typing a number into the input field
     Given the number component is rendered
@@ -9,12 +9,14 @@ Feature: Number Component
   Scenario: Value exceeds the maximum
     Given the number component is rendered with a "max" attribute set
     When I enter a number greater than the maximum and commit the change
-    Then the value should automatically be set to the maximum
+    Then the entered value should remain unchanged
+    And the component should report a range overflow validation error
 
   Scenario: Value is below the minimum
     Given the number component is rendered with a "min" attribute set
     When I enter a number less than the minimum and commit the change
-    Then the value should automatically be set to the minimum
+    Then the entered value should remain unchanged
+    And the component should report a range underflow validation error
 
   Scenario: Showing the steppers by default
     Given the number component is rendered without the "hide-steppers" attribute
