@@ -193,6 +193,12 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   @property({ type: String, attribute: 'locale-next-month-label' })
   localeNextMonthLabel = '';
 
+  /**
+   * Localized announcement made after the range start date is selected.
+   */
+  @property({ type: String, attribute: 'locale-range-start-selected-label' })
+  localeRangeStartSelectedLabel = '';
+
   /** @internal */
   @query('#month-spinbutton') private monthInput!: HTMLInputElement;
 
@@ -201,6 +207,9 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   /** @internal */
   @query('#year-spinbutton') private yearInput!: HTMLInputElement;
+
+  /** @internal */
+  @query('mdc-calendar') private calendar?: HTMLElementTagNameMap['mdc-calendar'];
 
   /** @internal */
   @state() private displayPopover = false;
@@ -416,15 +425,21 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   private handleCalendarButtonClick(): void {
     if (this.disabled || this.readonly) return;
-    if (!this.displayPopover) {
-      this.flushPendingInput();
+    if (this.displayPopover) {
+      this.closePopover();
+      return;
     }
-    this.displayPopover = !this.displayPopover;
+    this.flushPendingInput();
+    this.displayPopover = true;
   }
 
   private handleSelectTriggerClick(): void {
     if (this.disabled || this.readonly) return;
-    this.displayPopover = !this.displayPopover;
+    if (this.displayPopover) {
+      this.closePopover();
+      return;
+    }
+    this.displayPopover = true;
   }
 
   private handleSelectKeydown(event: KeyboardEvent): void {
@@ -445,6 +460,14 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         focusedCell?.focus();
       }
     }, 0);
+  }
+
+  private closePopover(focusTrigger = false): void {
+    if (this.effectiveSelectionMode === SELECTION_MODE.RANGE) {
+      this.calendar?.cancelRangeSelection(this.value, this.endValue);
+    }
+    this.displayPopover = false;
+    if (focusTrigger) this.focusBackToTrigger();
   }
 
   private handleDateSelected(event: CustomEvent): void {
@@ -470,8 +493,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
     const rangeComplete = mode === SELECTION_MODE.RANGE && this.value && this.endValue;
     if (mode !== SELECTION_MODE.RANGE || rangeComplete) {
-      this.displayPopover = false;
-      this.focusBackToTrigger();
+      this.closePopover(true);
     }
   }
 
@@ -836,13 +858,11 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         @shown="${() => this.focusCalendarGrid()}"
         @closebyescape="${(event: Event) => {
           if (event.target === event.currentTarget) {
-            this.displayPopover = false;
-            this.focusBackToTrigger();
+            this.closePopover(true);
           }
         }}"
         @closebyoutsideclick="${() => {
-          this.displayPopover = false;
-          this.focusBackToTrigger();
+          this.closePopover(true);
         }}"
         exportparts="popover-content"
       >
@@ -856,6 +876,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           locale-today-label="${this.localeTodayLabel}"
           locale-prev-month-label="${this.localePrevMonthLabel}"
           locale-next-month-label="${this.localeNextMonthLabel}"
+          locale-range-start-selected-label="${this.localeRangeStartSelectedLabel}"
           @date-selected="${this.handleDateSelected}"
         ></mdc-calendar>
       </mdc-popover>

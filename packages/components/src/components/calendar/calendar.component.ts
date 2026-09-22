@@ -54,6 +54,7 @@ import {
  * @tagname mdc-calendar
  *
  * @dependency mdc-button
+ * @dependency mdc-screenreaderannouncer
  *
  * @event date-selected - Fires when a date or date range is selected.
  * @event month-changed - Fires when the displayed month changes.
@@ -65,6 +66,8 @@ import {
  * @cssproperty --mdc-calendar-day-today-border-color - Border color for today's date.
  * @cssproperty --mdc-calendar-day-hover-bg - Background color on hover.
  * @cssproperty --mdc-calendar-range-bg - Background color for days within a range.
+ * @cssproperty --mdc-calendar-range-preview-bg - Background color for a provisional range.
+ * @cssproperty --mdc-calendar-range-preview-text-color - Text color for days within a provisional range.
  * @cssproperty --mdc-calendar-day-outside-month-text-color - Text color for days outside the current month.
  * @cssproperty --mdc-calendar-day-disabled-text-color - Text color for disabled days.
  */
@@ -133,6 +136,12 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   @property({ type: String, attribute: 'locale-next-month-label' })
   localeNextMonthLabel = '';
 
+  /**
+   * Localized announcement made after the range start date is selected.
+   */
+  @property({ type: String, attribute: 'locale-range-start-selected-label' })
+  localeRangeStartSelectedLabel = '';
+
   @state() private displayMonth: number = new Date().getMonth() + 1;
 
   @state() private displayYear: number = new Date().getFullYear();
@@ -146,6 +155,8 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   @state() private outgoingDisplay: DisplaySnapshot | null = null;
 
   @state() private gridMotion: (typeof GRID_MOTION)[keyof typeof GRID_MOTION] = GRID_MOTION.IDLE;
+
+  @state() private hoveredDate: string = '';
 
   /** @internal */
   private reducedMotionQuery?: MediaQueryList;
@@ -251,6 +262,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
 
     if (changedProperties.has('selectionMode')) {
       this.rangeSelectionPhase = 'start';
+      this.hoveredDate = '';
     }
 
     if (changedProperties.has('value') && this.value) {
@@ -305,10 +317,20 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     this.focusedDate = toISODate(focusDt);
   }
 
+  /** @internal */
+  public cancelRangeSelection(value: string, endValue: string): void {
+    if (this.selectionMode !== SELECTION_MODE.RANGE || this.rangeSelectionPhase !== 'end') return;
+    this.value = value;
+    this.endValue = endValue;
+    this.rangeSelectionPhase = 'start';
+    this.hoveredDate = '';
+    this.gridHasFocus = false;
+    this.initializeDisplay();
+  }
+
   private getCalendarGridFor(month: number, year: number): CalendarGridWeek[] {
     const selectedDates = this.getSelectedDates();
-    const rangeStart = this.getRangeStart();
-    const rangeEnd = this.getRangeEnd();
+    const { start: rangeStart, end: rangeEnd } = this.getDisplayedRange();
 
     return generateCalendarGrid(
       year,
@@ -336,18 +358,34 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     return [this.value];
   }
 
-  private getRangeStart(): string | undefined {
-    if ((this.selectionMode === SELECTION_MODE.WEEK || this.selectionMode === SELECTION_MODE.RANGE) && this.value) {
-      return this.value;
-    }
-    return undefined;
+  private get previewEndDate(): string {
+    if (this.selectionMode !== SELECTION_MODE.RANGE || this.rangeSelectionPhase !== 'end' || !this.value) return '';
+    if (this.hoveredDate && !this.isDateDisabled(this.hoveredDate)) return this.hoveredDate;
+    if (this.gridHasFocus && this.focusedDate && !this.isDateDisabled(this.focusedDate)) return this.focusedDate;
+    return '';
   }
 
-  private getRangeEnd(): string | undefined {
-    if ((this.selectionMode === SELECTION_MODE.WEEK || this.selectionMode === SELECTION_MODE.RANGE) && this.endValue) {
-      return this.endValue;
+  private get isPreviewingRange(): boolean {
+    return Boolean(this.previewEndDate);
+  }
+
+  private getDisplayedRange(): { start?: string; end?: string } {
+    if (this.selectionMode !== SELECTION_MODE.WEEK && this.selectionMode !== SELECTION_MODE.RANGE) return {};
+
+    const previewEnd = this.previewEndDate;
+    if (this.selectionMode === SELECTION_MODE.RANGE && this.value && previewEnd) {
+      const startDt = parseISO(this.value);
+      const endDt = parseISO(previewEnd);
+      if (startDt && endDt && isBefore(endDt, startDt)) {
+        return { start: previewEnd, end: this.value };
+      }
+      return { start: this.value, end: previewEnd };
     }
-    return undefined;
+
+    return {
+      start: this.value || undefined,
+      end: this.endValue || undefined,
+    };
   }
 
   private prefersReducedMotion(): boolean {
@@ -465,6 +503,14 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     this.selectDate(dayInfo.date);
   }
 
+  private handleDayPointerEnter(dayInfo: CalendarDayInfo): void {
+    if (this.rangeSelectionPhase !== 'end' || this.selectionMode !== SELECTION_MODE.RANGE || dayInfo.isDisabled) {
+      this.hoveredDate = '';
+      return;
+    }
+    this.hoveredDate = dayInfo.date;
+  }
+
   private selectDate(dateIso: string): void {
     switch (this.selectionMode) {
       case SELECTION_MODE.SINGLE: {
@@ -493,6 +539,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
           this.endValue = '';
           this.rangeSelectionPhase = 'end';
           this.focusedDate = dateIso;
+          this.hoveredDate = '';
         } else {
           const startDt = parseISO(this.value);
           const endDt = parseISO(dateIso);
@@ -504,6 +551,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
           }
           this.rangeSelectionPhase = 'start';
           this.focusedDate = dateIso;
+          this.hoveredDate = '';
           this.dispatchEvent(
             new CustomEvent('date-selected', {
               detail: { date: dateIso, startDate: this.value, endDate: this.endValue },
@@ -593,6 +641,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       const newIso = toISODate(newDt);
       if (this.isDateDisabled(newIso)) return;
 
+      this.hoveredDate = '';
       this.focusedDate = newIso;
 
       if (newDt.getMonth() + 1 !== this.displayMonth || newDt.getFullYear() !== this.displayYear) {
@@ -646,6 +695,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
 
   private renderDay(dayInfo: CalendarDayInfo, isInteractive: boolean) {
     const isFocused = isInteractive && dayInfo.date === this.focusedDate;
+    const isRangePreview = this.isPreviewingRange;
 
     const dayClasses = {
       'calendar-day': true,
@@ -661,13 +711,17 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       'in-range': dayInfo.isInRange,
       'range-start': dayInfo.isRangeStart,
       'range-end': dayInfo.isRangeEnd,
+      'range-preview': isRangePreview && dayInfo.isInRange,
     };
 
     const tabIndex = isFocused ? 0 : -1;
-    const isPartOfSelection = dayInfo.isSelected || dayInfo.isInRange;
+    const isPartOfSelection = dayInfo.isSelected || (dayInfo.isInRange && !isRangePreview);
 
     return html`
-      <div class="${classMap(wrapperClasses)}">
+      <div
+        class="${classMap(wrapperClasses)}"
+        @pointerenter="${isInteractive ? () => this.handleDayPointerEnter(dayInfo) : nothing}"
+      >
         <button
           class="${classMap(dayClasses)}"
           role="gridcell"
@@ -677,7 +731,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
           aria-disabled="${dayInfo.isDisabled ? 'true' : nothing}"
           aria-current="${dayInfo.isToday ? 'date' : nothing}"
           aria-label="${formatDateFull(dayInfo.date, this.locale)}"
-          @click="${() => this.handleDayClick(dayInfo)}"
+          @click="${isInteractive ? () => this.handleDayClick(dayInfo) : nothing}"
         >
           ${dayInfo.day}
         </button>
@@ -691,6 +745,10 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
 
   private handleGridFocusOut(): void {
     this.gridHasFocus = false;
+  }
+
+  private handleGridPointerLeave(): void {
+    this.hoveredDate = '';
   }
 
   private renderGridLayer(snapshot: DisplaySnapshot, phase: GridLayerPhase, layerKey: 'incoming' | 'outgoing') {
@@ -713,6 +771,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
           @keydown="${isInteractive ? this.handleGridKeydown : nothing}"
           @focusin="${isInteractive ? this.handleGridFocusIn : nothing}"
           @focusout="${isInteractive ? this.handleGridFocusOut : nothing}"
+          @pointerleave="${isInteractive ? this.handleGridPointerLeave : nothing}"
         >
           <div class="calendar-row calendar-weekdays" role="row">
             ${weekdays.map(day => html`<span class="calendar-weekday" role="columnheader">${day}</span>`)}
@@ -788,7 +847,15 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   }
 
   public override render() {
-    return html` ${this.renderHeader()} ${this.renderGridViewport()} ${this.renderTodayButton()} `;
+    const rangeAnnouncement =
+      this.rangeSelectionPhase === 'end' ? this.localeRangeStartSelectedLabel : '';
+    return html`
+      ${this.renderHeader()} ${this.renderGridViewport()} ${this.renderTodayButton()}
+      <mdc-screenreaderannouncer
+        announcement="${rangeAnnouncement}"
+        data-aria-live="polite"
+      ></mdc-screenreaderannouncer>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

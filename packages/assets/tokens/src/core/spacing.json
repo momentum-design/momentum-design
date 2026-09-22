@@ -1,82 +1,49 @@
 {
   "spacing": {
     "0": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "0px",
-      "description": ""
+      "value": "0",
+      "type": "dimension",
+      "description": "0px — flush, collapsed gaps"
     },
     "4": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "4px",
-      "description": ""
+      "value": "0.25rem",
+      "type": "dimension",
+      "description": "4px — tight rhythm step"
     },
     "8": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "8px",
-      "description": ""
+      "value": "0.5rem",
+      "type": "dimension",
+      "description": "8px — default control gap and list padding"
     },
     "12": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "12px",
-      "description": ""
-    },
-    "14": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "14px",
-      "description": ""
+      "value": "0.75rem",
+      "type": "dimension",
+      "description": "12px — medium inset"
     },
     "16": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "16px",
-      "description": ""
-    },
-    "20": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "20px",
-      "description": ""
+      "value": "1rem",
+      "type": "dimension",
+      "description": "16px — section and container padding"
     },
     "24": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "24px",
-      "description": ""
-    },
-    "28": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "28px",
-      "description": ""
+      "value": "1.5rem",
+      "type": "dimension",
+      "description": "24px — block spacing"
     },
     "32": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "32px",
-      "description": ""
+      "value": "2rem",
+      "type": "dimension",
+      "description": "32px — spacious inset and overlay context"
     },
-    "40": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "40px",
-      "description": ""
+    "48": {
+      "value": "3rem",
+      "type": "dimension",
+      "description": "48px — extra-large section break"
     },
     "64": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "64px",
-      "description": ""
-    },
-    "240": {
-      "parent": "core/spacing",
-      "type": "other",
-      "value": "240px",
-      "description": ""
+      "value": "4rem",
+      "type": "dimension",
+      "description": "64px — maximum layout rhythm step"
     }
   }
 }

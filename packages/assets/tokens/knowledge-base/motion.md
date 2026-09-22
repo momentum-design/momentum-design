@@ -42,7 +42,7 @@ Two layers ship today:
 - **Core primitives** — `packages/assets/tokens/src/core/motion.json`, compiled
   under the `.mds-motion` selector as `--mds-motion-*` custom properties. The raw
   duration, easing, delay, and stagger scales.
-- **Animations** — `packages/assets/tokens/src/motion/animation.json`, compiled
+- **Animations** — `packages/assets/tokens/src/animation/animation.json`, compiled
   under `.mds-animation` as named `--mds-transition-*` / `--mds-animation-*`
   custom properties. Each is a real, directly consumable token — reference one
   by name the same way you'd reference a duration or easing token (see
@@ -103,7 +103,7 @@ Authoritative source: `packages/assets/tokens/src/core/motion.json`.
 
 ## Animations
 
-`motion/animation.json` composes the core primitives into named, directly
+`animation/animation.json` composes the core primitives into named, directly
 consumable animations — not an internal build detail. Each one compiles to its
 own custom property that a consumer can reference by name, the same way they'd
 reference a duration or easing token, and comes in one of four shapes:
@@ -137,7 +137,7 @@ direction (for example `translateY`) and keeps `display` in a single in-flow
 value. Pair slide on the host with `expand` / `collapse` when layout height
 should animate in document flow.
 
-Authoritative source: `packages/assets/tokens/src/motion/animation.json`.
+Authoritative source: `packages/assets/tokens/src/animation/animation.json`.
 
 ## Usage
 

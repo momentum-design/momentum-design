@@ -5,8 +5,8 @@ export const themes = [
     className: 'dark',
   },
   {
-    themeclass: 'mds-theme-stable-darkFluidWebex',
-    displayName: 'darkFluidWebex',
+    themeclass: 'mds-theme-darkFluid',
+    displayName: 'darkFluid',
     className: 'darkFluid',
   },
   {
@@ -40,8 +40,8 @@ export const themes = [
     className: 'light',
   },
   {
-    themeclass: 'mds-theme-stable-lightFluidWebex',
-    displayName: 'lightFluidWebex',
+    themeclass: 'mds-theme-lightFluid',
+    displayName: 'lightFluid',
     className: 'lightFluid',
   },
   {

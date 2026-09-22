@@ -187,6 +187,36 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
     await expect(parent).not.toHaveAttribute('indeterminate');
   });
 
+  await test.step('arbitrary default-slot content preserves immediate sibling associations', async () => {
+    const tree = await setup({
+      componentsPage,
+      children: `
+        <p id="intro">Select the notification groups that apply.</p>
+        <mdc-checkbox id="associated-parent" label="Associated parent"></mdc-checkbox>
+        <!-- Non-element nodes do not interrupt the association. -->
+        <mdc-checkboxtree>
+          <mdc-checkbox id="associated-child" checked label="Associated child"></mdc-checkbox>
+        </mdc-checkboxtree>
+        <mdc-checkbox id="unassociated-parent" label="Unassociated parent"></mdc-checkbox>
+        <p id="intervening-content">Additional context for this group.</p>
+        <mdc-checkboxtree>
+          <mdc-checkbox id="unassociated-child" label="Unassociated child"></mdc-checkbox>
+        </mdc-checkboxtree>
+      `,
+    });
+
+    await expect(tree.locator('#intro')).toBeVisible();
+    await expect(tree.locator('#intervening-content')).toBeVisible();
+    await expect(tree.locator('#associated-parent')).toHaveAttribute('checked', '');
+
+    await tree.locator('#associated-parent').click();
+    await expect(tree.locator('#associated-child')).not.toHaveAttribute('checked');
+
+    await tree.locator('#unassociated-parent').click();
+    await expect(tree.locator('#unassociated-parent')).toHaveAttribute('checked', '');
+    await expect(tree.locator('#unassociated-child')).not.toHaveAttribute('checked');
+  });
+
   await test.step('keyboard navigation', async () => {
     const tree = await setup({ componentsPage });
     const beforeTree = componentsPage.page.locator('#before-tree');
@@ -293,6 +323,7 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
 
   await test.step('visual regression', async () => {
     const tree = await setup({ componentsPage });
+    await componentsPage.page.mouse.move(0, 0);
     await componentsPage.visualRegression.takeScreenshot('mdc-checkboxtree', { element: tree });
   });
 });
