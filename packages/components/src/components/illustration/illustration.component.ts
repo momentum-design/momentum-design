@@ -3,11 +3,11 @@ import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
+import { svgFetch } from '../../utils/asset-fetch';
 import IllustrationProvider from '../illustrationprovider/illustrationprovider.component';
 import { ROLE } from '../../utils/roles';
 
 import styles from './illustration.styles';
-import { svgFetch } from './illustration.utils';
 import { DEFAULTS } from './illustration.constants';
 import type { IllustrationNames } from './illustration.types';
 
@@ -100,6 +100,7 @@ class Illustration extends Component {
           cacheName,
           cacheStrategy,
           renewSignal,
+          assetType: 'illustration',
         })
           .then(illustrationData => {
             // parse the fetched illustration string to an html element and set the attributes
