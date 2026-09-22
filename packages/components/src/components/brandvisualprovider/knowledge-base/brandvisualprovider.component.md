@@ -89,6 +89,10 @@ Serve both folders and use two providers if an application needs both halves.
 - **Caching does not apply to `png`** — raster visuals are loaded by the browser through an `img` element and use the regular HTTP cache instead.
 - **Incomplete configuration falls back** — a `custom-brand-visuals` set without a `url` falls back to the dynamic import rather than failing, so a partially configured provider cannot break rendering.
 
+### Notes
+
+Caching is opt-in and needs both halves: a `cache-strategy` without a unique `cache-name` is ignored. On HTTPS deployments serving custom brand visuals, prefer `cache-strategy="web-cache-api"` so cached brand visuals survive a reload; `in-memory-cache` only lasts for the life of the page.
+
 ## Accessibility
 
 ### Built-in features
@@ -100,12 +104,6 @@ The brandvisualprovider renders nothing of its own; it has no role, no focusable
 None. The provider contributes no element to the accessibility tree.
 
 ### Implementation requirements
-
-#### General
-
-- Mount the provider once near the application root; every `mdc-brandvisual` in the subtree inherits its configuration through context.
-- When using `cache-strategy`, always pair it with a unique `cache-name`.
-- For HTTPS-only deployments using custom brand visuals, prefer `cache-strategy="web-cache-api"` so cached brand visuals survive reloads; use `in-memory-cache` only when persistence across reloads is not needed.
 
 #### Labeling
 

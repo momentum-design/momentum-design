@@ -25,9 +25,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-brandvisualprovider',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     'brand-visual-set': {
       control: 'select',
