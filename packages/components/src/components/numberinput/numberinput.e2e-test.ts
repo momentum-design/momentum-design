@@ -293,6 +293,35 @@ test.describe('mdc-numberinput', () => {
       expect(stepMismatch).toBe(false);
     });
 
+    await test.step('should keep the decimal part when stepping with the spinner buttons and step is "any"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, value: '4.25', step: 'any' });
+      const inputEl = number.locator('input');
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
+      const decrementButton = number.locator('mdc-button[part="spinner-button"]').first();
+
+      // The whole part changes by 1 while the decimal part is preserved (not rounded away).
+      await incrementButton.click();
+      await expect(inputEl).toHaveValue('5.25');
+      await decrementButton.click();
+      await expect(inputEl).toHaveValue('4.25');
+      await decrementButton.click();
+      await expect(inputEl).toHaveValue('3.25');
+    });
+
+    await test.step('should keep the decimal part when stepping with the up/down arrow keys and step is "any"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, value: '4.25', step: 'any' });
+      const inputEl = number.locator('input');
+
+      await inputEl.click();
+      // Native arrow-key stepping with step="any" adds/subtracts 1, keeping the decimal part intact.
+      await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+      await expect(inputEl).toHaveValue('5.25');
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(inputEl).toHaveValue('4.25');
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(inputEl).toHaveValue('3.25');
+    });
+
     await test.step('should keep a value above max on commit and report rangeOverflow (native behavior)', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, max: 10 });
       const inputEl = number.locator('input');

@@ -4,6 +4,8 @@ import { property } from 'lit/decorators.js';
 import Input from '../input/input.component';
 import { INPUT_MODE, INPUT_TYPE } from '../input/input.constants';
 import type { InputModeType, InputType } from '../input/input.types';
+import { clamp } from '../../utils/number';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS } from './numberinput.constants';
 import styles from './numberinput.styles';
@@ -172,32 +174,43 @@ class NumberInput extends Input {
     this.setInputValidity();
   }
 
-  private handleIncrement = () => this.stepBy(1);
+  private handleIncrement = () => this.stepBy('increment');
 
-  private handleDecrement = () => this.stepBy(-1);
+  private handleDecrement = () => this.stepBy('decrement');
+
+  /**
+   * Native arrow-key stepping with step="any" is browser-inconsistent: Firefox rounds to a whole
+   * number (dropping the decimal part) while Chrome/Safari add or subtract 1. Route the arrow keys
+   * through the same stepBy() path as the spinner buttons so the decimal part is preserved in every
+   * browser. Numeric steps keep native handling, which is already consistent across browsers.
+   */
+  protected override handleKeyDown(event: KeyboardEvent) {
+    const isStepKey = event.key === KEYS.ARROW_UP || event.key === KEYS.ARROW_DOWN;
+
+    if (this.step === DEFAULTS.STEP_ANY && isStepKey && !this.disabled && !this.readonly) {
+      event.preventDefault();
+      this.stepBy(event.key === KEYS.ARROW_UP ? 'increment' : 'decrement');
+      return;
+    }
+
+    super.handleKeyDown(event);
+  }
 
   /**
    * stepUp()/stepDown() throw for step="any", so in that case the spinner buttons add/subtract 1 and
    * clamp (matching native spin buttons); any value is already step-valid, so no alignment is
    * needed. Otherwise the native step algorithm handles stepping and step-base alignment.
    */
-  private stepBy(delta: 1 | -1) {
+  private stepBy(direction: 'increment' | 'decrement') {
     const inputElement = this.inputElement as HTMLInputElement;
     const previousValue = inputElement.value;
 
     if (this.step === DEFAULTS.STEP_ANY) {
+      const delta = direction === 'increment' ? 1 : -1;
       const current = Number.isNaN(inputElement.valueAsNumber) ? 0 : inputElement.valueAsNumber;
-      // Round in the direction of travel before clamping; rounding after clamping can push the
-      // value past a fractional min/max in the wrong direction.
-      let next = delta === 1 ? Math.floor(current + delta) : Math.ceil(current + delta);
-      if (this.min !== undefined) {
-        next = Math.max(next, this.min);
-      }
-      if (this.max !== undefined) {
-        next = Math.min(next, this.max);
-      }
-      inputElement.valueAsNumber = next;
-    } else if (delta === 1) {
+
+      inputElement.valueAsNumber = clamp(current + delta, this.min, this.max);
+    } else if (direction === 'increment') {
       inputElement.stepUp();
     } else {
       inputElement.stepDown();
