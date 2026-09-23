@@ -20,10 +20,22 @@ const AUTO_COMPLETE = {
   ON: 'on',
 } as const;
 
+const INPUT_MODE = {
+  NONE: 'none',
+  TEXT: 'text',
+  DECIMAL: 'decimal',
+  NUMERIC: 'numeric',
+  TEL: 'tel',
+  SEARCH: 'search',
+  EMAIL: 'email',
+  URL: 'url',
+} as const;
+
 const INPUT_TYPE = {
   PASSWORD: 'password',
   TEXT: 'text',
   SEARCH: 'search',
+  NUMBER: 'number',
 } as const;
 
 const PREFIX_TEXT_OPTIONS = {
@@ -45,4 +57,4 @@ const DEFAULTS = {
   INPUT_TYPE: INPUT_TYPE.TEXT,
 } as const;
 
-export { TAG_NAME, PREFIX_TEXT_OPTIONS, AUTO_CAPITALIZE, AUTO_COMPLETE, INPUT_TYPE, DEFAULTS };
+export { TAG_NAME, PREFIX_TEXT_OPTIONS, AUTO_CAPITALIZE, AUTO_COMPLETE, INPUT_MODE, INPUT_TYPE, DEFAULTS };
