@@ -1,14 +1,15 @@
 ---
 import * as CONFIG from '../../config';
 import manifest from '../../generated/knowledge-base/manifest.json';
-import { getLanguageFromURL } from '../../languages';
+import { getLanguageFromURL, stripBasePath } from '../../languages';
 
 import MomentumLogo from './MomentumLogo.astro';
 import SkipToContent from './SkipToContent.astro';
 import Search from './Search';
 import GitHubTool from './GitHubTool';
 
-const currentPage = Astro.url.pathname;
+const currentPage = stripBasePath(Astro.url.pathname);
+const baseUrl = import.meta.env.BASE_URL;
 
 const currentPageMatch = currentPage.endsWith('/') ? currentPage.slice(1, -1) : currentPage.slice(1);
 const langCode = getLanguageFromURL(currentPage);
@@ -49,14 +50,14 @@ function isCurrentPage(itemIndex: string) {
   <SkipToContent />
   <nav class="nav-wrapper" title="Top Navigation">
     <div class="logo flex">
-      <a href={`${Astro.site?.pathname  }en`} aria-label="Home">
+      <a href={`${baseUrl}en`} aria-label="Home">
         <MomentumLogo height={40} />
       </a>
     </div>
     <div class="main-menu" style={{ alignItems: 'center' }}>
       {
         menuEntries.map((item) => {
-          const url = Astro.site?.pathname + item.index;
+          const url = `${baseUrl}${item.index}`;
           return (
             <li class="nav-link">
               <a href={url} aria-current={isCurrentPage(item.index) ? 'page' : false}>

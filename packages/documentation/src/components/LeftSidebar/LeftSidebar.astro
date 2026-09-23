@@ -1,5 +1,5 @@
 ---
-import { getLanguageFromURL } from '../../languages';
+import { getLanguageFromURL, stripBasePath } from '../../languages';
 import { SIDEBAR } from '../../config';
 
 type Props = {
@@ -7,8 +7,12 @@ type Props = {
 };
 
 const { currentPage } = Astro.props as Props;
-const currentPageMatch = currentPage.endsWith('/') ? currentPage.slice(1, -1) : currentPage.slice(1);
-const langCode = getLanguageFromURL(currentPage);
+const currentPageRelative = stripBasePath(currentPage);
+const currentPageMatch = currentPageRelative.endsWith('/')
+  ? currentPageRelative.slice(1, -1)
+  : currentPageRelative.slice(1);
+const baseUrl = import.meta.env.BASE_URL;
+const langCode = getLanguageFromURL(currentPageRelative);
 const sidebar = SIDEBAR[langCode];
 ---
 
@@ -21,7 +25,7 @@ const sidebar = SIDEBAR[langCode];
             <h3>{header}</h3>
             <ul>
               {children.map((child) => {
-                const url = `${Astro.site?.pathname}${child.link}`;
+                const url = `${baseUrl}${child.link}`;
                 return (
                   <li class="nav-link">
                     <a href={url} aria-current={currentPageMatch === child.link ? 'page' : false}>

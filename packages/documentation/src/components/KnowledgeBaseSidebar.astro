@@ -1,5 +1,6 @@
 ---
 import manifest from '../generated/knowledge-base/manifest.json';
+import { stripBasePath } from '../languages';
 
 type Props = {
   currentPage: string;
@@ -7,7 +8,11 @@ type Props = {
 };
 
 const { currentPage, section } = Astro.props as Props;
-const currentPageMatch = currentPage.endsWith('/') ? currentPage.slice(1, -1) : currentPage.slice(1);
+const currentPageRelative = stripBasePath(currentPage);
+const currentPageMatch = currentPageRelative.endsWith('/')
+  ? currentPageRelative.slice(1, -1)
+  : currentPageRelative.slice(1);
+const baseUrl = import.meta.env.BASE_URL;
 const currentSection = manifest.sections.find((item) => item.slug === section);
 ---
 
@@ -20,7 +25,7 @@ const currentSection = manifest.sections.find((item) => item.slug === section);
           <ul>
             {currentSection.pages.map((routeIndex) => {
               const page = manifest.routes[routeIndex];
-              const url = `${Astro.site?.pathname}${page.path}`;
+              const url = `${baseUrl}${page.path}`;
               const isCurrent = currentPageMatch === page.path;
 
               return (
