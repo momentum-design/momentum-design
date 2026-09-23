@@ -19,12 +19,14 @@ const lightJadeTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/li
 const lightLavenderTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-lavender-stable.css"));
 const lightRoseTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-rose-stable.css"));
 
+const core = glob.sync(path.posix.join(distCSSFolder, "/core/*.css"));
 const effects = glob.sync(path.posix.join(distCSSFolder, "/effect/*.css"));
 const elevation = glob.sync(path.posix.join(distCSSFolder, "/elevation/*.css"));
 const typography = glob.sync(path.posix.join(distCSSFolder, "/typography/*.css"));
 const spacing = glob.sync(path.posix.join(distCSSFolder, "/spacing/*.css"));
 const size = glob.sync(path.posix.join(distCSSFolder, "/size/*.css"));
 const radius = glob.sync(path.posix.join(distCSSFolder, "/radius/*.css"));
+const border = glob.sync(path.posix.join(distCSSFolder, "/border/*.css"));
 const blur = glob.sync(path.posix.join(distCSSFolder, "/blur/*.css"));
 
 const motion = glob.sync(path.posix.join(distCSSFolder, "/motion/*.css"));
@@ -47,9 +49,11 @@ const tokens = [
   ...typography,
   ...effects,
   ...elevation,
+  ...core,
   ...spacing,
   ...size,
   ...radius,
+  ...border,
   ...blur,
   ...motion,
   ...animation,

@@ -66,11 +66,6 @@
     },
     {
       "destination": "theme/webex/dark-stable",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
         "core/value.json",
@@ -88,11 +83,6 @@
     },
     {
       "destination": "theme/webex/light-stable",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
         "core/value.json",
@@ -110,11 +100,6 @@
     },
     {
       "destination": "theme/fluid/dark",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-darkFluid",
       "targets": [
         "core/value.json",
@@ -137,11 +122,6 @@
     },
     {
       "destination": "theme/fluid/light",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-lightFluid",
       "targets": [
         "core/value.json",
@@ -164,11 +144,6 @@
     },
     {
       "destination": "theme/webex/hc-dark-stable",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-stable-hcDarkWebex",
       "targets": [
         "core/value.json",
@@ -187,11 +162,6 @@
     },
     {
       "destination": "theme/webex/hc-light-stable",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-stable-hcLightWebex",
       "targets": [
         "core/value.json",
