@@ -327,11 +327,27 @@ export const FormFieldNumber: StoryObj = {
     const restoreHelpText = (form: HTMLFormElement) => {
       const numberInput = form.querySelector('mdc-numberinput');
       numberInput?.setAttribute('help-text-type', args['help-text-type'] || VALIDATION.DEFAULT);
+      numberInput?.setAttribute('help-text', args['help-text']);
+    };
+
+    // Map the failing validity flag to a message that explains the specific reason (range vs step vs
+    // required), instead of always showing the generic helper text.
+    const getValidationMessage = (numberInput: HTMLInputElement) => {
+      const { validity } = numberInput;
+      if (validity.valueMissing) return 'Enter a number';
+      if (validity.rangeUnderflow) return `Enter a value of ${args.min} or more`;
+      if (validity.rangeOverflow) return `Enter a value of ${args.max} or less`;
+      if (validity.stepMismatch) {
+        return Number(args.step) === 1 ? 'Enter a whole number' : `Enter a value in steps of ${args.step}`;
+      }
+      if (validity.badInput) return 'Enter a valid number';
+      return args['help-text'];
     };
 
     const handleInvalid = (event: Event) => {
-      const numberInput = event.target as HTMLElement;
+      const numberInput = event.target as HTMLInputElement;
       numberInput.setAttribute('help-text-type', VALIDATION.ERROR);
+      numberInput.setAttribute('help-text', getValidationMessage(numberInput));
     };
 
     const handleInput = (event: Event) => {
