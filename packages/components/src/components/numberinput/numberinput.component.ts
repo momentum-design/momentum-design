@@ -7,7 +7,8 @@ import type { InputModeType, InputType } from '../input/input.types';
 import { clamp } from '../../utils/number';
 import { KEYS } from '../../utils/keys';
 
-import { DEFAULTS } from './numberinput.constants';
+import { CLAMP, DEFAULTS } from './numberinput.constants';
+import type { ClampType } from './numberinput.types';
 import styles from './numberinput.styles';
 
 /**
@@ -114,6 +115,15 @@ class NumberInput extends Input {
    */
   @property({ type: String, attribute: 'decrement-aria-label' }) decrementAriaLabel = '';
 
+  /**
+   * Controls whether a value typed into the field is clamped to the min/max range. The spinner
+   * buttons and arrow keys always clamp; this only affects manual keyboard entry.
+   * - `none`: a typed value is left as entered and reported through range validity.
+   * - `auto`: a typed value is clamped to the min/max range when the field is committed (on change).
+   * @default 'none'
+   */
+  @property({ type: String, reflect: true }) clamp: ClampType = DEFAULTS.CLAMP;
+
   protected override firstUpdated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.firstUpdated(changedProperties);
 
@@ -194,6 +204,43 @@ class NumberInput extends Input {
     }
 
     super.handleKeyDown(event);
+  }
+
+  /**
+   * With clamp="auto", a committed value typed outside the range is pulled back in before the base
+   * change handler syncs and re-dispatches it, so consumers and validity observe the clamped value.
+   * When the value is actually clamped an input event is emitted first, mirroring the native
+   * input-before-change order, so consumers that collect the value on input see the corrected value.
+   * Stepping already clamps, so this only covers manual keyboard entry.
+   */
+  protected override onChange(event: Event) {
+    if (this.clamp === CLAMP.AUTO && this.clampInputToRange()) {
+      this.inputElement.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true }));
+    }
+
+    super.onChange(event);
+  }
+
+  /**
+   * Clamps the native input's committed value into the min/max range in place, returning whether the
+   * value changed. An empty or non-numeric field is left untouched so a cleared input is not forced
+   * to min/max.
+   */
+  private clampInputToRange(): boolean {
+    const inputElement = this.inputElement as HTMLInputElement;
+    const { valueAsNumber } = inputElement;
+
+    if (inputElement.value === '' || Number.isNaN(valueAsNumber)) {
+      return false;
+    }
+
+    const clamped = clamp(valueAsNumber, this.min, this.max);
+    if (clamped !== valueAsNumber) {
+      inputElement.valueAsNumber = clamped;
+      return true;
+    }
+
+    return false;
   }
 
   /**

@@ -1,6 +1,9 @@
 import type { OverrideEventTarget, TypedCustomEvent } from '../../utils/types';
 
+import type { CLAMP } from './numberinput.constants';
 import type NumberInput from './numberinput.component';
+
+type ClampType = (typeof CLAMP)[keyof typeof CLAMP];
 
 type NumberInputInputEvent = OverrideEventTarget<InputEvent, NumberInput>;
 type NumberInputChangeEvent = TypedCustomEvent<NumberInput>;
@@ -22,5 +25,6 @@ export type {
   NumberInputFocusEvent,
   NumberInputBlurEvent,
   NumberInputClearEvent,
+  ClampType,
   Events,
 };

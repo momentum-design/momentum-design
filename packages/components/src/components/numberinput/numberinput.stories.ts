@@ -9,6 +9,8 @@ import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { INPUT_MODE } from '../input/input.constants';
 
+import { CLAMP } from './numberinput.constants';
+
 const render = (args: Args) =>
   html` <mdc-numberinput
     @input="${action('oninput')}"
@@ -37,6 +39,7 @@ const render = (args: Args) =>
     min="${ifDefined(args.min)}"
     max="${ifDefined(args.max)}"
     step="${ifDefined(args.step)}"
+    clamp="${ifDefined(args.clamp)}"
     ?hide-spinner-buttons="${args['hide-spinner-buttons']}"
     increment-aria-label="${ifDefined(args['increment-aria-label'])}"
     decrement-aria-label="${ifDefined(args['decrement-aria-label'])}"
@@ -134,6 +137,14 @@ const meta: Meta = {
       description:
         'The amount that the value changes for each increment/decrement. Set to "any" to allow any ' +
         'decimal value with no step-mismatch validation.',
+    },
+    clamp: {
+      control: 'select',
+      options: Object.values(CLAMP),
+      description:
+        'Controls whether a value typed into the field is clamped to the min/max range. ' +
+        'The spinner buttons and arrow keys always clamp; "auto" also clamps manual keyboard ' +
+        'entry on change, while "none" leaves it as entered.',
     },
     'hide-spinner-buttons': {
       control: 'boolean',

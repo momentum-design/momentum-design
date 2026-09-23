@@ -15,6 +15,7 @@ type SetupOptions = {
   min?: number;
   max?: number;
   step?: number | 'any';
+  clamp?: 'none' | 'auto';
   hideSpinnerButtons?: boolean;
   incrementAriaLabel?: string;
   decrementAriaLabel?: string;
@@ -43,6 +44,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.min !== undefined ? `min="${restArgs.min}"` : ''}
       ${restArgs.max !== undefined ? `max="${restArgs.max}"` : ''}
       ${restArgs.step !== undefined ? `step="${restArgs.step}"` : ''}
+      ${restArgs.clamp !== undefined ? `clamp="${restArgs.clamp}"` : ''}
       ${restArgs.hideSpinnerButtons ? 'hide-spinner-buttons' : ''}
       ${restArgs.incrementAriaLabel ? `increment-aria-label="${restArgs.incrementAriaLabel}"` : ''}
       ${restArgs.decrementAriaLabel ? `decrement-aria-label="${restArgs.decrementAriaLabel}"` : ''}
@@ -350,6 +352,106 @@ test.describe('mdc-numberinput', () => {
 
       await inputEl.fill('42');
       await expect(inputEl).toHaveValue('42');
+    });
+
+    await test.step('should clamp a typed value above max to max on commit when clamp="auto"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, max: 10, clamp: 'auto' });
+      const inputEl = number.locator('input');
+
+      await inputEl.fill('42');
+      // Manual entry is left alone while typing; clamping only happens on commit.
+      await expect(inputEl).toHaveValue('42');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toHaveValue('10');
+      const rangeOverflow = await inputEl.evaluate((el: HTMLInputElement) => el.validity.rangeOverflow);
+      expect(rangeOverflow).toBe(false);
+    });
+
+    await test.step('should clamp a typed value below min to min on commit when clamp="auto"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, min: 0, clamp: 'auto' });
+      const inputEl = number.locator('input');
+
+      await inputEl.fill('-42');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toHaveValue('0');
+      const rangeUnderflow = await inputEl.evaluate((el: HTMLInputElement) => el.validity.rangeUnderflow);
+      expect(rangeUnderflow).toBe(false);
+    });
+
+    await test.step('should emit a change carrying the clamped value when clamp="auto"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, max: 10, clamp: 'auto' });
+      const inputEl = number.locator('input');
+
+      // Capture the value reported by the event itself, not just the field value after the fact.
+      await number.evaluate((element: HTMLElement) => {
+        (window as unknown as { reportedChangeValue?: string }).reportedChangeValue = undefined;
+        element.addEventListener('change', event => {
+          (window as unknown as { reportedChangeValue?: string }).reportedChangeValue = (
+            event.target as HTMLInputElement
+          ).value;
+        });
+      });
+
+      const waitForChange = await componentsPage.waitForEvent(number, 'change');
+      await inputEl.fill('42');
+      await componentsPage.actionability.pressTab();
+      await expect(waitForChange).toEventEmitted();
+      await expect(inputEl).toHaveValue('10');
+
+      const reportedChangeValue = await componentsPage.page.evaluate(
+        () => (window as unknown as { reportedChangeValue?: string }).reportedChangeValue,
+      );
+      expect(reportedChangeValue).toBe('10');
+    });
+
+    await test.step('should emit an input carrying the clamped value on commit when clamp="auto"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, max: 10, clamp: 'auto' });
+      const inputEl = number.locator('input');
+
+      // Consumers collecting the value on input must observe the clamped value once the field commits.
+      await number.evaluate((element: HTMLElement) => {
+        (window as unknown as { inputValues?: string[] }).inputValues = [];
+        element.addEventListener('input', event => {
+          (window as unknown as { inputValues?: string[] }).inputValues?.push((event.target as HTMLInputElement).value);
+        });
+      });
+
+      const waitForInput = await componentsPage.waitForEvent(number, 'input');
+      await inputEl.fill('42');
+      await expect(waitForInput).toEventEmitted();
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toHaveValue('10');
+
+      // The last input reported on commit carries the clamped value, not the out-of-range entry.
+      const inputValues = await componentsPage.page.evaluate(
+        () => (window as unknown as { inputValues?: string[] }).inputValues ?? [],
+      );
+      expect(inputValues.at(-1)).toBe('10');
+    });
+
+    await test.step('should leave an in-range typed value unchanged when clamp="auto"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, min: 0, max: 10, clamp: 'auto' });
+      const inputEl = number.locator('input');
+
+      await inputEl.fill('7');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toHaveValue('7');
+    });
+
+    await test.step('should leave a cleared field empty and not force it to min/max when clamp="auto"', async () => {
+      const number = await setup({
+        componentsPage,
+        ...defaultSetupOptions,
+        value: '5',
+        min: 0,
+        max: 10,
+        clamp: 'auto',
+      });
+      const inputEl = number.locator('input');
+
+      await inputEl.fill('');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toHaveValue('');
     });
 
     await test.step('should update form validity when numeric constraints change', async () => {
