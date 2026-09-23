@@ -17,6 +17,13 @@ const setCanvasBackgroundOnDocs = backgroundColor => {
 };
 
 const allThemeClasses = themes.map(t => t.themeclass);
+const dimensionThemeClasses = ['mds-theme-stable', 'mds-theme-fluid'];
+
+const dimensionClassFor = themeClass => {
+  if (themeClass.includes('Fluid')) return 'mds-theme-fluid';
+  if (themeClass.includes('stable')) return 'mds-theme-stable';
+  return undefined;
+};
 
 const syncBodyTheme = themeClass => {
   const body = document.querySelector('body.sb-show-main');
@@ -24,7 +31,12 @@ const syncBodyTheme = themeClass => {
   for (const cls of allThemeClasses) {
     if (cls !== themeClass) body.classList.remove(cls);
   }
+  for (const cls of dimensionThemeClasses) {
+    body.classList.remove(cls);
+  }
   body.classList.add(themeClass);
+  const dimensionClass = dimensionClassFor(themeClass);
+  if (dimensionClass) body.classList.add(dimensionClass);
 };
 
 export const withThemeProvider = (story, context) => {
@@ -38,6 +50,11 @@ export const withThemeProvider = (story, context) => {
   applyStyle(body, 'mds-elevation');
   applyStyle(body, 'mds-motion');
   applyStyle(body, 'mds-animation');
+  applyStyle(body, 'mds-core');
+  applyStyle(body, 'mds-spacing');
+  applyStyle(body, 'mds-size');
+  applyStyle(body, 'mds-radius');
+  applyStyle(body, 'mds-border');
   // Mirror the active theme onto <body> so non-story chrome (e.g. the
   // knowledge-base Docs page rendered by `@momentum-design/storybook-addon-docs`)
   // can resolve `--mds-*` tokens.
