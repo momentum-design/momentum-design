@@ -18,6 +18,7 @@ import { eventsEnhancer } from './enhancers/eventsEnhancer';
 import { disableSlotControls } from './enhancers/disableSlotControls';
 import { sortArgTypes } from './enhancers/sortArgTypes';
 import { withSpatialNavigationProviderDecorator } from './provider/spatialNavigationProviderDecorator';
+import { withComponentInspectorDecorator } from './provider/componentInspectorDecorator';
 
 const cssProperties = [];
 
@@ -159,6 +160,7 @@ const preview = {
   decorators: [
     withSpatialNavigationProviderDecorator,
     storyDescription,
+    withComponentInspectorDecorator,
     withCssPropertyProvider(cssProperties),
     withThemeProvider,
     withIconProvider,
