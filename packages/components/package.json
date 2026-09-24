@@ -131,6 +131,7 @@
     "@estruyf/github-actions-reporter": "^1.10.0",
     "@figma/code-connect": "^1.3.4",
     "@momentum-design/storybook-addon-code-preview": "workspace:*",
+    "@momentum-design/storybook-addon-component-inspector": "workspace:*",
     "@momentum-design/storybook-addon-docs": "workspace:*",
     "@playwright/test": "^1.59.0",
     "@storybook/addon-a11y": "^9.1.5",
