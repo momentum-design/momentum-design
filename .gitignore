@@ -144,3 +144,6 @@ figma-webcomponent.config.json
 
 # copilot plan mode
 plan.md
+
+# Context Documentation
+.docs/*
