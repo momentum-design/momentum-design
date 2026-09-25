@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "analyze:dependencies": "yarn syncpack lint",
+    "components-mcp": "yarn workspace @momentum-design/components-mcp",
     "analyze:config": "eslint \"./config/**/*.{js,json}\"",
     "analyze:root": "yarn analyze:config && yarn analyze:dependencies && yarn knowledge-base:validate",
     "knowledge-base:index": "node ./scripts/knowledge-base/generate-index.js",
