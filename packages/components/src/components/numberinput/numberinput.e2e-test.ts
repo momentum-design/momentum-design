@@ -310,6 +310,29 @@ test.describe('mdc-numberinput', () => {
       await expect(inputEl).toHaveValue('3.25');
     });
 
+    await test.step('should not introduce floating point artifacts when stepping with step="any"', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions, value: '1.1', step: 'any' });
+      const inputEl = number.locator('input');
+      const incrementButton = number.locator('mdc-button[part="spinner-button"]').last();
+      const decrementButton = number.locator('mdc-button[part="spinner-button"]').first();
+
+      // 1.1 - 1 is 0.10000000000000009 in IEEE-754; the result is rounded back to 0.1.
+      await decrementButton.click();
+      await expect(inputEl).toHaveValue('0.1');
+
+      await inputEl.fill('2.2');
+      await decrementButton.click();
+      await expect(inputEl).toHaveValue('1.2');
+
+      await inputEl.fill('4.35');
+      await decrementButton.click();
+      await expect(inputEl).toHaveValue('3.35');
+
+      await inputEl.fill('0.1');
+      await incrementButton.click();
+      await expect(inputEl).toHaveValue('1.1');
+    });
+
     await test.step('should keep the decimal part when stepping with the up/down arrow keys and step is "any"', async () => {
       const number = await setup({ componentsPage, ...defaultSetupOptions, value: '4.25', step: 'any' });
       const inputEl = number.locator('input');
@@ -322,6 +345,11 @@ test.describe('mdc-numberinput', () => {
       await expect(inputEl).toHaveValue('4.25');
       await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
       await expect(inputEl).toHaveValue('3.25');
+
+      // 1.1 - 1 is 0.10000000000000009 in IEEE-754; the result is rounded back to 0.1.
+      await inputEl.fill('1.1');
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(inputEl).toHaveValue('0.1');
     });
 
     await test.step('should keep a value above max on commit and report rangeOverflow (native behavior)', async () => {

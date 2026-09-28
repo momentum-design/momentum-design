@@ -255,8 +255,12 @@ class NumberInput extends Input {
     if (this.step === DEFAULTS.STEP_ANY) {
       const delta = direction === 'increment' ? 1 : -1;
       const current = Number.isNaN(inputElement.valueAsNumber) ? 0 : inputElement.valueAsNumber;
+      // delta is an integer, so the result keeps current's decimal precision; round back to it to
+      // strip IEEE-754 error (e.g. 1.1 - 1 = 0.10000000000000009).
+      const decimals = (String(current).split('.')[1] ?? '').length;
+      const stepped = Number((current + delta).toFixed(decimals));
 
-      inputElement.valueAsNumber = clamp(current + delta, this.min, this.max);
+      inputElement.valueAsNumber = clamp(stepped, this.min, this.max);
     } else if (direction === 'increment') {
       inputElement.stepUp();
     } else {
