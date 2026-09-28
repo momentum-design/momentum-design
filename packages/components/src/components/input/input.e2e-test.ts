@@ -28,6 +28,7 @@ type SetupOptions = {
   autocapitalize?: string;
   autofocus?: boolean;
   autocomplete?: string;
+  inputmode?: string;
   dirname?: string;
   pattern?: string;
   list?: string;
@@ -65,6 +66,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
       ${restArgs.autofocus ? 'auto-focus-on-mount' : ''}
       ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
+      ${restArgs.inputmode ? `inputmode="${restArgs.inputmode}"` : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
@@ -211,6 +213,12 @@ test.describe('mdc-input', () => {
       await componentsPage.setAttributes(input, { autocomplete: 'on' });
       await expect(input).toHaveAttribute('autocomplete', 'on');
       await componentsPage.removeAttribute(input, 'autocomplete');
+    });
+
+    await test.step('attribute inputmode should be forwarded to the native input', async () => {
+      await componentsPage.setAttributes(input, { inputmode: 'email' });
+      await expect(input.locator('input')).toHaveAttribute('inputmode', 'email');
+      await componentsPage.removeAttribute(input, 'inputmode');
     });
 
     await test.step('attribute dirname should be present on component', async () => {

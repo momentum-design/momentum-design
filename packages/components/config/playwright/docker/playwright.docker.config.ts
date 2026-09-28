@@ -27,6 +27,15 @@ const githubActionsReporterOptions: GitHubActionOptions = {
 };
 
 const DEFAULT_TIMEOUT = 30 * 1000;
+
+/* On CI: collect trace only when retrying a failed test.
+Locally: always collect trace, unless E2E_NO_TRACE is set (heavy screenshot-based tests can
+produce traces large enough to make context teardown hang). See https://playwright.dev/docs/trace-viewer */
+let trace: 'off' | 'on' | 'retain-on-failure' = process.env.CI ? 'retain-on-failure' : 'on';
+if (process.env.E2E_NO_TRACE === 'true') {
+  trace = 'off';
+}
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -63,9 +72,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: url,
-    /* On CI: Collect trace when retrying the failed test /
-    Locally: always collect trace. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? 'retain-on-failure' : 'on',
+    trace,
   },
 
   snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}',

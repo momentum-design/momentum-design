@@ -509,6 +509,15 @@
       "component": "navmenuitem"
     },
     {
+      "id": "tier3/packages/components/src/components/numberinput/knowledge-base/numberinput.component",
+      "tier": 3,
+      "path": "packages/components/src/components/numberinput/knowledge-base/numberinput.component.md",
+      "title": "Number Input",
+      "summary": "Usage, guidelines, and accessibility for the mdc-numberinput component — a numeric text field with increment and decrement spinner buttons and native range and step validation.",
+      "canonical": null,
+      "component": "numberinput"
+    },
+    {
       "id": "tier3/packages/components/src/components/optgroup/knowledge-base/optgroup.component",
       "tier": 3,
       "path": "packages/components/src/components/optgroup/knowledge-base/optgroup.component.md",
