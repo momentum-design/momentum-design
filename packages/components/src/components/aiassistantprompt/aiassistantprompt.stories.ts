@@ -14,35 +14,40 @@ import { DEFAULTS } from './aiassistantprompt.constants';
 const headerAndFooter = html`
   <mdc-inputchip
     slot="header"
-    label="Alex Example"
-    icon-name="contact-card-bold"
+    label="Today's Tasks"
     clear-aria-label="Remove Alex Example"
     @remove="${action('remove')}"
   ></mdc-inputchip>
   <mdc-inputchip
     slot="header"
-    label="Example project"
-    icon-name="folder-bold"
+    label="Generate Report"
     clear-aria-label="Remove Example project"
     @remove="${action('remove')}"
   ></mdc-inputchip>
   <mdc-button
     slot="footer-left"
     variant="tertiary"
-    size="32"
-    prefix-icon="attachment-bold"
+    size="24"
+    prefix-icon="plus-bold"
     aria-label="Attach a file"
     @click="${action('onclick')}"
   ></mdc-button>
   <mdc-button
     slot="footer-left"
     variant="tertiary"
-    size="32"
-    prefix-icon="plus-bold"
+    size="24"
+    prefix-icon="adjust-horizontal-bold"
     aria-label="Add context"
     @click="${action('onclick')}"
   ></mdc-button>
-  <mdc-button slot="footer-right" variant="tertiary" size="32" @click="${action('onclick')}">Ask</mdc-button>
+  <mdc-button
+    slot="footer-right"
+    variant="tertiary"
+    size="24"
+    postfix-icon="arrow-down-bold"
+    @click="${action('onclick')}">
+      All sources
+  </mdc-button>
   <mdc-button
     slot="footer-right"
     variant="tertiary"
@@ -55,7 +60,7 @@ const headerAndFooter = html`
     slot="footer-right"
     variant="primary"
     size="32"
-    prefix-icon="send-bold"
+    prefix-icon="arrow-tail-up-bold"
     aria-label="Send prompt"
     @click="${action('onclick')}"
   ></mdc-button>
