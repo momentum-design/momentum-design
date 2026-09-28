@@ -100,6 +100,12 @@ import FocusTrap from './components/focustrap';
 import CheckboxTree from './components/checkboxtree';
 
 // Types Imports
+import type {
+  AIAssistantPromptBlurEvent,
+  AIAssistantPromptChangeEvent,
+  AIAssistantPromptFocusEvent,
+  AIAssistantPromptInputEvent,
+} from './components/aiassistantprompt/aiassistantprompt.types';
 import type { AvatarSize } from './components/avatar/avatar.types';
 import type { BadgeType } from './components/badge/badge.types';
 import type { ColorType as ChipColorType } from './components/staticchip/staticchip.types';
@@ -254,6 +260,10 @@ export {
 
 // Types Exports
 export type {
+  AIAssistantPromptBlurEvent,
+  AIAssistantPromptChangeEvent,
+  AIAssistantPromptFocusEvent,
+  AIAssistantPromptInputEvent,
   AvatarSize,
   BadgeType,
   ChipColorType,
