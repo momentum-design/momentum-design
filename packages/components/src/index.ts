@@ -3,6 +3,7 @@
 import Accordion from './components/accordion';
 import AccordionGroup from './components/accordiongroup';
 import AccordionButton from './components/accordionbutton';
+import AIAssistantPrompt from './components/aiassistantprompt';
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
 import AnimatedBackground from './components/animatedbackground';
@@ -154,6 +155,7 @@ export {
   Accordion,
   AccordionButton,
   AccordionGroup,
+  AIAssistantPrompt,
   AlertChip,
   Animation,
   AnimatedBackground,
