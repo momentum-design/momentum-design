@@ -15,18 +15,23 @@ import { DEFAULTS } from './aiassistantprompt.constants';
 
 const ADD_TRIGGER_ID = 'aiassistantprompt-add-trigger';
 
+const removeChip = (event: Event) => {
+  action('remove')(event);
+  (event.target as HTMLElement)?.remove();
+};
+
 const headerAndFooter = html`
   <mdc-inputchip
     slot="header"
     label="Today's Tasks"
-    clear-aria-label="Remove Alex Example"
-    @remove="${action('remove')}"
+    clear-aria-label="Remove Today's Tasks"
+    @remove="${removeChip}"
   ></mdc-inputchip>
   <mdc-inputchip
     slot="header"
     label="Generate Report"
-    clear-aria-label="Remove Example project"
-    @remove="${action('remove')}"
+    clear-aria-label="Remove Generate Report"
+    @remove="${removeChip}"
   ></mdc-inputchip>
   <mdc-button
     id="${ADD_TRIGGER_ID}"

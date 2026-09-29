@@ -99,6 +99,26 @@ test('mdc-aiassistantprompt', async ({ componentsPage }) => {
     await expect(withRegions.aiAssistantPrompt.locator('[slot="footer-right"]')).toHaveCount(3);
   });
 
+  await test.step('should remove a header chip when its close button is activated', async () => {
+    const withChips = await setup({
+      componentsPage,
+      header: `
+        <mdc-inputchip slot="header" label="Alex Example" clear-aria-label="Remove Alex Example"></mdc-inputchip>
+        <mdc-inputchip slot="header" label="Example project" clear-aria-label="Remove Example project"></mdc-inputchip>
+      `,
+    });
+    await withChips.aiAssistantPrompt.evaluate(host => {
+      host.querySelectorAll('mdc-inputchip').forEach(chip => {
+        chip.addEventListener('remove', event => {
+          (event.target as HTMLElement)?.remove();
+        });
+      });
+    });
+    await withChips.aiAssistantPrompt.getByRole('button', { name: 'Remove Alex Example' }).click();
+    await expect(withChips.aiAssistantPrompt.locator('mdc-inputchip')).toHaveCount(1);
+    await expect(withChips.aiAssistantPrompt.locator('mdc-inputchip')).toHaveAttribute('label', 'Example project');
+  });
+
   await test.step('should open a menu popover below the add button', async () => {
     const withAddMenu = await setup({
       componentsPage,
