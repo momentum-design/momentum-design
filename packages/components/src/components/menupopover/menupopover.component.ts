@@ -54,11 +54,26 @@ class MenuPopover extends Popover {
 
   private menuItemsWithSubMenus: Array<HTMLElement> = [];
 
+  /**
+   * The menu item (if any) on which the pointer was pressed down.
+   * Used together with `handlePointerUp` to detect press/release mismatches (see `handlePointerUp`).
+   */
+  private pressStartMenuItem: Element | null = null;
+
+  /**
+   * Set to true when the pointerdown and pointerup of an interaction landed on different menu
+   * items (or the pointerup landed outside any item). When true, the following `click` event's
+   * action is ignored, see `handleMouseClick`.
+   */
+  private ignoreNextItemClick = false;
+
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
     this.addEventListener('created', this.handleItemCreation);
+    this.addEventListener('pointerdown', this.handlePointerDown);
+    this.addEventListener('pointerup', this.handlePointerUp);
   }
 
   /**
@@ -289,6 +304,52 @@ class MenuPopover extends Popover {
   }
 
   /**
+   * Checks whether the given event's nearest `mdc-menupopover` ancestor in the composed path is
+   * this popover instance. Nested submenus are rendered inside their parent's light DOM, so
+   * pointer/click events from a submenu's items also bubble up to the parent popover; this
+   * ensures only the popover that directly owns the target handles the event.
+   * @param event - The event to check.
+   */
+  private isOwnPopoverEvent(event: Event): boolean {
+    return event.composedPath().find(el => (el as HTMLElement).tagName === this.tagName) === this;
+  }
+
+  /**
+   * Records the menu item (if any) on which the pointer was pressed down.
+   * @param event - The pointerdown event.
+   */
+  private handlePointerDown = (event: PointerEvent): void => {
+    if (!this.isOwnPopoverEvent(event)) return;
+    const target = event.target as Element;
+    this.pressStartMenuItem = isValidMenuItem(target) ? target : null;
+  };
+
+  /**
+   * Compares the menu item actually under the pointer when it was released to the one recorded
+   * on pointerdown.
+   *
+   * Browsers disagree on whether/how a `click` event fires when mousedown and mouseup happen on
+   * different elements (e.g., the user pressed on one menu item, dragged, and released
+   * elsewhere): Chrome does not fire `click` at all in that case, while Firefox still fires it,
+   * targeting the mousedown element. This flags the mismatch so `handleMouseClick` can ignore the
+   * following `click` event's action, normalizing behavior to Chrome's (no action, interaction
+   * cancelled).
+   *
+   * Note: `event.target`/`composedPath()` on `pointerup` cannot be used to find the release
+   * element here, since some browsers (e.g. Firefox) retarget them back to the pointerdown
+   * element instead of reflecting the actual pointer position. `document.elementFromPoint` is used
+   * instead to hit-test the real cursor position.
+   * @param event - The pointerup event.
+   */
+  private handlePointerUp = (event: PointerEvent): void => {
+    if (!this.isOwnPopoverEvent(event)) return;
+    const releaseTarget = document.elementFromPoint(event.clientX, event.clientY);
+    const releaseMenuItem = isValidMenuItem(releaseTarget) ? releaseTarget : null;
+    this.ignoreNextItemClick = this.pressStartMenuItem !== releaseMenuItem;
+    this.pressStartMenuItem = null;
+  };
+
+  /**
    * Handles mouse click events on the menu items.
    * This method checks if the clicked element is a valid menu item and not a submenu trigger.
    * If it is, it closes all other menu popovers to ensure only one menu is open at a time.
@@ -296,6 +357,12 @@ class MenuPopover extends Popover {
    */
   private handleMouseClick(event: Event): void {
     const target = event.target as HTMLElement;
+
+    // Ignore the action if the pointerdown/pointerup of this interaction landed on different menu
+    // items (see `handlePointerUp`), so behavior is consistent across browsers.
+    const ignoreClick = this.ignoreNextItemClick;
+    this.ignoreNextItemClick = false;
+    if (ignoreClick) return;
 
     // if the target is not a valid menu item or if the event is not trusted (
     // e.g., triggered by keydown originally), do nothing. Pressing space and enter
