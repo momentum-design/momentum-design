@@ -8,8 +8,12 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import '../button';
 import '../inputchip';
+import '../menuitem';
+import '../menupopover';
 
 import { DEFAULTS } from './aiassistantprompt.constants';
+
+const ADD_TRIGGER_ID = 'aiassistantprompt-add-trigger';
 
 const headerAndFooter = html`
   <mdc-inputchip
@@ -25,12 +29,12 @@ const headerAndFooter = html`
     @remove="${action('remove')}"
   ></mdc-inputchip>
   <mdc-button
+    id="${ADD_TRIGGER_ID}"
     slot="footer-left"
     variant="tertiary"
     size="24"
     prefix-icon="plus-bold"
-    aria-label="Attach a file"
-    @click="${action('onclick')}"
+    aria-label="Add to prompt"
   ></mdc-button>
   <mdc-button
     slot="footer-left"
@@ -66,6 +70,19 @@ const headerAndFooter = html`
   ></mdc-button>
 `;
 
+const addMenu = html`
+  <mdc-menupopover
+    triggerID="${ADD_TRIGGER_ID}"
+    placement="bottom-start"
+    aria-label="Add to prompt"
+    @action="${action('onaction')}"
+  >
+    <mdc-menuitem label="Upload a file"></mdc-menuitem>
+    <mdc-menuitem label="Add from Example project"></mdc-menuitem>
+    <mdc-menuitem label="Add people"></mdc-menuitem>
+  </mdc-menupopover>
+`;
+
 const render = (args: Args) => html`
   <mdc-aiassistantprompt
     @input="${action('oninput')}"
@@ -84,6 +101,7 @@ const render = (args: Args) => html`
   >
     ${headerAndFooter}
   </mdc-aiassistantprompt>
+  ${addMenu}
 `;
 
 const meta: Meta = {

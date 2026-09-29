@@ -14,6 +14,7 @@ type SetupOptions = {
   header?: string;
   footerLeft?: string;
   footerRight?: string;
+  extraHtml?: string;
 };
 
 const setup = async ({
@@ -26,20 +27,24 @@ const setup = async ({
   header,
   footerLeft,
   footerRight,
+  extraHtml,
 }: SetupOptions) => {
   await componentsPage.mount({
     html: `
-      <${HOST_SELECTOR}
-        ${value ? `value="${value}"` : ''}
-        ${placeholder ? `placeholder="${placeholder}"` : ''}
-        ${disabled ? 'disabled' : ''}
-        ${readonly ? 'readonly' : ''}
-        data-aria-label="${dataAriaLabel}"
-      >
-        ${header ?? ''}
-        ${footerLeft ?? ''}
-        ${footerRight ?? ''}
-      </${HOST_SELECTOR}>
+      <div>
+        <${HOST_SELECTOR}
+          ${value ? `value="${value}"` : ''}
+          ${placeholder ? `placeholder="${placeholder}"` : ''}
+          ${disabled ? 'disabled' : ''}
+          ${readonly ? 'readonly' : ''}
+          data-aria-label="${dataAriaLabel}"
+        >
+          ${header ?? ''}
+          ${footerLeft ?? ''}
+          ${footerRight ?? ''}
+        </${HOST_SELECTOR}>
+        ${extraHtml ?? ''}
+      </div>
     `,
     clearDocument: true,
   });
@@ -92,6 +97,34 @@ test('mdc-aiassistantprompt', async ({ componentsPage }) => {
     await expect(withRegions.aiAssistantPrompt.locator('mdc-inputchip')).toHaveCount(2);
     await expect(withRegions.aiAssistantPrompt.locator('[slot="footer-left"]')).toHaveCount(2);
     await expect(withRegions.aiAssistantPrompt.locator('[slot="footer-right"]')).toHaveCount(3);
+  });
+
+  await test.step('should open a menu popover below the add button', async () => {
+    const withAddMenu = await setup({
+      componentsPage,
+      footerLeft: `
+        <mdc-button
+          id="aiassistantprompt-add-trigger"
+          slot="footer-left"
+          variant="tertiary"
+          size="24"
+          prefix-icon="plus-bold"
+          aria-label="Add to prompt"
+        ></mdc-button>
+      `,
+      extraHtml: `
+        <mdc-menupopover triggerid="aiassistantprompt-add-trigger" placement="bottom-start" aria-label="Add to prompt">
+          <mdc-menuitem label="Upload a file"></mdc-menuitem>
+          <mdc-menuitem label="Add from Example project"></mdc-menuitem>
+          <mdc-menuitem label="Add people"></mdc-menuitem>
+        </mdc-menupopover>
+      `,
+    });
+    const addButton = withAddMenu.aiAssistantPrompt.locator('#aiassistantprompt-add-trigger');
+    const menu = componentsPage.page.locator('mdc-menupopover[triggerid="aiassistantprompt-add-trigger"]');
+    await addButton.click();
+    await expect(menu).toBeVisible();
+    await expect(menu.locator('mdc-menuitem')).toHaveCount(3);
   });
 
   await test.step('accessibility', async () => {
