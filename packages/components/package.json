@@ -15,6 +15,7 @@
       "require": "./dist/index.js"
     },
     "./browser": "./dist/browser/index.js",
+    "./registry.json": "./dist/registry.json",
     "./react": "./dist/react/index.js",
     "./react/*": "./dist/react/*",
     "./dist/react": "./dist/react/index.js",
@@ -39,8 +40,9 @@
     "dev:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest-watch.config.js",
     "dev:storybook": "yarn copy:storybook && storybook dev -p 6006 -c config/storybook",
     "build": "concurrently --names 'components,browser,storybook' -c 'blue.bold,magenta.bold,cyan.bold' 'yarn:build:components' 'yarn:build:browser' && yarn build:storybook",
-    "build:components": "yarn build:manifest && yarn build:react && yarn build:module",
+    "build:components": "yarn build:manifest && yarn build:registry && yarn build:react && yarn build:module",
     "build:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest.config.js",
+    "build:registry": "node scripts/generateRegistry.js",
     "build:react": "node scripts/makeReact.js",
     "build:module": "tsc --project \"./src/tsconfig.json\"",
     "inject:kb-dts": "node scripts/injectKnowledgeBaseDts.js",
