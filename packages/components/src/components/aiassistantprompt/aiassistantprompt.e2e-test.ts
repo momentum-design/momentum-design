@@ -287,6 +287,57 @@ test('mdc-aiassistantprompt', async ({ componentsPage }) => {
     expect((menuBox?.y ?? 0) + (menuBox?.height ?? 0)).toBeLessThanOrEqual((promptBox?.y ?? 0) + 8);
   });
 
+  await test.step('should populate the textarea when a suggested prompt is selected', async () => {
+    const promptId = 'aiassistantprompt-example';
+    const suggestionsId = 'aiassistantprompt-suggestions';
+    const selectedPrompt = "Summarize Today's Tasks";
+    const withSuggestions = await setup({
+      componentsPage,
+      id: promptId,
+      extraHtml: `
+        <mdc-popover
+          id="${suggestionsId}"
+          triggerid="${promptId}"
+          trigger="manual"
+          placement="top"
+          disable-flip
+          aria-label="Prompt suggestions"
+        >
+          <mdc-list>
+            <mdc-listitem label="${selectedPrompt}"></mdc-listitem>
+            <mdc-listitem label="Draft an Example project update"></mdc-listitem>
+            <mdc-listitem label="Generate Report recap"></mdc-listitem>
+          </mdc-list>
+        </mdc-popover>
+      `,
+    });
+    await withSuggestions.aiAssistantPrompt.evaluate((host, id) => {
+      const popover = document.getElementById(id);
+      if (!popover) {
+        return;
+      }
+      host.addEventListener('focus', () => {
+        popover.setAttribute('visible', '');
+      });
+      popover.querySelectorAll('mdc-listitem').forEach(item => {
+        item.addEventListener('mousedown', event => {
+          event.preventDefault();
+        });
+        item.addEventListener('click', () => {
+          (host as HTMLElement & { value: string }).value = item.getAttribute('label') ?? '';
+          popover.removeAttribute('visible');
+        });
+      });
+    }, suggestionsId);
+    await withSuggestions.textarea.focus();
+    const menu = componentsPage.page.locator(`#${suggestionsId}`);
+    await expect(menu).toBeVisible();
+    await menu.locator('mdc-listitem').first().click();
+    await expect(withSuggestions.textarea).toHaveValue(selectedPrompt);
+    await expect(withSuggestions.aiAssistantPrompt).toHaveAttribute('value', selectedPrompt);
+    await expect(menu).toBeHidden();
+  });
+
   await test.step('accessibility', async () => {
     await setup({ componentsPage, placeholder: 'Ask about the Example project' });
     await componentsPage.accessibility.checkForA11yViolations('aiassistantprompt-default');

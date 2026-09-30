@@ -65,6 +65,16 @@ const keepPromptFocused = (event: Event) => {
   event.preventDefault();
 };
 
+const applySuggestion = (event: Event) => {
+  action('onclick')(event);
+  const item = event.currentTarget as HTMLElement;
+  const prompt = document.getElementById(PROMPT_ID) as (HTMLElement & { value: string }) | null;
+  if (prompt) {
+    prompt.value = item.getAttribute('label') ?? '';
+  }
+  document.getElementById(SUGGESTIONS_ID)?.removeAttribute('visible');
+};
+
 const headerAndFooter = html`
   <mdc-inputchip
     slot="header"
@@ -175,17 +185,17 @@ const suggestionsMenu = html`
       <mdc-listitem
         label="Summarize Today's Tasks"
         @mousedown="${keepPromptFocused}"
-        @click="${action('onclick')}"
+        @click="${applySuggestion}"
       ></mdc-listitem>
       <mdc-listitem
         label="Draft an Example project update"
         @mousedown="${keepPromptFocused}"
-        @click="${action('onclick')}"
+        @click="${applySuggestion}"
       ></mdc-listitem>
       <mdc-listitem
         label="Generate Report recap"
         @mousedown="${keepPromptFocused}"
-        @click="${action('onclick')}"
+        @click="${applySuggestion}"
       ></mdc-listitem>
     </mdc-list>
   </mdc-popover>
