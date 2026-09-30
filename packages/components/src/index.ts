@@ -3,6 +3,7 @@
 import Accordion from './components/accordion';
 import AccordionGroup from './components/accordiongroup';
 import AccordionButton from './components/accordionbutton';
+import AIAssistantPrompt from './components/aiassistantprompt';
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
 import AnimatedBackground from './components/animatedbackground';
@@ -99,6 +100,12 @@ import FocusTrap from './components/focustrap';
 import CheckboxTree from './components/checkboxtree';
 
 // Types Imports
+import type {
+  AIAssistantPromptBlurEvent,
+  AIAssistantPromptChangeEvent,
+  AIAssistantPromptFocusEvent,
+  AIAssistantPromptInputEvent,
+} from './components/aiassistantprompt/aiassistantprompt.types';
 import type { AvatarSize } from './components/avatar/avatar.types';
 import type { BadgeType } from './components/badge/badge.types';
 import type { ColorType as ChipColorType } from './components/staticchip/staticchip.types';
@@ -154,6 +161,7 @@ export {
   Accordion,
   AccordionButton,
   AccordionGroup,
+  AIAssistantPrompt,
   AlertChip,
   Animation,
   AnimatedBackground,
@@ -252,6 +260,10 @@ export {
 
 // Types Exports
 export type {
+  AIAssistantPromptBlurEvent,
+  AIAssistantPromptChangeEvent,
+  AIAssistantPromptFocusEvent,
+  AIAssistantPromptInputEvent,
   AvatarSize,
   BadgeType,
   ChipColorType,

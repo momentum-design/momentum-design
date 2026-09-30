@@ -32,6 +32,15 @@
       "component": "accordiongroup"
     },
     {
+      "id": "tier3/packages/components/src/components/aiassistantprompt/knowledge-base/aiassistantprompt.component",
+      "tier": 3,
+      "path": "packages/components/src/components/aiassistantprompt/knowledge-base/aiassistantprompt.component.md",
+      "title": "AI Assistant Prompt",
+      "summary": "Usage, guidelines, and accessibility for the mdc-aiassistantprompt component — a composer field with a native textarea and header and footer regions inside one field chrome.",
+      "canonical": null,
+      "component": "aiassistantprompt"
+    },
+    {
       "id": "tier3/packages/components/src/components/alertchip/knowledge-base/alertchip.component",
       "tier": 3,
       "path": "packages/components/src/components/alertchip/knowledge-base/alertchip.component.md",
