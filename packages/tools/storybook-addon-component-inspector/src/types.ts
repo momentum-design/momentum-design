@@ -28,6 +28,12 @@ export interface CustomElementsManifest {
  */
 export interface ComponentInspectorParameters {
   customElements?: CustomElementsManifest;
+  /**
+   * Tag-name prefix of the web components to inspect (e.g. `"mdc-"`). Matched
+   * case-insensitively against `tagName`. When omitted, any HTML element can be
+   * selected.
+   */
+  prefix?: string;
 }
 
 /** A single slot / shadow-part row shown in the legend. */

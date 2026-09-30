@@ -1,10 +1,6 @@
 import { addons } from "storybook/preview-api";
 import type { Channel } from "storybook/internal/channels";
-import type {
-  PartialStoryFn,
-  Renderer,
-  StoryContext,
-} from "storybook/internal/types";
+import type { PartialStoryFn, Renderer, StoryContext } from "storybook/internal/types";
 
 import { EVENTS, KEY, PARAM_KEY } from "./constants";
 import type {
@@ -17,13 +13,13 @@ import type {
 
 /**
  * Storybook decorator that renders an interactive overlay to highlight the
- * slots or CSS Parts of a Momentum Design component.
+ * slots or CSS Parts of a web component.
  *
  * The overlay is only mounted while the inspector is turned on through the
- * toolbar toggle (the `mdc-component-inspector` Storybook global). Once active:
+ * toolbar toggle (the `component-inspector` Storybook global). Once active:
  *  - Hold the `Shift` key to reveal the slot overlay.
  *  - Hold the `Meta` key to reveal the shadow-part overlay instead.
- *  - `Shift + click` / `Meta + click` any MDC element to inspect it.
+ *  - `Shift + click` / `Meta + click` any element to inspect it.
  *
  * Each region is drawn on a full-viewport `<canvas>` that is transparent to
  * pointer events, so the story underneath stays fully interactive. The colour
@@ -40,7 +36,7 @@ type Mode = "slots" | "parts";
 
 const MODE: Record<"SLOTS" | "PARTS", Mode> = { SLOTS: "slots", PARTS: "parts" };
 
-const OVERLAY_CANVAS_CLASS = "mdc-cmp-inspector-canvas";
+const OVERLAY_CANVAS_CLASS = "cmp-inspector-canvas";
 
 // Inline styles applied to the full-viewport overlay canvas. The canvas is
 // transparent to pointer events so the story underneath stays interactive.
@@ -66,7 +62,6 @@ interface RectLike {
 interface InspectedItem {
   label: string;
   rect: RectLike | null;
-  variant?: string;
   borderColor?: string;
   bgColor?: string;
 }
@@ -77,25 +72,39 @@ interface ManifestMaps {
   partsByTag: Map<string, ManifestCssPart[]>;
 }
 
-const isMdcElement = (node: EventTarget | null): node is Element =>
-  node instanceof Element && node.tagName.toLowerCase().startsWith("mdc-");
+/**
+ * Whether `node` is an inspectable element. With a `prefix` only elements whose
+ * tag name starts with it match; without one, any element is selectable.
+ */
+const matchesTarget = (node: EventTarget | null, prefix: string | null): node is Element => {
+  if (!(node instanceof Element)) return false;
+  if (!prefix) return true;
+  return node.tagName.toLowerCase().startsWith(prefix);
+};
 
-/** Normalise the default slot names used across the manifest (case-insensitive). */
-const isDefaultSlot = (name?: string): boolean => {
+/** Normalise the default slot names used across the manifest (case-insensitive). */ const isDefaultSlot = (
+  name?: string,
+): boolean => {
   const normalized = (name || "").trim().toLowerCase();
   return normalized === "" || normalized === "default";
 };
 
-/** Distinct, deterministic colour per item index. */
-// MDC label colour variants used to colour-code items. Each item gets a
-// variant which maps to the theme label tokens (see `variantTokens`).
-const LABEL_VARIANTS = ["cobalt", "gold", "lime", "mint", "orange", "pink", "purple", "slate", "violet"];
+/**
+ * Distinct, deterministic colour per item index, used for both the canvas
+ * overlay and the manager legend. Each entry is a solid border colour; the
+ * fill is derived as a lighter shade of the same hue (see `lighten`).
+ */
+const PALETTE = ["#4f7cff", "#e6b800", "#8bc34a", "#26a69a", "#ff9800", "#ec407a", "#ab47bc", "#78909c", "#7e57c2"];
 
-/** CSS custom property names for a label variant's outline and background. */
-const variantTokens = (variant: string): { border: string; background: string } => ({
-  border: `--mds-color-theme-outline-label-${variant}`,
-  background: `--mds-color-theme-background-label-${variant}-normal`,
-});
+/** Mix a `#rrggbb` colour towards white by `ratio` (0–1) → `rgb(...)`. */
+const lighten = (hex: string, ratio: number): string => {
+  const value = hex.replace("#", "");
+  const r = parseInt(value.slice(0, 2), 16);
+  const g = parseInt(value.slice(2, 4), 16);
+  const b = parseInt(value.slice(4, 6), 16);
+  const mix = (channel: number) => Math.round(channel + (255 - channel) * ratio);
+  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+};
 
 /** Union of two DOMRect-like boxes. */
 const unionRect = (a: RectLike | null, b: RectLike | null): RectLike | null => {
@@ -178,6 +187,8 @@ class ComponentInspector {
 
   private readonly channel: Channel | null;
 
+  private readonly prefix: string | null;
+
   private selected: Element | null = null;
 
   private active = false;
@@ -196,6 +207,7 @@ class ComponentInspector {
     slotsByTag: Map<string, ManifestSlot[]>,
     partsByTag: Map<string, ManifestCssPart[]>,
     channel: Channel | null,
+    prefix: string | null,
   ) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -203,6 +215,7 @@ class ComponentInspector {
     this.slotsByTag = slotsByTag;
     this.partsByTag = partsByTag;
     this.channel = channel;
+    this.prefix = prefix;
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
@@ -293,8 +306,10 @@ class ComponentInspector {
     if (event.shiftKey) mode = MODE.SLOTS;
     else if (event.metaKey) mode = MODE.PARTS;
     if (!mode) return;
-    const target = event.composedPath().find((node) => isMdcElement(node) && node.getRootNode() === document);
-    if (!isMdcElement(target ?? null)) return;
+    const target = event
+      .composedPath()
+      .find((node) => matchesTarget(node, this.prefix) && node.getRootNode() === document);
+    if (!matchesTarget(target ?? null, this.prefix)) return;
     // Prevent the modifier+click from triggering the component's own behaviour
     // while it is being selected for inspection.
     event.preventDefault();
@@ -420,26 +435,15 @@ class ComponentInspector {
     return this.decorateWithColors(parts);
   }
 
-  // Assign an MDC label colour variant (and its resolved token colours) to each
-  // collected item, colour-coding it consistently across canvas and legend.
+  // Assign a deterministic palette colour to each collected item: a solid
+  // border colour and a lighter fill shade, consistent across canvas and legend.
   private decorateWithColors(items: InspectedItem[]): InspectedItem[] {
     items.forEach((item, index) => {
-      const variant = LABEL_VARIANTS[index % LABEL_VARIANTS.length]!;
-      const tokens = variantTokens(variant);
-      const border = this.resolveToken(tokens.border) || this.resolveToken(tokens.background);
-      item.variant = variant;
+      const border = PALETTE[index % PALETTE.length]!;
       item.borderColor = border;
-      item.bgColor = this.resolveToken(tokens.background);
+      item.bgColor = lighten(border, 0.6);
     });
     return items;
-  }
-
-  // Resolve an `--mds-*` custom property to its computed value within the
-  // themed context of the selected element (works for the canvas, which cannot
-  // reference CSS variables directly).
-  private resolveToken(name: string): string {
-    if (!this.selected) return "";
-    return getComputedStyle(this.selected).getPropertyValue(name).trim();
   }
 
   // Direct light-DOM children (and non-empty text nodes) of the selected
@@ -527,7 +531,7 @@ const teardownInspector = (): void => {
 
 /**
  * Storybook decorator. Mounts the inspector overlay only while the toolbar
- * toggle (the `mdc-component-inspector` global) is on, and never in docs view.
+ * toggle (the `component-inspector` global) is on, and never in docs view.
  */
 export const withComponentInspector = (story: PartialStoryFn<Renderer>, context: StoryContext<Renderer>) => {
   const isEnabled = !!(context.globals && context.globals[KEY]);
@@ -539,6 +543,7 @@ export const withComponentInspector = (story: PartialStoryFn<Renderer>, context:
 
   const parameters = context.parameters?.[PARAM_KEY] as ComponentInspectorParameters | undefined;
   const { slotsByTag, partsByTag } = buildManifestMaps(parameters?.customElements);
+  const prefix = parameters?.prefix ? parameters.prefix.toLowerCase() : null;
 
   let channel: Channel | null = null;
   try {
@@ -557,7 +562,7 @@ export const withComponentInspector = (story: PartialStoryFn<Renderer>, context:
   Object.assign(canvas.style, OVERLAY_CANVAS_STYLES);
   document.body.appendChild(canvas);
 
-  currentInspector = new ComponentInspector(canvas, container, slotsByTag, partsByTag, channel);
+  currentInspector = new ComponentInspector(canvas, container, slotsByTag, partsByTag, channel, prefix);
 
   return story();
 };

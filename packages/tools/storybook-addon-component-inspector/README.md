@@ -1,7 +1,9 @@
 # @momentum-design/storybook-addon-component-inspector
 
 A Storybook toolbar addon that renders an interactive overlay to highlight the
-**slots** and **CSS shadow parts** of a Momentum Design (`mdc-*`) component.
+**slots** and **CSS shadow parts** of a web component. It works with any custom
+elements — Momentum Design (`mdc-*`) components by default, but any prefix (or
+any HTML element) can be targeted via the `prefix` parameter.
 
 ## Usage
 
@@ -24,10 +26,23 @@ import customElements from '@momentum-design/components/dist/custom-elements.jso
 
 export default {
   parameters: {
-    componentInspector: { customElements },
+    componentInspector: {
+      customElements,
+      // Optional: only elements whose tag starts with this prefix are
+      // selectable (matched case-insensitively). Omit to allow selecting
+      // any HTML element.
+      prefix: 'mdc-',
+    },
   },
 };
 ```
+
+### Parameters
+
+| Name             | Type     | Description                                                                                               |
+| ---------------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `customElements` | object   | The raw custom-elements manifest used to resolve each component's slots and shadow parts.                  |
+| `prefix`         | string   | Tag-name prefix of the components to inspect (e.g. `"mdc-"`). When omitted, any HTML element is selectable. |
 
 ## How it works
 
@@ -37,7 +52,12 @@ nothing is selected yet, a small on-screen help panel shows which keys to use
 
 - Hold `Shift` to reveal the **slot** overlay.
 - Hold `Meta` (⌘ on macOS, ⊞ on Windows) to reveal the **shadow-part** overlay.
-- `Shift + click` / `Meta + click` any `mdc-*` element to inspect it.
+- `Shift + click` / `Meta + click` any targeted element to inspect it.
+
+When no `prefix` is configured, any element in the story can be selected. Each
+slot / part is colour-coded from a built-in palette (a solid border colour with
+a lighter fill shade), so the overlay is framework-agnostic and works for any
+web component.
 
 Each region is drawn on a transparent, full-viewport `<canvas>` (pointer events
 pass through, so the story stays interactive). A colour-coded legend is rendered

@@ -1,10 +1,10 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { useChannel } from "storybook/manager-api";
+import { useChannel, useParameter } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 import { createPortal } from "react-dom";
 
-import { EVENTS } from "../constants";
-import type { LegendPayload } from "../types";
+import { EVENTS, PARAM_KEY } from "../constants";
+import type { ComponentInspectorParameters, LegendPayload } from "../types";
 
 const PREVIEW_IFRAME_ID = "storybook-preview-iframe";
 const PREVIEW_WRAPPER_ID = "storybook-preview-wrapper";
@@ -116,6 +116,9 @@ export const InspectorLegend = memo(function InspectorLegend() {
   }, [emit]);
 
   const metaKeyLabel = useMemo(detectMetaKeyLabel, []);
+
+  const { prefix } = useParameter<ComponentInspectorParameters>(PARAM_KEY, {});
+  const targetText = prefix ? `<${prefix.toLowerCase()}\u2026>` : "HTML";
   const shiftKey = "\u21E7 Shift";
 
   const reposition = useCallback(() => {
@@ -157,7 +160,7 @@ export const InspectorLegend = memo(function InspectorLegend() {
         <Title>Component Inspector</Title>
         <div>
           To inspect, <b>Hold</b> <Kbd>{shiftKey}</Kbd> (for Slots) or <Kbd>{metaKeyLabel}</Kbd> (for Parts) and{" "}
-          <b>Click</b> on any {"<mdc-\u2026>"} component.
+          <b>Click</b> on any {targetText} element.
         </div>
       </Panel>,
       wrapper,
@@ -185,7 +188,7 @@ export const InspectorLegend = memo(function InspectorLegend() {
           </Hint>
         )}
         <Hint>
-          Hold <Kbd>{shiftKey}</Kbd> / <Kbd>{metaKeyLabel}</Kbd> and Click on any {"<mdc-\u2026>"} to inspect component.
+          Hold <Kbd>{shiftKey}</Kbd> / <Kbd>{metaKeyLabel}</Kbd> and Click on any {targetText} element to inspect it.
         </Hint>
       </div>
     </Panel>,

@@ -161,6 +161,7 @@ const preview = {
     customElementsManifest: refactoredCustomElements,
     componentInspector: {
       customElements: rawCustomElementsManifest,
+      prefix: 'mdc-',
     },
   },
   decorators: [
