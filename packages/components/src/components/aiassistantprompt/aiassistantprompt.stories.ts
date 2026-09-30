@@ -216,7 +216,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/aiassistantprompt',
+  title: 'Widgets/aiassistantprompt',
   tags: ['autodocs'],
   component: 'mdc-aiassistantprompt',
   render,
