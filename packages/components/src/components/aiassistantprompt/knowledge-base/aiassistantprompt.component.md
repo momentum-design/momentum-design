@@ -55,6 +55,7 @@ Listen for native `input` on each keystroke and `change` when the value is commi
 - Put contextual tokens in the `header` slot. `mdc-inputchip` is the usual child; the prompt does not remove chips when their close control is activated.
 - Put left-aligned actions in `footer-left` and right-aligned actions in `footer-right`. Typical children are `mdc-button` instances.
 - Keep menus, suggestion lists, and other overlays outside the host. The field chrome uses `overflow: hidden`, so a slotted popover is clipped.
+- When a suggestion is chosen, set the prompt `value` from the item label. The widget does not fill the field for you.
 - Leave a slot empty when that region should not appear; empty header and footer columns are hidden.
 
 ### Content guidance
