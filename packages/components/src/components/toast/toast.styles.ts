@@ -3,7 +3,7 @@ import { css } from 'lit';
 const styles = css`
   :host {
     --mdc-toast-background-color: var(--mds-color-theme-background-solid-primary-normal);
-    --mdc-toast-border-color: var(--mds-color-theme-outline-primary-normal);
+    --mdc-toast-border-color: var(--mds-color-theme-outline-secondary-normal);
     --mdc-toast-header-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-toast-icon-color: var(--mdc-toast-header-text-color);
     --mdc-toast-elevation-3: var(--mds-elevation-3);
