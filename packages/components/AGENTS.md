@@ -28,6 +28,10 @@ repository managed by Yarn Workspaces and is published to npm at
 
 ## Figma Code Connect
 
+To create or update a Code Connect template, follow the
+[`momentum-figma-code-connect` skill](../../.github/skills/momentum-figma-code-connect/SKILL.md).
+It owns the workflow; this section records the conventions it depends on.
+
 **Iron rule — never assert anything Code Connect related from memory.** Always
 read the relevant page on <https://developers.figma.com/docs/code-connect/>
 first, and cite it. The API changes often, much of what is widely known is the
@@ -35,7 +39,8 @@ removed parser-based format, and plausible-sounding behaviour is frequently
 wrong. Where the docs are silent or ambiguous, verify empirically with
 `yarn components figma:preview` before stating anything as fact.
 
-Key pages: [template files](https://developers.figma.com/docs/code-connect/template-files/),
+Key pages:
+[template files](https://developers.figma.com/docs/code-connect/template-files/),
 [template API](https://developers.figma.com/docs/code-connect/template-api/),
 [configuration](https://developers.figma.com/docs/code-connect/api/config-file/),
 [CLI reference](https://developers.figma.com/docs/code-connect/cli-reference/).

@@ -64,7 +64,6 @@
     "copy:animations": "node scripts/copyAnimations.js",
     "generate:image-fixtures": "node scripts/pngToDataurl.js",
     "docs": "echo \"script 'docs' has not been implemented\"",
-    "figma:getattributes": "node --env-file=.env scripts/getFigmaComponentAttributes.js",
     "figma:scrub": "node scripts/scrubFigmaUrls.js",
     "figma:publish:prepare:webcomponent": "node --env-file=.env scripts/createFigmaConfigJson.js config/code-connect/figma-webcomponent.config.js figma-webcomponent.config.json",
     "figma:publish:prepare:react": "node --env-file=.env scripts/createFigmaConfigJson.js config/code-connect/figma-react.config.js figma-react.config.json",
