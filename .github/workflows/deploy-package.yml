@@ -301,6 +301,9 @@ jobs:
      if: ${{ needs.generate-package-matrix.outputs.packages != '[]' && needs.generate-package-matrix.outputs.packages != '' }}
      runs-on: ubuntu-latest
 
+     permissions:
+       contents: write
+
      strategy:
        matrix:
          package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
