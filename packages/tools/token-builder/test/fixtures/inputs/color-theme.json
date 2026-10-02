@@ -41,17 +41,17 @@
               "primary": {
                 "value": "{color.core.gray.10}",
                 "type": "color",
-                "description": "Core Token: core.gray.90\nHEX: 262626\n----------------\nUsed this for the most top modal surface when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+                "description": "Core Token: core.gray.90\nHEX: 262626\n----------------\nUsed this for the most top modal surface when layering one to another. For details, find \"UI Layering\"."
               },
               "secondary": {
                 "value": "{color.core.gray.20}",
                 "type": "color",
-                "description": "Core Token: core.gray.95\nHEX: 1A1A1A\n----------------\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+                "description": "Core Token: core.gray.95\nHEX: 1A1A1A\n----------------\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\"."
               },
               "tertiary": {
                 "value": "{color.core.black-alpha.50}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.100\nHEX: 000000\n----------------\nFull solid surface. Used this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+                "description": "Core Token: core.black-alpha.100\nHEX: 000000\n----------------\nFull solid surface. Used this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\"."
               }
             }
           },
@@ -281,7 +281,7 @@
             "01": {
               "value": "linear-gradient(180deg, {color.core.gray.10} 0%, {color.decorative.gold.60}  100%)",
               "type": "color",
-              "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+              "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines."
             }
           }
         }
