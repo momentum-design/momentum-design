@@ -1,9 +1,9 @@
 // url=<FIGMA_RADIO_URL>
 // source=https://github.com/momentum-design/momentum-design/blob/main/packages/components/src/components/radio/radio.component.ts
-// component=mdc-radio
+// component=Radio
 import figma from 'figma';
-import { attribute, booleanAttribute, element } from '../../../../config/code-connect/html';
 
+const { renderProp } = figma.helpers.react;
 const instance = figma.selectedInstance;
 
 const labelLayer = instance.findText('Label');
@@ -50,16 +50,21 @@ const disabled = instance.getEnum('State', {
   Disabled: true,
 });
 
+// renderProp bakes in its own leading space (' label="x"', ' disabled') and returns '' when a prop is
+// absent, so these join with no separator. Only valid because every value here is a primitive — for an
+// instance, renderProp returns ResultSection[], which must be interpolated rather than joined.
+const props = [
+  renderProp('label', label),
+  renderProp('helpText', helpText),
+  renderProp('toggletipText', toggletipText),
+  renderProp('checked', checked),
+  renderProp('readonly', readonly),
+  renderProp('disabled', disabled),
+].join('');
+
 export default {
-  example: figma.code`${element('mdc-radio', [
-    attribute('label', label),
-    attribute('help-text', helpText),
-    attribute('toggletip-text', toggletipText),
-    booleanAttribute('checked', checked),
-    booleanAttribute('readonly', readonly),
-    booleanAttribute('disabled', disabled),
-  ])}`,
-  imports: ["import '@momentum-design/components/components/radio';"],
+  example: figma.code`<Radio${props} />`,
+  imports: ["import { Radio } from '@momentum-design/components/dist/react';"],
   id: 'radio',
   metadata: { nestable: true },
 };
