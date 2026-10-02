@@ -22,17 +22,23 @@ More specific information is provided in each sub-package.
 
 1. Fork the repository
 2. Clone the forked repository
+
     ```
     git clone https://github.com/{username}/momentum-design.git
     ```
+
 3. Navigate to the root of the repo.
+
     ```
     cd momentum-design
     ```
+
 4. Setup upstream remote references in your local
+
     ```
     git remote add upstream https://github.com/momentum-design/momentum-design.git
     ```
+
 5. Verify that your forked repos are set up with the correct remote references.
     Running `git remote -v` in your repository directory should return settings like these:
 
@@ -42,6 +48,7 @@ More specific information is provided in each sub-package.
     upstream git@github.com:momentum-design/momentum-design.git (fetch)
     upstream git@github.com:momentum-design/momentum-design.git (push)
     ```
+
 6. Run `yarn` in the root of the repo
 7. Run `yarn build` in the root of the repo
 
@@ -58,12 +65,69 @@ For example,
 Steps for creating a PR (after [First time setup](#first-time-setup) has been done):
 
 1. Make sure your main branch is up to date with the remote, by executing `git pull upstream main -ff` and then push.
-2. Create a new branch and make your changes.
-3. Commit your changes, using [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary).
-4. Push your branch to the origin remote
-5. Create a PR against base repository / main branch on Github
-6. **Important: Add a proper description and title to the PR - it should be formatted, human-readable and also not include the description template text anymore.**
-7. Set the *validated* label on the PR to kick off the pipeline if you have the access rights for it.
+2. Create a new branch and make your changes. See [Branch naming](#branch-naming).
+3. Commit your changes, using [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary). See [Commit messages](#commit-messages).
+4. Push your branch to the origin remote — that is, to your fork. **Never push a branch to the base repository.** This applies to everyone, including maintainers who have write access to it.
+5. Create the PR against the base repository / main branch. The title, the description and the *validated* label are all set as part of creating it, not as follow-up edits:
+
+    ```bash
+    gh pr create --repo momentum-design/momentum-design --base main \
+      --head {username}:{branch} --title "{title}" --body-file {file} \
+      --label validated
+    ```
+
+    - **Important: Add a proper description and title to the PR - it should be formatted, human-readable and also not include the description template text anymore.** See [Pull request title](#pull-request-title) and [Pull request description](#pull-request-description).
+    - The *validated* label is what kicks off the pipeline. Pass `--label validated` if you have the access rights for it. See [Running CI with the validated label](#running-ci-with-the-validated-label).
+
+### Branch naming
+
+Branch names are not validated by CI. Prefer a short, lowercase, hyphen-separated name prefixed with the conventional commit type — `fix/release-token-permissions`, `feat/numberinput`, `chore/publish-only-dist-changes`. Prefixing with your username, such as `{username}/fix/numberinput`, is also in use.
+
+### Commit messages
+
+Commit messages must follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary). This is enforced locally by the `commit-msg` Git hook, which runs [commitlint](config/commitlint/commitlint.config.js) and rejects a non-conforming message before the commit is created.
+
+### Pull request title
+
+The *Validate Pull Request Title* job in [pull-request.yml](.github/workflows/pull-request.yml) checks the title against:
+
+```text
+^(feat|docs|chore|fix|refactor|test|style|perf|revert|build|ci)(\(\w+\))?:.+$
+```
+
+This is stricter than conventional commits in one respect: the optional scope must match `\w+`, so it cannot contain a hyphen, slash or dot. Use `fix(ci):` rather than `fix(deploy-package):` — a hyphenated scope fails the job.
+
+### Pull request description
+
+The description is pre-filled from [pull_request_template.md](.github/pull_request_template.md). Replace the placeholder line under each heading and delete the leading HTML comment block. An empty description fails the *Validate Pull Request Description* job.
+
+Write it for someone **consuming** the library, not for someone reading the diff:
+
+- Describe what changes for a consumer — a new or changed API, different visual output, altered default behaviour, a bug they would otherwise have hit.
+- Do not walk through the code changes. Which files moved, or how a function was refactored, belongs in the diff.
+- If there is no consumer impact — tooling, CI, tests, internal refactors — state that explicitly, for example *"No changes for consumers of the library."* A short description is fine as long as it says so.
+
+**Never put internal or confidential information in a PR description.** This repository is public, so descriptions, titles and comments are world-readable and are not retracted by editing them afterwards. Keep out internal account, org or infrastructure details, internal tooling and service names, employee or customer names, ticket contents, and anything else not already public. **Never link to anything internal either** — an internal ticket, dashboard, wiki or document URL leaks information through the link itself, even to people who cannot open it. Describe the observable behaviour instead of the internal cause — *"the default token scope changed"* rather than naming the internal change that caused it. If the reasoning cannot be stated publicly, leave it out of the description entirely.
+
+To work out whether a change reaches consumers, look at each package's `dist` folder, because that is what gets published. Build the package and compare its `dist` output against `main`; if `dist` is unchanged, consumers are unaffected. The deploy pipeline uses this same signal — [compare-dist.sh](.github/scripts/compare-dist.sh) skips publishing a package whose `dist` did not change.
+
+### Running CI with the validated label
+
+No build or test job runs until the PR carries the `validated` label. The *Validate Action* job in [pull-request.yml](.github/workflows/pull-request.yml) gates every downstream job, and because all PRs are opened from forks, the label is always required. `labeled` is one of the workflow's trigger types, so adding it starts the pipeline.
+
+Apply it with `--label validated` when you create the PR, as shown in step 5 above. On a PR that already exists:
+
+```bash
+gh pr edit {number} --repo momentum-design/momentum-design --add-label validated
+```
+
+Applying a label needs at least triage access to the base repository. To check your role:
+
+```bash
+gh api repos/momentum-design/momentum-design/collaborators/{username}/permission --jq .role_name
+```
+
+`triage`, `write`, `maintain` or `admin` means you can set the label yourself. Otherwise, open the PR without it and ask a Momentum Core Team member to add it for you.
 
 ## Knowledge base
 
