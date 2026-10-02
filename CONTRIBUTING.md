@@ -22,17 +22,23 @@ More specific information is provided in each sub-package.
 
 1. Fork the repository
 2. Clone the forked repository
+
     ```
     git clone https://github.com/{username}/momentum-design.git
     ```
+
 3. Navigate to the root of the repo.
+
     ```
     cd momentum-design
     ```
+
 4. Setup upstream remote references in your local
+
     ```
     git remote add upstream https://github.com/momentum-design/momentum-design.git
     ```
+
 5. Verify that your forked repos are set up with the correct remote references.
     Running `git remote -v` in your repository directory should return settings like these:
 
@@ -42,6 +48,7 @@ More specific information is provided in each sub-package.
     upstream git@github.com:momentum-design/momentum-design.git (fetch)
     upstream git@github.com:momentum-design/momentum-design.git (push)
     ```
+
 6. Run `yarn` in the root of the repo
 7. Run `yarn build` in the root of the repo
 
@@ -99,6 +106,8 @@ Write it for someone **consuming** the library, not for someone reading the diff
 - Describe what changes for a consumer — a new or changed API, different visual output, altered default behaviour, a bug they would otherwise have hit.
 - Do not walk through the code changes. Which files moved, or how a function was refactored, belongs in the diff.
 - If there is no consumer impact — tooling, CI, tests, internal refactors — state that explicitly, for example *"No changes for consumers of the library."* A short description is fine as long as it says so.
+
+**Never put internal or confidential information in a PR description.** This repository is public, so descriptions, titles and comments are world-readable and are not retracted by editing them afterwards. Keep out internal account, org or infrastructure details, internal tooling and service names, employee or customer names, ticket contents, and anything else not already public. **Never link to anything internal either** — an internal ticket, dashboard, wiki or document URL leaks information through the link itself, even to people who cannot open it. Describe the observable behaviour instead of the internal cause — *"the default token scope changed"* rather than naming the internal change that caused it. If the reasoning cannot be stated publicly, leave it out of the description entirely.
 
 To work out whether a change reaches consumers, look at each package's `dist` folder, because that is what gets published. Build the package and compare its `dist` output against `main`; if `dist` is unchanged, consumers are unaffected. The deploy pipeline uses this same signal — [compare-dist.sh](.github/scripts/compare-dist.sh) skips publishing a package whose `dist` did not change.
 
