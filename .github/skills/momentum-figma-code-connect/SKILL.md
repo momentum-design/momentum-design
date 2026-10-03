@@ -1,10 +1,11 @@
 ---
 name: momentum-figma-code-connect
 description:
-  'Create or update Figma Code Connect template files for a component in packages/components, using the Figma MCP server
-  to read the component definition. Use when asked to connect a component to Figma, write or fix a .figma.ts template,
-  refresh a mapping after a component API or design change, or when Dev Mode shows a wrong, empty, or missing snippet.
-  Do not use for publishing, for Figma design-to-code work, or for packages other than components.'
+  'Create, update, and publish Figma Code Connect template files for a component in packages/components, using the Figma
+  MCP server to read the component definition. Use when asked to connect a component to Figma, write or fix a
+  .figma.ts template, refresh a mapping after a component API or design change, publish or unpublish a mapping, or when
+  Dev Mode shows a wrong, empty, or missing snippet. Do not use for Figma design-to-code work, or for packages other
+  than components.'
 ---
 
 # Figma Code Connect for Momentum components
@@ -98,6 +99,59 @@ Updating is not "re-run the generator". A stale template is worse than none, bec
 4. If the component was renamed or moved, fix `// source=` too; nothing else will catch a 404 link except
    `figma:validate`.
 
+## Publishing
+
+Publishing writes to the shared Figma file and is immediately visible to every designer and developer in Dev Mode.
+There is no CI job and no staging step, so treat it as a production deploy.
+
+### Scope the publish to this component
+
+`publish` has no `--node`; left alone it publishes **every** file matched by the config's `include` glob, which would
+republish unrelated components from whatever state the working tree happens to be in. Pass `-f, --file <file...>` to
+limit it to the two files you just wrote ([CLI reference](https://developers.figma.com/docs/code-connect/cli-reference/)).
+
+### 1. Dry run first
+
+```bash
+yarn components figma:publish:webcomponent --dry-run --file src/components/<name>/code-connect/<name>.webcomponent.figma.ts
+yarn components figma:publish:react        --dry-run --file src/components/<name>/code-connect/<name>.react.figma.ts
+```
+
+`--dry-run` validates and prints a "Files that would be published" list without writing anything. Confirm the list
+contains only this component and the expected label (`Web Components` / `React`). The output contains the real Figma
+URL — **redact it** before quoting it back to the user.
+
+### 2. Ask for approval
+
+Show the user the dry-run file list and the label for each config, then ask for explicit approval to publish. "Looks
+good" or equivalent is required; silence is not consent. Do not publish on an assumed yes, and do not publish as a
+side effect of being asked to "finish" or "wrap up" the work.
+
+### 3. Publish
+
+```bash
+yarn components figma:publish:webcomponent --file src/components/<name>/code-connect/<name>.webcomponent.figma.ts
+yarn components figma:publish:react        --file src/components/<name>/code-connect/<name>.react.figma.ts
+```
+
+Both labels must be published — a component connected for only one of them shows a missing snippet in the other.
+
+Never pass `--force`. It overwrites Code Connect mappings authored in the Figma UI, which the repo has no record of and
+cannot restore.
+
+### 4. Verify, and how to roll back
+
+Read the published list in the output and confirm it matches the dry run. If a bad mapping ships, unpublish that one
+node rather than running a bare `figma connect unpublish` — without `--node` it unpublishes **everything** in the
+config ([quickstart](https://developers.figma.com/docs/code-connect/quickstart-guide/#unpublish-code-connect-files)):
+
+```bash
+yarn components figma connect unpublish --node <NODE_URL> --label "Web Components"
+```
+
+The node URL is confidential; take it from `.env`, keep it out of the chat transcript, and never record the command
+with a literal URL in a commit message or PR description.
+
 ## Definition of done
 
 - `yarn components figma:validate` exits 0.
@@ -105,4 +159,6 @@ Updating is not "re-run the generator". A stale template is worse than none, bec
 - `figma connect preview <file> --unique` renders the expected snippet. **Read the output** — it exits 0 even when it
   fails to reach Figma, so the exit code alone proves nothing.
 - No literal Figma URL anywhere in the diff.
-- **Do not publish.** `figma connect publish` is a human action, run locally, outside an agent session.
+- Both configs dry-run clean and scoped to this component only.
+- The user explicitly approved publishing, and both `Web Components` and `React` are published — or the user declined,
+  and that is stated back to them so the templates are not silently left unpublished.

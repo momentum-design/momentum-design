@@ -6,13 +6,19 @@
     "noEmit": true,
     "target": "es2020",
     "module": "es2020",
-    "lib": ["es2020"],
+    "lib": [
+      "es2020"
+    ],
     "moduleResolution": "node",
     "strict": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["@figma/code-connect/figma-types"]
+    "types": [
+      "@figma/code-connect/figma-types"
+    ]
   },
-  "include": ["src/components/**/*.figma.ts"]
+  "include": [
+    "src/components/**/*.figma.ts"
+  ]
 }
