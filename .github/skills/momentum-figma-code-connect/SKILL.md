@@ -76,9 +76,8 @@ treat it as a backstop, not as permission to be careless.
 - **`getEnum` maps must be exhaustive** — every variant value from `get_context_for_code_connect`, no omissions.
 - **Guard every `findText` / `findInstance` result.** They return an `ErrorHandle`, not `null`. `tsc -p
 tsconfig.figma.json` (wired into `analyze:syntax`) enforces this.
-- **Copy inside a visibility-bound layer is unreachable.** If a text layer's visibility is bound to a boolean property,
-  its content cannot be read even when that boolean is forced on. Mirror the design string as a literal and comment why,
-  rather than leaving a bare `TODO`.
+- **A boolean that gates visibility is a gate, not the content.** Never hardcode the gated copy — see
+  [Booleans that gate visibility](#booleans-that-gate-visibility).
 - **Interpolating an array into `figma.code` silently drops it.** Join to a string first.
 - **`metadata.nestable`**: `true` for inline-composable primitives (icon, text, badge); `false` for containers (dialog,
   banner, accordion group).
@@ -86,6 +85,38 @@ tsconfig.figma.json` (wired into `analyze:syntax`) enforces this.
 Shared HTML helpers for the Web Components snippet live in `config/code-connect/html.ts` — use them rather than
 hand-rolling attribute concatenation, and read their header comment before mixing them with
 `figma.helpers.react.renderProp`, which handles separators differently.
+
+### Booleans that gate visibility
+
+The recurring Momentum shape is a BOOLEAN property bound to the `visible` of a wrapper instance that holds the real
+text layer — `Helper Text` → `.Core - Helper Text` → `Body Text`. Read the layer, and let `getBoolean` decide whether
+to emit it:
+
+```ts
+// "Body Text" sits inside the `.Core - Helper Text` instance, so the lookup has to cross that boundary.
+const helpTextLayer = instance.findText('Body Text', { traverseInstances: true });
+
+const helpText = instance.getBoolean('Helper Text', {
+  true: helpTextLayer.type === 'TEXT' ? helpTextLayer.textContent : undefined,
+  false: undefined,
+});
+```
+
+Three things make this go wrong, and all three look identical from the outside — an absent prop:
+
+- **`findText` stops at instance boundaries.** The gated layer nearly always sits inside the wrapper instance, so it
+  needs `{ traverseInstances: true }`. Without it you get an `ErrorHandle`. Read the `descendants` tree from
+  `get_context_for_code_connect`: anything nested under an `INSTANCE[...]` requires the option.
+- **The mapping object is not lazy.** Both branches of a `getBoolean` map are evaluated before the boolean is read, so
+  inlining the call as `{ true: instance.findText('Body Text') }` defers nothing — and still yields a handle, not a
+  string.
+- **`preview` cannot exercise this path.** `--props` only feeds `getBoolean` / `getEnum`; it does not change the
+  traversed node tree, which is always the component's default state. A layer hidden by default stays pruned, so the
+  prop is missing from every preview render regardless of `--props`. Confirm with a control: flip a boolean whose layer
+  is visible by default and watch `findLayers` return an identical list.
+
+That last point is the trap. An `ErrorHandle` in `preview` is **not** evidence that the copy is unreadable, and it is
+not grounds for hardcoding the design string. Verify in Dev Mode against a real instance with the toggle on.
 
 ## Updating an existing template
 

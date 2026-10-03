@@ -13,11 +13,11 @@ const label = instance.getBoolean('Label', {
   false: undefined,
 });
 
-// Mirrors the design copy. The "Body Text" layer sits inside `.Core - Helper Text`, whose visibility is
-// bound to the "Helper Text" boolean; while hidden it is unreachable via findText/findInstance (both
-// return an ERROR handle), so its content cannot be read dynamically.
+// "Body Text" sits inside the `.Core - Helper Text` instance, so the lookup has to cross that boundary.
+const helpTextLayer = instance.findText('Body Text', { traverseInstances: true });
+
 const helpText = instance.getBoolean('Helper Text', {
-  true: 'Helper text',
+  true: helpTextLayer.type === 'TEXT' ? helpTextLayer.textContent : undefined,
   false: undefined,
 });
 
