@@ -1,38 +1,17 @@
 {
   "files": [
     {
-      "destination": "spacing/complete",
-      "cssSelector": ".mds-spacing",
+      "destination": "dimension/complete",
+      "cssSelector": ".mds-dimension",
       "targets": [
-        "core/spacing.json"
-      ]
-    },
-    {
-      "destination": "border/complete",
-      "cssSelector": ".mds-border",
-      "targets": [
-        "core/border.json"
-      ]
-    },
-    {
-      "destination": "radius/complete",
-      "cssSelector": ".mds-radius",
-      "targets": [
-        "core/radius.json"
-      ]
-    },
-    {
-      "destination": "size/complete",
-      "cssSelector": ".mds-size",
-      "targets": [
-        "core/size.json"
+        "core/dimension.json"
       ]
     },
     {
       "destination": "theme/stable/spacing",
       "cssSelector": ".mds-theme-stable",
       "targets": [
-        "core/spacing.json",
+        "core/dimension.json",
         "theme/stable/spacing.json"
       ]
     },
@@ -40,7 +19,7 @@
       "destination": "theme/stable/border",
       "cssSelector": ".mds-theme-stable",
       "targets": [
-        "core/border.json",
+        "core/dimension.json",
         "theme/stable/border.json"
       ]
     },
@@ -48,7 +27,7 @@
       "destination": "theme/stable/radius",
       "cssSelector": ".mds-theme-stable",
       "targets": [
-        "core/radius.json",
+        "core/dimension.json",
         "theme/stable/radius.json"
       ]
     },
@@ -56,7 +35,7 @@
       "destination": "theme/stable/size",
       "cssSelector": ".mds-theme-stable",
       "targets": [
-        "core/size.json",
+        "core/dimension.json",
         "theme/stable/size.json"
       ]
     },
@@ -64,7 +43,7 @@
       "destination": "theme/fluid/spacing",
       "cssSelector": ".mds-theme-fluid",
       "targets": [
-        "core/spacing.json",
+        "core/dimension.json",
         "theme/stable/spacing.json",
         "theme/fluid/spacing.json"
       ]
@@ -73,7 +52,7 @@
       "destination": "theme/fluid/border",
       "cssSelector": ".mds-theme-fluid",
       "targets": [
-        "core/border.json",
+        "core/dimension.json",
         "theme/stable/border.json",
         "theme/fluid/border.json"
       ]
@@ -82,7 +61,7 @@
       "destination": "theme/fluid/radius",
       "cssSelector": ".mds-theme-fluid",
       "targets": [
-        "core/radius.json",
+        "core/dimension.json",
         "theme/stable/radius.json",
         "theme/fluid/radius.json"
       ]
@@ -91,7 +70,7 @@
       "destination": "theme/fluid/size",
       "cssSelector": ".mds-theme-fluid",
       "targets": [
-        "core/size.json",
+        "core/dimension.json",
         "theme/stable/size.json",
         "theme/fluid/size.json"
       ]

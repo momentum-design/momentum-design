@@ -1,16 +1,14 @@
 {
   "border": {
-    "theme": {
-      "default": {
-        "value": "{border.width.1}",
-        "type": "dimension",
-        "description": "Default stroke weight (chips, banner, buttongroup, inputs)"
-      },
-      "emphasis": {
-        "value": "{border.width.2}",
-        "type": "dimension",
-        "description": "Emphasis stroke weight (selected filterchip, heavier container chrome)"
-      }
+    "default": {
+      "value": "{dimension.1}",
+      "type": "dimension",
+      "description": "Default stroke weight (chips, banner, buttongroup, inputs)"
+    },
+    "emphasis": {
+      "value": "{dimension.2}",
+      "type": "dimension",
+      "description": "Emphasis stroke weight (selected filterchip, heavier container chrome)"
     }
   }
 }

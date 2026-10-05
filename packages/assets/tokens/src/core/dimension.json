@@ -1,0 +1,114 @@
+{
+  "dimension": {
+    "0": {
+      "value": "0",
+      "type": "dimension",
+      "description": "0px — flush corners and collapsed gaps"
+    },
+    "1": {
+      "value": "1px",
+      "type": "dimension",
+      "description": "1px — default stroke (chips, banner, divider, list item)"
+    },
+    "2": {
+      "value": "0.125rem",
+      "type": "dimension",
+      "description": "2px — emphasis stroke; subtle radius (checkbox, sm pickers)"
+    },
+    "4": {
+      "value": "0.25rem",
+      "type": "dimension",
+      "description": "4px — tight gap; small radius; micro size"
+    },
+    "8": {
+      "value": "0.5rem",
+      "type": "dimension",
+      "description": "8px — default gap / pad-block / inset-tight; medium radius; compact size"
+    },
+    "12": {
+      "value": "0.75rem",
+      "type": "dimension",
+      "description": "12px — pad-inline; large radius; compact icon slot"
+    },
+    "16": {
+      "value": "1rem",
+      "type": "dimension",
+      "description": "16px — default surface inset; icon slot"
+    },
+    "20": {
+      "value": "1.25rem",
+      "type": "dimension",
+      "description": "20px — pill radius; compact control row"
+    },
+    "24": {
+      "value": "1.5rem",
+      "type": "dimension",
+      "description": "24px — gap-loose; compact control height"
+    },
+    "28": {
+      "value": "1.75rem",
+      "type": "dimension",
+      "description": "28px — buttongroup / calendar / stepper height"
+    },
+    "32": {
+      "value": "2rem",
+      "type": "dimension",
+      "description": "32px — spacious spacing; default control height"
+    },
+    "36": {
+      "value": "2.25rem",
+      "type": "dimension",
+      "description": "36px — optgroup row height"
+    },
+    "40": {
+      "value": "2.5rem",
+      "type": "dimension",
+      "description": "40px — large control / toolbar row"
+    },
+    "44": {
+      "value": "2.75rem",
+      "type": "dimension",
+      "description": "44px — presence indicator (Core only; no theme step)"
+    },
+    "48": {
+      "value": "3rem",
+      "type": "dimension",
+      "description": "48px — extra-large section break; avatar / spinner"
+    },
+    "52": {
+      "value": "3.25rem",
+      "type": "dimension",
+      "description": "52px — input min-width"
+    },
+    "64": {
+      "value": "4rem",
+      "type": "dimension",
+      "description": "64px — maximum layout rhythm; header / avatar lg"
+    },
+    "72": {
+      "value": "4.5rem",
+      "type": "dimension",
+      "description": "72px — large avatar tier"
+    },
+    "88": {
+      "value": "5.5rem",
+      "type": "dimension",
+      "description": "88px — extra-large avatar tier"
+    },
+    "100": {
+      "value": "6.25rem",
+      "type": "dimension",
+      "description": "100px — textarea min-height"
+    },
+    "124": {
+      "value": "7.75rem",
+      "type": "dimension",
+      "description": "124px — maximum avatar / hero"
+    },
+    "full": {
+      "value": "50%",
+      "type": "dimension",
+      "description": "Circle / fully rounded (avatar, radio, slider thumb). CSS 50%; Figma corner radius needs a numeric stand-in like 9999."
+    }
+  }
+}

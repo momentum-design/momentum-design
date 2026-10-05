@@ -324,10 +324,7 @@
     },
     "selectedTokenSets": {
       "core/value": "enabled",
-      "core/spacing": "enabled",
-      "core/border": "enabled",
-      "core/radius": "enabled",
-      "core/size": "enabled",
+      "core/dimension": "enabled",
       "core/color-brand": "enabled"
     },
     "group": "core",
@@ -2426,10 +2423,7 @@
     "name": "stable",
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
-      "core/spacing": "source",
-      "core/border": "source",
-      "core/radius": "source",
-      "core/size": "source",
+      "core/dimension": "source",
       "theme/stable/spacing": "enabled",
       "theme/stable/border": "enabled",
       "theme/stable/radius": "enabled",
@@ -2442,10 +2436,7 @@
     "name": "fluid",
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
-      "core/spacing": "source",
-      "core/border": "source",
-      "core/radius": "source",
-      "core/size": "source",
+      "core/dimension": "source",
       "theme/fluid/spacing": "enabled",
       "theme/fluid/border": "enabled",
       "theme/fluid/radius": "enabled",

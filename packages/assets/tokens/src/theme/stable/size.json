@@ -1,85 +1,86 @@
 {
   "size": {
-    "theme": {
-      "xxs": {
-        "value": "{size.4}",
+    "sm": {
+      "4": {
+        "value": "{dimension.4}",
         "type": "dimension",
-        "description": "Micro fixed dimension (nav notch width, indicator bar)"
+        "description": "Micro fixed size. Nav notch, indicator. Was size/xxs."
       },
-      "xs": {
-        "value": "{size.8}",
+      "8": {
+        "value": "{dimension.8}",
         "type": "dimension",
-        "description": "Smallest icon slot (bullet, compact glyph)"
+        "description": "Smallest icon slot. Bullet, compact glyph. Was size/xs."
       },
-      "sm": {
-        "value": "{size.12}",
+      "12": {
+        "value": "{dimension.12}",
         "type": "dimension",
-        "description": "Compact icon slot (badge dot, nav icon)"
+        "description": "Compact icon slot. Badge, nav icon. Was size/sm."
+      }
+    },
+    "md": {
+      "16": {
+        "value": "{dimension.16}",
+        "type": "dimension",
+        "description": "Standard icon slot. Avatar, badge, popover, radio. Was size/md and size/lg."
       },
-      "md": {
-        "value": "{size.14}",
+      "20": {
+        "value": "{dimension.20}",
         "type": "dimension",
-        "description": "Tight fixed inset (calendar cell padding)"
+        "description": "Compact inline row. Divider, chip icon, timepicker. Was size/xl."
       },
-      "lg": {
-        "value": "{size.16}",
+      "24": {
+        "value": "{dimension.24}",
         "type": "dimension",
-        "description": "Standard icon slot (badge, popover icon, static radio)"
+        "description": "Compact control height. Chip, alertchip, inputchip. Was size/2xl."
       },
-      "xl": {
-        "value": "{size.20}",
+      "28": {
+        "value": "{dimension.28}",
         "type": "dimension",
-        "description": "Compact inline control row (divider, chip icon, timepicker)"
+        "description": "Between compact and standard control. Buttongroup, calendar, stepper. Was size/3xl."
       },
-      "2xl": {
-        "value": "{size.24}",
+      "32": {
+        "value": "{dimension.32}",
         "type": "dimension",
-        "description": "Compact control height (chip, alertchip, inputchip)"
+        "description": "Default control height. Input, select, tab, combobox. Was size/4xl."
+      }
+    },
+    "lg": {
+      "40": {
+        "value": "{dimension.40}",
+        "type": "dimension",
+        "description": "Large control / toolbar row. Nav, datepicker trigger. Was size/5xl."
       },
-      "3xl": {
-        "value": "{size.28}",
+      "52": {
+        "value": "{dimension.52}",
         "type": "dimension",
-        "description": "Between compact and standard control (buttongroup, stepper)"
+        "description": "Wide control minimum. Input min-width. Was size/6xl."
       },
-      "4xl": {
-        "value": "{size.32}",
+      "64": {
+        "value": "{dimension.64}",
         "type": "dimension",
-        "description": "Default control height (input, select, tab, combobox)"
+        "description": "Chrome band. App header, searchfield, avatar lg. Was size/7xl."
+      }
+    },
+    "xl": {
+      "72": {
+        "value": "{dimension.72}",
+        "type": "dimension",
+        "description": "Large avatar tier. Was size/8xl."
       },
-      "5xl": {
-        "value": "{size.40}",
+      "88": {
+        "value": "{dimension.88}",
         "type": "dimension",
-        "description": "Large control / toolbar row (nav item, datepicker trigger)"
+        "description": "Extra-large avatar tier. Was size/9xl."
       },
-      "6xl": {
-        "value": "{size.52}",
+      "100": {
+        "value": "{dimension.100}",
         "type": "dimension",
-        "description": "Wide control minimum (input min-width)"
+        "description": "Content min-height. Textarea. Was size/10xl."
       },
-      "7xl": {
-        "value": "{size.64}",
+      "124": {
+        "value": "{dimension.124}",
         "type": "dimension",
-        "description": "Chrome band (app header, searchfield, avatar lg)"
-      },
-      "8xl": {
-        "value": "{size.72}",
-        "type": "dimension",
-        "description": "Large chrome / avatar tier"
-      },
-      "9xl": {
-        "value": "{size.88}",
-        "type": "dimension",
-        "description": "Extra-large avatar tier"
-      },
-      "10xl": {
-        "value": "{size.100}",
-        "type": "dimension",
-        "description": "Content minimum height (textarea min-height)"
-      },
-      "11xl": {
-        "value": "{size.124}",
-        "type": "dimension",
-        "description": "Maximum avatar / hero fixed dimension"
+        "description": "Max avatar / hero. Was size/11xl."
       }
     }
   }
