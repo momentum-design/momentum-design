@@ -124,9 +124,13 @@ Provide the lowercase component name without `mdc-` or hyphens. Set the class na
 during implementation.
 
 Inspect the complete generator diff immediately. Confirm expected component, style, type, story, test, registration,
-export, and Code Connect files were created without disturbing unrelated exports. Replace runtime, story, and test
-placeholders; remove unused optional files and empty scaffolding. Keep an unresolved Code Connect stub only when no
-authorized exact mapping exists, and report it at handoff.
+and export files were created without disturbing unrelated exports. Replace runtime, story, and test
+placeholders; remove unused optional files and empty scaffolding.
+
+The generator does not scaffold Figma Code Connect. A template with no published Figma node cannot be validated or
+published, so Code Connect is added only when the component is actually connected in Figma — follow the
+[`momentum-figma-code-connect`](../momentum-figma-code-connect/SKILL.md) skill at that point. Report at handoff that the
+component is not yet connected.
 
 Before implementation, inspect the relevant files from the primary analogue. Inspect a reusable implementation only when
 the approved contract actually uses it.

@@ -14,4 +14,12 @@ const KNOWLEDGE_BASE_SYNC = [
   'git add knowledge-base/index.*.json packages/documentation/src/generated/knowledge-base/manifest.json',
 ];
 
-module.exports = (stagedFiles) => (stagedFiles.some(isKnowledgeBaseSource) ? KNOWLEDGE_BASE_SYNC : []);
+// Runs on every commit regardless of what is staged — the point is to catch a
+// Figma URL or token pasted anywhere, not just into Code Connect files. Listed
+// first so it fails before the slower knowledge-base chain does any work.
+const FIGMA_SECRET_SCAN = ['node ./scripts/checkFigmaSecrets.js'];
+
+module.exports = (stagedFiles) => [
+  ...FIGMA_SECRET_SCAN,
+  ...(stagedFiles.some(isKnowledgeBaseSource) ? KNOWLEDGE_BASE_SYNC : []),
+];
