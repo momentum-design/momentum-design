@@ -78,8 +78,11 @@ export const CustomSetSvg: StoryObj = {
 };
 
 /**
- * The device visuals only ship as raster images, so they are served from the `png` folder and
- * rendered through an `img` element rather than being inlined.
+ * Some brand visuals exist only as raster artwork — these device renders and the background images
+ * ship in the `png` folder and render through an `img` element rather than being inlined.
+ *
+ * The `svg` and `png` folders do not overlap and a provider points at one of them, so a page using
+ * artwork from both folders needs two providers, one per folder.
  */
 export const CustomSetPng: StoryObj = {
   args: {
