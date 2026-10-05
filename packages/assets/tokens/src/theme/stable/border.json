@@ -1,0 +1,14 @@
+{
+  "border": {
+    "default": {
+      "value": "{dimension.1}",
+      "type": "dimension",
+      "description": "Default stroke weight (chips, banner, buttongroup, inputs)"
+    },
+    "emphasis": {
+      "value": "{dimension.2}",
+      "type": "dimension",
+      "description": "Emphasis stroke weight (selected filterchip, heavier container chrome)"
+    }
+  }
+}

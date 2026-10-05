@@ -1,0 +1,49 @@
+{
+  "spacing": {
+    "pad-none": {
+      "value": "{dimension.0}",
+      "type": "dimension",
+      "description": "Flush control padding (both axes)."
+    },
+    "pad-block": {
+      "value": "{dimension.8}",
+      "type": "dimension",
+      "description": "Control vertical padding."
+    },
+    "pad-inline": {
+      "value": "{dimension.12}",
+      "type": "dimension",
+      "description": "Control horizontal padding."
+    },
+    "gap-none": {
+      "value": "{dimension.0}",
+      "type": "dimension",
+      "description": "Collapsed layout space."
+    },
+    "gap-tight": {
+      "value": "{dimension.4}",
+      "type": "dimension",
+      "description": "Tight layout space."
+    },
+    "gap": {
+      "value": "{dimension.8}",
+      "type": "dimension",
+      "description": "Default layout space — sibling gap AND compact surface padding."
+    },
+    "gap-wide": {
+      "value": "{dimension.16}",
+      "type": "dimension",
+      "description": "Roomy layout space — default surface padding or wider sibling gap."
+    },
+    "gap-loose": {
+      "value": "{dimension.24}",
+      "type": "dimension",
+      "description": "Section/block separation."
+    },
+    "gap-ultraloose": {
+      "value": "{dimension.32}",
+      "type": "dimension",
+      "description": "Extra-large layout space."
+    }
+  }
+}
