@@ -5,7 +5,11 @@
   "compilerOptions": {
     "target": "es2019",
     "module": "es2020",
-    "lib": ["es2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "es2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -25,8 +29,17 @@
     "noImplicitOverride": true,
     "useDefineForClassFields": false
   },
-  "include": ["config", "src/**/*.stories*", "src/**/*.e2e-test*"],
-  "exclude": ["node_modules"],
+  "include": [
+    "config",
+    "src/**/*.stories*",
+    "src/**/*.e2e-test*"
+  ],
+  // code-connect helpers need the ambient 'figma' module, so they are type-checked by
+  // tsconfig.figma.json instead, which pulls them in through the templates that import them.
+  "exclude": [
+    "node_modules",
+    "config/code-connect"
+  ],
   "references": [
     {
       "path": "./src/tsconfig.json"

@@ -18,14 +18,17 @@ export const booleanAttribute = (name: string, value?: boolean): string => (valu
  * Builds an element from an ordered attribute list. HTML snippets are not reformatted by the Code
  * Connect CLI, so long tags are wrapped here to match the multi-line shape Prettier gives JSX.
  * Empty entries are dropped, so omitted props cannot leave stray whitespace behind.
+ *
+ * `children` stays glued to the tags even when the attributes wrap, because it is slotted content:
+ * padding it with newlines would add leading and trailing whitespace to the rendered slot.
  */
-export const element = (tagName: string, attributes: string[]): string => {
+export const element = (tagName: string, attributes: string[], children = ''): string => {
   const present = attributes.filter(Boolean);
-  const inline = `<${tagName}${present.map(name => ` ${name}`).join('')}></${tagName}>`;
+  const inline = `<${tagName}${present.map(name => ` ${name}`).join('')}>${children}</${tagName}>`;
 
   if (inline.length <= MAX_INLINE_LENGTH) {
     return inline;
   }
 
-  return `<${tagName}\n  ${present.join('\n  ')}\n></${tagName}>`;
+  return `<${tagName}\n  ${present.join('\n  ')}\n>${children}</${tagName}>`;
 };
