@@ -297,6 +297,93 @@ test.describe('mdc-calendar', () => {
     });
   });
 
+  test.describe('motion', () => {
+    test('should settle to idle grid motion after month navigation', async ({ componentsPage }) => {
+      const calendar = await setup({ componentsPage, value: '2025-07-15' });
+
+      const nextButton = calendar.locator('mdc-button[aria-label="Go to next month"]');
+      await nextButton.click();
+
+      const viewport = calendar.locator('.calendar-grid-viewport');
+      await expect(viewport).toHaveAttribute('data-grid-motion', 'idle', { timeout: 2000 });
+      await expect(calendar.locator('[data-grid-layer="outgoing"]')).toHaveCount(0);
+    });
+
+    test('should swap months instantly when motion tokens are unavailable', async ({ componentsPage }) => {
+      const calendar = await setup({ componentsPage, value: '2025-07-15' });
+
+      await calendar.evaluate((element: HTMLElement) => {
+        element.classList.remove('mds-motion', 'mds-animation');
+      });
+
+      const nextButton = calendar.locator('mdc-button[aria-label="Go to next month"]');
+      await nextButton.click();
+
+      const viewport = calendar.locator('.calendar-grid-viewport');
+      await expect(viewport).toHaveAttribute('data-grid-motion', 'idle');
+      await expect(calendar.locator('[data-grid-layer="outgoing"]')).toHaveCount(0);
+
+      const header = calendar.locator('.calendar-header mdc-text');
+      await expect(header).toContainText('August');
+    });
+
+    test('should keep focus on prev/next buttons after keyboard activation', async ({ componentsPage }) => {
+      const calendar = await setup({ componentsPage, value: '2025-07-15' });
+
+      const nextButton = calendar.locator('mdc-button[aria-label="Go to next month"]');
+      await nextButton.focus();
+      await nextButton.press('Enter');
+
+      await expect(nextButton).toBeFocused();
+
+      const header = calendar.locator('.calendar-header mdc-text');
+      await expect(header).toContainText('August');
+    });
+
+    test('should keep keyboard navigation active when crossing a month boundary', async ({ componentsPage }) => {
+      const calendar = await setup({ componentsPage, value: '2025-07-31' });
+
+      const day31 = calendar.locator('[data-grid-layer="incoming"] [data-date="2025-07-31"]');
+      await day31.focus();
+
+      const grid = calendar.locator('[data-grid-layer="incoming"] [role="grid"]');
+      await grid.press('ArrowRight');
+
+      const dayAug1 = calendar.locator('[data-grid-layer="incoming"] [data-date="2025-08-01"]');
+      await expect(dayAug1).toBeFocused();
+
+      await grid.press('ArrowRight');
+
+      const dayAug2 = calendar.locator('[data-grid-layer="incoming"] [data-date="2025-08-02"]');
+      await expect(dayAug2).toBeFocused();
+    });
+
+    test('should swap months instantly inside motionprovider with motion reduce', async ({ componentsPage }) => {
+      await componentsPage.mount({
+        html: `
+          <mdc-motionprovider motion="reduce">
+            <mdc-calendar
+              value="2025-07-15"
+              locale-prev-month-label="Go to previous month"
+              locale-next-month-label="Go to next month"
+            ></mdc-calendar>
+          </mdc-motionprovider>
+        `,
+        clearDocument: true,
+      });
+
+      const calendar = componentsPage.page.locator('mdc-calendar');
+      await calendar.waitFor();
+
+      const nextButton = calendar.locator('mdc-button[aria-label="Go to next month"]');
+      await nextButton.click();
+
+      const viewport = calendar.locator('.calendar-grid-viewport');
+      await expect(viewport).toHaveAttribute('data-grid-motion', 'idle');
+      await expect(calendar.locator('[data-grid-layer="outgoing"]')).toHaveCount(0);
+    });
+  });
+
   test.describe('visual regression', () => {
     test('should match screenshot with selected date', async ({ componentsPage }) => {
       const calendar = await setup({

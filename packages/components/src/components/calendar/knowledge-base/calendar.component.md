@@ -76,6 +76,20 @@ Listen for `date-selected` to receive the picked value(s) and `month-changed` to
 | `show-today-button` | Renders a Today button below the grid that jumps focus and selection to the current date. Use it when quickly returning to today is common. |
 | `locale-range-start-selected-label` | Supplies the localized instruction announced after the first date in a range is selected. Use a short sentence that confirms the start date and directs the user to select an end date. |
 
+### Motion
+
+Token-based motion runs when `mds-animation` scope classes are present (via `mdc-motionprovider` or app-level setup).
+
+| Interaction | Token(s) | Behavior |
+| --- | --- | --- |
+| Day hover / selected / today border | `backgroundColor`, `borderColor` | CSS transitions on `background-color` and `border-color` |
+| Range fill | `backgroundColor`, `borderColor` | CSS transitions on the wrapper `::before` pseudo |
+| Month navigation | `fadeIn`, `fadeOut` | Cross-fade between outgoing and incoming month grids |
+
+Month navigation updates the header label immediately while the day grid cross-fades. The outgoing grid layer is `aria-hidden` during the transition. `data-grid-motion` on `.calendar-grid-viewport` reflects `idle` or `crossfading` for debugging and tests.
+
+With `prefers-reduced-motion: reduce`, when motion tokens are disabled, or when wrapped in `mdc-motionprovider motion="reduce"`, day, range, and month changes apply instantly with no cross-fade delay.
+
 ### Limitations
 
 - **Single month only** — the grid shows one month at a time; multi-month and year-picker views are not part of this component.

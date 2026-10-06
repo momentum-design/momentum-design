@@ -1,7 +1,7 @@
 import type { ValueOf, TypedCustomEvent } from '../../utils/types';
 
 import type Calendar from './calendar.component';
-import { SELECTION_MODE } from './calendar.constants';
+import { GRID_LAYER_PHASE, SELECTION_MODE } from './calendar.constants';
 
 type SelectionMode = ValueOf<typeof SELECTION_MODE>;
 
@@ -35,12 +35,21 @@ interface CalendarGridWeek {
   days: CalendarDayInfo[];
 }
 
+interface DisplaySnapshot {
+  month: number;
+  year: number;
+}
+
+type GridLayerPhase = ValueOf<typeof GRID_LAYER_PHASE>;
+
 export type {
   CalendarDateSelectedEvent,
   CalendarDayInfo,
   CalendarGridWeek,
   CalendarMonthChangedEvent,
   DateSelectionDetail,
+  DisplaySnapshot,
   Events,
+  GridLayerPhase,
   SelectionMode,
 };

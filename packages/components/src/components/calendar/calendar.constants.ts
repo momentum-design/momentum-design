@@ -22,4 +22,27 @@ const DEFAULTS = {
   LOCALE: 'en-US',
 } as const;
 
-export { CALENDAR_ICONS, DEFAULTS, GRID_COLS, GRID_ROWS, SELECTION_MODE, TAG_NAME };
+const GRID_LAYER_PHASE = {
+  ENTERING: 'entering',
+  VISIBLE: 'visible',
+  EXITING: 'exiting',
+} as const;
+
+const GRID_MOTION = {
+  IDLE: 'idle',
+  CROSSFADING: 'crossfading',
+} as const;
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+export {
+  CALENDAR_ICONS,
+  DEFAULTS,
+  GRID_COLS,
+  GRID_LAYER_PHASE,
+  GRID_MOTION,
+  GRID_ROWS,
+  REDUCED_MOTION_QUERY,
+  SELECTION_MODE,
+  TAG_NAME,
+};
