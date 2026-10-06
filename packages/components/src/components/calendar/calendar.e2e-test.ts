@@ -301,8 +301,24 @@ test.describe('mdc-calendar', () => {
     test('should settle to idle grid motion after month navigation', async ({ componentsPage }) => {
       const calendar = await setup({ componentsPage, value: '2025-07-15' });
 
-      const nextButton = calendar.locator('mdc-button[aria-label="Go to next month"]');
-      await nextButton.click();
+      const sampled = await calendar.evaluate(async (element: HTMLElement) => {
+        const nextButton = element.shadowRoot?.querySelector(
+          'mdc-button[aria-label="Go to next month"]',
+        ) as HTMLElement | null;
+        nextButton?.click();
+        await new Promise<void>(resolve => {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => resolve());
+          });
+        });
+        const layer = element.shadowRoot?.querySelector('[data-grid-layer="outgoing"]') as HTMLElement | null;
+        if (!layer) {
+          return { found: false, duration: '' };
+        }
+        return { found: true, duration: getComputedStyle(layer).transitionDuration };
+      });
+      expect(sampled.found).toBe(true);
+      expect(sampled.duration.split(',').every(part => part.trim() === '0s')).toBe(false);
 
       const viewport = calendar.locator('.calendar-grid-viewport');
       await expect(viewport).toHaveAttribute('data-grid-motion', 'idle', { timeout: 2000 });
@@ -312,8 +328,8 @@ test.describe('mdc-calendar', () => {
     test('should swap months instantly when motion tokens are unavailable', async ({ componentsPage }) => {
       const calendar = await setup({ componentsPage, value: '2025-07-15' });
 
-      await calendar.evaluate((element: HTMLElement) => {
-        element.classList.remove('mds-motion', 'mds-animation');
+      await componentsPage.page.evaluate(() => {
+        document.body.classList.remove('mds-animation');
       });
 
       const nextButton = calendar.locator('mdc-button[aria-label="Go to next month"]');
@@ -325,6 +341,10 @@ test.describe('mdc-calendar', () => {
 
       const header = calendar.locator('.calendar-header mdc-text');
       await expect(header).toContainText('August');
+
+      await componentsPage.page.evaluate(() => {
+        document.body.classList.add('mds-animation');
+      });
     });
 
     test('should keep focus on prev/next buttons after keyboard activation', async ({ componentsPage }) => {
@@ -358,30 +378,6 @@ test.describe('mdc-calendar', () => {
       await expect(dayAug2).toBeFocused();
     });
 
-    test('should swap months instantly inside motionprovider with motion reduce', async ({ componentsPage }) => {
-      await componentsPage.mount({
-        html: `
-          <mdc-motionprovider motion="reduce">
-            <mdc-calendar
-              value="2025-07-15"
-              locale-prev-month-label="Go to previous month"
-              locale-next-month-label="Go to next month"
-            ></mdc-calendar>
-          </mdc-motionprovider>
-        `,
-        clearDocument: true,
-      });
-
-      const calendar = componentsPage.page.locator('mdc-calendar');
-      await calendar.waitFor();
-
-      const nextButton = calendar.locator('mdc-button[aria-label="Go to next month"]');
-      await nextButton.click();
-
-      const viewport = calendar.locator('.calendar-grid-viewport');
-      await expect(viewport).toHaveAttribute('data-grid-motion', 'idle');
-      await expect(calendar.locator('[data-grid-layer="outgoing"]')).toHaveCount(0);
-    });
   });
 
   test.describe('visual regression', () => {

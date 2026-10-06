@@ -244,6 +244,41 @@ const styles = css`
     pointer-events: none;
   }
 
+  /* Forced colors paints transparent borders, which would ring every day
+     and draw seams through a range. */
+  @media (forced-colors: active) {
+    .calendar-day {
+      border: none;
+    }
+
+    .calendar-day.today {
+      border: 1px solid var(--mdc-calendar-day-today-border-color);
+    }
+
+    .calendar-day.selected.today {
+      border: none;
+    }
+
+    .calendar-day-wrapper.in-range .calendar-day.today {
+      border: 1px solid var(--mdc-calendar-day-selected-text-color);
+    }
+
+    .calendar-day-wrapper::before {
+      border-inline-start: none;
+      border-inline-end: none;
+    }
+
+    .calendar-day-wrapper.range-start::before,
+    .calendar-day-wrapper.in-range:first-child::before {
+      border-inline-start: 1px solid var(--mdc-calendar-day-selected-bg);
+    }
+
+    .calendar-day-wrapper.range-end::before,
+    .calendar-day-wrapper.in-range:last-child::before {
+      border-inline-end: 1px solid var(--mdc-calendar-day-selected-bg);
+    }
+  }
+
   .calendar-today-button {
     display: flex;
     justify-content: center;
