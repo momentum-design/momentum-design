@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "destination": "spacing/complete",
+      "cssSelector": ".mds-spacing",
+      "targets": [
+        "core/spacing.json"
+      ]
+    },
+    {
+      "destination": "border/complete",
+      "cssSelector": ".mds-border",
+      "targets": [
+        "core/border.json"
+      ]
+    },
+    {
+      "destination": "radius/complete",
+      "cssSelector": ".mds-radius",
+      "targets": [
+        "core/radius.json"
+      ]
+    },
+    {
+      "destination": "size/complete",
+      "cssSelector": ".mds-size",
+      "targets": [
+        "core/size.json"
+      ]
+    }
+  ],
+  "formats": [
+    "CSS_VARIABLES",
+    "SCSS_VARIABLES",
+    "WEB_JSON"
+  ],
+  "prefix": "mds",
+  "outputReferences": true
+}

@@ -1,0 +1,16 @@
+{
+  "border": {
+    "width": {
+      "1": {
+        "value": "1px",
+        "type": "dimension",
+        "description": "1px — default stroke (chip, banner, static controls)"
+      },
+      "2": {
+        "value": "2px",
+        "type": "dimension",
+        "description": "2px — selected filterchip, emphasis stroke"
+      }
+    }
+  }
+}

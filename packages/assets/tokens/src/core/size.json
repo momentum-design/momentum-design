@@ -1,0 +1,104 @@
+{
+  "size": {
+    "4": {
+      "value": "0.25rem",
+      "type": "dimension",
+      "description": "4px — nav menu indicator"
+    },
+    "8": {
+      "value": "0.5rem",
+      "type": "dimension",
+      "description": "8px — bullet, compact icon slot"
+    },
+    "12": {
+      "value": "0.75rem",
+      "type": "dimension",
+      "description": "12px — badge dot, nav icon"
+    },
+    "14": {
+      "value": "0.875rem",
+      "type": "dimension",
+      "description": "14px — calendar inset, compact control"
+    },
+    "16": {
+      "value": "1rem",
+      "type": "dimension",
+      "description": "16px — badge, popover, static radio"
+    },
+    "20": {
+      "value": "1.25rem",
+      "type": "dimension",
+      "description": "20px — divider, chip, timepicker"
+    },
+    "24": {
+      "value": "1.5rem",
+      "type": "dimension",
+      "description": "24px — alertchip height, avatar sm, chip"
+    },
+    "28": {
+      "value": "1.75rem",
+      "type": "dimension",
+      "description": "28px — buttongroup, calendar cell, stepper item"
+    },
+    "32": {
+      "value": "2rem",
+      "type": "dimension",
+      "description": "32px — input height, tab, slider, avatar md"
+    },
+    "36": {
+      "value": "2.25rem",
+      "type": "dimension",
+      "description": "36px — optgroup row height"
+    },
+    "40": {
+      "value": "2.5rem",
+      "type": "dimension",
+      "description": "40px — buttongroup, datepicker, nav item"
+    },
+    "44": {
+      "value": "2.75rem",
+      "type": "dimension",
+      "description": "44px — presence indicator"
+    },
+    "48": {
+      "value": "3rem",
+      "type": "dimension",
+      "description": "48px — avatar, spinner, static toggle width"
+    },
+    "52": {
+      "value": "3.25rem",
+      "type": "dimension",
+      "description": "52px — input min-width"
+    },
+    "56": {
+      "value": "3.5rem",
+      "type": "dimension",
+      "description": "56px — mid-scale fixed dimension"
+    },
+    "64": {
+      "value": "4rem",
+      "type": "dimension",
+      "description": "64px — app header, searchfield, avatar lg"
+    },
+    "72": {
+      "value": "4.5rem",
+      "type": "dimension",
+      "description": "72px — avatar"
+    },
+    "88": {
+      "value": "5.5rem",
+      "type": "dimension",
+      "description": "88px — avatar"
+    },
+    "100": {
+      "value": "6.25rem",
+      "type": "dimension",
+      "description": "100px — textarea min-height"
+    },
+    "124": {
+      "value": "7.75rem",
+      "type": "dimension",
+      "description": "124px — avatar xl"
+    }
+  }
+}
