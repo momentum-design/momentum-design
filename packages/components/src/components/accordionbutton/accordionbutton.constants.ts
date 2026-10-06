@@ -19,6 +19,8 @@ const TOGGLE_POSITION = {
   TRAILING: 'trailing',
 } as const;
 
+const DATA_MOTION_READY = 'data-motion-ready';
+
 const DEFAULTS = {
   EXPANDED: false,
   SIZE: SIZE.SMALL,
@@ -28,4 +30,4 @@ const DEFAULTS = {
   TOGGLE_POSITION: TOGGLE_POSITION.TRAILING,
 } as const;
 
-export { TAG_NAME, ICON_NAME, DEFAULTS, VARIANT, TOGGLE_POSITION };
+export { TAG_NAME, ICON_NAME, DEFAULTS, VARIANT, TOGGLE_POSITION, DATA_MOTION_READY };

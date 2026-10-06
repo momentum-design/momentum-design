@@ -2,7 +2,7 @@ import AnimationCssFormat from './animation-css';
 import { makeToken, makeDictionary } from '../animation/animation.fixture';
 
 const TRANSITION_TOKEN = makeToken(
-  'buttonBackground',
+  'backgroundColor',
   'transition',
   'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
   'background-color 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
@@ -19,7 +19,7 @@ const KEYFRAME_TOKEN = makeToken(
 );
 
 const COMPOUND_TRANSITION_TOKEN = makeToken(
-  'buttonHover',
+  'surfaceHover',
   'transitionCompound',
   'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
   + ' border-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
@@ -62,7 +62,7 @@ describe('@momentum-design/token-builder - formats.AnimationCssFormat', () => {
     });
 
     it('should emit a --mds-transition-* CSS custom property', () => {
-      expect(output).toContain('--mds-transition-button-background:');
+      expect(output).toContain('--mds-transition-background-color:');
     });
 
     it('should output resolved scalar values (not token references)', () => {
@@ -111,6 +111,11 @@ describe('@momentum-design/token-builder - formats.AnimationCssFormat', () => {
     it('@keyframes block should appear before the selector block', () => {
       expect(output.indexOf('@keyframes')).toBeLessThan(output.indexOf('.mds-animation'));
     });
+
+    it('should append a prefers-reduced-motion override block', () => {
+      expect(output).toContain('@media (prefers-reduced-motion: reduce)');
+      expect(output).toContain('--mds-animation-button-loading-spin: none;');
+    });
   });
 
   describe('formatter — transitionCompound token', () => {
@@ -119,7 +124,7 @@ describe('@momentum-design/token-builder - formats.AnimationCssFormat', () => {
         dictionary: makeDictionary([COMPOUND_TRANSITION_TOKEN]),
         options: {},
       } as any);
-      expect(output).toContain('--mds-transition-button-hover:');
+      expect(output).toContain('--mds-transition-surface-hover:');
       expect(output).toContain('100ms');
     });
   });

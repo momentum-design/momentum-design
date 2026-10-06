@@ -1,7 +1,7 @@
 import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -12,7 +12,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
-import { DEFAULTS, ICON_NAME, TOGGLE_POSITION } from './accordionbutton.constants';
+import { DATA_MOTION_READY, DEFAULTS, ICON_NAME, TOGGLE_POSITION } from './accordionbutton.constants';
 import type { IconName, Variant, TogglePosition } from './accordionbutton.types';
 import styles from './accordionbutton.styles';
 
@@ -95,6 +95,54 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
 
   /** @internal */
   protected bodySectionId = `body-section-${uuidv4()}`;
+
+  /** @internal */
+  @state()
+  private isCollapsing = false;
+
+  /** @internal */
+  private reducedMotionQuery?: MediaQueryList;
+
+  /** @internal */
+  private collapseUnmountTimer?: number;
+
+  /** @internal */
+  private collapseUnmountScheduled = false;
+
+  /** @internal */
+  private motionReadyFrame?: number;
+
+  /** @internal */
+  private onReducedMotionChange = (): void => {
+    if (this.prefersReducedMotion() && !this.expanded) {
+      this.finishCollapseIfNeeded();
+    }
+  };
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    this.reducedMotionQuery.addEventListener('change', this.onReducedMotionChange);
+  }
+
+  override disconnectedCallback(): void {
+    this.reducedMotionQuery?.removeEventListener('change', this.onReducedMotionChange);
+    this.reducedMotionQuery = undefined;
+    this.clearCollapseUnmountTimer();
+    if (this.motionReadyFrame !== undefined) {
+      cancelAnimationFrame(this.motionReadyFrame);
+      this.motionReadyFrame = undefined;
+    }
+    super.disconnectedCallback();
+  }
+
+  protected override firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+    this.motionReadyFrame = requestAnimationFrame(() => {
+      this.motionReadyFrame = undefined;
+      this.setAttribute(DATA_MOTION_READY, '');
+    });
+  }
 
   /**
    * Handles the click event of the header section.
@@ -208,23 +256,107 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
     return this.expanded ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN;
   }
 
+  private prefersReducedMotion(): boolean {
+    return this.reducedMotionQuery?.matches ?? window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  private clearCollapseUnmountTimer(): void {
+    this.collapseUnmountScheduled = false;
+    if (this.collapseUnmountTimer !== undefined) {
+      window.clearTimeout(this.collapseUnmountTimer);
+      this.collapseUnmountTimer = undefined;
+    }
+  }
+
+  private finishCollapseIfNeeded(): void {
+    this.clearCollapseUnmountTimer();
+    if (!this.expanded && !this.disabled) {
+      this.isCollapsing = false;
+    }
+  }
+
+  private getCollapseDurationMs(element: Element | null): number {
+    if (!element) {
+      return 0;
+    }
+    const durations = getComputedStyle(element).transitionDuration.split(',');
+    const parsed = durations.map(duration => {
+      const trimmed = duration.trim();
+      if (trimmed.endsWith('ms')) {
+        return Number.parseFloat(trimmed);
+      }
+      if (trimmed.endsWith('s')) {
+        return Number.parseFloat(trimmed) * 1000;
+      }
+      return 0;
+    });
+    return Math.max(0, ...parsed);
+  }
+
+  private scheduleCollapseUnmount(): void {
+    if (this.collapseUnmountScheduled) {
+      return;
+    }
+    this.collapseUnmountScheduled = true;
+    requestAnimationFrame(() => {
+      if (!this.isCollapsing || this.expanded) {
+        this.collapseUnmountScheduled = false;
+        return;
+      }
+      const delay = this.getCollapseDurationMs(this.renderRoot.querySelector('.body-section'));
+      if (delay === 0) {
+        this.finishCollapseIfNeeded();
+        return;
+      }
+      this.collapseUnmountTimer = window.setTimeout(() => {
+        this.finishCollapseIfNeeded();
+      }, delay);
+    });
+  }
+
+  private handleBodyTransitionEnd(event: TransitionEvent): void {
+    if (event.propertyName !== 'grid-template-rows' || event.target !== event.currentTarget) {
+      return;
+    }
+    this.finishCollapseIfNeeded();
+  }
+
   protected renderBody(): TemplateResult | typeof nothing {
     // When disabled, then the body section should not be visible,
     // even if the expanded attribute is set true.
-    if (this.disabled) {
+    if (this.disabled || (!this.expanded && !this.isCollapsing)) {
       return nothing;
     }
-    if (this.expanded) {
-      return html`<div
-        id="${this.bodySectionId}"
-        aria-labelledby="${this.headSectionId}"
-        part="body-section"
-        role="${ROLE.REGION}"
-      >
+    return html`<div
+      id="${this.bodySectionId}"
+      class="body-section"
+      aria-labelledby="${this.headSectionId}"
+      part="body-section"
+      role="${ROLE.REGION}"
+      @transitionend="${this.handleBodyTransitionEnd}"
+    >
+      <div class="body-section-inner">
         <slot></slot>
-      </div>`;
+      </div>
+    </div>`;
+  }
+
+  override willUpdate(changedProperties: PropertyValues): void {
+    super.willUpdate(changedProperties);
+    if (changedProperties.has('disabled') && this.disabled) {
+      this.isCollapsing = false;
     }
-    return nothing;
+    if (changedProperties.has('expanded')) {
+      if (this.expanded) {
+        this.clearCollapseUnmountTimer();
+        this.isCollapsing = false;
+      } else if (changedProperties.get('expanded') === true && !this.disabled && !this.prefersReducedMotion()) {
+        this.isCollapsing = true;
+      } else {
+        this.clearCollapseUnmountTimer();
+        this.isCollapsing = false;
+      }
+    }
   }
 
   override updated(changedProperties: PropertyValues): void {
@@ -243,6 +375,9 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
     }
     if (changedProperties.has('togglePosition') && !this.togglePosition) {
       this.togglePosition = DEFAULTS.TOGGLE_POSITION;
+    }
+    if (this.isCollapsing && !this.expanded) {
+      this.scheduleCollapseUnmount();
     }
   }
 
