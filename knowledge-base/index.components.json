@@ -41,6 +41,15 @@
       "component": "alertchip"
     },
     {
+      "id": "tier3/packages/components/src/components/animatedbackground/knowledge-base/animatedbackground.component",
+      "tier": 3,
+      "path": "packages/components/src/components/animatedbackground/knowledge-base/animatedbackground.component.md",
+      "title": "Animated Background",
+      "summary": "Usage, animation API, and accessibility for mdc-animatedbackground — a decorative uplift gradient background that animates in response to programmatic layout cues.",
+      "canonical": null,
+      "component": "animatedbackground"
+    },
+    {
       "id": "tier3/packages/components/src/components/animation/knowledge-base/animation.component",
       "tier": 3,
       "path": "packages/components/src/components/animation/knowledge-base/animation.component.md",
