@@ -1,7 +1,7 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-import { BANNER_VARIANT } from './banner.constants';
+import { BANNER_VARIANT, MOTION_PHASE } from './banner.constants';
 import type { BannerVariant } from './banner.types';
 
 type SetupOptions = {
@@ -451,6 +451,140 @@ test('mdc-banner', async ({ componentsPage }) => {
       const waitForClickAfterSpace = await componentsPage.waitForEvent(actionButton, 'click');
       await actionButton.press('Space');
       await expect(waitForClickAfterSpace).toEventEmitted();
+    });
+  });
+
+  await test.step('motion', async () => {
+    await test.step('enters with visible motion phase after mount', async () => {
+      const banner = await setup({
+        componentsPage,
+        variant: BANNER_VARIANT.WARNING,
+        label: 'Connection unstable',
+      });
+
+      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.VISIBLE, { timeout: 2000 });
+    });
+
+    await test.step('exits and dispatches hidden when open becomes false', async () => {
+      const banner = await setup({
+        componentsPage,
+        variant: BANNER_VARIANT.WARNING,
+        label: 'Connection unstable',
+      });
+
+      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.VISIBLE, { timeout: 2000 });
+
+      const hiddenEvent = await componentsPage.waitForEvent(banner, 'hidden');
+      await componentsPage.removeAttribute(banner, 'open');
+
+      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.EXITING);
+      await expect(hiddenEvent).toEventEmitted();
+      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.EXITING);
+    });
+
+    await test.step('stays visible when motion tokens are unavailable', async () => {
+      const banner = await setup({
+        componentsPage,
+        variant: BANNER_VARIANT.INFORMATIONAL,
+        label: 'System Update',
+      });
+
+      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.VISIBLE, { timeout: 2000 });
+
+      await componentsPage.page.evaluate(() => {
+        document.body.classList.remove('mds-animation');
+      });
+
+      const hiddenEvent = await componentsPage.waitForEvent(banner, 'hidden');
+      await componentsPage.removeAttribute(banner, 'open');
+
+      await expect(hiddenEvent).toEventEmitted();
+
+      await componentsPage.page.evaluate(() => {
+        document.body.classList.add('mds-animation');
+      });
+    });
+
+    await test.step('applies state instantly when prefers-reduced-motion is reduce', async () => {
+      await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
+
+      const banner = await setup({
+        componentsPage,
+        variant: BANNER_VARIANT.WARNING,
+        label: 'Connection unstable',
+      });
+
+      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.VISIBLE, { timeout: 500 });
+
+      const hiddenEvent = await componentsPage.waitForEvent(banner, 'hidden');
+      await componentsPage.removeAttribute(banner, 'open');
+
+      await expect(hiddenEvent).toEventEmitted();
+
+      await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
+    });
+
+    await test.step('applies state instantly when wrapped in motionprovider with motion reduce', async () => {
+      await componentsPage.page.evaluate(() => {
+        document.body.classList.remove('mds-motion', 'mds-animation');
+      });
+
+      await componentsPage.mount({
+        html: `
+          <mdc-motionprovider motion="reduce">
+            <mdc-banner variant="warning" label="Connection unstable"></mdc-banner>
+          </mdc-motionprovider>
+        `,
+        clearDocument: true,
+      });
+
+      const banner = componentsPage.page.locator('mdc-banner');
+      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.VISIBLE, { timeout: 500 });
+
+      const hiddenEvent = await componentsPage.waitForEvent(banner, 'hidden');
+      await componentsPage.removeAttribute(banner, 'open');
+
+      await expect(hiddenEvent).toEventEmitted();
+
+      await componentsPage.page.evaluate(() => {
+        document.body.classList.add('mds-motion', 'mds-animation');
+      });
+    });
+
+    await test.step('dispatches hidden immediately when mounting with open false', async () => {
+      await componentsPage.mount({
+        html: `
+          <div id="banner-mount-root"></div>
+        `,
+        clearDocument: true,
+      });
+
+      const mountRoot = componentsPage.page.locator('#banner-mount-root');
+      const hiddenEvent = await componentsPage.waitForEvent(mountRoot, 'hidden');
+
+      await componentsPage.page.evaluate(
+        ({ variant, label }) => {
+          const banner = document.createElement('mdc-banner');
+
+          if (variant) {
+            banner.setAttribute('variant', variant);
+          }
+
+          if (label) {
+            banner.setAttribute('label', label);
+          }
+
+          banner.open = false;
+          document.getElementById('banner-mount-root')?.appendChild(banner);
+        },
+        { variant: BANNER_VARIANT.WARNING, label: 'Connection unstable' },
+      );
+
+      const banner = componentsPage.page.locator('mdc-banner');
+
+      await expect(hiddenEvent).toEventEmitted();
+      await expect(banner).toHaveJSProperty('open', false);
+      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.EXITING);
     });
   });
 });

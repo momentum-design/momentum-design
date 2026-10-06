@@ -65,6 +65,31 @@ Minimal markup example:
 | `variant` | `custom` (default, no icon) or `informational`/`warning`/`error`/`success`. The status variants set the tone and inject a matching leading icon; use `custom` with your own `leading-icon` for anything else. |
 | `label` | Primary message text shown in the leading area. |
 | `secondary-label` | Supporting text below the label; rendered only when `label` is set, and it promotes the label to a bold title for hierarchy. |
+| `open` | Must be `true` on mount. Set to `false` to play the exit animation and dispatch `hidden` when complete. Defaults to `true`. |
+
+### Motion
+
+| Phase | Trigger | Effect |
+| --- | --- | --- |
+| Entrance | Host mounts with `open` true | Host: `slideEntrance` (`translateY(-1rem)` → `none`, opacity 0→1). Inner: `expand` (`grid-template-rows` 0fr→1fr). |
+| Exit | `open` becomes `false` | Host: `slideExit` (`translateY(-1rem)`, opacity 1→0). Inner: `collapse` (`grid-template-rows` 1fr→0fr), then `hidden` event. |
+
+Slide distance defaults to `1rem` via `--mdc-banner-slide-offset` on the host. Opacity is animated by the slide tokens on the host only; `.banner-inner` handles layout height via expand/collapse.
+
+`data-motion-phase` is reflected on the host for debugging and tests (`entering`, `visible`, `exiting`). With `prefers-reduced-motion: reduce` or when motion tokens are disabled, state changes apply instantly.
+
+Consumers that remove the banner from the DOM synchronously skip exit animation. Keep the host mounted, set `open="false"`, and unmount in the `hidden` handler:
+
+```html
+<mdc-banner id="banner" variant="warning" label="Connection unstable">
+  <mdc-button slot="trailing-actions" aria-label="Dismiss" @click="${() => { banner.open = false; }}"></mdc-button>
+</mdc-banner>
+<script>
+  banner.addEventListener('hidden', () => banner.remove());
+</script>
+```
+
+Mounting with `open="false"` is not supported.
 
 ### Limitations
 

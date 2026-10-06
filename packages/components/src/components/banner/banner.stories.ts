@@ -149,6 +149,71 @@ export const WithoutActions: StoryObj = {
   },
 };
 
+export const Motion: StoryObj = {
+  render: () => html`
+    <div id="banner-motion-root" style="display: flex; flex-direction: column; gap: 1rem;">
+      <mdc-button id="banner-motion-show" variant="${BUTTON_VARIANTS.SECONDARY}">Show banners</mdc-button>
+      <div id="banner-motion-slot" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+    </div>
+    <script>
+      const slot = document.getElementById('banner-motion-slot');
+      const showButton = document.getElementById('banner-motion-show');
+
+      const createBanner = ({ variant, label, secondaryLabel }) => {
+        const banner = document.createElement('mdc-banner');
+        banner.setAttribute('variant', variant);
+        banner.setAttribute('label', label);
+        banner.setAttribute('secondary-label', secondaryLabel);
+
+        const actions = document.createElement('div');
+        actions.setAttribute('slot', 'trailing-actions');
+
+        const dismissButton = document.createElement('mdc-button');
+        dismissButton.setAttribute('variant', 'tertiary');
+        dismissButton.setAttribute('prefix-icon', 'cancel-bold');
+        dismissButton.setAttribute('size', '20');
+        dismissButton.setAttribute('aria-label', 'Dismiss banner');
+
+        dismissButton.addEventListener('click', () => {
+          banner.open = false;
+        });
+
+        banner.addEventListener('hidden', () => {
+          banner.remove();
+        });
+
+        actions.appendChild(dismissButton);
+        banner.appendChild(actions);
+        return banner;
+      };
+
+      const mountBanners = () => {
+        slot.replaceChildren();
+
+        slot.appendChild(
+          createBanner({
+            variant: 'warning',
+            label: 'Connection unstable',
+            secondaryLabel: 'We will retry automatically in the background.',
+          }),
+        );
+
+        slot.appendChild(
+          createBanner({
+            variant: 'informational',
+            label: 'System maintenance scheduled',
+            secondaryLabel: 'Expect brief downtime tonight at 11:00 PM.',
+          }),
+        );
+      };
+
+      showButton?.addEventListener('click', mountBanners);
+      mountBanners();
+    </script>
+  `,
+  ...hideAllControls(),
+};
+
 export const PromotionalBanner: StoryObj = {
   render: () => {
     const image = html`<img

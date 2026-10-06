@@ -25,11 +25,21 @@ const VARIANT_ICON_NAMES = {
 } as const;
 
 /**
+ * Motion lifecycle phases
+ */
+const MOTION_PHASE = {
+  ENTERING: 'entering',
+  VISIBLE: 'visible',
+  EXITING: 'exiting',
+} as const;
+
+/**
  * Default values
  */
 const DEFAULTS = {
   VARIANT: BANNER_VARIANT.CUSTOM,
   PREFIX_ICON_SIZE: 1.25,
+  OPEN: true,
 } as const;
 
-export { BANNER_VARIANT, DEFAULTS, TAG_NAME, VARIANT_ICON_NAMES };
+export { BANNER_VARIANT, DEFAULTS, MOTION_PHASE, TAG_NAME, VARIANT_ICON_NAMES };
