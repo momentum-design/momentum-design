@@ -12,7 +12,7 @@ import { ROLE } from '../../utils/roles';
 import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
 
 import type { TabSize, Variant } from './tab.types';
-import { DEFAULTS, TAB_SIZES, TAB_VARIANTS } from './tab.constants';
+import { DEFAULTS, INDICATOR_ORIGIN_ATTRIBUTE, TAB_SIZES, TAB_VARIANTS, type IndicatorTransformOrigin } from './tab.constants';
 import styles from './tab.styles';
 
 /**
@@ -110,6 +110,69 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
    */
   @property({ type: String, reflect: true, attribute: 'tab-id' })
   tabId?: string;
+
+  /**
+   * Transform origin for the line-variant indicator grow/shrink animation.
+   * Set by `mdc-tablist` during selection changes.
+   *
+   * @internal
+   */
+  @property({ type: String, reflect: true, attribute: INDICATOR_ORIGIN_ATTRIBUTE })
+  indicatorOrigin?: IndicatorTransformOrigin;
+
+  /**
+   * Sets the line-tab indicator transform origin for the next grow/shrink animation.
+   *
+   * @internal
+   */
+  public setIndicatorTransformOrigin(origin: IndicatorTransformOrigin): void {
+    this.indicatorOrigin = origin;
+    this.applyIndicatorTransformOriginToDom(origin);
+  }
+
+  /**
+   * @internal
+   */
+  private resolveIndicatorTransformOrigin(origin: IndicatorTransformOrigin): string {
+    if (origin === 'center') {
+      return 'center';
+    }
+
+    const isRtl = getComputedStyle(this).direction === 'rtl';
+
+    if (origin === 'inline-start') {
+      return isRtl ? 'right' : 'left';
+    }
+
+    return isRtl ? 'left' : 'right';
+  }
+
+  /**
+   * @internal
+   */
+  private applyIndicatorTransformOriginToDom(
+    origin: IndicatorTransformOrigin = this.indicatorOrigin ?? 'inline-start',
+  ): void {
+    if (this.getAttribute('variant') !== TAB_VARIANTS.LINE) {
+      return;
+    }
+
+    const indicator = this.renderRoot?.querySelector('[part="indicator"]') as HTMLElement | undefined;
+    if (indicator) {
+      indicator.style.transformOrigin = this.resolveIndicatorTransformOrigin(origin);
+    }
+  }
+
+  /**
+   * @internal
+   */
+  private getIndicatorOriginStyle(): string | undefined {
+    if (this.getAttribute('variant') !== TAB_VARIANTS.LINE || !this.indicatorOrigin) {
+      return undefined;
+    }
+
+    return `transform-origin: ${this.resolveIndicatorTransformOrigin(this.indicatorOrigin)}`;
+  }
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -224,8 +287,12 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
         </div>
         <slot name="postfix"></slot>
       </div>
-      <div part="indicator"></div>
+      <div part="indicator" style=${this.getIndicatorOriginStyle()}></div>
     `;
+  }
+
+  protected override firstUpdated(): void {
+    this.applyIndicatorTransformOriginToDom();
   }
 
   public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];
