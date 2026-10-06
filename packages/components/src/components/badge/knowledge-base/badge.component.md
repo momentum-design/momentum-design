@@ -55,6 +55,21 @@ Minimal markup example:
 | `max-counter` | `9`, `99`, or `999` (default `99`). Caps the displayed count; higher values render as `<max>+` and never exceed "999+". |
 | `overlay` | Adds a thin outline so the badge stays legible when layered on another element, such as a button. |
 | `icon-name` | The icon shown when `type="icon"`; ignored by the preset status types, which supply their own icons. |
+| `visible` | When `false`, plays the exit fade-out and dispatches `hidden` when complete. Defaults to `true`. |
+
+### Motion
+
+Token-based motion runs when `mds-animation` scope classes are present (via `mdc-motionprovider` or app-level setup).
+
+| Phase | When | Effect |
+| --- | --- | --- |
+| Entrance | First time the badge has displayable content in a mount cycle | `fadeIn` + `growShrink` (opacity 0→1, scale 0.8→1) |
+| Update | Displayable content changes while visible | `growShrink` pulse (scale 1→0.8→1) |
+| Exit | Content clears or `visible` becomes `false` | `fadeOut` (opacity 1→0), then `hidden` event |
+
+`data-motion-phase` is reflected on the host for debugging and tests (`entering`, `visible`, `updating`, `exiting`, `hidden`). With `prefers-reduced-motion: reduce` or when motion tokens are disabled, state changes apply instantly.
+
+Consumers that remove the badge from the DOM synchronously skip exit animation. Keep the host mounted and set `visible="false"` (or clear counter content) until the `hidden` event fires — `mdc-navmenuitem` does this when `badge-type` is removed.
 
 ### Limitations
 

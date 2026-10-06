@@ -27,7 +27,57 @@ const styles = [
       --mdc-badge-dot-height: 0.75rem;
 
       color: var(--mdc-badge-primary-foreground-color);
+
+      opacity: 0;
+      transform: scale(0.8);
+      transition: var(--mds-transition-fade-out);
     }
+
+    :host([data-motion-phase='entering']),
+    :host([data-motion-phase='visible']),
+    :host([data-motion-phase='updating']) {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    :host([data-motion-phase='entering']) {
+      transition: var(--mds-transition-fade-in), var(--mds-transition-grow-shrink);
+    }
+
+    :host([data-motion-phase='updating']) {
+      transition: var(--mds-transition-grow-shrink);
+    }
+
+    :host([data-motion-phase='updating'][data-pulse-step='shrink']) {
+      transform: scale(0.8);
+    }
+
+    :host([data-motion-phase='exiting']) {
+      opacity: 0;
+      transition: var(--mds-transition-fade-out);
+    }
+
+    :host([data-motion-phase='hidden']) {
+      display: none;
+    }
+
+    @starting-style {
+      :host([data-motion-phase='entering']) {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :host,
+      :host([data-motion-phase='entering']),
+      :host([data-motion-phase='visible']),
+      :host([data-motion-phase='updating']),
+      :host([data-motion-phase='exiting']) {
+        transition: none;
+      }
+    }
+
     :host::part(badge-overlay) {
       outline: 0.0625rem solid var(--mdc-badge-overlay-background-color);
     }
