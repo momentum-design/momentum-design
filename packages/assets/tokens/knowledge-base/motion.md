@@ -123,19 +123,18 @@ reference a duration or easing token, and comes in one of four shapes:
   `--mds-animation-*` custom property (e.g. `buttonLoadingSpinPulse` =
   `buttonLoadingSpin` + `buttonLoadingPulse`).
 
-Animations currently cover `button`, surface enter/exit
+Animations currently cover button and checkbox states, surface enter/exit
 (`fadeIn` / `fadeOut`, `slideEntrance` / `slideExit`), panel height
 (`expand` / `collapse` on `grid-template-rows`), and reusable text/scale
 primitives (`textChange`, `growShrink`). Because each one
 references core tokens rather than raw values, retuning a duration or easing at
 the core layer updates every animation that uses it.
 
-`slideEntrance` and `slideExit` animate `transform`, `opacity`, and optionally
-`display`. They are commonly used for overlays and popovers, but also suit
-in-flow surfaces such as banners when the consuming component sets slide
-direction (for example `translateY`) and keeps `display` in a single in-flow
-value. Pair slide on the host with `expand` / `collapse` when layout height
-should animate in document flow.
+`slideEntrance` and `slideExit` animate `transform`. They are commonly used for
+overlays and popovers, but also suit in-flow surfaces such as banners when the
+consuming component sets the slide direction (for example `translateY`). Pair
+slide with `fadeIn` / `fadeOut` when opacity should change, and with `expand` /
+`collapse` when layout height should animate in document flow.
 
 Authoritative source: `packages/assets/tokens/src/animation/animation.json`.
 
@@ -154,9 +153,8 @@ Authoritative source: `packages/assets/tokens/src/animation/animation.json`.
   non-essential animation for users who request it. Shipped CSS under
   `.mds-motion` and `.mds-animation` includes `@media (prefers-reduced-motion: reduce)`
   overrides (durations/delays/staggers to `0ms`; transition/animation shorthands to
-  `none`). Applications can also wrap content in
-  [`mdc-motionprovider`](../../../components/src/components/motionprovider/knowledge-base/motionprovider.component.md)
-  to toggle token scope with `motion="full" | "reduce" | "system"`.
+  `none`). Apply both token scopes at the application root so these overrides
+  cover every consuming component.
 
 > **Note:** these tokens are published under `.mds-motion` and `.mds-animation`
 > and are consumable directly by name (e.g. `var(--mds-animation-button-loading-spin)`),
