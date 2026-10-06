@@ -1,6 +1,9 @@
 import { CSSResult, html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
+import { loadAsset, requiresConfiguredProvider } from '#momentum-assets/brandvisual';
+
+import type { LoadedAsset } from '../../utils/asset-loader/asset-loader.types';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import { assetFetch } from '../../utils/asset-fetch';
@@ -43,21 +46,28 @@ class Brandvisual extends Component {
 
   @state() private abortController?: AbortController;
 
+  private assetLoadId = 0;
+
+  private assetSourceKey?: string;
+
   constructor() {
     super();
     this.abortController = new AbortController(); // Initialize AbortController
   }
 
-  /**
-   * Resolves the brandvisual, either over HTTP through a `BrandVisualProvider` or through a
-   * dynamic import of the lit template shipped in the `@momentum-design/brand-visuals` package.
-   *
-   * The dynamic import is the fallback for every case that is not a fully configured custom set:
-   * no provider at all, the momentum set, or a custom set that is missing a url or file extension.
-   * Keeping it reachable without a provider is what makes this backwards compatible - a bare
-   * `<mdc-brandvisual name="…">` behaves exactly as it did before the provider existed.
-   */
+  /** Resolve a custom source or the Momentum loader selected by the build. */
   private async getBrandVisualData() {
+    this.assetLoadId += 1;
+    const loadId = this.assetLoadId;
+    this.abortController?.abort();
+    this.abortController = new AbortController();
+    const onSuccess = (asset: LoadedAsset) => {
+      if (loadId === this.assetLoadId && this.isConnected) this.handleBrandVisualLoadedSuccess(asset);
+    };
+    const onFailure = (error: unknown) => {
+      if (loadId === this.assetLoadId && this.isConnected) this.handleBrandVisualLoadedFailure(error);
+    };
+
     if (!this.name) {
       const nameError = new Error('No brandvisual name provided.');
       this.handleBrandVisualLoadedFailure(nameError);
@@ -73,18 +83,21 @@ class Brandvisual extends Component {
         // raster visuals are handed to the browser as an <img src>, vector ones are fetched
         // and inlined so they can be styled through ::part(brandvisual)
         return fileExtension === 'png'
-          ? this.loadBrandVisualImage(url, fileExtension)
-          : this.fetchBrandVisual({ url, fileExtension, cacheName, cacheStrategy });
+          ? this.loadBrandVisualImage(url, fileExtension, loadId)
+          : this.fetchBrandVisual({ url, fileExtension, cacheName, cacheStrategy }, loadId);
+      }
+      if (requiresConfiguredProvider) {
+        const providerError = new Error('BrandVisualProvider not properly set up.');
+        onFailure(providerError);
+        return Promise.reject(providerError);
       }
     }
 
-    // dynamic import of the lit template from the momentum brand-visuals package
-    return import(`@momentum-design/brand-visuals/dist/ts/${this.name}.ts`)
-      .then(module => {
-        this.handleBrandVisualLoadedSuccess(module.default());
-      })
+    // Resolve Momentum assets through the loader selected by the build.
+    return loadAsset({ family: 'brandvisual', name: this.name, signal: this.abortController.signal })
+      .then(onSuccess)
       .catch(error => {
-        this.handleBrandVisualLoadedFailure(error);
+        onFailure(error);
       });
   }
 
@@ -96,17 +109,20 @@ class Brandvisual extends Component {
    * but before the response body has been read, then attempting to read the response body will
    * reject with an AbortError exception.
    */
-  private async fetchBrandVisual({
-    url,
-    fileExtension,
-    cacheName,
-    cacheStrategy,
-  }: {
-    url: string;
-    fileExtension: string;
-    cacheName?: string;
-    cacheStrategy?: CacheStrategy;
-  }) {
+  private async fetchBrandVisual(
+    {
+      url,
+      fileExtension,
+      cacheName,
+      cacheStrategy,
+    }: {
+      url: string;
+      fileExtension: string;
+      cacheName?: string;
+      cacheStrategy?: CacheStrategy;
+    },
+    loadId: number,
+  ) {
     // function to abort the fetch request and create a new signal
     // (directly passing the abortcontroller to the fetch request per reference
     // will not work due to JS call-by-sharing behavior)
@@ -126,10 +142,11 @@ class Brandvisual extends Component {
       assetType: 'brand visual',
     })
       .then(brandVisualData => {
-        this.handleBrandVisualLoadedSuccess(this.prepareBrandVisualElement(brandVisualData));
+        if (loadId === this.assetLoadId && this.isConnected)
+          this.handleBrandVisualLoadedSuccess(this.prepareBrandVisualElement(brandVisualData));
       })
       .catch(error => {
-        this.handleBrandVisualLoadedFailure(error);
+        if (loadId === this.assetLoadId && this.isConnected) this.handleBrandVisualLoadedFailure(error);
       });
   }
 
@@ -140,18 +157,19 @@ class Brandvisual extends Component {
    * detached - but we still wait for it so that `load` and `error` keep meaning the same thing
    * they do on the other two branches.
    */
-  private async loadBrandVisualImage(url: string, fileExtension: string) {
+  private async loadBrandVisualImage(url: string, fileExtension: string, loadId: number) {
     const image = document.createElement('img');
     image.setAttribute('part', 'brandvisualImage');
     image.setAttribute('data-name', this.name as string);
 
     return new Promise<void>(resolve => {
       image.onload = () => {
-        this.handleBrandVisualLoadedSuccess(image);
+        if (loadId === this.assetLoadId && this.isConnected) this.handleBrandVisualLoadedSuccess(image);
         resolve();
       };
       image.onerror = () => {
-        this.handleBrandVisualLoadedFailure(new Error('There was a problem while fetching the brand visual!'));
+        if (loadId === this.assetLoadId && this.isConnected)
+          this.handleBrandVisualLoadedFailure(new Error('There was a problem while fetching the brand visual!'));
         resolve();
       };
       image.src = `${url}/${this.name}.${fileExtension}`;
@@ -181,7 +199,17 @@ class Brandvisual extends Component {
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('name')) {
+    const provider = this.brandVisualProviderContext.value;
+    const sourceKey = JSON.stringify([
+      this.name,
+      provider?.brandVisualSet,
+      provider?.url,
+      provider?.fileExtension,
+      provider?.cacheName,
+      provider?.cacheStrategy,
+    ]);
+    if (sourceKey !== this.assetSourceKey) {
+      this.assetSourceKey = sourceKey;
       // import brandVisual data if name changes:
       this.getBrandVisualData().catch(err => {
         if (err.name !== 'AbortError' && this.onerror) {
@@ -197,8 +225,15 @@ class Brandvisual extends Component {
     }
   }
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    if (this.hasUpdated) this.requestUpdate();
+  }
+
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.assetLoadId += 1;
+    this.assetSourceKey = undefined;
     // abort the fetch request when the component is disconnected
     this.abortController?.abort();
     this.abortController = undefined; // reset the abort controller
@@ -214,7 +249,9 @@ class Brandvisual extends Component {
    */
   private applyAltText(brandVisual: Element | TemplateResult): Element | TemplateResult {
     if (brandVisual instanceof Element) {
-      return brandVisual.tagName === 'IMG' ? this.injectHtmlAttributes(brandVisual, { alt: this.altText }) : brandVisual;
+      return brandVisual.tagName === 'IMG'
+        ? this.injectHtmlAttributes(brandVisual, { alt: this.altText })
+        : brandVisual;
     }
 
     return this.injectTemplateAttributes(brandVisual, 'img', { alt: this.altText });
@@ -250,7 +287,7 @@ class Brandvisual extends Component {
    * @param brandVisualHtml - The brandvisual which has been resolved, either as the lit template
    * from the dynamic import or as an element built from the provider url.
    */
-  private handleBrandVisualLoadedSuccess(brandVisualHtml: Element | TemplateResult) {
+  private handleBrandVisualLoadedSuccess(brandVisualHtml: LoadedAsset) {
     this.brandVisualData = this.applyAltText(brandVisualHtml);
 
     // when brandvisual is imported successfully, trigger brandvisual load event.

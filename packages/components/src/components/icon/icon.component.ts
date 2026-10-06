@@ -1,6 +1,9 @@
 import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
+import { loadAsset } from '#momentum-assets/icon';
+
+import type { LoadedAsset } from '../../utils/asset-loader/asset-loader.types';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import { assetFetch } from '../../utils/asset-fetch';
@@ -20,7 +23,7 @@ import type { IconNames } from './icon.types';
  */
 class Icon extends Component {
   @state()
-  private iconData?: HTMLElement;
+  private iconData?: LoadedAsset;
 
   @state()
   private lengthUnitFromContext?: string;
@@ -62,6 +65,10 @@ class Icon extends Component {
 
   @state() private abortController?: AbortController;
 
+  private assetLoadId = 0;
+
+  private assetSourceKey?: string;
+
   constructor() {
     super();
     this.abortController = new AbortController(); // Initialize AbortController
@@ -95,6 +102,17 @@ class Icon extends Component {
    * then attempting to read the response body will reject with an AbortError exception.
    */
   private async getIconData() {
+    this.assetLoadId += 1;
+    const loadId = this.assetLoadId;
+    this.abortController?.abort();
+    this.abortController = new AbortController();
+    const onSuccess = (asset: LoadedAsset) => {
+      if (loadId === this.assetLoadId && this.isConnected) this.handleIconLoadedSuccess(asset);
+    };
+    const onFailure = (error: unknown) => {
+      if (loadId === this.assetLoadId && this.isConnected) this.handleIconLoadedFailure(error);
+    };
+
     if (this.iconProviderContext.value) {
       const { fileExtension, url, cacheName, iconSet, cacheStrategy } = this.iconProviderContext.value;
       if (iconSet === 'custom-icons' && url && fileExtension && this.name) {
@@ -120,21 +138,19 @@ class Icon extends Component {
           .then(iconData => {
             // parse the fetched icon string to an html element and set the attributes
             const iconElement = this.prepareIconElement(iconData);
-            this.handleIconLoadedSuccess(iconElement as HTMLElement);
+            onSuccess(iconElement as HTMLElement);
           })
           .catch(error => {
-            this.handleIconLoadedFailure(error);
+            onFailure(error);
           });
       }
 
       if (iconSet === 'momentum-icons' && this.name) {
-        // dynamic import of the lit template from the momentum icons package
-        return import(`@momentum-design/icons/dist/ts/${this.name}.ts`)
-          .then(module => {
-            this.handleIconLoadedSuccess(module.default());
-          })
+        // Resolve Momentum assets through the loader selected by the build.
+        return loadAsset({ family: 'icon', name: this.name, signal: this.abortController.signal })
+          .then(onSuccess)
           .catch(error => {
-            this.handleIconLoadedFailure(error);
+            onFailure(error);
           });
       }
     }
@@ -149,7 +165,7 @@ class Icon extends Component {
    * Dispatches a 'load' event on the component once the icon has been successfully loaded.
    * @param iconHtml - The icon html element which has been fetched from the icon provider.
    */
-  private handleIconLoadedSuccess(iconHtml: HTMLElement) {
+  private handleIconLoadedSuccess(iconHtml: LoadedAsset) {
     // update iconData state once fetched:
     this.iconData = iconHtml;
 
@@ -193,7 +209,17 @@ class Icon extends Component {
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('name')) {
+    const provider = this.iconProviderContext.value;
+    const sourceKey = JSON.stringify([
+      this.name,
+      provider?.iconSet,
+      provider?.url,
+      provider?.fileExtension,
+      provider?.cacheName,
+      provider?.cacheStrategy,
+    ]);
+    if (sourceKey !== this.assetSourceKey) {
+      this.assetSourceKey = sourceKey;
       // fetch icon data if name changes:
       this.getIconData().catch(err => {
         if (err.name !== 'AbortError' && this.onerror) {
@@ -221,8 +247,15 @@ class Icon extends Component {
     }
   }
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    if (this.hasUpdated) this.requestUpdate();
+  }
+
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.assetLoadId += 1;
+    this.assetSourceKey = undefined;
     // abort the fetch request when the component is disconnected
     this.abortController?.abort();
     this.abortController = undefined; // reset the abort controller

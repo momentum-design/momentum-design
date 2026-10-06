@@ -22,7 +22,15 @@
     "./components": "./dist/components/index.js",
     "./components/*": "./dist/components/*",
     "./dist/components": "./dist/components/index.js",
-    "./dist/components/*": "./dist/components/*"
+    "./dist/components/*": "./dist/components/*",
+    "./asset-loading": {
+      "types": "./dist/asset-loading.d.ts",
+      "default": "./dist/asset-loading.js"
+    },
+    "./dist/asset-loading": {
+      "types": "./dist/asset-loading.d.ts",
+      "default": "./dist/asset-loading.js"
+    }
   },
   "files": [
     "/dist/",
@@ -93,7 +101,7 @@
     "test:e2e:webkit": "yarn test:e2e:skip-snapshot --project='webkit'",
     "test:e2e:edge": "yarn test:e2e:skip-snapshot --project='msedge'",
     "test:e2e:ui": "yarn test:e2e --ui",
-    "test:e2e:serve": "yarn clean:e2e && yarn copy:playwright && yarn build:browser:e2e",
+    "test:e2e:serve": "yarn clean:e2e && yarn copy:playwright && yarn build:module && yarn test:asset-loading:build && yarn build:browser:e2e",
     "test:e2e:report": "yarn playwright show-report",
     "test:e2e:docker": "PW_TEST_CONNECT_WS_ENDPOINT=ws://localhost:3000/ playwright test --config './config/playwright/docker/playwright.docker.config.ts'",
     "test:e2e:docker:build": "docker build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0 .",
@@ -113,7 +121,8 @@
     "test:e2e:podman": "PW_TEST_CONNECT_WS_ENDPOINT=ws://localhost:3000/ playwright test --config './config/playwright/docker/playwright.docker.config.ts'",
     "test:e2e:podman:serve": "podman run --platform linux/amd64 -p 3000:3000 --rm --init --shm-size=1gb ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0",
     "test:e2e:podman:build": "podman build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0 .",
-    "lint:staging": "lint-staged --config ./config/lint-staged/lint-staged.config.js"
+    "lint:staging": "lint-staged --config ./config/lint-staged/lint-staged.config.js",
+    "test:asset-loading:build": "node ./config/asset-loading/build-fixtures.ts"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.2",
@@ -123,6 +132,7 @@
     "@momentum-design/brand-visuals": "workspace:*",
     "@momentum-design/fonts": "workspace:*",
     "@momentum-design/icons": "workspace:*",
+    "@momentum-design/illustrations": "workspace:^",
     "@momentum-design/tokens": "workspace:*",
     "@tanstack/lit-virtual": "^3.13.2",
     "lit": "^3.2.0",
@@ -167,6 +177,28 @@
     "storybook-multilevel-sort": "^2.0.1",
     "stylelint": "^16.23.0",
     "typescript": "^5.9.2",
-    "vite-plugin-dynamic-import": "^1.6.0"
+    "vite-plugin-dynamic-import": "^1.6.0",
+    "webpack": "^5.90.0"
+  },
+  "imports": {
+    "#momentum-assets/icon": {
+      "momentum-external-assets": "./dist/utils/asset-loader/external.js",
+      "default": "./dist/utils/asset-loader/bundled-icon.js"
+    },
+    "#momentum-assets/illustration": {
+      "momentum-external-assets": "./dist/utils/asset-loader/external.js",
+      "default": "./dist/utils/asset-loader/bundled-illustration.js"
+    },
+    "#momentum-assets/brandvisual": {
+      "momentum-external-assets": "./dist/utils/asset-loader/external.js",
+      "default": "./dist/utils/asset-loader/bundled-brandvisual.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "asset-loading": [
+        "dist/asset-loading.d.ts"
+      ]
+    }
   }
 }

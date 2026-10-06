@@ -7,6 +7,12 @@ const browsers = ['chrome114', 'firefox114', 'safari13', 'edge93'];
 
 const buildConfig = {
   bundle: true,
+  alias: Object.fromEntries(
+    ['icon', 'illustration', 'brandvisual'].map(family => [
+      `#momentum-assets/${family}`,
+      join(projectPath, `src/utils/asset-loader/bundled-${family}.ts`),
+    ]),
+  ),
   entryPoints: [`${join(projectPath, 'src', 'index.ts')}`],
   minify: true,
   sourcemap: true,

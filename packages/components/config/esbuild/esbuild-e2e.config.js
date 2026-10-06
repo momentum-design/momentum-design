@@ -16,7 +16,7 @@ const { publicPath, port } = require('./configs/e2e');
 // provider e2e tests can assert against the real asset set served from /dist/brandvisuals.
 const replaceBrandVisualsDynamicImport = source => {
   const newSource = source.replace(
-    '@momentum-design/brand-visuals/dist/ts/${this.name}.ts',
+    '@momentum-design/brand-visuals/dist/ts/${name}.ts',
     '../../../playwright-temp/brandvisuals/index',
   );
   return newSource;
@@ -25,7 +25,7 @@ const replaceBrandVisualsDynamicImport = source => {
 const replaceBrandVisualPathPlugin = {
   name: 'replaceBrandVisualPathPlugin',
   setup(build) {
-    build.onLoad({ filter: /brandvisual.component.ts/ }, async args => {
+    build.onLoad({ filter: /asset-loader\/bundled-brandvisual.ts/ }, async args => {
       const source = await fs.promises.readFile(args.path, 'utf8');
       const contents = replaceBrandVisualsDynamicImport(source);
 

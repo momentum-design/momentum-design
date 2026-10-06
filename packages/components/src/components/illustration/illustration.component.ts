@@ -1,6 +1,9 @@
 import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
+import { loadAsset } from '#momentum-assets/illustration';
+
+import type { LoadedAsset } from '../../utils/asset-loader/asset-loader.types';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import { assetFetch } from '../../utils/asset-fetch';
@@ -20,7 +23,7 @@ import type { IllustrationNames } from './illustration.types';
  */
 class Illustration extends Component {
   @state()
-  private illustrationData?: HTMLElement;
+  private illustrationData?: LoadedAsset;
 
   /**
    * Name of the illustration (= filename)
@@ -46,6 +49,10 @@ class Illustration extends Component {
   });
 
   @state() private abortController?: AbortController;
+
+  private assetLoadId = 0;
+
+  private assetSourceKey?: string;
 
   constructor() {
     super();
@@ -80,6 +87,17 @@ class Illustration extends Component {
    * then attempting to read the response body will reject with an AbortError exception.
    */
   private async getIllustrationData() {
+    this.assetLoadId += 1;
+    const loadId = this.assetLoadId;
+    this.abortController?.abort();
+    this.abortController = new AbortController();
+    const onSuccess = (asset: LoadedAsset) => {
+      if (loadId === this.assetLoadId && this.isConnected) this.handleIllustrationLoadedSuccess(asset);
+    };
+    const onFailure = (error: unknown) => {
+      if (loadId === this.assetLoadId && this.isConnected) this.handleIllustrationLoadedFailure(error);
+    };
+
     if (this.illustrationProviderContext.value) {
       const { fileExtension, url, cacheName, illustrationSet, cacheStrategy } = this.illustrationProviderContext.value;
       if (illustrationSet === 'custom-illustrations' && url && fileExtension && this.name) {
@@ -105,21 +123,19 @@ class Illustration extends Component {
           .then(illustrationData => {
             // parse the fetched illustration string to an html element and set the attributes
             const illustrationElement = this.prepareIllustrationElement(illustrationData);
-            this.handleIllustrationLoadedSuccess(illustrationElement as HTMLElement);
+            onSuccess(illustrationElement as HTMLElement);
           })
           .catch(error => {
-            this.handleIllustrationLoadedFailure(error);
+            onFailure(error);
           });
       }
 
       if (illustrationSet === 'momentum-illustrations' && this.name) {
-        // dynamic import of the lit template from the momentum illustrations package
-        return import(`@momentum-design/illustrations/dist/ts/${this.name}.ts`)
-          .then(module => {
-            this.handleIllustrationLoadedSuccess(module.default());
-          })
+        // Resolve Momentum assets through the loader selected by the build.
+        return loadAsset({ family: 'illustration', name: this.name, signal: this.abortController.signal })
+          .then(onSuccess)
           .catch(error => {
-            this.handleIllustrationLoadedFailure(error);
+            onFailure(error);
           });
       }
     }
@@ -134,7 +150,7 @@ class Illustration extends Component {
    * Dispatches a 'load' event on the component once the illustration has been successfully loaded.
    * @param illustrationHtml - The illustration html element which has been fetched from the illustration provider.
    */
-  private handleIllustrationLoadedSuccess(illustrationHtml: HTMLElement) {
+  private handleIllustrationLoadedSuccess(illustrationHtml: LoadedAsset) {
     // update illustrationData state once fetched:
     this.illustrationData = illustrationHtml;
 
@@ -163,7 +179,17 @@ class Illustration extends Component {
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('name')) {
+    const provider = this.illustrationProviderContext.value;
+    const sourceKey = JSON.stringify([
+      this.name,
+      provider?.illustrationSet,
+      provider?.url,
+      provider?.fileExtension,
+      provider?.cacheName,
+      provider?.cacheStrategy,
+    ]);
+    if (sourceKey !== this.assetSourceKey) {
+      this.assetSourceKey = sourceKey;
       // fetch illustration data if name changes:
       this.getIllustrationData().catch(err => {
         if (err.name !== 'AbortError' && this.onerror) {
@@ -177,8 +203,15 @@ class Illustration extends Component {
     }
   }
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    if (this.hasUpdated) this.requestUpdate();
+  }
+
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.assetLoadId += 1;
+    this.assetSourceKey = undefined;
     // abort the fetch request when the component is disconnected
     this.abortController?.abort();
     this.abortController = undefined; // reset the abort controller

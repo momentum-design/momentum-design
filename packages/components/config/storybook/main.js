@@ -73,6 +73,14 @@ const config = {
     const { mergeConfig } = await import('vite');
 
     return mergeConfig(config, {
+      resolve: {
+        alias: Object.fromEntries(
+          ['icon', 'illustration', 'brandvisual'].map(family => [
+            `#momentum-assets/${family}`,
+            path.resolve(componentsRoot, `src/utils/asset-loader/bundled-${family}.ts`),
+          ]),
+        ),
+      },
       // adding dynamic import to support dynamic icon import
       // in icon component
       plugins: [preferSourceComponentsInStorybook(), dynamicImport({})],
