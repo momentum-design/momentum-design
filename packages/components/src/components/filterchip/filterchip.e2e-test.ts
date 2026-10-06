@@ -138,3 +138,45 @@ test('mdc-filterchip', async ({ componentsPage }) => {
     });
   });
 });
+
+test('selected motion uses animation tokens', async ({ componentsPage }) => {
+  const filterchip = await setup({ componentsPage, label: 'Label' });
+
+  const selected = await filterchip.evaluate(async (element: HTMLElement) => {
+    element.click();
+    await new Promise<void>(resolve => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => resolve());
+      });
+    });
+    const icon = element.shadowRoot?.querySelector('.check-icon-wrapper') as HTMLElement | null;
+    return {
+      surface: element.hasAttribute('data-motion-surface'),
+      duration: getComputedStyle(element).transitionDuration,
+      iconOpacity: icon ? getComputedStyle(icon).opacity : '',
+    };
+  });
+
+  expect(selected.surface).toBe(true);
+  expect(selected.duration.split(',').every(part => part.trim() === '0s')).toBe(false);
+  expect(Number.parseFloat(selected.iconOpacity)).toBeLessThan(1);
+
+  await expect(filterchip).not.toHaveAttribute('data-motion-surface', { timeout: 2000 });
+
+  const restingDuration = await filterchip.evaluate(
+    (element: HTMLElement) => getComputedStyle(element).transitionDuration,
+  );
+  expect(restingDuration.split(',').every(part => part.trim() === '0s')).toBe(true);
+
+  const deselected = await filterchip.evaluate(async (element: HTMLElement) => {
+    element.click();
+    await new Promise<void>(resolve => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => resolve());
+      });
+    });
+    return { iconAttached: Boolean(element.shadowRoot?.querySelector('.check-icon-wrapper')) };
+  });
+  expect(deselected.iconAttached).toBe(true);
+  await expect(filterchip.locator('.check-icon-wrapper')).toHaveCount(0, { timeout: 2000 });
+});

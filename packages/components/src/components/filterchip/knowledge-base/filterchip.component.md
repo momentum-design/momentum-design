@@ -58,6 +58,16 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 **Note:** `color` is fixed to the filter-chip token on connect; setting a different `color` has no effect.
 
+### Motion
+
+These transitions run when an ancestor has the `mds-animation` class and the animation token stylesheet is loaded.
+
+Selected and unselected toggles animate the chip `background-color` and `border-color` using `--mds-transition-background-color` and `--mds-transition-border-color`. Border width change (1px to 2px when selected) remains instant. Focus and active color changes stay instant once that toggle transition has finished.
+
+The checkmark icon fades in on select using `--mds-transition-fade-in` and fades out on deselect using `--mds-transition-fade-out` before it is removed from the DOM.
+
+When `prefers-reduced-motion: reduce` is active, or the transition tokens resolve to `none`, selected and unselected updates apply immediately.
+
 ### Limitations
 
 - **Color is fixed** — the neutral filter-chip color is applied on connect and cannot be overridden. Do not set `color` expecting a custom value.

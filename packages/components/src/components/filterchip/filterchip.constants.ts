@@ -9,4 +9,11 @@ const DEFAULTS = {
   COLOR: 'default' as Extract<ColorType, 'default'>,
 } as const;
 
-export { TAG_NAME, DEFAULTS };
+const DATA_MOTION = {
+  SURFACE: 'data-motion-surface',
+  ACTIVE: 'data-motion-active',
+} as const;
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+export { TAG_NAME, DEFAULTS, DATA_MOTION, REDUCED_MOTION_QUERY };
