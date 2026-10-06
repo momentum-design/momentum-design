@@ -62,7 +62,7 @@ export const Example: StoryObj = {
     'icon-set': 'momentum-icons',
     url: './icons/svg',
     'file-extension': 'svg',
-    'length-unit': 'em',
+    'length-unit': 'rem',
     'cache-strategy': undefined,
     'cache-name': 'my-icon-cache',
     size: 1,
