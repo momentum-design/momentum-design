@@ -16,8 +16,15 @@ const styles = css`
     --mdc-popover-max-height: auto;
     --mdc-popover-backdrop-color: var(--mds-color-theme-common-overlays-secondary-normal);
     --mdc-backdrop-mixin-background-color: var(--mdc-popover-backdrop-color);
+    --mdc-backdrop-mixin-transition-in: var(--mds-transition-fade-in);
+    --mdc-backdrop-mixin-transition-out: var(--mds-transition-fade-out);
+    --mdc-popover-slide-offset: 1rem;
 
     display: none;
+    opacity: 0;
+    transform: var(--mdc-popover-slide-from, translateY(calc(-1 * var(--mdc-popover-slide-offset))));
+    transition: var(--mds-transition-slide-exit), var(--mds-transition-fade-out);
+    transition-behavior: allow-discrete;
     position: absolute;
     top: 0;
     left: 0;
@@ -39,8 +46,39 @@ const styles = css`
     position: fixed;
   }
 
+  :host([data-floating-side='bottom']),
+  :host([placement^='bottom']:not([data-floating-side])) {
+    --mdc-popover-slide-from: translateY(calc(-1 * var(--mdc-popover-slide-offset)));
+  }
+
+  :host([data-floating-side='top']),
+  :host([placement^='top']:not([data-floating-side])) {
+    --mdc-popover-slide-from: translateY(var(--mdc-popover-slide-offset));
+  }
+
+  :host([data-floating-side='left']),
+  :host([placement^='left']:not([data-floating-side])) {
+    --mdc-popover-slide-from: translateX(var(--mdc-popover-slide-offset));
+  }
+
+  :host([data-floating-side='right']),
+  :host([placement^='right']:not([data-floating-side])) {
+    --mdc-popover-slide-from: translateX(calc(-1 * var(--mdc-popover-slide-offset)));
+  }
+
   :host([visible]) {
     display: block;
+    opacity: 1;
+    transform: none;
+    transition: var(--mds-transition-slide-entrance), var(--mds-transition-fade-in);
+    transition-behavior: allow-discrete;
+  }
+
+  @starting-style {
+    :host([visible]) {
+      opacity: 0;
+      transform: var(--mdc-popover-slide-from);
+    }
   }
 
   :host([color='contrast']) {
@@ -123,6 +161,13 @@ const styles = css`
     border-left: none;
     border-top-right-radius: var(--mdc-popover-arrow-border-radius);
     border-bottom-left-radius: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host,
+    :host([visible]) {
+      transition: none;
+    }
   }
 `;
 

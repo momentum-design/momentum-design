@@ -371,6 +371,40 @@ export const Example: StoryObj = {
   },
 };
 
+export const Motion: StoryObj = {
+  render: (args: Args) => html`
+    ${createTrigger(args.triggerID, 'Toggle popover')}
+    ${createPopover(
+      args,
+      html`<mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>
+        Open and close to see slide and fade motion. Change placement to compare directions.
+      </mdc-text>`,
+    )}
+  `,
+  args: {
+    id: 'popover-motion',
+    triggerID: 'popover-motion-trigger',
+    trigger: 'click',
+    placement: POPOVER_PLACEMENT.BOTTOM,
+    offset: DEFAULTS.OFFSET,
+    'z-index': DEFAULTS.Z_INDEX,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
+    'show-arrow': true,
+    'hide-on-outside-click': true,
+    'hide-on-escape': true,
+    role: DEFAULTS.ROLE,
+    color: DEFAULTS.COLOR,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Click the trigger to open and close the popover. Observe placement-aware slide and fade motion. Wrap in mdc-motionprovider or enable prefers-reduced-motion to compare instant behavior.',
+      },
+    },
+  },
+};
+
 export const interactiveContent: StoryObj = {
   render: renderInteractive,
   args: {
