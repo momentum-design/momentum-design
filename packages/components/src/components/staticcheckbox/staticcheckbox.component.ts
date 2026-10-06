@@ -1,4 +1,5 @@
-import { CSSResult, html, nothing } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -51,21 +52,32 @@ class StaticCheckbox extends DisabledMixin(Component) {
    */
   @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled = false;
 
-  public override render() {
-    const checkboxIconContent =
-      this.checked || this.indeterminate
-        ? html`
-            <mdc-icon
-              part="checkbox-icon"
-              name="${this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED}"
-              size="1"
-              length-unit="rem"
-            ></mdc-icon>
-          `
-        : nothing;
+  override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
 
+    if (
+      (changedProperties.has('checked') || changedProperties.has('indeterminate')) &&
+      !this.hasAttribute('data-motion-active')
+    ) {
+      this.setAttribute('data-motion-active', '');
+    }
+  }
+
+  private get iconName(): string {
+    return this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED;
+  }
+
+  public override render() {
     return html`<slot></slot>
-      <div part="icon-container">${checkboxIconContent}</div>`;
+      <div part="icon-container">
+        <mdc-icon
+          part="checkbox-icon"
+          aria-hidden="true"
+          name="${this.iconName}"
+          size="1"
+          length-unit="rem"
+        ></mdc-icon>
+      </div>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

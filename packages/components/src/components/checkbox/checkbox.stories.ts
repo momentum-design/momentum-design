@@ -286,6 +286,54 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
   ...hideAllControls(),
 };
 
+export const Motion: StoryObj = {
+  render: () => html`
+    <div role="main" style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem;">
+      <p style="margin: 0; max-width: 36rem; font-size: 0.875rem;">
+        Hover, click, and toggle states to observe checkbox motion (background, border, scale, icon fade). Wrap with
+        <code>mdc-motionprovider</code> or enable OS reduced motion to verify instant updates.
+      </p>
+      <mdc-checkbox id="checkbox-motion-demo" label="Send me product updates"></mdc-checkbox>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <mdc-button id="checkbox-motion-indeterminate" variant="secondary" size="28">Set indeterminate</mdc-button>
+        <mdc-button id="checkbox-motion-error" variant="secondary" size="28">Toggle error</mdc-button>
+      </div>
+    </div>
+  `,
+  decorators: [
+    story => {
+      queueMicrotask(() => {
+        const checkbox = document.getElementById('checkbox-motion-demo') as Checkbox | null;
+        const indeterminateButton = document.getElementById('checkbox-motion-indeterminate');
+        const errorButton = document.getElementById('checkbox-motion-error');
+
+        indeterminateButton?.addEventListener('click', () => {
+          if (!checkbox) return;
+          checkbox.indeterminate = !checkbox.indeterminate;
+          if (checkbox.indeterminate) {
+            checkbox.checked = false;
+          }
+        });
+
+        errorButton?.addEventListener('click', () => {
+          if (!checkbox) return;
+          const isError = checkbox.getAttribute('help-text-type') === 'error';
+          if (isError) {
+            checkbox.setAttribute('help-text-type', CHECKBOX_VALIDATION.DEFAULT);
+            checkbox.removeAttribute('help-text');
+          } else {
+            checkbox.setAttribute('help-text-type', CHECKBOX_VALIDATION.ERROR);
+            checkbox.setAttribute('help-text', 'This field is required.');
+          }
+        });
+      });
+
+      return story();
+    },
+  ],
+  ...hideAllControls(),
+};
+
 export const CustomStateChecked: StoryObj = {
   decorators: [
     story => {
