@@ -1,3 +1,6 @@
+@import url('./dist/motion.css');
+@import url('./dist/animation.css');
+
 body {
   position: fixed;
   height: 100%;

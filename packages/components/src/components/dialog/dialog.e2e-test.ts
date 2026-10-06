@@ -1229,3 +1229,53 @@ test('mdc-dialog', async ({ componentsPage }) => {
     });
   });
 });
+
+test('open and close motion uses animation tokens', async ({ componentsPage }) => {
+  const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
+  await expect(dialog).toBeVisible();
+
+  const open = await dialog.evaluate((element: HTMLElement) => {
+    const style = getComputedStyle(element);
+    const backdrop = document.querySelector('.dialog-backdrop');
+    const backdropTiming = backdrop ? getComputedStyle(backdrop).transitionTimingFunction : '';
+    return {
+      duration: style.transitionDuration,
+      property: style.transitionProperty,
+      timing: style.transitionTimingFunction,
+      backdropTiming,
+    };
+  });
+
+  expect(open.duration.split(',').every(part => part.trim() === '0s')).toBe(false);
+  expect(open.property).toContain('transform');
+  expect(open.timing).toContain('cubic-bezier(0, 0, 0.2, 1)');
+  expect(open.backdropTiming).toContain('cubic-bezier(0, 0, 0.2, 1)');
+
+  const closing = await dialog.evaluate(async (element: HTMLElement) => {
+    const dialogElement = document.getElementById(element.id) as (HTMLElement & { visible: boolean }) | null;
+    if (dialogElement) {
+      dialogElement.visible = false;
+    }
+    await new Promise<void>(resolve => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => resolve());
+      });
+    });
+    const style = dialogElement ? getComputedStyle(dialogElement) : getComputedStyle(element);
+    const backdrop = document.querySelector('.dialog-backdrop');
+    return {
+      display: style.display,
+      duration: style.transitionDuration,
+      backdropAttached: Boolean(backdrop),
+      backdropTiming: backdrop ? getComputedStyle(backdrop).transitionTimingFunction : '',
+    };
+  });
+
+  expect(closing.display).not.toBe('none');
+  expect(closing.duration.split(',').every(part => part.trim() === '0s')).toBe(false);
+  expect(closing.backdropAttached).toBe(true);
+  expect(closing.backdropTiming).toContain('cubic-bezier(0.5, 0, 1, 1)');
+
+  await expect(dialog).not.toBeVisible({ timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
+  await expect(componentsPage.page.locator('.dialog-backdrop')).toHaveCount(0, { timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
+});

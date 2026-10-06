@@ -104,6 +104,14 @@ When multiple dialogs are open at once, the component uses an internal depth man
 - **Escape closes the top dialog only** — when several dialogs are open, `Escape` is consumed by the top-most one and does not bubble to surrounding handlers.
 - **Dismissal is consumer-controlled** — because `visible` is external, closing on outside click or Escape only fires `close`; the consumer must react. Withhold that response for critical confirmations that need an explicit choice.
 
+### Motion
+
+The dialog and its backdrop transition when an ancestor has the `mds-animation` class and the animation token stylesheet is loaded.
+
+Opening uses `--mds-transition-slide-entrance` and `--mds-transition-fade-in`. Closing uses `--mds-transition-slide-exit` and `--mds-transition-fade-out`. The backdrop uses those same fade tokens.
+
+When `prefers-reduced-motion: reduce` is active, those transitions are disabled. The `hidden` event fires when `visible` becomes false, while the close transition is still running.
+
 ## Accessibility
 
 ### Built-in features
