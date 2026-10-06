@@ -9,6 +9,7 @@
     "core/border",
     "core/radius",
     "core/size",
+    "core/color-brand",
     "theme/stable/spacing",
     "theme/stable/border",
     "theme/stable/radius",
