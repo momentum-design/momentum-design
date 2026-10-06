@@ -1,0 +1,144 @@
+{
+  "color": {
+    "theme": {
+      "background": {
+        "glow": {
+          "large": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": "App Background large glow stop 0"
+              },
+              "1": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.40}",
+                "description": "App Background large glow stop 1"
+              },
+              "2": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.90}",
+                "description": "App Background large glow stop 2"
+              },
+              "3": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.gray.100}",
+                "description": "App Background large glow stop 3"
+              }
+            }
+          },
+          "medium": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.decorative.lime.30}",
+                "description": "App Background medium glow stop 0"
+              },
+              "1": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": "App Background medium glow stop 1"
+              },
+              "2": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": "App Background medium glow stop 2"
+              }
+            }
+          },
+          "light": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.white-alpha.100}",
+                "description": "App Background light-theme glow stop 0 (base white)"
+              },
+              "1": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": "App Background light-theme glow stop 1"
+              },
+              "2": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": "App Background light-theme glow stop 2"
+              },
+              "3": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": "App Background light-theme glow stop 3"
+              },
+              "4": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": "App Background light-theme glow stop 4"
+              },
+              "5": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}",
+                "description": "App Background light-theme glow fade stop"
+              }
+            }
+          },
+          "accent": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.ai.mediumblue}",
+                "description": "Accent glow stop 0 — AI medium blue"
+              },
+              "1": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.ai.steelblue}",
+                "description": "Accent glow stop 1 — AI steel blue"
+              },
+              "2": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.ai.skyblue}",
+                "description": "Accent glow stop 2 — AI sky blue"
+              }
+            }
+          },
+          "small": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.50}",
+                "description": "App Background small glow stop 0. Dark aliases medium-blue/50. Light is medium-blue/50 at 75%."
+              },
+              "1": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "#80868b80",
+                "description": "App Background small glow stop 1. Dark is cool gray 50% opacity (Uplift mid stop). Light aliases blue/40."
+              },
+              "2": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.decorative.lime.50}",
+                "description": "App Background small glow stop 2. Dark aliases decorative/lime/50. Light aliases magenta/40."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

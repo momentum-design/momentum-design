@@ -59,6 +59,42 @@
         "core/size.json",
         "theme/stable/size.json"
       ]
+    },
+    {
+      "destination": "theme/fluid/spacing",
+      "cssSelector": ".mds-theme-fluid",
+      "targets": [
+        "core/spacing.json",
+        "theme/stable/spacing.json",
+        "theme/fluid/spacing.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/border",
+      "cssSelector": ".mds-theme-fluid",
+      "targets": [
+        "core/border.json",
+        "theme/stable/border.json",
+        "theme/fluid/border.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/radius",
+      "cssSelector": ".mds-theme-fluid",
+      "targets": [
+        "core/radius.json",
+        "theme/stable/radius.json",
+        "theme/fluid/radius.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/size",
+      "cssSelector": ".mds-theme-fluid",
+      "targets": [
+        "core/size.json",
+        "theme/stable/size.json",
+        "theme/fluid/size.json"
+      ]
     }
   ],
   "formats": [
