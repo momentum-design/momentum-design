@@ -9,7 +9,8 @@
 const MAX_INLINE_LENGTH = 100;
 
 /** Renders `name="value"`, or nothing when the value is undefined. */
-export const attribute = (name: string, value?: string): string => (value === undefined ? '' : `${name}="${value}"`);
+export const attribute = (name: string, value?: string | number): string =>
+  value === undefined ? '' : `${name}="${value}"`;
 
 /** Renders a bare `name`, or nothing when the value is falsy. */
 export const booleanAttribute = (name: string, value?: boolean): string => (value ? name : '');
