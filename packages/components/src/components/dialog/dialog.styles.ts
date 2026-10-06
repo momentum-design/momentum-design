@@ -2,6 +2,16 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
+    --mdc-dialog-slide-offset: 1rem;
+    --mdc-dialog-transform-x: 50%;
+    --mdc-dialog-transform-y: 50%;
+    --mdc-dialog-transform-centered:
+      translateX(var(--mdc-dialog-transform-x))
+      translateY(var(--mdc-dialog-transform-y));
+    --mdc-dialog-transform-slide-up:
+      translateX(var(--mdc-dialog-transform-x))
+      translateY(calc(var(--mdc-dialog-transform-y) - var(--mdc-dialog-slide-offset)));
+
     --mdc-dialog-primary-background-color: var(--mds-color-theme-background-solid-primary-normal);
     --mdc-dialog-border-color: var(--mds-color-theme-outline-secondary-normal);
     --mdc-dialog-header-text-color: var(--mds-color-theme-text-primary-normal);
@@ -17,20 +27,30 @@ const styles = css`
     border: 0.0625rem solid var(--mdc-dialog-border-color);
     border-radius: 0.5rem;
     filter: var(--mdc-dialog-elevation-3);
-    display: none;
     padding: var(--mdc-dialog-padding);
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     right: 50%;
     bottom: 50%;
     transform: translateX(50%) translateY(50%);
+
+    --mdc-backdrop-mixin-transition-in: var(--mds-transition-fade-in);
+    --mdc-backdrop-mixin-transition-out: var(--mds-transition-fade-out);
+
+    display: none;
+    opacity: 0;
+    
+    transform: var(--mdc-dialog-transform-slide-up);
+    transition: var(--mds-transition-slide-exit), var(--mds-transition-fade-out);
+    transition-behavior: allow-discrete;
   }
 
   @supports (transform: translateX(round(to-zero, 1px, 1px))) {
     :host {
-      transform: translateX(round(to-zero, 50%, 1px)) translateY(round(to-zero, 50%, 1px));
+      --mdc-dialog-transform-x: round(to-zero, 50%, 1px);
+      --mdc-dialog-transform-y: round(to-zero, 50%, 1px);
     }
   }
 
@@ -59,6 +79,17 @@ const styles = css`
 
   :host([visible]) {
     display: flex;
+    opacity: 1;
+    transform: var(--mdc-dialog-transform-centered);
+    transition: var(--mds-transition-slide-entrance), var(--mds-transition-fade-in);
+    transition-behavior: allow-discrete;
+  }
+
+  @starting-style {
+    :host([visible]) {
+      opacity: 0;
+      transform: var(--mdc-dialog-transform-slide-up);
+    }
   }
 
   :host([size='medium']) {
@@ -152,6 +183,12 @@ const styles = css`
 
   mdc-text::part(text) {
     margin: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :host,
+    :host([visible]) {
+      transition: none;
+    }
   }
 `;
 

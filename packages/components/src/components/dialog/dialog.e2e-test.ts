@@ -91,6 +91,26 @@ const setup = async (args: SetupOptions) => {
   return { dialog, triggerButton };
 };
 
+const OVERLAY_ANIMATION_TIMEOUT_MS = 2000;
+
+const hideDialog = async (dialog: Locator) => {
+  await dialog.evaluate(el => {
+    const dialogElement = document.getElementById(el.id) as Dialog | null;
+    if (dialogElement) {
+      dialogElement.visible = false;
+    }
+  });
+};
+
+const showDialog = async (dialog: Locator) => {
+  await dialog.evaluate(el => {
+    const dialogElement = document.getElementById(el.id) as Dialog | null;
+    if (dialogElement) {
+      dialogElement.visible = true;
+    }
+  });
+};
+
 const dialogWithAllSlots = {
   id: 'dialog',
   triggerId: 'trigger-btn',
@@ -380,15 +400,11 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(backdrop).toBeVisible();
 
       // Hide dialog
-      await dialog.evaluate(dialog => {
-        dialog.removeAttribute('visible');
-      });
+      await hideDialog(dialog);
 
-      await expect(dialog).not.toBeVisible();
-
-      // Backdrop should be removed
+      // Backdrop fades out then is removed from the DOM
       backdrop = componentsPage.page.locator('.dialog-backdrop');
-      await expect(backdrop).not.toBeVisible();
+      await expect(backdrop).toHaveCount(0, { timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
     });
 
     await test.step('backdrop attribute can be toggled dynamically', async () => {
@@ -408,19 +424,17 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(backdrop).toBeVisible();
 
       // Hide the dialog and set hide-backdrop
-      await dialog.evaluate(dialog => {
-        dialog.removeAttribute('visible');
+      await hideDialog(dialog);
+      await expect(componentsPage.page.locator('.dialog-backdrop')).toHaveCount(0, {
+        timeout: OVERLAY_ANIMATION_TIMEOUT_MS,
       });
-      await expect(dialog).not.toBeVisible();
 
       await componentsPage.setAttributes(dialog, { 'hide-backdrop': '' });
       await expect(dialog).toHaveAttribute('hide-backdrop');
 
       // Show dialog again
-      await dialog.evaluate(dialog => {
-        dialog.toggleAttribute('visible');
-      });
-      await expect(dialog).toBeVisible();
+      await showDialog(dialog);
+      await expect(dialog).toBeVisible({ timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
 
       // Backdrop should not be present now
       backdrop = componentsPage.page.locator('.dialog-backdrop');
@@ -451,14 +465,11 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(backdrop).toBeVisible();
 
       // Close the dialog
-      await dialog.evaluate(dialog => {
-        dialog.removeAttribute('visible');
-      });
-      await expect(dialog).not.toBeVisible();
+      await hideDialog(dialog);
 
-      // Backdrop should now be removed (this is the bug fix being tested)
+      // Backdrop should now be removed after the exit animation
       backdrop = componentsPage.page.locator('.dialog-backdrop');
-      await expect(backdrop).not.toBeVisible();
+      await expect(backdrop).toHaveCount(0, { timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
     });
   });
 
@@ -470,10 +481,8 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await test.step('dialog should close/open when the visible attribute is changed without trigger', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, triggerId: undefined });
         await expect(dialog).toBeVisible();
-        await dialog.evaluate(dialog => {
-          dialog.removeAttribute('visible');
-        });
-        await expect(dialog).not.toBeVisible();
+        await hideDialog(dialog);
+        await expect(dialog).not.toBeVisible({ timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
       });
     });
 
@@ -482,17 +491,15 @@ test('mdc-dialog', async ({ componentsPage }) => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
 
         await componentsPage.page.locator('mdc-button[part="dialog-close-btn"]').click();
-        await expect(dialog).not.toBeVisible();
+        await expect(dialog).not.toBeVisible({ timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
       });
     });
 
     await test.step('focus and keyboard', async () => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
         const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
-        await dialog.evaluate(dialog => {
-          dialog.toggleAttribute('visible');
-        });
-        await expect(dialog).toBeVisible();
+        await showDialog(dialog);
+        await expect(dialog).toBeVisible({ timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
         const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
         await componentsPage.actionability.pressTab();
@@ -502,19 +509,17 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
         await componentsPage.page.keyboard.press('Enter');
 
-        await expect(dialog).not.toBeVisible();
+        await expect(dialog).not.toBeVisible({ timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
         await expect(triggerButton).toBeFocused();
       });
 
       await test.step('dialog should close on escape keydown and fire onClose event', async () => {
-        await dialog.evaluate(dialog => {
-          dialog.toggleAttribute('visible');
-        });
-        await expect(dialog).toBeVisible();
+        await showDialog(dialog);
+        await expect(dialog).toBeVisible({ timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
 
         await componentsPage.page.keyboard.press('Escape');
 
-        await expect(dialog).not.toBeVisible();
+        await expect(dialog).not.toBeVisible({ timeout: OVERLAY_ANIMATION_TIMEOUT_MS });
         await expect(triggerButton).toBeFocused();
       });
 
