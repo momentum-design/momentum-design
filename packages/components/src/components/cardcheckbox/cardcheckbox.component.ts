@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+import { keyed } from 'lit/directives/keyed.js';
 
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
@@ -109,14 +110,18 @@ class CardCheckbox extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(Ta
     super.update(changedProperties);
     if (changedProperties.has('checked')) {
       this.setAttribute('aria-checked', `${this.checked}`);
-      this.setAttribute(DATA_MOTION.BACKGROUND, '');
 
-      if (this.prefersReducedMotion()) {
-        this.removeAttribute(DATA_MOTION.BACKGROUND);
-      }
+      // The first update records the initial value. Only a later change is a toggle.
+      if (changedProperties.get('checked') !== undefined) {
+        this.setAttribute(DATA_MOTION.BACKGROUND, '');
 
-      if (!this.hasAttribute(DATA_MOTION.ACTIVE)) {
-        this.setAttribute(DATA_MOTION.ACTIVE, '');
+        if (this.prefersReducedMotion()) {
+          this.removeAttribute(DATA_MOTION.BACKGROUND);
+        }
+
+        if (!this.hasAttribute(DATA_MOTION.ACTIVE)) {
+          this.setAttribute(DATA_MOTION.ACTIVE, '');
+        }
       }
     }
     if (changedProperties.has('disabled')) {
@@ -171,14 +176,17 @@ class CardCheckbox extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(Ta
     const ICON_NAME = this.checked ? CHECK_MARK.CHECKED : CHECK_MARK.DEFAULT;
     switch (this.selectionType) {
       case SELECTION_TYPE.CHECK: {
-        return html`<div part="check check-icon-container">
-          <mdc-icon
-            part="check-icon"
-            size="${DEFAULTS.ICON_SIZE}"
-            length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"
-            name="${ICON_NAME}"
-          ></mdc-icon>
-        </div>`;
+        return keyed(
+          this.checked ? 'checked' : 'unchecked',
+          html`<div part="check check-icon-container">
+            <mdc-icon
+              part="check-icon"
+              size="${DEFAULTS.ICON_SIZE}"
+              length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"
+              name="${ICON_NAME}"
+            ></mdc-icon>
+          </div>`,
+        );
       }
 
       case SELECTION_TYPE.CHECKBOX: {

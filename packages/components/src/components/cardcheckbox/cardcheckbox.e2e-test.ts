@@ -277,6 +277,38 @@ test.describe.parallel('mdc-cardcheckbox', () => {
     });
   });
 
+  test('checked motion uses animation tokens', async ({ componentsPage }) => {
+    const cardcheckbox = await setup({ componentsPage, cardTitle: 'Card Title' });
+
+    const sampled = await cardcheckbox.evaluate(async (element: HTMLElement) => {
+      element.click();
+      await new Promise<void>(resolve => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => resolve());
+        });
+      });
+      const icon = element.shadowRoot?.querySelector('[part~="check-icon"]') as HTMLElement | null;
+      return {
+        background: element.hasAttribute('data-motion-background'),
+        duration: getComputedStyle(element).transitionDuration,
+        iconOpacity: icon ? getComputedStyle(icon).opacity : '',
+        iconDuration: icon ? getComputedStyle(icon).transitionDuration : '',
+      };
+    });
+
+    expect(sampled.background).toBe(true);
+    expect(sampled.duration.split(',').every(part => part.trim() === '0s')).toBe(false);
+    expect(Number.parseFloat(sampled.iconOpacity)).toBeLessThan(1);
+    expect(sampled.iconDuration.split(',').every(part => part.trim() === '0s')).toBe(false);
+
+    await expect(cardcheckbox).not.toHaveAttribute('data-motion-background', { timeout: 2000 });
+
+    const restingDuration = await cardcheckbox.evaluate(
+      (element: HTMLElement) => getComputedStyle(element).transitionDuration,
+    );
+    expect(restingDuration.split(',').every(part => part.trim() === '0s')).toBe(true);
+  });
+
   // Ensure all images are visible before snapshot
   const loadAllImages = async (componentsPage: ComponentsPage) => {
     const cardcheckbox = componentsPage.page.locator('mdc-cardcheckbox');

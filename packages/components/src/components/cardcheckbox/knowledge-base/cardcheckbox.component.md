@@ -86,13 +86,15 @@ Listen for the `change` event to react to toggles; the new state is available on
 
 ### Motion
 
+These transitions run when an ancestor has the `mds-animation` class and the animation token stylesheet is loaded.
+
 Checked and unchecked toggles animate the card `background-color` using `--mds-transition-background-color`. Hover and active background colors remain instant.
 
 For `selection-type="check"` (default), the header check icon scales and fades in when selected and scales and fades when cleared, using `--mds-transition-grow-shrink`, `--mds-transition-fade-in`, and `--mds-transition-fade-out`. Icon color changes remain instant.
 
-For `selection-type="checkbox"`, the embedded `mdc-staticcheckbox` handles indicator motion (scale and icon fade). See [Static Checkbox](../staticcheckbox/knowledge-base/staticcheckbox.component.md#motion) for details. The card surface background still animates on toggle.
+For `selection-type="checkbox"`, the card surface background still animates on toggle. The embedded `mdc-staticcheckbox` does not run its own indicator transition here.
 
-When `prefers-reduced-motion: reduce` is active or motion tokens resolve to `none` (for example under `mdc-motionprovider motion="reduce"`), checked/unchecked state updates apply instantly with no transition delay.
+When `prefers-reduced-motion: reduce` is active, or the transition tokens resolve to `none`, checked and unchecked updates apply immediately.
 
 ## Accessibility
 

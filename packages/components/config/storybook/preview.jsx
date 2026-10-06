@@ -1,5 +1,7 @@
 import '@momentum-design/fonts/dist/css/fonts.css';
 import '@momentum-design/tokens/dist/css/components/complete.css';
+import '@momentum-design/tokens/dist/css/motion/complete.css';
+import '@momentum-design/tokens/dist/css/motion/animation.css';
 import { setCustomElementsManifest } from '@storybook/web-components';
 import { setupDocs } from '@momentum-design/storybook-addon-docs';
 
