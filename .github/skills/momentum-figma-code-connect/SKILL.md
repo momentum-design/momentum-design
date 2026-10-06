@@ -125,8 +125,8 @@ treat it as a backstop, not as permission to be careless.
 - **`getEnum` maps must be exhaustive** — every variant value from `get_context_for_code_connect`, no omissions.
 - **Map every variant to a real value, including the component's default** — see
   [Defaults are values, not omissions](#defaults-are-values-not-omissions).
-- **Guard every `findText` / `findInstance` result.** They return an `ErrorHandle`, not `null`. `tsc -p
-tsconfig.figma.json` (wired into `analyze:syntax`) enforces this.
+- **Guard every `findText` / `findInstance` result.** They return an `ErrorHandle`, not `null`.
+  `yarn components analyze:syntax` enforces this.
 - **A boolean that gates visibility is a gate, not the content.** Never hardcode the gated copy — see
   [Booleans that gate visibility](#booleans-that-gate-visibility).
 - **An INSTANCE_SWAP icon maps to a name string, not a nested render** — see

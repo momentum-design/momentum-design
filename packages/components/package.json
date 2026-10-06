@@ -33,7 +33,7 @@
     "analyze:prebuild": "yarn analyze:lint && yarn analyze:style",
     "analyze:postbuild": "yarn analyze:syntax",
     "analyze:lint": "eslint \"./src/**\"",
-    "analyze:syntax": "tsc --noEmit && tsc --noEmit -p tsconfig.figma.json",
+    "analyze:syntax": "tsc --noEmit",
     "analyze:style": "stylelint \"./src/**/*.styles.ts\" --config config/stylelint/stylelint.config.js",
     "dev": "concurrently --raw --names 'manifest,storybook' -c 'blue.bold,magenta.bold' 'yarn:dev:manifest' 'yarn:dev:storybook'",
     "dev:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest-watch.config.js",

@@ -32,13 +32,11 @@
   "include": [
     "config",
     "src/**/*.stories*",
-    "src/**/*.e2e-test*"
+    "src/**/*.e2e-test*",
+    "src/**/*.figma.ts"
   ],
-  // code-connect helpers need the ambient 'figma' module, so they are type-checked by
-  // tsconfig.figma.json instead, which pulls them in through the templates that import them.
   "exclude": [
-    "node_modules",
-    "config/code-connect"
+    "node_modules"
   ],
   "references": [
     {
