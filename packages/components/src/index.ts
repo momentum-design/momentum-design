@@ -11,6 +11,7 @@ import Avatar from './components/avatar';
 import AvatarButton from './components/avatarbutton';
 import Badge from './components/badge';
 import Brandvisual from './components/brandvisual';
+import BrandVisualProvider from './components/brandvisualprovider';
 import Bullet from './components/bullet';
 import Button from './components/button';
 import ButtonGroup from './components/buttongroup';
@@ -161,6 +162,7 @@ export {
   AvatarButton,
   Badge,
   Brandvisual,
+  BrandVisualProvider,
   Bullet,
   Button,
   ButtonGroup,

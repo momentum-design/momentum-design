@@ -113,6 +113,15 @@
       "component": "brandvisual"
     },
     {
+      "id": "tier3/packages/components/src/components/brandvisualprovider/knowledge-base/brandvisualprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/brandvisualprovider/knowledge-base/brandvisualprovider.component.md",
+      "title": "Brandvisualprovider",
+      "summary": "Usage, guidelines, and accessibility for the mdc-brandvisualprovider component — a context provider that supplies brand visual source and caching to nested mdc-brandvisual components.",
+      "canonical": null,
+      "component": "brandvisualprovider"
+    },
+    {
       "id": "tier3/packages/components/src/components/bullet/knowledge-base/bullet.component",
       "tier": 3,
       "path": "packages/components/src/components/bullet/knowledge-base/bullet.component.md",

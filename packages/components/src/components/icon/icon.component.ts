@@ -3,10 +3,10 @@ import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
+import { assetFetch } from '../../utils/asset-fetch';
 import IconProvider from '../iconprovider/iconprovider.component';
 
 import styles from './icon.styles';
-import { svgFetch } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 import type { IconNames } from './icon.types';
 /**
@@ -108,13 +108,14 @@ class Icon extends Component {
         };
 
         // fetch icon data (including caching logic)
-        return svgFetch({
+        return assetFetch({
           url,
           name: this.name,
           fileExtension,
           cacheName,
           cacheStrategy,
           renewSignal,
+          assetType: 'icon',
         })
           .then(iconData => {
             // parse the fetched icon string to an html element and set the attributes

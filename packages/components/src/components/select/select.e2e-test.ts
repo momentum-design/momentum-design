@@ -732,15 +732,20 @@ test('mdc-select', async ({ componentsPage }) => {
     await test.step('keyboard', async () => {
       await test.step('component should open dropdown when space/enter is pressed', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
+        const firstOption = select.locator('mdc-option').filter({ hasText: 'Option Label 1' });
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ENTER);
         await expect(select.locator('mdc-popover')).toBeVisible();
+        // focus moves into the popover a frame after it becomes visible; keying before that
+        // reaches the trigger again, which re-opens the dropdown instead of closing it
+        await expect(firstOption).toBeFocused();
 
         await componentsPage.page.keyboard.press(KEYS.ENTER);
         await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
 
         await componentsPage.page.keyboard.press(KEYS.SPACE);
         await expect(select.locator('mdc-popover')).toBeVisible();
+        await expect(firstOption).toBeFocused();
 
         await componentsPage.page.keyboard.press(KEYS.SPACE);
         await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
@@ -751,6 +756,7 @@ test('mdc-select', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ENTER);
         await expect(select.locator('mdc-popover')).toBeVisible();
+        await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 1' })).toBeFocused();
 
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
         await componentsPage.page.keyboard.press(KEYS.ENTER);
