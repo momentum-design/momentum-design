@@ -1,11 +1,11 @@
-import { CSSResult, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js';
+import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { property, state } from 'lit/decorators.js';
 
 import Chip from '../chip/chip.component';
-import type { IconNames } from '../icon/icon.types';
+import { DEFAULTS as CHIP_DEFAULTS } from '../chip/chip.constants';
 
 import styles from './filterchip.styles';
-import { DEFAULTS } from './filterchip.constants';
+import { DATA_MOTION, DEFAULTS, REDUCED_MOTION_QUERY } from './filterchip.constants';
 
 /**
  * @tagname mdc-filterchip
@@ -13,6 +13,7 @@ import { DEFAULTS } from './filterchip.constants';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
+ * @csspart icon - The checkmark icon part of the chip.
  * @csspart label - The label part of the chip.
  *
  * @cssproperty --mdc-chip-color - The color of the chip.
@@ -32,23 +33,52 @@ class FilterChip extends Chip {
    */
   @property({ type: Boolean, reflect: true }) selected = false;
 
+  @state()
+  private showCheckIcon = false;
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.color = DEFAULTS.COLOR;
+    this.addEventListener('transitionend', this.handleTransitionEnd);
+    this.syncSelectedState(this.selected);
   }
 
-  /**
-   * Sets the selected state of the filterchip along with the icon.
-   * aria-pressed attribute is also set to true or false.
-   * @param selected - The selected state of the filterchip.
-   */
-  private setSelected(selected: boolean) {
-    if (selected) {
-      this.iconName = DEFAULTS.ICON_NAME;
-      this.setAttribute('aria-pressed', 'true');
-    } else {
-      this.iconName = undefined as unknown as IconNames;
-      this.setAttribute('aria-pressed', 'false');
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('transitionend', this.handleTransitionEnd);
+  }
+
+  private prefersReducedMotion(): boolean {
+    return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+  }
+
+  private handleTransitionEnd = (event: TransitionEvent) => {
+    if (event.target === this && event.propertyName === 'background-color') {
+      this.removeAttribute(DATA_MOTION.SURFACE);
+    }
+  };
+
+  private handleIconTransitionEnd = (event: TransitionEvent) => {
+    if (event.target !== event.currentTarget || event.propertyName !== 'opacity' || this.selected) {
+      return;
+    }
+
+    this.showCheckIcon = false;
+  };
+
+  private syncSelectedState(selected: boolean) {
+    this.setAttribute('aria-pressed', selected ? 'true' : 'false');
+  }
+
+  private applyMotionAttributes() {
+    this.setAttribute(DATA_MOTION.SURFACE, '');
+
+    if (this.prefersReducedMotion()) {
+      this.removeAttribute(DATA_MOTION.SURFACE);
+    }
+
+    if (!this.hasAttribute(DATA_MOTION.ACTIVE)) {
+      this.setAttribute(DATA_MOTION.ACTIVE, '');
     }
   }
 
@@ -59,8 +89,34 @@ class FilterChip extends Chip {
   public override update(changedProperties: PropertyValues) {
     super.update(changedProperties);
     if (changedProperties.has('selected')) {
-      this.setSelected(this.selected);
+      this.syncSelectedState(this.selected);
+      this.applyMotionAttributes();
+
+      if (this.selected) {
+        this.showCheckIcon = true;
+      } else if (this.prefersReducedMotion()) {
+        this.showCheckIcon = false;
+      }
     }
+  }
+
+  private renderCheckIcon() {
+    if (!this.showCheckIcon) return nothing;
+
+    return html`<span class="check-icon-wrapper" part="icon" @transitionend=${this.handleIconTransitionEnd}>
+      <mdc-icon aria-hidden="true" name="${DEFAULTS.ICON_NAME}" length-unit="rem" size="1"></mdc-icon>
+    </span>`;
+  }
+
+  public override render() {
+    return html`
+      ${this.renderCheckIcon()}
+      ${this.label
+        ? html`<mdc-text part="label" type="${CHIP_DEFAULTS.TEXT_TYPE}" tagname="${CHIP_DEFAULTS.TAG_NAME}"
+            >${this.label}</mdc-text
+          >`
+        : nothing}
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Chip.styles, ...styles];

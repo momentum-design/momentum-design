@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-filterchip
@@ -80,4 +80,21 @@ export const StatesAndVariants: StoryObj = {
       <mdc-filterchip label="Selected" selected></mdc-filterchip>
       <mdc-filterchip label="Disabled" disabled></mdc-filterchip>
     </div>`,
+};
+
+export const Motion: StoryObj = {
+  render: () => html`
+    <div role="main" style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem;">
+      <p style="margin: 0; max-width: 36rem; font-size: 0.875rem;">
+        Click each filter chip to observe selected/unselected motion on the background, border color, and checkmark
+        icon. Wrap with <code>mdc-motionprovider</code> or enable OS reduced motion to verify instant updates.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <mdc-filterchip label="In stock"></mdc-filterchip>
+        <mdc-filterchip label="On sale"></mdc-filterchip>
+        <mdc-filterchip label="Free shipping"></mdc-filterchip>
+      </div>
+    </div>
+  `,
+  ...hideAllControls(),
 };
