@@ -189,7 +189,6 @@ test.describe('Accordion Feature Scenarios', () => {
         );
         await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
-        await expect(content).toBeEmpty();
         await expect(content).toHaveAttribute('role', ROLE.REGION);
       });
 
@@ -213,7 +212,7 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(accordion).not.toHaveAttribute('expanded');
-        await expect(content).not.toBeVisible();
+        await expect(content).not.toBeAttached();
 
         // Expand
         let waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
@@ -232,7 +231,7 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(accordion).not.toHaveAttribute('expanded');
-        await expect(content).not.toBeVisible();
+        await expect(content).not.toBeAttached();
       });
 
       await test.step('keyboard navigation', async () => {
@@ -259,7 +258,7 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(accordion).not.toHaveAttribute('expanded');
-        await expect(content).not.toBeVisible();
+        await expect(content).not.toBeAttached();
       });
 
       await test.step('disabled state', async () => {
@@ -271,14 +270,14 @@ test.describe('Accordion Feature Scenarios', () => {
         await headerButtonSection.click({ force: true });
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
-        await expect(content).not.toBeVisible();
+        await expect(content).not.toBeAttached();
 
         // Should not respond to keyboard
         await headerButtonSection.focus();
         await headerButtonSection.press(KEYS.ENTER);
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
-        await expect(content).not.toBeVisible();
+        await expect(content).not.toBeAttached();
       });
 
       await test.step('stop propagation of child shown events from header controls', async () => {
@@ -321,6 +320,56 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(waitForShown).toEventEmitted();
         await expect(accordion).toHaveAttribute('expanded');
         await expect(content).toBeVisible();
+      });
+    });
+
+    /**
+     * EXPAND / COLLAPSE MOTION
+     */
+    await test.step('expand and collapse motion', async () => {
+      await test.step('body stays attached during collapse then unmounts', async () => {
+        const { accordion, headerButtonSection, content } = await setup({
+          componentsPage,
+          expanded: true,
+          children: 'Content',
+        });
+
+        await expect(content).toBeVisible();
+        const waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
+        await headerButtonSection.click();
+        await Promise.all([expect(waitForShown).toEventEmitted(), expect(content).toBeAttached()]);
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(content).not.toBeAttached();
+      });
+
+      await test.step('interrupted toggle reverses without unmounting', async () => {
+        const { headerButtonSection, content } = await setup({
+          componentsPage,
+          expanded: true,
+          children: 'Content',
+        });
+
+        await headerButtonSection.click();
+        await headerButtonSection.click();
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
+        await expect(content).toBeAttached();
+        await expect(content).toBeVisible();
+      });
+
+      await test.step('reduced motion unmounts immediately on collapse', async () => {
+        await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
+        const { accordion, headerButtonSection, content } = await setup({
+          componentsPage,
+          expanded: true,
+          children: 'Content',
+        });
+
+        const waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
+        await headerButtonSection.click();
+        await expect(waitForShown).toEventEmitted();
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(content).not.toBeAttached({ timeout: 100 });
+        await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
       });
     });
   });

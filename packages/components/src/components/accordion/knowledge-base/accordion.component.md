@@ -61,7 +61,7 @@ The default slot holds the body; slot header controls into `leading-controls` an
 | `size="large"` | 24px padding. Use when the accordion is a primary content block or touch targets need more space. |
 | `toggle-position="trailing"` (default) | Chevron at the end (right in LTR). Standard pattern. |
 | `toggle-position="leading"` | Chevron at the start. Use only when layout or RTL patterns require it. |
-| `expanded` | Controls panel visibility. Defaults to `false` (collapsed). |
+| `expanded` | Controls panel visibility. Defaults to `false` (collapsed). Inherited AccordionButton motion applies: the body stays mounted through collapse, then unmounts. Reduced motion skips the CSS transition but still mounts and unmounts. |
 | `data-aria-level` | Sets the header's heading level (default `3`). Match the page's heading hierarchy. |
 | `prefix-icon` | Optional decorative icon before the header text. Use the header control slots for interactive icons. |
 | `disabled` | Prevents toggle; hides the body even if `expanded` is set, and disables slotted header controls. |
@@ -74,6 +74,7 @@ The default slot holds the body; slot header controls into `leading-controls` an
 - **Long titles don't truncate** — `header-text` wraps instead of truncating, so a long title can crowd the header controls. Keep titles short.
 - **No internal panel scroll** — panels have no minimum or maximum height and render content in full. Keep scrolling at the page or container level and size content to avoid horizontal scrolling.
 - **`disabled` hides the body** — the body stays hidden even when `expanded` is `true`, and all slotted header controls are disabled too. Remove `disabled` to expose the body and re-enable the controls.
+- **Collapse keeps the body in the DOM until the height transition ends** — same as AccordionButton. `shown` still fires on toggle so AccordionGroup can close siblings without waiting for motion.
 - **Header `shown` events don't bubble** — a `shown` event from a slotted header control is stopped at the header, so it is not confused with the accordion's own `shown` event.
 - **Initial `expanded` moves focus** — setting `expanded` on first render can move screen-reader focus unexpectedly. Prefer starting collapsed unless the open section is the primary content.
 

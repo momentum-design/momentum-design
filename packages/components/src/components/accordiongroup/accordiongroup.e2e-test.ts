@@ -185,13 +185,21 @@ test.describe('AccordionGroup Feature Scenarios', () => {
     await test.step('user interactions', async () => {
       await test.step('mouse click', async () => {
         await test.step('when allow multiple is false, only one item should be expanded at a time', async () => {
-          const { accordionGroup } = await setup({ componentsPage, items: accordionItems, allowMultiple: false });
-          await accordionGroup.locator('mdc-accordionbutton').nth(1).click();
-          await expect(accordionGroup.locator('mdc-accordionbutton[expanded]')).toHaveCount(1);
-          await expect(accordionGroup.locator('mdc-accordionbutton[expanded]')).toHaveAttribute(
-            'header-text',
-            'Accordion Header 2',
-          );
+          const { accordionGroup, accordionButtons } = await setup({
+            componentsPage,
+            items: accordionItems,
+            allowMultiple: false,
+          });
+          const firstItem = accordionButtons.first();
+          const secondItem = accordionButtons.nth(1);
+          const firstBody = firstItem.locator('[part="body-section"]');
+
+          await expect(firstItem).toHaveAttribute('expanded');
+          await secondItem.click();
+          await expect(firstItem).not.toHaveAttribute('expanded');
+          await Promise.all([expect(secondItem).toHaveAttribute('expanded'), expect(firstBody).toBeAttached()]);
+          await expect(firstBody).not.toBeAttached();
+          await expect(secondItem.locator('[part="body-section"]')).toBeVisible();
           await expect(accordionGroup.locator('mdc-accordionbutton:not([expanded])')).toHaveCount(2);
         });
 
@@ -232,14 +240,17 @@ test.describe('AccordionGroup Feature Scenarios', () => {
             items: accordionItems,
             allowMultiple: false,
           });
-          await componentsPage.actionability.pressAndCheckFocus(KEYS.TAB, [accordionButtons.first()]);
+          const firstItem = accordionButtons.first();
+          const secondItem = accordionButtons.nth(1);
+          const firstBody = firstItem.locator('[part="body-section"]');
+
+          await expect(firstItem).toHaveAttribute('expanded');
+          await componentsPage.actionability.pressAndCheckFocus(KEYS.TAB, [firstItem, secondItem]);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expect(accordionButtons.first()).not.toHaveAttribute('expanded');
-          await componentsPage.actionability.pressAndCheckFocus(KEYS.TAB, [accordionButtons.nth(1)]);
-          await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expect(accordionButtons.nth(1)).toHaveAttribute('expanded');
-          await expect(accordionButtons.nth(1).locator('[part="body-section"]')).toBeVisible();
-          await expect(accordionButtons.first().locator('[part="body-section"]')).not.toBeVisible();
+          await expect(firstItem).not.toHaveAttribute('expanded');
+          await Promise.all([expect(secondItem).toHaveAttribute('expanded'), expect(firstBody).toBeAttached()]);
+          await expect(firstBody).not.toBeAttached();
+          await expect(secondItem.locator('[part="body-section"]')).toBeVisible();
           await expect(accordionGroup.locator('mdc-accordionbutton:not([expanded])')).toHaveCount(2);
         });
 
