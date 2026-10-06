@@ -25,9 +25,22 @@ import {
 import { KEYS } from '../../utils/keys';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 
-import { CALENDAR_ICONS, DEFAULTS, SELECTION_MODE } from './calendar.constants';
+import {
+  CALENDAR_ICONS,
+  DEFAULTS,
+  GRID_LAYER_PHASE,
+  GRID_MOTION,
+  REDUCED_MOTION_QUERY,
+  SELECTION_MODE,
+} from './calendar.constants';
 import styles from './calendar.styles';
-import type { CalendarDayInfo, CalendarGridWeek, SelectionMode } from './calendar.types';
+import type {
+  CalendarDayInfo,
+  CalendarGridWeek,
+  DisplaySnapshot,
+  GridLayerPhase,
+  SelectionMode,
+} from './calendar.types';
 import {
   formatDateRangeForDisplay,
   generateCalendarGrid,
@@ -139,11 +152,109 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
 
   @state() private rangeSelectionPhase: 'start' | 'end' = 'start';
 
+  @state() private outgoingDisplay: DisplaySnapshot | null = null;
+
+  @state() private gridMotion: (typeof GRID_MOTION)[keyof typeof GRID_MOTION] = GRID_MOTION.IDLE;
+
   @state() private hoveredDate: string = '';
+
+  /** @internal */
+  private reducedMotionQuery?: MediaQueryList;
+
+  /** @internal */
+  private crossfadeFrame?: number;
+
+  /** @internal */
+  private crossfadeTimer?: number;
+
+  /** @internal */
+  private handleGridViewportTransitionEnd = (event: TransitionEvent): void => {
+    const target = event.target as HTMLElement;
+    if (!target.classList.contains('calendar-grid-layer--exiting')) {
+      return;
+    }
+    if (event.propertyName !== 'opacity') {
+      return;
+    }
+    if (!this.outgoingDisplay) {
+      return;
+    }
+
+    this.finishGridCrossfade();
+  };
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
     this.initializeDisplay();
+  }
+
+  override disconnectedCallback(): void {
+    if (this.crossfadeFrame !== undefined) {
+      cancelAnimationFrame(this.crossfadeFrame);
+      this.crossfadeFrame = undefined;
+    }
+    this.clearCrossfadeTimer();
+    super.disconnectedCallback();
+  }
+
+  private clearCrossfadeTimer(): void {
+    if (this.crossfadeTimer !== undefined) {
+      window.clearTimeout(this.crossfadeTimer);
+      this.crossfadeTimer = undefined;
+    }
+  }
+
+  private getTransitionDurationMs(property: string, element: HTMLElement): number {
+    const transitionProperty = getComputedStyle(element).transitionProperty.split(',');
+    const durations = getComputedStyle(element).transitionDuration.split(',');
+    const parsedDurations = durations.map((duration, index) => {
+      const appliesToProperty =
+        transitionProperty[index]?.trim() === property ||
+        transitionProperty[index]?.trim() === 'all' ||
+        transitionProperty.length === 1;
+      if (!appliesToProperty) {
+        return 0;
+      }
+      const trimmed = duration.trim();
+      if (trimmed.endsWith('ms')) {
+        return Number.parseFloat(trimmed);
+      }
+      if (trimmed.endsWith('s')) {
+        return Number.parseFloat(trimmed) * 1000;
+      }
+      return 0;
+    });
+    return Math.max(0, ...parsedDurations);
+  }
+
+  private finishGridCrossfade(): void {
+    this.clearCrossfadeTimer();
+    this.outgoingDisplay = null;
+    this.gridMotion = GRID_MOTION.IDLE;
+    if (this.gridHasFocus && this.focusedDate) {
+      this.focusDateCell(this.focusedDate);
+    }
+  }
+
+  private scheduleCrossfadeComplete(): void {
+    this.clearCrossfadeTimer();
+    requestAnimationFrame(() => {
+      if (!this.outgoingDisplay) {
+        return;
+      }
+      const outgoingLayer = this.shadowRoot?.querySelector('.calendar-grid-layer--exiting') as HTMLElement | null;
+      const delay = outgoingLayer ? this.getTransitionDurationMs('opacity', outgoingLayer) : 0;
+      if (delay === 0) {
+        this.finishGridCrossfade();
+        return;
+      }
+      this.crossfadeTimer = window.setTimeout(() => {
+        if (this.outgoingDisplay) {
+          this.finishGridCrossfade();
+        }
+      }, delay);
+    });
   }
 
   protected override willUpdate(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -157,9 +268,28 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     if (changedProperties.has('value') && this.value) {
       const dt = parseISO(this.value);
       if (dt) {
+        this.outgoingDisplay = null;
+        this.gridMotion = GRID_MOTION.IDLE;
         this.displayMonth = dt.getMonth() + 1;
         this.displayYear = dt.getFullYear();
       }
+    }
+  }
+
+  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.updated(changedProperties);
+
+    if (this.outgoingDisplay && this.gridMotion === GRID_MOTION.IDLE) {
+      if (this.crossfadeFrame !== undefined) {
+        cancelAnimationFrame(this.crossfadeFrame);
+      }
+      this.crossfadeFrame = requestAnimationFrame(() => {
+        this.crossfadeFrame = undefined;
+        if (this.outgoingDisplay) {
+          this.gridMotion = GRID_MOTION.CROSSFADING;
+          this.scheduleCrossfadeComplete();
+        }
+      });
     }
   }
 
@@ -198,13 +328,13 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     this.initializeDisplay();
   }
 
-  private get calendarGrid(): CalendarGridWeek[] {
+  private getCalendarGridFor(month: number, year: number): CalendarGridWeek[] {
     const selectedDates = this.getSelectedDates();
     const { start: rangeStart, end: rangeEnd } = this.getDisplayedRange();
 
     return generateCalendarGrid(
-      this.displayYear,
-      this.displayMonth,
+      year,
+      month,
       this.locale,
       selectedDates,
       rangeStart,
@@ -258,6 +388,91 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     };
   }
 
+  private prefersReducedMotion(): boolean {
+    return this.reducedMotionQuery?.matches ?? window.matchMedia(REDUCED_MOTION_QUERY).matches;
+  }
+
+  private areMotionTokensAvailable(): boolean {
+    return Boolean(getComputedStyle(this).getPropertyValue('--mds-transition-fade-in').trim());
+  }
+
+  private shouldSkipGridMotion(): boolean {
+    return this.prefersReducedMotion() || !this.areMotionTokensAvailable();
+  }
+
+  private dispatchMonthChanged(): void {
+    this.dispatchEvent(
+      new CustomEvent('month-changed', {
+        detail: { month: this.displayMonth, year: this.displayYear },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  private setDisplayMonthYear(
+    month: number,
+    year: number,
+    options: { focusDate?: string; dispatchMonthChanged?: boolean; moveFocus?: boolean } = {},
+  ): void {
+    const { focusDate, dispatchMonthChanged = true, moveFocus = false } = options;
+
+    if (month === this.displayMonth && year === this.displayYear && !this.outgoingDisplay) {
+      if (focusDate) {
+        this.focusedDate = focusDate;
+        if (moveFocus) {
+          this.focusDateCell(focusDate);
+        }
+      }
+      return;
+    }
+
+    if (this.shouldSkipGridMotion()) {
+      this.outgoingDisplay = null;
+      this.gridMotion = GRID_MOTION.IDLE;
+      this.displayMonth = month;
+      this.displayYear = year;
+      if (focusDate) {
+        this.focusedDate = focusDate;
+      }
+      if (dispatchMonthChanged) {
+        this.dispatchMonthChanged();
+      }
+      if (focusDate && moveFocus) {
+        this.focusDateCell(focusDate);
+      }
+      return;
+    }
+
+    if (!this.outgoingDisplay) {
+      this.outgoingDisplay = { month: this.displayMonth, year: this.displayYear };
+      this.gridMotion = GRID_MOTION.IDLE;
+    }
+
+    this.displayMonth = month;
+    this.displayYear = year;
+    if (focusDate) {
+      this.focusedDate = focusDate;
+    }
+    if (dispatchMonthChanged) {
+      this.dispatchMonthChanged();
+    }
+    if (focusDate && moveFocus) {
+      this.focusDateCell(focusDate);
+    }
+  }
+
+  private focusDateCell(dateIso: string): void {
+    this.updateComplete
+      .then(() => {
+        const cell = this.shadowRoot?.querySelector(
+          `[data-grid-layer="incoming"] [data-date="${dateIso}"]`,
+        ) as HTMLElement | null;
+        cell?.focus();
+      })
+      .catch(() => {});
+  }
+
   private canNavigatePrev(): boolean {
     if (!this.min) return true;
     const firstOfMonth = createDate(this.displayYear, this.displayMonth, 1);
@@ -279,19 +494,8 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     if (delta > 0 && !this.canNavigateNext()) return;
 
     const dt = addMonths(createDate(this.displayYear, this.displayMonth, 1), delta);
-    this.displayMonth = dt.getMonth() + 1;
-    this.displayYear = dt.getFullYear();
-
-    // Update focusedDate to the 1st of the new month so the grid always has a tabindex="0" cell
-    this.focusedDate = toISODate(createDate(this.displayYear, this.displayMonth, 1));
-
-    this.dispatchEvent(
-      new CustomEvent('month-changed', {
-        detail: { month: this.displayMonth, year: this.displayYear },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    const focusDate = toISODate(createDate(dt.getFullYear(), dt.getMonth() + 1, 1));
+    this.setDisplayMonthYear(dt.getMonth() + 1, dt.getFullYear(), { focusDate });
   }
 
   private handleDayClick(dayInfo: CalendarDayInfo): void {
@@ -418,7 +622,6 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
         }
         return;
       default:
-        // Handle PageUp/PageDown which aren't in ACTIONS
         if (event.key === KEYS.PAGE_UP) {
           event.preventDefault();
           newDt = event.shiftKey ? addYears(focusDt, -1) : addMonths(focusDt, -1);
@@ -442,24 +645,21 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       this.focusedDate = newIso;
 
       if (newDt.getMonth() + 1 !== this.displayMonth || newDt.getFullYear() !== this.displayYear) {
-        this.displayMonth = newDt.getMonth() + 1;
-        this.displayYear = newDt.getFullYear();
+        this.setDisplayMonthYear(newDt.getMonth() + 1, newDt.getFullYear(), {
+          focusDate: newIso,
+          moveFocus: true,
+        });
+      } else {
+        this.focusDateCell(newIso);
       }
-
-      this.updateComplete
-        .then(() => {
-          const cell = this.shadowRoot?.querySelector(`[data-date="${newIso}"]`) as HTMLElement | null;
-          cell?.focus();
-        })
-        .catch(() => {});
     }
   }
 
-  private getGridAriaLabel(): string {
+  private getGridAriaLabel(month: number, year: number): string {
     if (this.selectionMode === SELECTION_MODE.WEEK && this.value && this.endValue) {
       return `Calendar, ${formatDateRangeForDisplay(this.value, this.endValue, this.locale)}`;
     }
-    const monthYear = getMonthYearLabel(this.displayYear, this.displayMonth, this.locale);
+    const monthYear = getMonthYearLabel(year, month, this.locale);
     return `Calendar, ${monthYear}`;
   }
 
@@ -493,8 +693,8 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     `;
   }
 
-  private renderDay(dayInfo: CalendarDayInfo) {
-    const isFocused = dayInfo.date === this.focusedDate;
+  private renderDay(dayInfo: CalendarDayInfo, isInteractive: boolean) {
+    const isFocused = isInteractive && dayInfo.date === this.focusedDate;
     const isRangePreview = this.isPreviewingRange;
 
     const dayClasses = {
@@ -518,7 +718,10 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     const isPartOfSelection = dayInfo.isSelected || (dayInfo.isInRange && !isRangePreview);
 
     return html`
-      <div class="${classMap(wrapperClasses)}" @pointerenter="${() => this.handleDayPointerEnter(dayInfo)}">
+      <div
+        class="${classMap(wrapperClasses)}"
+        @pointerenter="${isInteractive ? () => this.handleDayPointerEnter(dayInfo) : nothing}"
+      >
         <button
           class="${classMap(dayClasses)}"
           role="gridcell"
@@ -528,7 +731,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
           aria-disabled="${dayInfo.isDisabled ? 'true' : nothing}"
           aria-current="${dayInfo.isToday ? 'date' : nothing}"
           aria-label="${formatDateFull(dayInfo.date, this.locale)}"
-          @click="${() => this.handleDayClick(dayInfo)}"
+          @click="${isInteractive ? () => this.handleDayClick(dayInfo) : nothing}"
         >
           ${dayInfo.day}
         </button>
@@ -548,26 +751,53 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     this.hoveredDate = '';
   }
 
-  private renderGrid() {
-    const grid = this.calendarGrid;
+  private renderGridLayer(snapshot: DisplaySnapshot, phase: GridLayerPhase, layerKey: 'incoming' | 'outgoing') {
+    const grid = this.getCalendarGridFor(snapshot.month, snapshot.year);
     const weekdays = getWeekdayNames(this.locale);
+    const isInteractive = layerKey === 'incoming';
+    const layerClass = `calendar-grid-layer calendar-grid-layer--${phase}`;
 
     return html`
       <div
-        class="calendar-grid"
-        role="grid"
-        aria-label="${this.getGridAriaLabel()}"
-        @keydown="${this.handleGridKeydown}"
-        @focusin="${this.handleGridFocusIn}"
-        @focusout="${this.handleGridFocusOut}"
-        @pointerleave="${this.handleGridPointerLeave}"
+        class="${layerClass}"
+        data-grid-layer="${layerKey}"
+        aria-hidden="${layerKey === 'outgoing' ? 'true' : nothing}"
+        @transitionend="${this.handleGridViewportTransitionEnd}"
       >
-        <div class="calendar-row calendar-weekdays" role="row">
-          ${weekdays.map(day => html`<span class="calendar-weekday" role="columnheader">${day}</span>`)}
+        <div
+          class="calendar-grid"
+          role="grid"
+          aria-label="${this.getGridAriaLabel(snapshot.month, snapshot.year)}"
+          @keydown="${isInteractive ? this.handleGridKeydown : nothing}"
+          @focusin="${isInteractive ? this.handleGridFocusIn : nothing}"
+          @focusout="${isInteractive ? this.handleGridFocusOut : nothing}"
+          @pointerleave="${isInteractive ? this.handleGridPointerLeave : nothing}"
+        >
+          <div class="calendar-row calendar-weekdays" role="row">
+            ${weekdays.map(day => html`<span class="calendar-weekday" role="columnheader">${day}</span>`)}
+          </div>
+          ${grid.map(
+            week => html`
+              <div class="calendar-row" role="row">${week.days.map(day => this.renderDay(day, isInteractive))}</div>
+            `,
+          )}
         </div>
-        ${grid.map(
-          week => html` <div class="calendar-row" role="row">${week.days.map(day => this.renderDay(day))}</div> `,
-        )}
+      </div>
+    `;
+  }
+
+  private renderGridViewport() {
+    const incomingPhase: GridLayerPhase = this.outgoingDisplay
+      ? GRID_LAYER_PHASE.ENTERING
+      : GRID_LAYER_PHASE.VISIBLE;
+    const incomingSnapshot: DisplaySnapshot = { month: this.displayMonth, year: this.displayYear };
+
+    return html`
+      <div class="calendar-grid-viewport" data-grid-motion="${this.gridMotion}">
+        ${this.outgoingDisplay
+          ? this.renderGridLayer(this.outgoingDisplay, GRID_LAYER_PHASE.EXITING, 'outgoing')
+          : nothing}
+        ${this.renderGridLayer(incomingSnapshot, incomingPhase, 'incoming')}
       </div>
     `;
   }
@@ -589,8 +819,12 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   private handleTodayClick(): void {
     const t = today();
     const todayIso = toISODate(t);
-    this.displayMonth = t.getMonth() + 1;
-    this.displayYear = t.getFullYear();
+    const month = t.getMonth() + 1;
+    const year = t.getFullYear();
+
+    if (month !== this.displayMonth || year !== this.displayYear) {
+      this.setDisplayMonthYear(month, year, { focusDate: todayIso });
+    }
     this.selectDate(todayIso);
   }
 
@@ -616,7 +850,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     const rangeAnnouncement =
       this.rangeSelectionPhase === 'end' ? this.localeRangeStartSelectedLabel : '';
     return html`
-      ${this.renderHeader()} ${this.renderGrid()} ${this.renderTodayButton()}
+      ${this.renderHeader()} ${this.renderGridViewport()} ${this.renderTodayButton()}
       <mdc-screenreaderannouncer
         announcement="${rangeAnnouncement}"
         data-aria-live="polite"
