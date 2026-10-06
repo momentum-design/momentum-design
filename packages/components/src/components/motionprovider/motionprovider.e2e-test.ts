@@ -3,6 +3,11 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
 const MOTION_SCOPE_CLASSES = ['mds-motion', 'mds-animation'] as const;
+const MOTION_MODE_CLASSES = {
+  full: ['mds-motion-full', 'mds-animation-full'],
+  reduce: ['mds-motion-reduce', 'mds-animation-reduce'],
+  system: [],
+} as const;
 
 type MotionMode = 'full' | 'reduce' | 'system';
 
@@ -21,15 +26,17 @@ const setup = async ({ componentsPage, motion }: SetupOptions) => {
   });
 };
 
-const expectMotionClasses = async (componentsPage: ComponentsPage, present: boolean) => {
+const expectMotionClasses = async (componentsPage: ComponentsPage, mode: MotionMode) => {
   const hostClass = await componentsPage.page.locator('mdc-motionprovider#local').getAttribute('class');
 
   MOTION_SCOPE_CLASSES.forEach((className: string) => {
-    if (present) {
-      expect(hostClass).toContain(className);
-    } else {
-      expect(hostClass ?? '').not.toContain(className);
-    }
+    expect(hostClass).toContain(className);
+  });
+  Object.entries(MOTION_MODE_CLASSES).forEach(([candidateMode, classNames]) => {
+    classNames.forEach((className) => {
+      if (candidateMode === mode) expect(hostClass).toContain(className);
+      else expect(hostClass ?? '').not.toContain(className);
+    });
   });
 };
 
@@ -49,14 +56,14 @@ test.describe('mdc-motionprovider', () => {
     await provider.waitFor();
 
     await expect(provider).toHaveAttribute('motion', 'full');
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'full');
   });
 
   test('motion="reduce" removes motion scope classes', async ({ componentsPage }) => {
     await setup({ componentsPage, motion: 'reduce' });
 
     await componentsPage.page.locator('mdc-motionprovider#local').waitFor();
-    await expectMotionClasses(componentsPage, false);
+    await expectMotionClasses(componentsPage, 'reduce');
   });
 
   test('motion="system" follows prefers-reduced-motion', async ({ componentsPage }) => {
@@ -65,42 +72,42 @@ test.describe('mdc-motionprovider', () => {
     await componentsPage.page.locator('mdc-motionprovider#local').waitFor();
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'system');
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
-    await expectMotionClasses(componentsPage, false);
+    await expectMotionClasses(componentsPage, 'system');
   });
 
   test('updates motion scope classes when motion changes from full to reduce', async ({ componentsPage }) => {
     await setup({ componentsPage, motion: 'full' });
     await componentsPage.page.locator('mdc-motionprovider#local').waitFor();
 
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'full');
     await setMotion(componentsPage, 'reduce');
-    await expectMotionClasses(componentsPage, false);
+    await expectMotionClasses(componentsPage, 'reduce');
   });
 
   test('updates motion scope classes when motion changes from reduce to full', async ({ componentsPage }) => {
     await setup({ componentsPage, motion: 'reduce' });
     await componentsPage.page.locator('mdc-motionprovider#local').waitFor();
 
-    await expectMotionClasses(componentsPage, false);
+    await expectMotionClasses(componentsPage, 'reduce');
     await setMotion(componentsPage, 'full');
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'full');
   });
 
   test('rebinds system preference when motion changes from full to system', async ({ componentsPage }) => {
     await setup({ componentsPage, motion: 'full' });
     await componentsPage.page.locator('mdc-motionprovider#local').waitFor();
 
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'full');
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
     await setMotion(componentsPage, 'system');
-    await expectMotionClasses(componentsPage, false);
+    await expectMotionClasses(componentsPage, 'system');
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'system');
   });
 
   test('keeps motion scope classes when motion changes from system to full', async ({ componentsPage }) => {
@@ -108,16 +115,16 @@ test.describe('mdc-motionprovider', () => {
     await componentsPage.page.locator('mdc-motionprovider#local').waitFor();
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'system');
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
-    await expectMotionClasses(componentsPage, false);
+    await expectMotionClasses(componentsPage, 'system');
 
     await setMotion(componentsPage, 'full');
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'full');
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
-    await expectMotionClasses(componentsPage, true);
+    await expectMotionClasses(componentsPage, 'full');
   });
 
   test('accessibility', async ({ componentsPage }) => {

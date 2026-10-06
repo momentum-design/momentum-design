@@ -19,6 +19,19 @@ function buildMediaBlock(selector: string, lines: string[]): string {
   return `@media (prefers-reduced-motion: reduce) {\n  ${selector} {\n${lines.join('\n')}\n  }\n}`;
 }
 
+function buildReducedMotionBlocks(selector: string, lines: string[]): string {
+  if (lines.length === 0) {
+    return '';
+  }
+
+  const className = selector.startsWith('.') ? selector.slice(1) : selector;
+  const forcedLines = lines.map((line) => `  ${line.trim()}`);
+  const forced = `${selector}.${className}-reduce {\n${forcedLines.join('\n')}\n}`;
+  const system = buildMediaBlock(`${selector}:not(.${className}-full)`, lines);
+
+  return `${forced}\n\n${system}`;
+}
+
 function getAnimationVariableName(token: TransformedToken): string | null {
   const tokenType = token.original?.type as string | undefined;
 
@@ -43,7 +56,7 @@ export function buildReducedMotionMotionCoreBlock(
     .filter((token) => token.path[0] === 'motion' && MOTION_REDUCED_CATEGORIES.has(token.path[1] as string))
     .map((token) => `    --${token.name}: 0ms;`);
 
-  return buildMediaBlock(selector, lines);
+  return buildReducedMotionBlocks(selector, lines);
 }
 
 export function buildReducedMotionAnimationBlock(
@@ -56,5 +69,5 @@ export function buildReducedMotionAnimationBlock(
     .filter((name): name is string => name !== null)
     .map((name) => `    ${name}: none;`);
 
-  return buildMediaBlock(selector, lines);
+  return buildReducedMotionBlocks(selector, lines);
 }

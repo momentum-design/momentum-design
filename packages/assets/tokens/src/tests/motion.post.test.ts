@@ -44,7 +44,7 @@ describe('Motion tokens (post-build)', () => {
 
     // CSS — count tokens in the main block only (reduced-motion overrides duplicate names)
     const css = fs.readFileSync(PLATFORM_FILES.css, 'utf8');
-    const cssMainBlock = css.split('@media (prefers-reduced-motion: reduce)')[0];
+    const cssMainBlock = css.match(/\.mds-motion \{[\s\S]*?\}/)?.[0] ?? '';
     counts.css = (cssMainBlock.match(TOKEN_COUNT_PATTERNS.css) || []).length;
 
     // SCSS

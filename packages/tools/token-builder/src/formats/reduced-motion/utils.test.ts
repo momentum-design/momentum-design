@@ -16,7 +16,8 @@ describe('@momentum-design/token-builder - formats.reducedMotion.utils', () => {
       const output = buildReducedMotionMotionCoreBlock('.mds-motion', dictionary as never);
 
       expect(output).toContain('@media (prefers-reduced-motion: reduce)');
-      expect(output).toContain('.mds-motion {');
+      expect(output).toContain('.mds-motion.mds-motion-reduce {');
+      expect(output).toContain('.mds-motion:not(.mds-motion-full) {');
       expect(output).toContain('--mds-motion-duration-fast: 0ms;');
       expect(output).toContain('--mds-motion-delay-short: 0ms;');
       expect(output).toContain('--mds-motion-stagger-normal: 0ms;');
@@ -44,7 +45,8 @@ describe('@momentum-design/token-builder - formats.reducedMotion.utils', () => {
       const output = buildReducedMotionAnimationBlock('.mds-animation', dictionary as never);
 
       expect(output).toContain('@media (prefers-reduced-motion: reduce)');
-      expect(output).toContain('.mds-animation {');
+      expect(output).toContain('.mds-animation.mds-animation-reduce {');
+      expect(output).toContain('.mds-animation:not(.mds-animation-full) {');
       expect(output).toContain('--mds-transition-background-color: none;');
       expect(output).toContain('--mds-animation-button-loading-spin: none;');
     });

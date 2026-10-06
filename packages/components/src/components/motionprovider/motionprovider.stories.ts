@@ -46,7 +46,7 @@ const render: StoryFn = (args, { updateArgs }) => {
 
   return html`
     <div class="motionDemo">
-      
+
       <h1>Motion Provider Demo</h1>
       <mdc-motionprovider motion="${motionMode}">
         <div class="motionDemoSections">

@@ -101,7 +101,7 @@ describe('Animation tokens (post-build)', () => {
   });
 
   it('total CSS variable count should match total token count in source', () => {
-    const cssMainBlock = css.split('@media (prefers-reduced-motion: reduce)')[0];
+    const cssMainBlock = css.match(/\.mds-animation \{[\s\S]*?\}/)?.[0] ?? '';
     const varLines = cssMainBlock.split('\n').filter((l) => l.trim().startsWith('--'));
     const sourceTokenCount = Object.keys(source).length;
     expect(varLines.length).toBe(sourceTokenCount);

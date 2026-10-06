@@ -526,7 +526,7 @@ export const Example: StoryObj = {
           <h2>Core motion tokens</h2>
           <p>
             Core motion tokens define our key timings and easing for all the animations that we use in Momentum. These tokens are used to define the duration, easing, and delay of all the animations that we use in Momentum.
-          </p> 
+          </p>
         </section>
 
         ${renderPrimitiveSection(
