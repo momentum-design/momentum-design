@@ -40,6 +40,13 @@ const expectMotionClasses = async (componentsPage: ComponentsPage, mode: MotionM
   });
 };
 
+const expectFastDuration = async (componentsPage: ComponentsPage, expected: string) => {
+  const provider = componentsPage.page.locator('mdc-motionprovider#local');
+  await expect
+    .poll(() => provider.evaluate((element) => getComputedStyle(element).getPropertyValue('--mds-motion-duration-fast')))
+    .toBe(expected);
+};
+
 const setMotion = async (componentsPage: ComponentsPage, motion: MotionMode) => {
   const provider = componentsPage.page.locator('mdc-motionprovider#local');
   await provider.evaluate((element, value) => {
@@ -57,13 +64,15 @@ test.describe('mdc-motionprovider', () => {
 
     await expect(provider).toHaveAttribute('motion', 'full');
     await expectMotionClasses(componentsPage, 'full');
+    await expectFastDuration(componentsPage, '200ms');
   });
 
-  test('motion="reduce" removes motion scope classes', async ({ componentsPage }) => {
+  test('motion="reduce" applies reduced values while retaining scope classes', async ({ componentsPage }) => {
     await setup({ componentsPage, motion: 'reduce' });
 
     await componentsPage.page.locator('mdc-motionprovider#local').waitFor();
     await expectMotionClasses(componentsPage, 'reduce');
+    await expectFastDuration(componentsPage, '0ms');
   });
 
   test('motion="system" follows prefers-reduced-motion', async ({ componentsPage }) => {
@@ -73,9 +82,11 @@ test.describe('mdc-motionprovider', () => {
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
     await expectMotionClasses(componentsPage, 'system');
+    await expectFastDuration(componentsPage, '200ms');
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
     await expectMotionClasses(componentsPage, 'system');
+    await expectFastDuration(componentsPage, '0ms');
   });
 
   test('updates motion scope classes when motion changes from full to reduce', async ({ componentsPage }) => {
@@ -125,6 +136,7 @@ test.describe('mdc-motionprovider', () => {
 
     await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
     await expectMotionClasses(componentsPage, 'full');
+    await expectFastDuration(componentsPage, '200ms');
   });
 
   test('accessibility', async ({ componentsPage }) => {
