@@ -1,0 +1,30 @@
+{
+  "spacing": {
+    "theme": {
+      "appheader-padding-top": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "1rem",
+        "description": ""
+      },
+      "appheader-padding-bottom": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "1rem",
+        "description": ""
+      },
+      "appheader-padding-left": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "1rem",
+        "description": ""
+      },
+      "appheader-padding-right": {
+        "parent": "theme/stable/highcontrast/spacing",
+        "type": "other",
+        "value": "1rem",
+        "description": ""
+      }
+    }
+  }
+}

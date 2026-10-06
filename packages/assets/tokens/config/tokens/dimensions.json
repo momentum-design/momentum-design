@@ -1,0 +1,107 @@
+{
+  "files": [
+    {
+      "destination": "spacing/complete",
+      "cssSelector": ".mds-spacing",
+      "targets": [
+        "core/spacing.json"
+      ]
+    },
+    {
+      "destination": "border/complete",
+      "cssSelector": ".mds-border",
+      "targets": [
+        "core/border.json"
+      ]
+    },
+    {
+      "destination": "radius/complete",
+      "cssSelector": ".mds-radius",
+      "targets": [
+        "core/radius.json"
+      ]
+    },
+    {
+      "destination": "size/complete",
+      "cssSelector": ".mds-size",
+      "targets": [
+        "core/size.json"
+      ]
+    },
+    {
+      "destination": "theme/stable/spacing",
+      "cssSelector": ".mds-theme-stable",
+      "targets": [
+        "core/spacing.json",
+        "theme/stable/spacing.json"
+      ]
+    },
+    {
+      "destination": "theme/stable/border",
+      "cssSelector": ".mds-theme-stable",
+      "targets": [
+        "core/border.json",
+        "theme/stable/border.json"
+      ]
+    },
+    {
+      "destination": "theme/stable/radius",
+      "cssSelector": ".mds-theme-stable",
+      "targets": [
+        "core/radius.json",
+        "theme/stable/radius.json"
+      ]
+    },
+    {
+      "destination": "theme/stable/size",
+      "cssSelector": ".mds-theme-stable",
+      "targets": [
+        "core/size.json",
+        "theme/stable/size.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/spacing",
+      "cssSelector": ".mds-theme-fluid",
+      "targets": [
+        "core/spacing.json",
+        "theme/stable/spacing.json",
+        "theme/fluid/spacing.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/border",
+      "cssSelector": ".mds-theme-fluid",
+      "targets": [
+        "core/border.json",
+        "theme/stable/border.json",
+        "theme/fluid/border.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/radius",
+      "cssSelector": ".mds-theme-fluid",
+      "targets": [
+        "core/radius.json",
+        "theme/stable/radius.json",
+        "theme/fluid/radius.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/size",
+      "cssSelector": ".mds-theme-fluid",
+      "targets": [
+        "core/size.json",
+        "theme/stable/size.json",
+        "theme/fluid/size.json"
+      ]
+    }
+  ],
+  "formats": [
+    "CSS_VARIABLES",
+    "SCSS_VARIABLES",
+    "WEB_JSON"
+  ],
+  "prefix": "mds",
+  "outputReferences": true
+}

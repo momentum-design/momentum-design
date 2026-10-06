@@ -1,0 +1,86 @@
+{
+  "size": {
+    "theme": {
+      "xxs": {
+        "value": "{size.4}",
+        "type": "dimension",
+        "description": "Micro fixed dimension (nav notch width, indicator bar)"
+      },
+      "xs": {
+        "value": "{size.8}",
+        "type": "dimension",
+        "description": "Smallest icon slot (bullet, compact glyph)"
+      },
+      "sm": {
+        "value": "{size.12}",
+        "type": "dimension",
+        "description": "Compact icon slot (badge dot, nav icon)"
+      },
+      "md": {
+        "value": "{size.14}",
+        "type": "dimension",
+        "description": "Tight fixed inset (calendar cell padding)"
+      },
+      "lg": {
+        "value": "{size.16}",
+        "type": "dimension",
+        "description": "Standard icon slot (badge, popover icon, static radio)"
+      },
+      "xl": {
+        "value": "{size.20}",
+        "type": "dimension",
+        "description": "Compact inline control row (divider, chip icon, timepicker)"
+      },
+      "2xl": {
+        "value": "{size.24}",
+        "type": "dimension",
+        "description": "Compact control height (chip, alertchip, inputchip)"
+      },
+      "3xl": {
+        "value": "{size.28}",
+        "type": "dimension",
+        "description": "Between compact and standard control (buttongroup, stepper)"
+      },
+      "4xl": {
+        "value": "{size.32}",
+        "type": "dimension",
+        "description": "Default control height (input, select, tab, combobox)"
+      },
+      "5xl": {
+        "value": "{size.40}",
+        "type": "dimension",
+        "description": "Large control / toolbar row (nav item, datepicker trigger)"
+      },
+      "6xl": {
+        "value": "{size.52}",
+        "type": "dimension",
+        "description": "Wide control minimum (input min-width)"
+      },
+      "7xl": {
+        "value": "{size.64}",
+        "type": "dimension",
+        "description": "Chrome band (app header, searchfield, avatar lg)"
+      },
+      "8xl": {
+        "value": "{size.72}",
+        "type": "dimension",
+        "description": "Large chrome / avatar tier"
+      },
+      "9xl": {
+        "value": "{size.88}",
+        "type": "dimension",
+        "description": "Extra-large avatar tier"
+      },
+      "10xl": {
+        "value": "{size.100}",
+        "type": "dimension",
+        "description": "Content minimum height (textarea min-height)"
+      },
+      "11xl": {
+        "value": "{size.124}",
+        "type": "dimension",
+        "description": "Maximum avatar / hero fixed dimension"
+      }
+    }
+  }
+}

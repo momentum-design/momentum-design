@@ -73,6 +73,7 @@ const config = {
     const { mergeConfig } = await import('vite');
 
     return mergeConfig(config, {
+      ...(process.env.NODE_ENV === 'production' ? { base: '/momentum-design-uplift/storybook-static/' } : {}),
       // adding dynamic import to support dynamic icon import
       // in icon component
       plugins: [preferSourceComponentsInStorybook(), dynamicImport({})],

@@ -4,7 +4,8 @@
       "destination": "core/complete",
       "cssSelector": ".mds-core",
       "targets": [
-        "core/value.json"
+        "core/value.json",
+        "core/color-brand.json"
       ]
     },
     {
@@ -12,6 +13,27 @@
       "cssSelector": ".mds-effect",
       "targets": [
         "core/effect.json"
+      ]
+    },
+    {
+      "destination": "spacing/complete",
+      "cssSelector": ".mds-spacing",
+      "targets": [
+        "core/spacing.json"
+      ]
+    },
+    {
+      "destination": "size/complete",
+      "cssSelector": ".mds-size",
+      "targets": [
+        "core/size.json"
+      ]
+    },
+    {
+      "destination": "blur/complete",
+      "cssSelector": ".mds-blur",
+      "targets": [
+        "core/blur.json"
       ]
     },
     {
@@ -24,6 +46,7 @@
       "cssSelector": ".mds-theme-webex-dark",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "theme/webex/dark.json"
       ]
     },
@@ -37,61 +60,122 @@
       "cssSelector": ".mds-theme-webex-light",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "theme/webex/light.json"
       ]
     },
     {
       "destination": "theme/webex/dark-stable",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
         "core/value.json",
-        "theme/stable/dark.json"
+        "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
+        "theme/stable/dark.json",
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json"
       ]
     },
     {
       "destination": "theme/webex/light-stable",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
         "core/value.json",
-        "theme/stable/light.json"
+        "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
+        "theme/stable/light.json",
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/dark",
+      "cssSelector": ".mds-theme-darkFluid",
+      "targets": [
+        "core/value.json",
+        "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
+        "theme/stable/dark.json",
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json",
+        "theme/fluid/dark.json",
+        "theme/fluid/spacing.json",
+        "theme/fluid/border.json",
+        "theme/fluid/radius.json",
+        "theme/fluid/size.json"
+      ]
+    },
+    {
+      "destination": "theme/fluid/light",
+      "cssSelector": ".mds-theme-lightFluid",
+      "targets": [
+        "core/value.json",
+        "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
+        "theme/stable/light.json",
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json",
+        "theme/fluid/light.json",
+        "theme/fluid/spacing.json",
+        "theme/fluid/border.json",
+        "theme/fluid/radius.json",
+        "theme/fluid/size.json"
       ]
     },
     {
       "destination": "theme/webex/hc-dark-stable",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-stable-hcDarkWebex",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
         "theme/stable/highcontrast/hc_common.json",
-        "theme/stable/highcontrast/hc_dark.json"
+        "theme/stable/highcontrast/hc_dark.json",
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json"
       ]
     },
     {
       "destination": "theme/webex/hc-light-stable",
-      "filters": {
-        "types": [
-          "theme"
-        ]
-      },
       "cssSelector": ".mds-theme-stable-hcLightWebex",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
+        "core/spacing.json",
+        "core/border.json",
+        "core/radius.json",
+        "core/size.json",
         "theme/stable/highcontrast/hc_common.json",
-        "theme/stable/highcontrast/hc_light.json"
+        "theme/stable/highcontrast/hc_light.json",
+        "theme/stable/spacing.json",
+        "theme/stable/border.json",
+        "theme/stable/radius.json",
+        "theme/stable/size.json"
       ]
     },
     {
@@ -104,6 +188,7 @@
       "cssSelector": ".mds-theme-aaos-day",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "aaos/common.json",
         "aaos/day.json"
       ]
@@ -118,6 +203,7 @@
       "cssSelector": ".mds-theme-aaos-night",
       "targets": [
         "core/value.json",
+        "core/color-brand.json",
         "aaos/common.json",
         "aaos/night.json"
       ]

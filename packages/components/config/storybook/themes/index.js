@@ -5,6 +5,11 @@ export const themes = [
     className: 'dark',
   },
   {
+    themeclass: 'mds-theme-darkFluid',
+    displayName: 'darkFluid',
+    className: 'darkFluid',
+  },
+  {
     themeclass: 'mds-theme-stable-darkBronzeWebex',
     displayName: 'darkBronzeWebex',
     className: 'darkBronze',
@@ -33,6 +38,11 @@ export const themes = [
     themeclass: 'mds-theme-stable-lightWebex',
     displayName: 'lightWebex',
     className: 'light',
+  },
+  {
+    themeclass: 'mds-theme-lightFluid',
+    displayName: 'lightFluid',
+    className: 'lightFluid',
   },
   {
     themeclass: 'mds-theme-stable-lightBronzeWebex',
