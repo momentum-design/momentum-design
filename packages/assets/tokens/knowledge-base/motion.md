@@ -42,7 +42,7 @@ Two layers ship today:
 - **Core primitives** — `packages/assets/tokens/src/core/motion.json`, compiled
   under the `.mds-motion` selector as `--mds-motion-*` custom properties. The raw
   duration, easing, delay, and stagger scales.
-- **Animations** — `packages/assets/tokens/src/motion/animation.json`, compiled
+- **Animations** — `packages/assets/tokens/src/animation/animation.json`, compiled
   under `.mds-animation` as named `--mds-transition-*` / `--mds-animation-*`
   custom properties. Each is a real, directly consumable token — reference one
   by name the same way you'd reference a duration or easing token (see
@@ -103,31 +103,41 @@ Authoritative source: `packages/assets/tokens/src/core/motion.json`.
 
 ## Animations
 
-`motion/animation.json` composes the core primitives into named, directly
+`animation/animation.json` composes the core primitives into named, directly
 consumable animations — not an internal build detail. Each one compiles to its
 own custom property that a consumer can reference by name, the same way they'd
 reference a duration or easing token, and comes in one of four shapes:
 
 - **`transition`** — animates named CSS properties between states, compiled to
-  its own `--mds-transition-*` custom property (e.g. `buttonBackground`
-  transitions `background-color`; `checkboxDefault` transitions
-  `background-color` and `border-color`).
+  its own `--mds-transition-*` custom property (e.g. `backgroundColor`
+  transitions `background-color`).
 - **`transitionCompound`** — runs several transitions in parallel under one
-  `--mds-transition-*` custom property (e.g. `buttonHover` combines
-  `buttonBackground` and `buttonBorder`).
+  `--mds-transition-*` custom property (e.g. `buttonLoadingSpinPulse` combines
+  `buttonLoadingSpin` and `buttonLoadingPulse`). Surface `background-color` and
+  `border-color` use the `backgroundColor` and `borderColor` primitives directly
+  in component styles rather than a shared compound token.
 - **`keyframe`** — a from/to keyframe animation, compiled to its own
   `--mds-animation-*` custom property plus a matching `@keyframes` block
-  (e.g. `buttonLoadingSpin` rotates `0deg → 360deg` on an infinite loop;
-  `checkboxChecked` scales `0.8 → 1`).
+  (e.g. `buttonLoadingSpin` rotates `0deg → 360deg` on an infinite loop).
 - **`keyframeCompound`** — several keyframes combined under one
   `--mds-animation-*` custom property (e.g. `buttonLoadingSpinPulse` =
   `buttonLoadingSpin` + `buttonLoadingPulse`).
 
-Animations are currently scoped to `button` and `checkbox`. Because each one
+Animations currently cover `button`, surface enter/exit
+(`fadeIn` / `fadeOut`, `slideEntrance` / `slideExit`), panel height
+(`expand` / `collapse` on `grid-template-rows`), and reusable text/scale
+primitives (`textChange`, `growShrink`). Because each one
 references core tokens rather than raw values, retuning a duration or easing at
 the core layer updates every animation that uses it.
 
-Authoritative source: `packages/assets/tokens/src/motion/animation.json`.
+`slideEntrance` and `slideExit` animate `transform`, `opacity`, and optionally
+`display`. They are commonly used for overlays and popovers, but also suit
+in-flow surfaces such as banners when the consuming component sets slide
+direction (for example `translateY`) and keeps `display` in a single in-flow
+value. Pair slide on the host with `expand` / `collapse` when layout height
+should animate in document flow.
+
+Authoritative source: `packages/assets/tokens/src/animation/animation.json`.
 
 ## Usage
 
@@ -141,7 +151,12 @@ Authoritative source: `packages/assets/tokens/src/motion/animation.json`.
 - **Easing by direction** — `entrance` for appearing, `exit` for disappearing,
   `standard` as the default, `linear` only for continuous loops.
 - **Respect reduced motion** — honor `prefers-reduced-motion`; reduce or remove
-  non-essential animation for users who request it.
+  non-essential animation for users who request it. Shipped CSS under
+  `.mds-motion` and `.mds-animation` includes `@media (prefers-reduced-motion: reduce)`
+  overrides (durations/delays/staggers to `0ms`; transition/animation shorthands to
+  `none`). Applications can also wrap content in
+  [`mdc-motionprovider`](../../../components/src/components/motionprovider/knowledge-base/motionprovider.component.md)
+  to toggle token scope with `motion="full" | "reduce" | "system"`.
 
 > **Note:** these tokens are published under `.mds-motion` and `.mds-animation`
 > and are consumable directly by name (e.g. `var(--mds-animation-button-loading-spin)`),

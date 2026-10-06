@@ -39,6 +39,7 @@ const styles = [
     :host::part(input-container) {
       background-color: var(--mdc-input-background-color);
       border-color: var(--mdc-input-border-color);
+      transition: var(--mds-transition-background-color), var(--mds-transition-border-color);
     }
 
     :host::part(input-container):hover {

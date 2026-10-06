@@ -135,6 +135,21 @@ configured `max-character-limit`.
 
 ## Accessibility
 
+### Motion
+
+The input container (`::part(input-container)`) animates `background-color` and `border-color` on state change using `--mds-transition-background-color` and `--mds-transition-border-color`.
+
+| State | Animated property |
+| --- | --- |
+| Hover (enabled) | `background-color` |
+| Focus / active (enabled) | `border-color` |
+| `help-text-type` validation | `border-color` |
+| `disabled` / `readonly` | `background-color`, `border-color` |
+
+Focus ring appearance (`box-shadow` / `outline` from `hostFocusRingStyles`) remains instant. Text, placeholder, icon, and clear-button visibility are not animated.
+
+When `prefers-reduced-motion: reduce` is active or motion tokens are scoped off via `mdc-motionprovider`, transitions resolve to `none` and state changes apply instantly.
+
 ### Built-in features
 
 The wrapper renders the label as a native `<label for>` element linked to the
