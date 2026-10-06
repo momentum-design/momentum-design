@@ -89,6 +89,12 @@ Keep links, buttons, and other interactive elements out of `leading-visual`. Pla
 - **No inline group validation** — a single checkbox shows only its own error state. Use `mdc-formfieldgroup` for a flat group or [`mdc-checkboxtree`](../../checkboxtree/knowledge-base/checkboxtree.component.md) for a hierarchical group with shared validation text.
 - **Leading visuals stay decorative** — `leading-visual` toggles the checkbox but does not add an accessible name. Hide redundant visuals from assistive technology and place interactive controls outside the checkbox.
 
+### Motion
+
+The embedded `mdc-staticcheckbox` visual animates hover, press, check, uncheck, and indeterminate transitions using shared Momentum motion tokens (`--mds-transition-background-color`, `--mds-transition-border-color`, `--mds-transition-grow-shrink`, `--mds-transition-fade-in`, `--mds-transition-fade-out`). Hover colors set on the host in `checkbox.styles.ts` animate on the static checkbox box. Focus ring appearance remains instant.
+
+When `prefers-reduced-motion: reduce` is active or motion tokens resolve to `none` (for example under `mdc-motionprovider motion="reduce"`), checkbox state changes apply instantly with no transition delay.
+
 ## Accessibility
 
 ### Built-in features

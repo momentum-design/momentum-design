@@ -79,6 +79,13 @@ test('mdc-staticcheckbox', async ({ componentsPage }) => {
    */
   await test.step('attributes', async () => {
     const staticcheckbox = await setup({ componentsPage });
+    await test.step('checkbox icon remains in the DOM when unchecked', async () => {
+      await expect(staticcheckbox.locator('mdc-icon')).toHaveCount(1);
+      await componentsPage.setAttributes(staticcheckbox, { checked: '' });
+      await expect(staticcheckbox.locator('mdc-icon')).toHaveCount(1);
+      await componentsPage.removeAttribute(staticcheckbox, 'checked');
+      await expect(staticcheckbox.locator('mdc-icon')).toHaveCount(1);
+    });
     await test.step('attribute checked should be present on component when set', async () => {
       await componentsPage.setAttributes(staticcheckbox, { checked: '' });
       await expect(staticcheckbox).toHaveAttribute('checked', '');
