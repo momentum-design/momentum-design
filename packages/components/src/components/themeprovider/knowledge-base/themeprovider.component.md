@@ -94,5 +94,6 @@ The theme provider has no role, exposes no ARIA attributes, and does not appear 
 | Component | Relationship |
 | --- | --- |
 | `mdc-text` | Consumes the color and font tokens this provider supplies. |
+| `mdc-motionprovider` | Parallel context provider that scopes motion and animation tokens. |
 | `mdc-iconprovider` | Parallel context provider that configures `mdc-icon`. |
 | `mdc-illustrationprovider` | Parallel context provider that configures `mdc-illustration`. |
