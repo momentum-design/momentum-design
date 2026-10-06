@@ -156,6 +156,21 @@ const styles = [
       border-bottom-left-radius: var(--mdc-tab-line-border-bottom-left-radius);
       border-bottom-right-radius: var(--mdc-tab-line-border-bottom-right-radius);
       --mdc-tab-color: var(--mds-color-theme-text-secondary-normal);
+      transition: var(--mds-transition-text-change);
+    }
+
+    :host([variant='line']) ::part(text) {
+      transition: var(--mds-transition-text-change);
+    }
+
+    :host([variant='line'])::part(indicator) {
+      --mdc-tab-indicator-color: var(--mds-color-theme-outline-input-active);
+      background-color: var(--mdc-tab-indicator-color);
+      transform: scaleX(0);
+      transform-origin: var(--mdc-tab-indicator-transform-origin, left);
+      transition: transform var(--mds-motion-duration-normal) var(--mds-motion-easing-standard)
+        var(--mds-motion-delay-none);
+      visibility: visible;
     }
 
     :host([variant='line']:hover) {
@@ -172,14 +187,20 @@ const styles = [
       --mdc-tab-color: var(--mds-color-theme-text-primary-disabled);
     }
 
+    :host([variant='line'][disabled])::part(indicator),
+    :host([variant='line'][soft-disabled])::part(indicator) {
+      --mdc-tab-indicator-color: var(--mds-color-theme-outline-primary-disabled);
+    }
+
     :host([variant='line'][active]) {
       --mdc-tab-background-color: var(--mds-color-theme-button-secondary-normal);
       --mdc-tab-color: var(--mds-color-theme-text-primary-normal);
     }
 
     :host([variant='line'][active])::part(indicator) {
-      --mdc-tab-background-color: var(--mds-color-theme-outline-input-active);
-      visibility: visible;
+      transform: scaleX(1);
+      transform-origin: var(--mdc-tab-indicator-transform-origin, left);
+      transition: var(--mds-transition-grow-shrink);
     }
 
     :host([variant='line'][active]:hover) {
@@ -198,7 +219,7 @@ const styles = [
 
     :host([variant='line'][active][disabled])::part(indicator),
     :host([variant='line'][active][soft-disabled])::part(indicator) {
-      --mdc-tab-background-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-tab-indicator-color: var(--mds-color-theme-outline-primary-disabled);
     }
 
     :host([variant='pill']) {
@@ -237,6 +258,14 @@ const styles = [
     :host([variant='pill'][active][soft-disabled]) {
       --mdc-tab-background-color: var(--mds-color-theme-button-secondary-active-normal);
       --mdc-tab-color: var(--mds-color-theme-text-primary-disabled);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :host([variant='line']),
+      :host([variant='line']) ::part(text),
+      :host([variant='line'])::part(indicator) {
+        transition: none;
+      }
     }
   `,
   ...hostFocusRingStyles(),
