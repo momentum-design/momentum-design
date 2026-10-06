@@ -818,4 +818,35 @@ test.describe.parallel('mdc-button', () => {
       await expect(tooltip).not.toBeVisible();
     });
   });
+
+  test('hover motion uses animation tokens', async ({ componentsPage }) => {
+    const button = await setup({
+      componentsPage,
+      variant: BUTTON_VARIANTS.PRIMARY,
+      prefixIcon: 'placeholder-bold',
+      children: 'Click Me',
+    });
+
+    const hostTransition = await button.evaluate((element: HTMLElement) => {
+      const style = getComputedStyle(element);
+      return {
+        property: style.transitionProperty,
+        duration: style.transitionDuration,
+      };
+    });
+
+    expect(hostTransition.property).toContain('background-color');
+    expect(hostTransition.duration.split(',').every(part => part.trim() === '0s')).toBe(false);
+
+    const iconTransition = await button.locator('[part="prefix-icon"]').evaluate((element: HTMLElement) => {
+      const style = getComputedStyle(element);
+      return {
+        property: style.transitionProperty,
+        duration: style.transitionDuration,
+      };
+    });
+
+    expect(iconTransition.property).toContain('color');
+    expect(iconTransition.duration.split(',').every(part => part.trim() === '0s')).toBe(false);
+  });
 });
