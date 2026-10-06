@@ -32,4 +32,30 @@ const DEFAULTS = {
   OVERLAY: false,
 } as const;
 
-export { DEFAULTS, ICON_NAMES_LIST, ICON_VARIANT, TAG_NAME, TYPE };
+const MOTION_PHASE = {
+  ENTERING: 'entering',
+  VISIBLE: 'visible',
+  UPDATING: 'updating',
+  EXITING: 'exiting',
+  HIDDEN: 'hidden',
+} as const;
+
+const PULSE_STEP = {
+  SHRINK: 'shrink',
+  GROW: 'grow',
+} as const;
+
+const DATA_MOTION_PHASE = 'data-motion-phase';
+const DATA_PULSE_STEP = 'data-pulse-step';
+
+export {
+  DATA_MOTION_PHASE,
+  DATA_PULSE_STEP,
+  DEFAULTS,
+  ICON_NAMES_LIST,
+  ICON_VARIANT,
+  MOTION_PHASE,
+  PULSE_STEP,
+  TAG_NAME,
+  TYPE,
+};

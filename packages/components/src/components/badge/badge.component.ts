@@ -1,6 +1,6 @@
 import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
@@ -9,15 +9,26 @@ import { ROLE } from '../../utils/roles';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE as FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
-import { DEFAULTS, ICON_NAMES_LIST, ICON_VARIANT, TYPE as BADGE_TYPE } from './badge.constants';
+import {
+  DEFAULTS,
+  ICON_NAMES_LIST,
+  ICON_VARIANT,
+  MOTION_PHASE,
+  PULSE_STEP,
+  TYPE as BADGE_TYPE,
+} from './badge.constants';
 import styles from './badge.styles';
-import type { BadgeType, IconVariant } from './badge.types';
+import type { BadgeType, IconVariant, MotionPhase, PulseStep } from './badge.types';
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
 /**
  * @tagname mdc-badge
  *
  * @dependency mdc-icon
  * @dependency mdc-text
+ *
+ * @event hidden - (React: onHidden) Dispatched after the exit fade-out completes and the badge is fully hidden.
  *
  * @cssproperty --mdc-badge-primary-foreground-color - The foreground color of the primary badge.
  * @cssproperty --mdc-badge-primary-background-color - The background color of the primary badge.
@@ -78,21 +89,193 @@ class Badge extends IconNameMixin(Component) {
   overlay: boolean = DEFAULTS.OVERLAY;
 
   /**
+   * Controls badge visibility. When set to `false`, the badge plays its exit animation
+   * before dispatching `hidden`.
+   * @default true
+   */
+  @property({ type: Boolean, reflect: true })
+  visible: boolean = true;
+
+  /**
    * Aria-label attribute to be set for accessibility
    * @default null
    */
   @property({ type: String, attribute: 'aria-label' })
   override ariaLabel: string | null = null;
 
-  /**
-   * If `type` is set to `counter` and if `counter` is greater than `maxCounter`,
-   * then it will return a string the maxCounter value as string.
-   * Otherwise, it will return a string representation of `counter`.
-   * If `counter` is not a number, it will return an empty string.
-   * @param maxCounter - the maximum limit which can be displayed on the badge
-   * @param counter - the number to be displayed on the badge
-   * @returns the string representation of the counter
-   */
+  @property({ type: String, attribute: 'data-motion-phase', reflect: true })
+  private motionPhase: MotionPhase = MOTION_PHASE.HIDDEN;
+
+  @property({ type: String, attribute: 'data-pulse-step', reflect: true })
+  private pulseStep: PulseStep | '' = '';
+
+  @state()
+  private lastFingerprint = '';
+
+  @state()
+  private pendingFingerprint: string | null = null;
+
+  @state()
+  private renderType?: BadgeType;
+
+  @state()
+  private pendingEntranceFingerprint: string | null = null;
+
+  /** @internal */
+  private exitReason: 'hide' | 'typeSwitch' | null = null;
+
+  /** @internal */
+  private reducedMotionQuery?: MediaQueryList;
+
+  /** @internal */
+  private exitTimer?: number;
+
+  /** @internal */
+  private pulseTimer?: number;
+
+  /** @internal */
+  private handleTransitionEnd = (event: TransitionEvent): void => {
+    if (event.target !== this) {
+      return;
+    }
+
+    if (this.motionPhase === MOTION_PHASE.EXITING && event.propertyName === 'opacity') {
+      this.finishExit();
+      return;
+    }
+
+    if (this.motionPhase === MOTION_PHASE.ENTERING && event.propertyName === 'opacity') {
+      this.motionPhase = MOTION_PHASE.VISIBLE;
+      return;
+    }
+
+    if (this.motionPhase === MOTION_PHASE.UPDATING && event.propertyName === 'transform') {
+      this.advancePulseStep();
+    }
+  };
+
+  public override connectedCallback(): void {
+    super.connectedCallback();
+    this.reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+    this.addEventListener('transitionend', this.handleTransitionEnd);
+    this.renderType = this.type ?? BADGE_TYPE.DOT;
+    this.syncMotionState();
+  }
+
+  public override disconnectedCallback(): void {
+    this.clearExitTimer();
+    this.clearPulseTimer();
+    this.removeEventListener('transitionend', this.handleTransitionEnd);
+    super.disconnectedCallback();
+  }
+
+  private clearExitTimer(): void {
+    if (this.exitTimer !== undefined) {
+      window.clearTimeout(this.exitTimer);
+      this.exitTimer = undefined;
+    }
+  }
+
+  private clearPulseTimer(): void {
+    if (this.pulseTimer !== undefined) {
+      window.clearTimeout(this.pulseTimer);
+      this.pulseTimer = undefined;
+    }
+  }
+
+  private getTransitionDurationMs(property: string): number {
+    const transitionProperty = getComputedStyle(this).transitionProperty.split(',');
+    const durations = getComputedStyle(this).transitionDuration.split(',');
+    const parsedDurations = durations.map((duration, index) => {
+      const appliesToProperty =
+        transitionProperty[index]?.trim() === property ||
+        transitionProperty[index]?.trim() === 'all' ||
+        transitionProperty.length === 1;
+      if (!appliesToProperty) {
+        return 0;
+      }
+      const trimmed = duration.trim();
+      if (trimmed.endsWith('ms')) {
+        return Number.parseFloat(trimmed);
+      }
+      if (trimmed.endsWith('s')) {
+        return Number.parseFloat(trimmed) * 1000;
+      }
+      return 0;
+    });
+    return Math.max(0, ...parsedDurations);
+  }
+
+  private scheduleExitComplete(): void {
+    this.clearExitTimer();
+    requestAnimationFrame(() => {
+      if (this.motionPhase !== MOTION_PHASE.EXITING) {
+        return;
+      }
+      const delay = this.getTransitionDurationMs('opacity');
+      if (delay === 0) {
+        this.finishExit();
+        return;
+      }
+      this.exitTimer = window.setTimeout(() => {
+        if (this.motionPhase === MOTION_PHASE.EXITING) {
+          this.finishExit();
+        }
+      }, delay);
+    });
+  }
+
+  private prefersReducedMotion(): boolean {
+    return this.reducedMotionQuery?.matches ?? window.matchMedia(REDUCED_MOTION_QUERY).matches;
+  }
+
+  private areMotionTokensAvailable(): boolean {
+    return Boolean(getComputedStyle(this).getPropertyValue('--mds-transition-fade-in').trim());
+  }
+
+  private shouldSkipMotionAnimation(): boolean {
+    return this.prefersReducedMotion() || !this.areMotionTokensAvailable();
+  }
+
+  private schedulePulseStepComplete(): void {
+    this.clearPulseTimer();
+    requestAnimationFrame(() => {
+      if (this.motionPhase !== MOTION_PHASE.UPDATING) {
+        return;
+      }
+
+      const delay = this.getTransitionDurationMs('transform');
+      if (delay === 0) {
+        this.advancePulseStep();
+        return;
+      }
+
+      this.pulseTimer = window.setTimeout(() => {
+        if (this.motionPhase === MOTION_PHASE.UPDATING) {
+          this.advancePulseStep();
+        }
+      }, delay);
+    });
+  }
+
+  private advancePulseStep(): void {
+    this.clearPulseTimer();
+
+    if (this.motionPhase !== MOTION_PHASE.UPDATING) {
+      return;
+    }
+
+    if (this.pulseStep === PULSE_STEP.SHRINK) {
+      this.pulseStep = PULSE_STEP.GROW;
+      this.schedulePulseStepComplete();
+      return;
+    }
+
+    if (this.pulseStep === PULSE_STEP.GROW) {
+      this.finishUpdatePulse();
+    }
+  }
+
   private getCounterText(maxCounter: number, counter?: number): string {
     if (counter === undefined || typeof counter !== 'number' || maxCounter === 0) {
       return '';
@@ -100,18 +283,219 @@ class Badge extends IconNameMixin(Component) {
     if (counter > maxCounter) {
       return `${maxCounter}+`;
     }
-    // At any given time, the max limit should not cross 999.
     if (maxCounter > DEFAULTS.MAX_COUNTER_LIMIT || counter > DEFAULTS.MAX_COUNTER_LIMIT) {
       return `${DEFAULTS.MAX_COUNTER_LIMIT}+`;
     }
     return counter.toString();
   }
 
-  /**
-   * Method to generate the badge icon.
-   * @param iconName - the name of the icon from the icon set
-   * @returns the template result of the icon.
-   */
+  private getDisplayFingerprint(): string {
+    const type = this.type ?? BADGE_TYPE.DOT;
+    const counterText = this.getCounterText(this.maxCounter, this.counter);
+    return `${type}|${this.variant}|${this.iconName ?? ''}|${counterText}`;
+  }
+
+  private hasContent(): boolean {
+    const type = this.type ?? BADGE_TYPE.DOT;
+
+    switch (type) {
+      case BADGE_TYPE.COUNTER:
+        if (this.counter === undefined || typeof this.counter !== 'number' || this.counter <= 0) {
+          return false;
+        }
+        return this.getCounterText(this.maxCounter, this.counter) !== '';
+      case BADGE_TYPE.ICON:
+        return Boolean(this.iconName);
+      case BADGE_TYPE.DOT:
+      case BADGE_TYPE.SUCCESS:
+      case BADGE_TYPE.WARNING:
+      case BADGE_TYPE.ERROR:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  private shouldShow(): boolean {
+    return this.hasContent() && this.visible;
+  }
+
+  private isValidBadgeType(type?: BadgeType | string): type is BadgeType {
+    return Object.values(BADGE_TYPE).includes(type as BadgeType);
+  }
+
+  private dispatchHidden(): void {
+    this.dispatchEvent(
+      new CustomEvent('hidden', {
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  private syncRenderType(): void {
+    this.renderType = this.type ?? BADGE_TYPE.DOT;
+  }
+
+  private finishExit(): void {
+    if (this.motionPhase === MOTION_PHASE.HIDDEN) {
+      return;
+    }
+
+    this.clearExitTimer();
+    this.clearPulseTimer();
+
+    if (this.exitReason === 'typeSwitch' && this.pendingEntranceFingerprint !== null) {
+      const fingerprint = this.pendingEntranceFingerprint;
+      this.exitReason = null;
+      this.pendingEntranceFingerprint = null;
+      this.syncRenderType();
+      this.startEntering(fingerprint);
+      return;
+    }
+
+    this.exitReason = null;
+    this.pendingEntranceFingerprint = null;
+    this.motionPhase = MOTION_PHASE.HIDDEN;
+    this.pulseStep = '';
+    this.lastFingerprint = '';
+    this.pendingFingerprint = null;
+    this.dispatchHidden();
+  }
+
+  private startExit(reason: 'hide' | 'typeSwitch' = 'hide'): void {
+    if (this.motionPhase === MOTION_PHASE.EXITING) {
+      if (reason === 'typeSwitch') {
+        this.exitReason = 'typeSwitch';
+      }
+      return;
+    }
+
+    if (this.motionPhase === MOTION_PHASE.HIDDEN) {
+      return;
+    }
+
+    this.exitReason = reason;
+    this.clearPulseTimer();
+    this.pulseStep = '';
+    this.pendingFingerprint = null;
+
+    if (reason === 'hide') {
+      this.pendingEntranceFingerprint = null;
+    }
+
+    if (this.shouldSkipMotionAnimation()) {
+      this.finishExit();
+      return;
+    }
+
+    this.motionPhase = MOTION_PHASE.EXITING;
+    this.scheduleExitComplete();
+  }
+
+  private startEntering(fingerprint: string): void {
+    this.lastFingerprint = fingerprint;
+
+    if (this.shouldSkipMotionAnimation()) {
+      this.motionPhase = MOTION_PHASE.VISIBLE;
+      this.pulseStep = '';
+      return;
+    }
+
+    this.motionPhase = MOTION_PHASE.ENTERING;
+    this.pulseStep = '';
+  }
+
+  private startUpdatePulse(): void {
+    if (this.shouldSkipMotionAnimation()) {
+      this.motionPhase = MOTION_PHASE.VISIBLE;
+      this.pulseStep = '';
+      this.pendingFingerprint = null;
+      return;
+    }
+
+    this.clearPulseTimer();
+    this.motionPhase = MOTION_PHASE.UPDATING;
+    this.pulseStep = '';
+    requestAnimationFrame(() => {
+      if (this.motionPhase === MOTION_PHASE.UPDATING) {
+        this.pulseStep = PULSE_STEP.SHRINK;
+        this.schedulePulseStepComplete();
+      }
+    });
+  }
+
+  private finishUpdatePulse(): void {
+    if (this.pendingFingerprint !== null) {
+      this.lastFingerprint = this.pendingFingerprint;
+      this.pendingFingerprint = null;
+      this.startUpdatePulse();
+      return;
+    }
+
+    this.motionPhase = MOTION_PHASE.VISIBLE;
+    this.pulseStep = '';
+  }
+
+  private syncMotionState(changedProperties?: PropertyValues): void {
+    const fingerprint = this.getDisplayFingerprint();
+    const shouldShow = this.shouldShow();
+
+    if (changedProperties?.has('type') && changedProperties.get('type') !== undefined) {
+      if (!shouldShow) {
+        this.syncRenderType();
+        this.pendingEntranceFingerprint = null;
+        if (this.motionPhase !== MOTION_PHASE.HIDDEN && this.motionPhase !== MOTION_PHASE.EXITING) {
+          this.startExit('hide');
+        }
+        return;
+      }
+
+      const wasShowing =
+        this.motionPhase === MOTION_PHASE.VISIBLE ||
+        this.motionPhase === MOTION_PHASE.ENTERING ||
+        this.motionPhase === MOTION_PHASE.UPDATING;
+
+      if (!wasShowing) {
+        this.syncRenderType();
+        this.startEntering(fingerprint);
+        return;
+      }
+
+      this.pendingEntranceFingerprint = fingerprint;
+      this.startExit('typeSwitch');
+      return;
+    }
+
+    if (!shouldShow) {
+      this.pendingEntranceFingerprint = null;
+      if (this.motionPhase !== MOTION_PHASE.HIDDEN && this.motionPhase !== MOTION_PHASE.EXITING) {
+        this.startExit('hide');
+      }
+      return;
+    }
+
+    if (this.motionPhase === MOTION_PHASE.HIDDEN || this.motionPhase === MOTION_PHASE.EXITING) {
+      if (this.motionPhase === MOTION_PHASE.HIDDEN) {
+        this.syncRenderType();
+      }
+      this.startEntering(fingerprint);
+      return;
+    }
+
+    if (
+      (this.motionPhase === MOTION_PHASE.VISIBLE || this.motionPhase === MOTION_PHASE.UPDATING) &&
+      fingerprint !== this.lastFingerprint
+    ) {
+      if (this.motionPhase === MOTION_PHASE.UPDATING) {
+        this.pendingFingerprint = fingerprint;
+      } else {
+        this.lastFingerprint = fingerprint;
+        this.startUpdatePulse();
+      }
+    }
+  }
+
   private getBadgeIcon(iconName: string): TemplateResult {
     return html`
       <mdc-icon
@@ -122,18 +506,10 @@ class Badge extends IconNameMixin(Component) {
     `;
   }
 
-  /**
-   * Method to generate the badge dot template.
-   * @returns the template result of the dot with badge-dot part.
-   */
   private getBadgeDot(): TemplateResult {
     return html`<div part="badge-dot ${this.overlay ? 'badge-overlay' : ''}"></div>`;
   }
 
-  /**
-   * Method to generate the badge text and counter template.
-   * @returns the template result of the text.
-   */
   private getBadgeCounterText(): TemplateResult {
     return html`
       <mdc-text
@@ -146,16 +522,26 @@ class Badge extends IconNameMixin(Component) {
     `;
   }
 
-  /**
-   * Method to set the role based on the aria-label provided.
-   * If the aria-label is provided, the role of the element will be 'img'.
-   * Otherwise, the role will be null.
-   */
   private setRoleByAriaLabel(): void {
     if (this.ariaLabel) {
       this.role = ROLE.IMG;
     } else {
       this.role = null;
+    }
+  }
+
+  public override willUpdate(changedProperties: PropertyValues): void {
+    super.willUpdate(changedProperties);
+
+    if (
+      changedProperties.has('type') ||
+      changedProperties.has('variant') ||
+      changedProperties.has('counter') ||
+      changedProperties.has('maxCounter') ||
+      changedProperties.has('iconName') ||
+      changedProperties.has('visible')
+    ) {
+      this.syncMotionState(changedProperties);
     }
   }
 
@@ -171,8 +557,9 @@ class Badge extends IconNameMixin(Component) {
     if (this.variant && !Object.values(ICON_VARIANT).includes(this.variant)) {
       this.variant = DEFAULTS.VARIANT;
     }
-    const { iconName, type } = this;
-    switch (type) {
+    const { iconName } = this;
+    const activeType = this.renderType ?? this.type;
+    switch (activeType) {
       case BADGE_TYPE.ICON:
         return this.getBadgeIcon(iconName || '');
       case BADGE_TYPE.COUNTER:
@@ -184,8 +571,15 @@ class Badge extends IconNameMixin(Component) {
       case BADGE_TYPE.ERROR:
         return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME);
       case BADGE_TYPE.DOT:
+        if (!this.type) {
+          this.type = BADGE_TYPE.DOT;
+        }
+        return this.getBadgeDot();
       default:
-        this.type = BADGE_TYPE.DOT;
+        if (!this.isValidBadgeType(activeType)) {
+          this.type = BADGE_TYPE.DOT;
+          this.renderType = BADGE_TYPE.DOT;
+        }
         return this.getBadgeDot();
     }
   }

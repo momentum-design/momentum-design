@@ -1,8 +1,21 @@
-import type { ValueOf } from '../../utils/types';
+import type { TypedCustomEvent, ValueOf } from '../../utils/types';
 
-import { TYPE, ICON_VARIANT } from './badge.constants';
+import type Badge from './badge.component';
+import { ICON_VARIANT, MOTION_PHASE, PULSE_STEP, TYPE } from './badge.constants';
 
 type IconVariant = ValueOf<typeof ICON_VARIANT>;
 type BadgeType = ValueOf<typeof TYPE>;
+type MotionPhase = ValueOf<typeof MOTION_PHASE>;
+type PulseStep = ValueOf<typeof PULSE_STEP>;
 
-export type { IconVariant, BadgeType };
+type BadgeHiddenEvent = TypedCustomEvent<Badge, void>;
+
+interface BadgeEventHandlers {
+  onHiddenEvent: BadgeHiddenEvent;
+}
+
+interface Events {
+  onHiddenEvent: BadgeHiddenEvent;
+}
+
+export type { BadgeEventHandlers, BadgeHiddenEvent, BadgeType, Events, IconVariant, MotionPhase, PulseStep };

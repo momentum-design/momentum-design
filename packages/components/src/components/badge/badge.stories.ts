@@ -1,5 +1,6 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import '../button';
 import { html } from 'lit';
 import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 
@@ -9,6 +10,24 @@ import { hideAllControls } from '../../../config/storybook/utils';
 import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
 
 const MAX_COUNTER_LIST = [9, 99, 999];
+
+const renderExample = (args: Args) => html`
+  <div
+    data-badge-demo
+    style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;"
+  >
+    <mdc-badge
+      data-testid="example-badge"
+      type="${args.type}"
+      icon-name="${args['icon-name']}"
+      counter="${args.counter}"
+      max-counter="${args['max-counter']}"
+      variant="${args.variant}"
+      ?overlay="${args.overlay}"
+      aria-label="${args['aria-label']}"
+    ></mdc-badge>
+  </div>
+`;
 
 const render = (args: Args) => html`
   <mdc-badge
@@ -80,6 +99,7 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
+  render: renderExample,
   args: {
     type: DEFAULTS.TYPE,
     'icon-name': 'placeholder-bold',
@@ -143,6 +163,68 @@ export const Overlay: StoryObj = {
     'max-counter': MAX_COUNTER_LIST[2],
     overlay: true,
   },
+};
+
+export const Motion: StoryObj = {
+  render: () => html`
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start;">
+        <span>Counter badge</span>
+        <mdc-badge id="motion-badge-counter" type="${TYPE.COUNTER}" counter="1" max-counter="99"></mdc-badge>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" id="motion-badge-counter-show">Show badge</button>
+          <button type="button" id="motion-badge-counter-increment">Increment counter</button>
+          <button type="button" id="motion-badge-counter-clear">Clear badge</button>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start;">
+        <span>Dot badge</span>
+        <mdc-badge id="motion-badge-dot" type="${TYPE.DOT}"></mdc-badge>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" id="motion-badge-dot-show">Show badge</button>
+          <button type="button" id="motion-badge-dot-hide">Hide badge</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const counterBadge = document.getElementById('motion-badge-counter');
+      const counterShowButton = document.getElementById('motion-badge-counter-show');
+      const counterIncrementButton = document.getElementById('motion-badge-counter-increment');
+      const counterClearButton = document.getElementById('motion-badge-counter-clear');
+
+      counterShowButton?.addEventListener('click', () => {
+        counterBadge?.setAttribute('type', 'counter');
+        counterBadge?.setAttribute('counter', '1');
+        counterBadge?.setAttribute('visible', '');
+      });
+
+      counterIncrementButton?.addEventListener('click', () => {
+        const current = Number(counterBadge?.getAttribute('counter') ?? '0');
+        counterBadge?.setAttribute('counter', String(current + 1));
+      });
+
+      counterClearButton?.addEventListener('click', () => {
+        counterBadge?.removeAttribute('counter');
+        counterBadge?.removeAttribute('visible');
+      });
+
+      const dotBadge = document.getElementById('motion-badge-dot');
+      const dotShowButton = document.getElementById('motion-badge-dot-show');
+      const dotHideButton = document.getElementById('motion-badge-dot-hide');
+
+      dotShowButton?.addEventListener('click', () => {
+        dotBadge?.setAttribute('type', 'dot');
+        dotBadge?.setAttribute('visible', '');
+      });
+
+      dotHideButton?.addEventListener('click', () => {
+        if (dotBadge) {
+          dotBadge.visible = false;
+        }
+      });
+    </script>
+  `,
+  ...hideAllControls(),
 };
 
 export const AllVariants: StoryObj = {
