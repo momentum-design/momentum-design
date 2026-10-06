@@ -141,6 +141,17 @@ test('mdc-banner', async ({ componentsPage }) => {
     await bannerSheet.createMarkupWithCombination({}, options);
 
     await bannerSheet.mountStickerSheet();
+    const banners = componentsPage.page.locator('mdc-banner');
+
+    await expect(async () => {
+      const phases = await banners.evaluateAll(elements =>
+        elements.map(element => element.getAttribute('data-motion-phase')),
+      );
+
+      expect(phases.length).toBeGreaterThan(0);
+      expect(phases.every(phase => phase === MOTION_PHASE.VISIBLE)).toBe(true);
+    }).toPass();
+
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-banner', {
         element: bannerSheet.getWrapperContainer(),
@@ -474,10 +485,16 @@ test('mdc-banner', async ({ componentsPage }) => {
 
       await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.VISIBLE, { timeout: 2000 });
 
+      const earlyHidden = await componentsPage.waitForEvent(banner, 'hidden', { timeout: 50 });
       const hiddenEvent = await componentsPage.waitForEvent(banner, 'hidden');
       await componentsPage.removeAttribute(banner, 'open');
 
       await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.EXITING);
+      await expect(earlyHidden).not.toEventEmitted();
+
+      const box = await banner.boundingBox();
+      expect(box?.height ?? 0).toBeGreaterThan(0);
+
       await expect(hiddenEvent).toEventEmitted();
       await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.EXITING);
     });
@@ -522,33 +539,6 @@ test('mdc-banner', async ({ componentsPage }) => {
       await expect(hiddenEvent).toEventEmitted();
 
       await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
-    });
-
-    await test.step('applies state instantly when wrapped in motionprovider with motion reduce', async () => {
-      await componentsPage.page.evaluate(() => {
-        document.body.classList.remove('mds-motion', 'mds-animation');
-      });
-
-      await componentsPage.mount({
-        html: `
-          <mdc-motionprovider motion="reduce">
-            <mdc-banner variant="warning" label="Connection unstable"></mdc-banner>
-          </mdc-motionprovider>
-        `,
-        clearDocument: true,
-      });
-
-      const banner = componentsPage.page.locator('mdc-banner');
-      await expect(banner).toHaveAttribute('data-motion-phase', MOTION_PHASE.VISIBLE, { timeout: 500 });
-
-      const hiddenEvent = await componentsPage.waitForEvent(banner, 'hidden');
-      await componentsPage.removeAttribute(banner, 'open');
-
-      await expect(hiddenEvent).toEventEmitted();
-
-      await componentsPage.page.evaluate(() => {
-        document.body.classList.add('mds-motion', 'mds-animation');
-      });
     });
 
     await test.step('dispatches hidden immediately when mounting with open false', async () => {

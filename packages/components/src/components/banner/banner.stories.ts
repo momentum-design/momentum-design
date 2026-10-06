@@ -2,6 +2,7 @@ import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ref } from 'lit/directives/ref.js';
 
 import '.';
 import '../button';
@@ -149,68 +150,87 @@ export const WithoutActions: StoryObj = {
   },
 };
 
+const MOTION_BANNERS = [
+  {
+    variant: BANNER_VARIANT.WARNING,
+    label: 'Connection unstable',
+    secondaryLabel: 'We will retry automatically in the background.',
+  },
+  {
+    variant: BANNER_VARIANT.INFORMATIONAL,
+    label: 'System maintenance scheduled',
+    secondaryLabel: 'Expect brief downtime tonight at 11:00 PM.',
+  },
+] as const;
+
+const createMotionBanner = ({
+  variant,
+  label,
+  secondaryLabel,
+}: (typeof MOTION_BANNERS)[number]) => {
+  const banner = document.createElement('mdc-banner');
+  banner.setAttribute('variant', variant);
+  banner.setAttribute('label', label);
+  banner.setAttribute('secondary-label', secondaryLabel);
+
+  const actions = document.createElement('div');
+  actions.slot = 'trailing-actions';
+
+  const dismissButton = document.createElement('mdc-button');
+  dismissButton.setAttribute('variant', BUTTON_VARIANTS.TERTIARY);
+  dismissButton.setAttribute('prefix-icon', 'cancel-bold');
+  dismissButton.setAttribute('size', String(BUTTON_SIZES[20]));
+  dismissButton.setAttribute('aria-label', 'Dismiss banner');
+  dismissButton.addEventListener('click', () => {
+    banner.open = false;
+  });
+
+  banner.addEventListener('hidden', () => {
+    banner.remove();
+  });
+
+  actions.appendChild(dismissButton);
+  banner.appendChild(actions);
+  return banner;
+};
+
+const mountMotionBanners = (slot: HTMLElement) => {
+  slot.replaceChildren(...MOTION_BANNERS.map(createMotionBanner));
+};
+
 export const Motion: StoryObj = {
-  render: () => html`
-    <div id="banner-motion-root" style="display: flex; flex-direction: column; gap: 1rem;">
-      <mdc-button id="banner-motion-show" variant="${BUTTON_VARIANTS.SECONDARY}">Show banners</mdc-button>
-      <div id="banner-motion-slot" style="display: flex; flex-direction: column; gap: 1rem;"></div>
-    </div>
-    <script>
-      const slot = document.getElementById('banner-motion-slot');
-      const showButton = document.getElementById('banner-motion-show');
+  render: () => {
+    let slot: HTMLDivElement | undefined;
 
-      const createBanner = ({ variant, label, secondaryLabel }) => {
-        const banner = document.createElement('mdc-banner');
-        banner.setAttribute('variant', variant);
-        banner.setAttribute('label', label);
-        banner.setAttribute('secondary-label', secondaryLabel);
+    return html`
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <mdc-button
+          variant="${BUTTON_VARIANTS.SECONDARY}"
+          @click=${() => {
+            if (slot) {
+              mountMotionBanners(slot);
+            }
+          }}
+          >Show banners</mdc-button
+        >
+        <div
+          style="display: flex; flex-direction: column; gap: 1rem;"
+          ${ref(element => {
+            if (!(element instanceof HTMLDivElement)) {
+              slot = undefined;
+              return;
+            }
 
-        const actions = document.createElement('div');
-        actions.setAttribute('slot', 'trailing-actions');
+            slot = element;
 
-        const dismissButton = document.createElement('mdc-button');
-        dismissButton.setAttribute('variant', 'tertiary');
-        dismissButton.setAttribute('prefix-icon', 'cancel-bold');
-        dismissButton.setAttribute('size', '20');
-        dismissButton.setAttribute('aria-label', 'Dismiss banner');
-
-        dismissButton.addEventListener('click', () => {
-          banner.open = false;
-        });
-
-        banner.addEventListener('hidden', () => {
-          banner.remove();
-        });
-
-        actions.appendChild(dismissButton);
-        banner.appendChild(actions);
-        return banner;
-      };
-
-      const mountBanners = () => {
-        slot.replaceChildren();
-
-        slot.appendChild(
-          createBanner({
-            variant: 'warning',
-            label: 'Connection unstable',
-            secondaryLabel: 'We will retry automatically in the background.',
-          }),
-        );
-
-        slot.appendChild(
-          createBanner({
-            variant: 'informational',
-            label: 'System maintenance scheduled',
-            secondaryLabel: 'Expect brief downtime tonight at 11:00 PM.',
-          }),
-        );
-      };
-
-      showButton?.addEventListener('click', mountBanners);
-      mountBanners();
-    </script>
-  `,
+            if (element.childElementCount === 0) {
+              mountMotionBanners(element);
+            }
+          })}
+        ></div>
+      </div>
+    `;
+  },
   ...hideAllControls(),
 };
 

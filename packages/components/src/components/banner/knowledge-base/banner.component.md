@@ -74,7 +74,7 @@ Minimal markup example:
 | Entrance | Host mounts with `open` true | Host: `slideEntrance` (`translateY(-1rem)` → `none`, opacity 0→1). Inner: `expand` (`grid-template-rows` 0fr→1fr). |
 | Exit | `open` becomes `false` | Host: `slideExit` (`translateY(-1rem)`, opacity 1→0). Inner: `collapse` (`grid-template-rows` 1fr→0fr), then `hidden` event. |
 
-Slide distance defaults to `1rem` via `--mdc-banner-slide-offset` on the host. Opacity is animated by the slide tokens on the host only; `.banner-inner` handles layout height via expand/collapse.
+Slide distance defaults to `1rem` via `--mdc-banner-slide-offset` on the host. Opacity is animated by the slide tokens on the host only; `.banner-inner` handles layout height via expand/collapse. Motion runs when an ancestor has `.mds-animation`.
 
 `data-motion-phase` is reflected on the host for debugging and tests (`entering`, `visible`, `exiting`). With `prefers-reduced-motion: reduce` or when motion tokens are disabled, state changes apply instantly.
 
