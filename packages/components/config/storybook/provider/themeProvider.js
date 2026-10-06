@@ -48,8 +48,6 @@ export const withThemeProvider = (story, context) => {
   applyStyle(body, 'bodyOverride');
   applyStyle(body, 'mds-typography');
   applyStyle(body, 'mds-elevation');
-  applyStyle(body, 'mds-motion');
-  applyStyle(body, 'mds-animation');
   applyStyle(body, 'mds-core');
   applyStyle(body, 'mds-spacing');
   applyStyle(body, 'mds-size');
