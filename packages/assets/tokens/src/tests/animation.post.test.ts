@@ -61,8 +61,28 @@ describe('Animation tokens (post-build)', () => {
     const keyframeTokens = Object.entries(source).filter(
       ([, t]) => t.type === 'keyframe' || t.type === 'keyframeCompound',
     );
+    expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
       expect(css).toContain(`--mds-animation-${kebabCase(name)}:`);
+    });
+  });
+
+  it('preserves the published button and checkbox animation tokens', () => {
+    [
+      'buttonBackground',
+      'buttonBorder',
+      'buttonIcon',
+      'buttonFocusRing',
+      'buttonPress',
+      'buttonHover',
+      'buttonLoadingSpin',
+      'buttonLoadingPulse',
+      'buttonLoadingSpinPulse',
+      'checkboxDefault',
+      'checkboxChecked',
+      'checkboxCheckedIcon',
+    ].forEach((name) => {
+      expect(source).toHaveProperty(name);
     });
   });
 
