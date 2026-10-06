@@ -396,7 +396,7 @@ test.describe('AccordionButton Feature Scenarios', () => {
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(content).toBeAttached();
 
-        // Collapse uses motion.duration.fast (200ms); body must not unmount in the first frame.
+        // Collapse uses motion.duration.normal (300ms); body must not unmount in the first frame.
         await content.evaluate(async el => {
           await new Promise(resolve => {
             setTimeout(resolve, 50);

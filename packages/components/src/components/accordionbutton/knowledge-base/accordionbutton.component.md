@@ -60,7 +60,7 @@ The `header-text` also serves as the component's accessible name; the naming mec
 | `size="large"` | 24px padding. Use when the accordion is a primary content block or touch targets need more space. |
 | `toggle-position="trailing"` (default) | Chevron at the end (right in LTR). Standard pattern. |
 | `toggle-position="leading"` | Chevron at the start. Use only when layout or RTL patterns require it; trailing is the default users expect. |
-| `expanded` | Controls panel visibility. Defaults to `false` (collapsed). The body stays in the DOM while collapse motion runs (`--mds-transition-collapse` + `--mds-transition-fade-out`), then unmounts. Expand mounts then animates (`--mds-transition-expand` + `--mds-transition-fade-in`). With `prefers-reduced-motion: reduce`, the body still mounts and unmounts, without the CSS transition. |
+| `expanded` | Controls panel visibility. Defaults to `false` (collapsed). With `.mds-animation` on an ancestor, the body stays in the DOM while collapse motion runs (`--mds-transition-collapse` + `--mds-transition-fade-out`), then unmounts. Expand mounts then animates (`--mds-transition-expand` + `--mds-transition-fade-in`). With `prefers-reduced-motion: reduce`, the body still mounts and unmounts, without the CSS transition. |
 | `data-aria-level` | Sets the header's heading level (default `3`). Match the page's heading hierarchy. |
 | `prefix-icon` | Optional decorative or context icon before the header text. Must be a valid icon name. |
 | `disabled` | Prevents toggle; hides the body even if `expanded` is set. |
