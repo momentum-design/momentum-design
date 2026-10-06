@@ -15,6 +15,11 @@ const styles = css`
     transition: none;
   }
 
+  :host([data-motion-surface][selected]:active),
+  :host([data-motion-surface][selected]:focus) {
+    transition: var(--mds-transition-background-color), var(--mds-transition-border-color);
+  }
+
   :host([selected]:active) {
     --mdc-chip-background-color: var(--mds-color-theme-background-label-default-normal);
   }

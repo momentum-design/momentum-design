@@ -86,16 +86,41 @@ class FilterChip extends Chip {
     this.selected = !this.selected;
   }
 
+  private clearCheckIconIfFadeIsInstant(): void {
+    const icon = this.renderRoot.querySelector('.check-icon-wrapper');
+    if (!(icon instanceof HTMLElement)) {
+      this.showCheckIcon = false;
+      return;
+    }
+
+    const hasDuration = getComputedStyle(icon)
+      .transitionDuration.split(',')
+      .some(part => {
+        const trimmed = part.trim();
+        return trimmed !== '' && trimmed !== '0s' && trimmed !== '0ms';
+      });
+
+    if (!hasDuration) {
+      this.showCheckIcon = false;
+    }
+  }
+
   public override update(changedProperties: PropertyValues) {
     super.update(changedProperties);
     if (changedProperties.has('selected')) {
       this.syncSelectedState(this.selected);
-      this.applyMotionAttributes();
+
+      // The first update records the initial value. Only a later change is a toggle.
+      if (changedProperties.get('selected') !== undefined) {
+        this.applyMotionAttributes();
+      }
 
       if (this.selected) {
         this.showCheckIcon = true;
-      } else if (this.prefersReducedMotion()) {
+      } else if (this.prefersReducedMotion() || changedProperties.get('selected') === undefined) {
         this.showCheckIcon = false;
+      } else {
+        this.clearCheckIconIfFadeIsInstant();
       }
     }
   }
