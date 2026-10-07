@@ -475,7 +475,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         const displayMin = String(m).padStart(2, '0');
         label = `${displayHour}:${displayMin} ${period}`;
       } else {
-        label = `${h}:${String(m).padStart(2, '0')}`;
+        label = value24;
       }
 
       // Filter by min/max if provided
