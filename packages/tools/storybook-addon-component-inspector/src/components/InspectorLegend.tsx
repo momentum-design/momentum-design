@@ -154,9 +154,13 @@ export const InspectorLegend = memo(function InspectorLegend() {
   const kind = payload.mode === "parts" ? "Parts" : "Slots";
 
   // Nothing is selected yet: guide the user on how to inspect an element.
+  // Anchor the help to the bottom center of the preview so it doesn't cover
+  // the rendered component (which may be small).
   if (!payload.tag) {
+    const centerX = iframeRect.left + iframeRect.width / 2;
+    const bottom = iframeRect.bottom - GAP;
     return createPortal(
-      <Panel style={{ top, left }}>
+      <Panel style={{ top: bottom, left: centerX, transform: "translate(-50%, -100%)" }}>
         <Title>Component Inspector</Title>
         <div>
           To inspect, <b>Hold</b> <Kbd>{shiftKey}</Kbd> (for Slots) or <Kbd>{metaKeyLabel}</Kbd> (for Parts) and{" "}
