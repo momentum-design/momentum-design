@@ -233,6 +233,7 @@ class Toggle
           value="${ifDefined(this.value)}"
           .checked="${this.checked}"
           aria-checked="${this.checked}"
+          aria-disabled="${this.softDisabled}"
           .disabled="${this.disabled}"
           ?readonly="${this.readonly}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"

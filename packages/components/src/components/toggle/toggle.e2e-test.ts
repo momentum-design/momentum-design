@@ -468,6 +468,29 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   });
 };
 
+test('should expose the soft-disabled state while remaining focusable', async ({ componentsPage }) => {
+  const toggle = await setup({ componentsPage, label: 'Toggle label', 'soft-disabled': true });
+  const input = toggle.getByRole('switch', { name: 'Toggle label' });
+
+  await expect(input).toHaveAttribute('aria-disabled', 'true');
+  await componentsPage.actionability.pressTab();
+  await expect(input).toBeFocused();
+  await componentsPage.page.keyboard.press(KEYS.SPACE);
+  await expect(input).not.toBeChecked();
+
+  await componentsPage.removeAttribute(toggle, 'soft-disabled');
+  await expect(input).toHaveAttribute('aria-disabled', 'false');
+  await expect(input).toBeEnabled();
+  await componentsPage.page.keyboard.press(KEYS.SPACE);
+  await expect(input).toBeChecked();
+
+  await componentsPage.setAttributes(toggle, { 'soft-disabled': '' });
+  await expect(input).toHaveAttribute('aria-disabled', 'true');
+  await expect(input).toBeFocused();
+  await componentsPage.page.keyboard.press(KEYS.SPACE);
+  await expect(input).toBeChecked();
+});
+
 test('standalone', async ({ componentsPage }) => {
   await testToRun(componentsPage);
 });
