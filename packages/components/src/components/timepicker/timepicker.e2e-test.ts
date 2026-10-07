@@ -340,20 +340,28 @@ test.describe('mdc-timepicker', () => {
       await expect(option).toHaveCount(1);
     });
 
-    test('should show 24h format options in dropdown', async ({ componentsPage }) => {
+    test('should zero-pad hours in dropdown labels when using 24h format', async ({ componentsPage }) => {
       const timepicker = await setup({
         componentsPage,
         label: 'Start time',
-        value: '20:30',
+        value: '01:00',
         timeFormat: '24h',
+        interval: 60,
+        min: '00:00',
+        max: '02:00',
       });
 
       const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
       await dropdownButton.click();
 
       const options = timepicker.locator('mdc-option');
-      const firstOption = options.first();
-      await expect(firstOption).toContainText('0:00');
+      await expect(options).toHaveText(['00:00', '01:00', '02:00']);
+
+      await options.filter({ hasText: '02:00' }).click();
+
+      await expect(timepicker).toHaveAttribute('value', '02:00');
+      await expect(timepicker.locator('#hours-spinbutton')).toHaveValue('02');
+      await expect(timepicker.locator('#minutes-spinbutton')).toHaveValue('00');
     });
 
     test('should not show checkmark when value does not match interval', async ({ componentsPage }) => {
