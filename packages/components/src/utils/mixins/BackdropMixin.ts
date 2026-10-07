@@ -6,6 +6,10 @@ import { OVERLAY_BACKDROP_Z_INDEX_OFFSET, OVERLAY_TRIGGER_Z_INDEX_OFFSET } from 
 
 import type { Constructor } from './index.types';
 
+const DEFAULT_BACKDROP_TRANSITION_IN = 'opacity 200ms cubic-bezier(0.44, 0, 0, 1)';
+const DEFAULT_BACKDROP_TRANSITION_OUT = 'opacity 100ms cubic-bezier(0.44, 0, 0, 1)';
+const BACKDROP_TRANSITION_DURATION_FALLBACK_MS = 100;
+
 export declare abstract class BackdropMixinInterface {
   abstract zIndex: number;
 
@@ -56,6 +60,12 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
     protected backdropElement: HTMLElement | null = null;
 
     /** @internal */
+    private backdropClassNamePrefix: string | null = null;
+
+    /** @internal */
+    private backdropRemoveTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    /** @internal */
     private triggerElementCache: WeakRef<HTMLElement> | null = null;
 
     /** @internal */
@@ -75,6 +85,84 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
       }
     }
 
+    /** @internal */
+    private prefersReducedMotion(): boolean {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    /** @internal */
+    private getBackdropTransition(direction: 'in' | 'out'): string {
+      const customProperty =
+        direction === 'in' ? '--mdc-backdrop-mixin-transition-in' : '--mdc-backdrop-mixin-transition-out';
+      const transition = getComputedStyle(this).getPropertyValue(customProperty).trim();
+      const fallback = direction === 'in' ? DEFAULT_BACKDROP_TRANSITION_IN : DEFAULT_BACKDROP_TRANSITION_OUT;
+
+      return transition || fallback;
+    }
+
+    /** @internal */
+    private getBackdropVisibleClassName(): string | null {
+      if (!this.backdropClassNamePrefix) {
+        return null;
+      }
+
+      return `${this.backdropClassNamePrefix}-backdrop--visible`;
+    }
+
+    /** @internal */
+    private getBackdropTransitionDurationMs(backdrop: HTMLElement): number {
+      const { transitionDuration } = window.getComputedStyle(backdrop);
+      const durations = transitionDuration.split(',').map(duration => {
+        const trimmed = duration.trim();
+
+        if (trimmed.endsWith('ms')) {
+          return Number.parseFloat(trimmed);
+        }
+
+        if (trimmed.endsWith('s')) {
+          return Number.parseFloat(trimmed) * 1000;
+        }
+
+        return 0;
+      });
+
+      return Math.max(...durations, BACKDROP_TRANSITION_DURATION_FALLBACK_MS);
+    }
+
+    /** @internal */
+    private clearBackdropRemoveTimeout(): void {
+      if (this.backdropRemoveTimeout !== null) {
+        clearTimeout(this.backdropRemoveTimeout);
+        this.backdropRemoveTimeout = null;
+      }
+    }
+
+    /** @internal */
+    private finalizeBackdropRemoval(backdrop: HTMLElement): void {
+      this.clearBackdropRemoveTimeout();
+
+      if (this.backdropElement !== backdrop) {
+        return;
+      }
+
+      backdrop.remove();
+      this.backdropElement = null;
+      this.backdropClassNamePrefix = null;
+    }
+
+    /** @internal */
+    private detachBackdropImmediately(): void {
+      if (!this.backdropElement) {
+        return;
+      }
+
+      const backdrop = this.backdropElement;
+      this.backdropElement = null;
+      this.backdropClassNamePrefix = null;
+      this.clearBackdropRemoveTimeout();
+      backdrop.remove();
+    }
+
     /**
      * Creates a backdrop element with the specified class name prefix.
      *
@@ -82,13 +170,19 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
      * @internal
      */
     protected createBackdrop(classNamePrefix: string): void {
+      this.detachBackdropImmediately();
+
       const backdrop = document.createElement('div');
+      const visibleClassName = `${classNamePrefix}-backdrop--visible`;
+
       backdrop.classList.add(`${classNamePrefix}-backdrop`);
       const styleElement = document.createElement('style');
       const bgColor = this.isBackdropInvisible
         ? 'transparent'
         : getComputedStyle(this).getPropertyValue('--mdc-backdrop-mixin-background-color') ||
           `var(--mds-color-theme-common-overlays-secondary-normal)`;
+      const enterTransition = this.getBackdropTransition('in');
+      const exitTransition = this.getBackdropTransition('out');
       styleElement.textContent = `
         .${classNamePrefix}-backdrop {
           position: fixed;
@@ -98,6 +192,18 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
           height: 100%;
           background: ${bgColor};
           z-index: ${this.zIndex + OVERLAY_BACKDROP_Z_INDEX_OFFSET};
+          opacity: 0;
+          transition: ${exitTransition};
+        }
+        .${classNamePrefix}-backdrop.${visibleClassName} {
+          opacity: 1;
+          transition: ${enterTransition};
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .${classNamePrefix}-backdrop,
+          .${classNamePrefix}-backdrop.${visibleClassName} {
+            transition: none;
+          }
         }
       `;
       backdrop.appendChild(styleElement);
@@ -107,6 +213,16 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
 
       elementToAppendTo?.appendChild(backdrop);
       this.backdropElement = backdrop;
+      this.backdropClassNamePrefix = classNamePrefix;
+
+      if (this.prefersReducedMotion()) {
+        backdrop.classList.add(visibleClassName);
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        backdrop.classList.add(visibleClassName);
+      });
     }
 
     /**
@@ -114,10 +230,36 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
      * @internal
      */
     protected removeBackdrop(): void {
-      if (this.backdropElement) {
-        this.backdropElement.remove();
-        this.backdropElement = null;
+      if (!this.backdropElement) {
+        return;
       }
+
+      const backdrop = this.backdropElement;
+      const visibleClassName = this.getBackdropVisibleClassName();
+
+      if (this.prefersReducedMotion() || !visibleClassName || !backdrop.classList.contains(visibleClassName)) {
+        this.finalizeBackdropRemoval(backdrop);
+        return;
+      }
+
+      backdrop.classList.remove(visibleClassName);
+
+      const onTransitionEnd = (event: TransitionEvent) => {
+        if (event.target !== backdrop || event.propertyName !== 'opacity') {
+          return;
+        }
+
+        backdrop.removeEventListener('transitionend', onTransitionEnd);
+        this.finalizeBackdropRemoval(backdrop);
+      };
+
+      backdrop.addEventListener('transitionend', onTransitionEnd);
+
+      const durationMs = this.getBackdropTransitionDurationMs(backdrop);
+      this.backdropRemoveTimeout = setTimeout(() => {
+        backdrop.removeEventListener('transitionend', onTransitionEnd);
+        this.finalizeBackdropRemoval(backdrop);
+      }, durationMs + 50);
     }
 
     /**
