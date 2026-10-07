@@ -98,10 +98,6 @@ export const readLabel = (instance: InstanceHandle) => {
 /**
  * Both icon layers are named "placeholder", so findInstance cannot tell them apart. The instance-swap
  * properties address them unambiguously, and the BOOLEAN beside each one gates whether it renders.
- *
- * The selectable sets declare a second swap per side whose key has a double space (`Leading Icon  Type`)
- * that Figma normalises to the same name, leaving it shadowed and unaddressable — looking it up errors.
- * The reachable one returns the same value in both Selected states, which is what the component wants.
  */
 export const readLeadingIcon = (instance: InstanceHandle) =>
   instance.getBoolean('Leading Icon', {
@@ -115,7 +111,13 @@ export const readTrailingIcon = (instance: InstanceHandle) =>
     false: undefined,
   });
 
-/** The icon sets are not gated by a BOOLEAN — an icon button always renders one. */
+/**
+ * Not gated by a BOOLEAN — an icon button always renders one.
+ *
+ * Both icon sets give this property irregular internal whitespace: `Icon  Type` in Button/Icon, and a
+ * shadowed `Icon    Type` beside `Icon Type` in Button/Selectable/Icon. Figma normalises it, so the
+ * single-spaced name below reaches both — every published Icon snippet carries prefix-icon.
+ */
 export const readIcon = (instance: InstanceHandle) => iconName(instance.getInstanceSwap('Icon Type'));
 
 /** mdc-button has no badge attribute or slot, so say so rather than render a button that drops it. */
