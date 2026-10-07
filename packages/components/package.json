@@ -32,7 +32,7 @@
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
     "analyze:prebuild": "yarn analyze:lint && yarn analyze:style",
     "analyze:postbuild": "yarn analyze:syntax",
-    "analyze:lint": "eslint \"./src/**\"",
+    "analyze:lint": "eslint \"./src/**\" \"./config/code-connect/**\"",
     "analyze:syntax": "tsc --noEmit",
     "analyze:style": "stylelint \"./src/**/*.styles.ts\" --config config/stylelint/stylelint.config.js",
     "dev": "concurrently --raw --names 'manifest,storybook' -c 'blue.bold,magenta.bold' 'yarn:dev:manifest' 'yarn:dev:storybook'",

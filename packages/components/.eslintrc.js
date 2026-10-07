@@ -46,7 +46,9 @@ module.exports = {
     '@typescript-eslint/no-floating-promises': 'error',
     'no-redeclare': 'off',
     'implicit-arrow-linebreak': 'off',
-    'import/no-unresolved': ['error', { ignore: ['dist'] }],
+    // `figma` is an ambient `declare module` from @figma/code-connect, so it has no file for the
+    // path resolver to find even though TypeScript resolves it.
+    'import/no-unresolved': ['error', { ignore: ['dist', '^figma$'] }],
     'json/*': 'off',
     // prettier
     indent: 'off',
@@ -80,7 +82,6 @@ module.exports = {
     '*.mdx',
     '*.md',
     '*.html',
-    '*.figma*',
     'jest.config.js',
   ],
   settings: {
