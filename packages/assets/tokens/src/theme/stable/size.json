@@ -4,83 +4,83 @@
       "4": {
         "value": "{dimension.4}",
         "type": "dimension",
-        "description": "Micro fixed size. Nav notch, indicator. Was size/xxs."
+        "description": "Micro fixed size. Nav notch, indicator."
       },
       "8": {
         "value": "{dimension.8}",
         "type": "dimension",
-        "description": "Smallest icon slot. Bullet, compact glyph. Was size/xs."
+        "description": "Smallest icon slot. Bullet, compact glyph."
       },
       "12": {
         "value": "{dimension.12}",
         "type": "dimension",
-        "description": "Compact icon slot. Badge, nav icon. Was size/sm."
+        "description": "Compact icon slot. Badge, nav icon."
       }
     },
     "md": {
       "16": {
         "value": "{dimension.16}",
         "type": "dimension",
-        "description": "Standard icon slot. Avatar, badge, popover, radio. Was size/md and size/lg."
+        "description": "Standard icon slot. Avatar, badge, popover, radio."
       },
       "20": {
         "value": "{dimension.20}",
         "type": "dimension",
-        "description": "Compact inline row. Divider, chip icon, timepicker. Was size/xl."
+        "description": "Compact inline row. Divider, chip icon, timepicker."
       },
       "24": {
         "value": "{dimension.24}",
         "type": "dimension",
-        "description": "Compact control height. Chip, alertchip, inputchip. Was size/2xl."
+        "description": "Compact control height. Chip, alertchip, inputchip."
       },
       "28": {
         "value": "{dimension.28}",
         "type": "dimension",
-        "description": "Between compact and standard control. Buttongroup, calendar, stepper. Was size/3xl."
+        "description": "Between compact and standard control. Buttongroup, calendar, stepper."
       },
       "32": {
         "value": "{dimension.32}",
         "type": "dimension",
-        "description": "Default control height. Input, select, tab, combobox. Was size/4xl."
+        "description": "Default control height. Input, select, tab, combobox."
       }
     },
     "lg": {
       "40": {
         "value": "{dimension.40}",
         "type": "dimension",
-        "description": "Large control / toolbar row. Nav, datepicker trigger. Was size/5xl."
+        "description": "Large control / toolbar row. Nav, datepicker trigger."
       },
       "52": {
         "value": "{dimension.52}",
         "type": "dimension",
-        "description": "Wide control minimum. Input min-width. Was size/6xl."
+        "description": "Wide control minimum. Input min-width."
       },
       "64": {
         "value": "{dimension.64}",
         "type": "dimension",
-        "description": "Chrome band. App header, searchfield, avatar lg. Was size/7xl."
+        "description": "Chrome band. App header, searchfield, avatar lg."
       }
     },
     "xl": {
       "72": {
         "value": "{dimension.72}",
         "type": "dimension",
-        "description": "Large avatar tier. Was size/8xl."
+        "description": "Large avatar tier."
       },
       "88": {
         "value": "{dimension.88}",
         "type": "dimension",
-        "description": "Extra-large avatar tier. Was size/9xl."
+        "description": "Extra-large avatar tier."
       },
       "100": {
         "value": "{dimension.100}",
         "type": "dimension",
-        "description": "Content min-height. Textarea. Was size/10xl."
+        "description": "Content min-height. Textarea."
       },
       "124": {
         "value": "{dimension.124}",
         "type": "dimension",
-        "description": "Max avatar / hero. Was size/11xl."
+        "description": "Max avatar / hero."
       }
     }
   }
