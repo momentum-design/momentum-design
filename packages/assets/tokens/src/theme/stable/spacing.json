@@ -5,42 +5,42 @@
       "type": "dimension",
       "description": "Flush control padding (both axes)."
     },
-    "pad-block": {
+    "pad-block": { // pad-vertical, are we only doing 8 and 12? There are some places where we use 16, 24, etc. Should we follow sizing naming patterns?
       "value": "{dimension.8}",
       "type": "dimension",
       "description": "Control vertical padding."
     },
-    "pad-inline": {
+    "pad-inline": { // pad-horizontal
       "value": "{dimension.12}",
       "type": "dimension",
       "description": "Control horizontal padding."
     },
-    "gap-none": {
+    "gap-none": { // gap-none
       "value": "{dimension.0}",
       "type": "dimension",
       "description": "Collapsed layout space."
     },
-    "gap-tight": {
+    "gap-tight": { // gap-ultra-tight
       "value": "{dimension.4}",
       "type": "dimension",
       "description": "Tight layout space."
     },
-    "gap": {
+    "gap": { // gap-tight
       "value": "{dimension.8}",
       "type": "dimension",
       "description": "Default layout space — sibling gap AND compact surface padding."
     },
-    "gap-wide": {
+    "gap-wide": { // gap-default
       "value": "{dimension.16}",
       "type": "dimension",
       "description": "Roomy layout space — default surface padding or wider sibling gap."
     },
-    "gap-loose": {
+    "gap-loose": { //gap-wide
       "value": "{dimension.24}",
       "type": "dimension",
       "description": "Section/block separation."
     },
-    "gap-ultraloose": {
+    "gap-ultraloose": { // gap-ultra-wide
       "value": "{dimension.32}",
       "type": "dimension",
       "description": "Extra-large layout space."
