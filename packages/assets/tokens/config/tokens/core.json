@@ -4,8 +4,7 @@
       "destination": "core/complete",
       "cssSelector": ".mds-core",
       "targets": [
-        "core/value.json",
-        "core/color-brand.json"
+        "core/value.json"
       ]
     },
     {

@@ -323,8 +323,7 @@
       "font.apps.body.small.bold": "S:8c9122aea157f6ef4ca47dfab83eca04a83d07a6,"
     },
     "selectedTokenSets": {
-      "core/value": "enabled",
-      "core/color-brand": "enabled"
+      "core/value": "enabled"
     },
     "group": "core",
     "$figmaCollectionId": "VariableCollectionId:1393:5179",
