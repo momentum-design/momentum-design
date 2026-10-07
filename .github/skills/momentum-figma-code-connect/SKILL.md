@@ -46,9 +46,10 @@ Button/Icon, each with its own node URL, its own template pair and its own `FIGM
 has exactly one set: if the name suggests variants that Figma models separately, ask which set the URL belongs to and
 whether the others are wanted too.
 
-**Templates missing or incomplete.** Ask the user to confirm the component and that both the `react` and
-`webcomponent` files are wanted before generating anything — a half-connected set shows a missing snippet on
-the other label. If only one of the pair exists, ask whether the other was deliberately skipped before adding it.
+**Templates missing or incomplete.** The pair is mandatory — there is no "which labels do you want" question. Confirm
+which component and set the work is for, then write both the `react` and the `webcomponent` file. Dev Mode picks the
+label, not the author, so connecting only one shows a missing snippet to everyone on the other. A file that exists
+without its partner is a gap to close, not a decision to respect.
 
 **`FIGMA_<SET>_URL` absent or empty.** Ask the user for the node URL as input, and say how to get one: right-click
 the component or component set in Figma, _Copy link to selection_; the URL must contain a `node-id`. Then write it to
