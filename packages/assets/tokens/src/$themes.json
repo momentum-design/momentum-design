@@ -323,8 +323,7 @@
       "font.apps.body.small.bold": "S:8c9122aea157f6ef4ca47dfab83eca04a83d07a6,"
     },
     "selectedTokenSets": {
-      "core/value": "enabled",
-      "core/dimension": "source"
+      "core/value": "enabled"
     },
     "group": "core",
     "$figmaCollectionId": "VariableCollectionId:1393:5179",
@@ -813,12 +812,7 @@
     },
     "selectedTokenSets": {
       "core/value": "source",
-      "theme/stable/dark": "enabled",
-      "core/dimension": "source",
-      "theme/stable/spacing": "enabled",
-      "theme/stable/border": "enabled",
-      "theme/stable/radius": "enabled",
-      "theme/stable/size": "enabled"
+      "theme/stable/dark": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
     "$figmaModeId": "17173:1",
@@ -1195,12 +1189,7 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "core/value": "source",
-      "theme/stable/light": "enabled",
-      "core/dimension": "source",
-      "theme/stable/spacing": "enabled",
-      "theme/stable/border": "enabled",
-      "theme/stable/radius": "enabled",
-      "theme/stable/size": "enabled"
+      "theme/stable/light": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
     "$figmaModeId": "17173:2",
@@ -2424,35 +2413,5 @@
       "color.theme.border.decorative.gradient.device.2": "de3b13a2eb568b59c444a4d4c1f76ad8f06ec6fe"
     },
     "group": "theme/aaos"
-  },
-  {
-    "id": "3097d4049bc9d9b10d39a239a7bcd9304fc74d73",
-    "name": "stable",
-    "$figmaStyleReferences": {},
-    "selectedTokenSets": {
-      "core/dimension": "source",
-      "theme/stable/spacing": "enabled",
-      "theme/stable/border": "enabled",
-      "theme/stable/radius": "enabled",
-      "theme/stable/size": "enabled"
-    },
-    "group": "theme/product"
-  },
-  {
-    "id": "48714dde4a5dfc79eb4143ad6c0bda5d896ec3a9",
-    "name": "fluid",
-    "$figmaStyleReferences": {},
-    "selectedTokenSets": {
-      "core/dimension": "source",
-      "theme/fluid/spacing": "enabled",
-      "theme/fluid/border": "enabled",
-      "theme/fluid/radius": "enabled",
-      "theme/fluid/size": "enabled",
-      "theme/stable/spacing": "source",
-      "theme/stable/border": "source",
-      "theme/stable/radius": "source",
-      "theme/stable/size": "source"
-    },
-    "group": "theme/product"
   }
 ]
