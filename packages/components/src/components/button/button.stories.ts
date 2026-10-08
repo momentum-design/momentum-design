@@ -3,14 +3,22 @@ import '.';
 import '../spinner';
 import '../animation';
 import '../brandvisual';
+import '../badge';
 import iconsManifest from '@momentum-design/icons/dist/manifest.json';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import {
+  TYPE as BADGE_TYPE,
+  ICON_VARIANT as BADGE_ICON_VARIANT,
+  DEFAULTS as BADGE_DEFAULTS,
+} from '../badge/badge.constants';
 
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
+
+const BADGE_MAX_COUNTER_LIST = [9, 99, 999];
 
 const render = (args: Args) =>
   html`<mdc-button
@@ -38,6 +46,59 @@ const render = (args: Args) =>
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >${args.children}</mdc-button
   >`;
+
+const pillButtonBadgeArgTypes = {
+  'has-badge': {
+    control: 'boolean',
+    description: 'When true, shows a notification badge on the pill button.',
+  },
+  'badge-type': {
+    control: 'select',
+    options: Object.values(BADGE_TYPE),
+    if: { arg: 'has-badge', eq: true },
+  },
+  'badge-counter': {
+    control: 'number',
+    if: { arg: 'badge-type', eq: BADGE_TYPE.COUNTER },
+  },
+  'badge-max-counter': {
+    control: 'select',
+    options: BADGE_MAX_COUNTER_LIST,
+    if: { arg: 'badge-type', eq: BADGE_TYPE.COUNTER },
+  },
+  'badge-icon-name': {
+    control: 'select',
+    options: Object.keys(iconsManifest),
+    if: { arg: 'badge-type', eq: BADGE_TYPE.ICON },
+  },
+  'badge-variant': {
+    control: 'select',
+    options: Object.values(BADGE_ICON_VARIANT),
+    if: { arg: 'badge-type', eq: BADGE_TYPE.ICON },
+  },
+  'badge-overlay': {
+    control: 'boolean',
+    if: { arg: 'has-badge', eq: true },
+  },
+} as const;
+
+const renderPillButtonWithBadge = (args: Args) => html`
+  <div style="position: relative; display: inline-flex;">
+    ${render(args)}
+    ${args['has-badge']
+      ? html`<mdc-badge
+          style="position: absolute; top: -0.125rem; inset-inline-end: -0.125rem;"
+          type="${args['badge-type']}"
+          icon-name="${ifDefined(args['badge-icon-name'])}"
+          counter="${ifDefined(args['badge-counter'])}"
+          max-counter="${ifDefined(args['badge-max-counter'])}"
+          variant="${ifDefined(args['badge-variant'])}"
+          ?overlay="${args['badge-overlay']}"
+          aria-hidden="true"
+        ></mdc-badge>`
+      : nothing}
+  </div>
+`;
 
 const meta: Meta = {
   title: 'Components/button',
@@ -110,6 +171,8 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
+  render: renderPillButtonWithBadge,
+  argTypes: pillButtonBadgeArgTypes,
   args: {
     children: 'Click Me',
     active: false,
@@ -122,12 +185,28 @@ export const Example: StoryObj = {
     role: 'button',
     tabIndex: 0,
     inverted: false,
+    'has-badge': false,
+    'badge-type': BADGE_DEFAULTS.TYPE,
+    'badge-counter': 3,
+    'badge-max-counter': BADGE_MAX_COUNTER_LIST[1],
+    'badge-icon-name': 'placeholder-bold',
+    'badge-variant': BADGE_ICON_VARIANT.PRIMARY,
+    'badge-overlay': true,
   },
 };
 
 export const PillButton: StoryObj = {
+  render: renderPillButtonWithBadge,
+  argTypes: pillButtonBadgeArgTypes,
   args: {
     ...Example.args,
+    'has-badge': false,
+    'badge-type': BADGE_DEFAULTS.TYPE,
+    'badge-counter': 3,
+    'badge-max-counter': BADGE_MAX_COUNTER_LIST[1],
+    'badge-icon-name': 'placeholder-bold',
+    'badge-variant': BADGE_ICON_VARIANT.PRIMARY,
+    'badge-overlay': true,
   },
 };
 
