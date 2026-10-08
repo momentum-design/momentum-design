@@ -248,7 +248,8 @@ class Textarea extends CharacterLimitMixin(
    * Sets the form value.
    * @returns void
    */
-  private updateValue() {
+  private updateValue(event: Event) {
+    if (this.preventSoftDisabledChange(event, this.value)) return;
     this.value = this.textarea.value;
     this.internals.setFormValue(this.textarea.value);
     this.announceCharacterLimitWarning();
@@ -265,7 +266,8 @@ class Textarea extends CharacterLimitMixin(
    * @param event - Event which contains information about the value change.
    */
   private onChange(event: Event) {
-    this.updateValue();
+    if (this.preventSoftDisabledChange(event, this.value)) return;
+    this.updateValue(event);
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
@@ -282,7 +284,7 @@ class Textarea extends CharacterLimitMixin(
    * @param event - The keyboard event.
    */
   private handleResizeKeyDown(event: KeyboardEvent) {
-    if (this.readonly) {
+    if (this.disabled || this.softDisabled || this.readonly) {
       return;
     }
     const currentRows = this.rows || DEFAULTS.ROWS;
@@ -312,7 +314,7 @@ class Textarea extends CharacterLimitMixin(
    * @param event - The pointer event.
    */
   private handlePointerDown = (event: PointerEvent) => {
-    if (this.readonly) {
+    if (this.disabled || this.softDisabled || this.readonly) {
       return;
     }
     const resizeButton = event.currentTarget as HTMLElement;
@@ -334,6 +336,7 @@ class Textarea extends CharacterLimitMixin(
    * @param event - The pointer event.
    */
   private handlePointerMove = (event: PointerEvent) => {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     if (!this.textarea) return;
 
     const deltaY = event.clientY - this.resizeStartY;
@@ -372,6 +375,7 @@ class Textarea extends CharacterLimitMixin(
           .value="${this.value}"
           ?disabled="${this.disabled}"
           ?readonly="${this.readonly}"
+          aria-disabled="${this.disabled || this.softDisabled}"
           ?required="${this.required}"
           placeholder=${ifDefined(this.placeholder)}
           rows=${ifDefined(this.rows)}
@@ -382,6 +386,7 @@ class Textarea extends CharacterLimitMixin(
           minlength=${ifDefined(this.minlength)}
           maxlength=${ifDefined(this.maxlength)}
           dirname=${ifDefined(this.dirname)}
+          @beforeinput=${this.preventSoftDisabledInput}
           @input=${this.updateValue}
           @change=${this.onChange}
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
@@ -403,6 +408,7 @@ class Textarea extends CharacterLimitMixin(
                 prefix-icon="resize-corner-regular"
                 aria-label=${this.resizeButtonAriaLabel ?? ''}
                 ?disabled="${this.disabled || this.readonly}"
+                ?soft-disabled="${this.softDisabled}"
                 @keydown=${this.handleResizeKeyDown}
                 @pointerdown=${this.handlePointerDown}
               ></mdc-button>

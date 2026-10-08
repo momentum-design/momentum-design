@@ -287,6 +287,9 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     ) {
       if (this.disabled || this.softDisabled || this.readonly) {
         this.displayPopover = false;
+        if (this.pendingDigitTimeout) clearTimeout(this.pendingDigitTimeout);
+        this.pendingDigits = '';
+        this.parseValueToInternal();
       }
     }
   }
@@ -433,6 +436,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    * @internal
    */
   private commitValue(): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const newValue = this.internalToValue();
     if (newValue && newValue !== this.value) {
       this.value = newValue;
@@ -494,6 +498,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    * @internal
    */
   private handleOptionClick(optionValue: string): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     this.value = optionValue;
     this.parseValueToInternal();
     this.displayPopover = false;
@@ -628,6 +633,10 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    * @internal
    */
   private handlePeriodKeydown(event: KeyboardEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) {
+      if (event.key === KEYS.ARROW_UP || event.key === KEYS.ARROW_DOWN) event.preventDefault();
+      return;
+    }
     switch (event.key) {
       case KEYS.ARROW_UP:
       case KEYS.ARROW_DOWN:
@@ -668,6 +677,10 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    * @internal
    */
   private handleSpinbuttonKeydown(event: KeyboardEvent, field: 'hours' | 'minutes'): void {
+    if (this.disabled || this.softDisabled || this.readonly) {
+      if (event.key === KEYS.ARROW_UP || event.key === KEYS.ARROW_DOWN) event.preventDefault();
+      return;
+    }
     const is12h = this.timeFormat === TIME_FORMAT.TWELVE_HOUR;
     let minVal: number;
     let maxVal: number;
@@ -918,7 +931,10 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
               placeholder="${this.hoursPlaceholder}"
               ?disabled="${this.disabled}"
               ?readonly="${this.readonly}"
+              aria-disabled="${this.disabled || this.softDisabled}"
+              @beforeinput="${this.preventSoftDisabledInput}"
               tabindex="${this.disabled ? '-1' : '0'}"
+              @input="${(event: Event) => this.preventSoftDisabledChange(event, this.internalHours)}"
               @keydown="${this.handleHoursKeydown}"
               @focus="${this.handleSpinbuttonFocus}"
             />
@@ -936,7 +952,10 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
               placeholder="${this.minutesPlaceholder}"
               ?disabled="${this.disabled}"
               ?readonly="${this.readonly}"
+              aria-disabled="${this.disabled || this.softDisabled}"
+              @beforeinput="${this.preventSoftDisabledInput}"
               tabindex="${this.disabled ? '-1' : '0'}"
+              @input="${(event: Event) => this.preventSoftDisabledChange(event, this.internalMinutes)}"
               @keydown="${this.handleMinutesKeydown}"
               @focus="${this.handleSpinbuttonFocus}"
             />
@@ -953,7 +972,10 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
                     placeholder="${this.periodPlaceholder}"
                     ?disabled="${this.disabled}"
                     ?readonly="${this.readonly}"
+                    aria-disabled="${this.disabled || this.softDisabled}"
+                    @beforeinput="${this.preventSoftDisabledInput}"
                     tabindex="${this.disabled ? '-1' : '0'}"
+                    @input="${(event: Event) => this.preventSoftDisabledChange(event, this.displayPeriod || '')}"
                     @keydown="${this.handlePeriodKeydown}"
                     @focus="${this.handleSpinbuttonFocus}"
                   />
@@ -969,6 +991,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
             aria-expanded="${this.displayPopover ? 'true' : 'false'}"
             aria-haspopup="true"
             ?disabled="${this.disabled}"
+            ?soft-disabled="${this.softDisabled}"
             size="20"
             @click="${this.handleDropdownClick}"
           ></mdc-button>
