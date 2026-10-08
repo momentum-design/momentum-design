@@ -55,12 +55,16 @@ siblings, groups, or sections.
 | Token | Use for |
 | --- | --- |
 | `pad-none` | Flush controls that need no internal padding |
-| `pad-block` | Default vertical padding inside controls |
-| `pad-inline` | Default horizontal padding inside controls |
+| `pad-v-xs` | Compact vertical padding. Default control v pad |
+| `pad-v-sm` | Standard vertical padding |
+| `pad-v-md` | Roomy vertical padding. Cards, dialogs, headers |
+| `pad-h-xs` | Compact horizontal padding. Chips, dense controls |
+| `pad-h-sm` | Standard horizontal padding. Default control h pad |
+| `pad-h-md` | Roomy horizontal padding. Buttons, sidenav, toast |
 | `gap-none` | Intentionally collapsed space between elements |
-| `gap-tight` | Closely related items in compact layouts |
-| `gap` | Default sibling gaps and compact surface padding |
-| `gap-wide` | Roomier sibling gaps and default surface padding |
+| `gap-ultra-tight` | Ultra-tight sibling gap. Chips, icon clusters |
+| `gap-tight` | Tight sibling gap. Icon-to-label, most control internals |
+| `gap-wide` | Wide layout gap. Roomy stacks |
 | `gap-loose` | Separating blocks or sections |
 | `gap-ultraloose` | The largest layout separation in the scale |
 
