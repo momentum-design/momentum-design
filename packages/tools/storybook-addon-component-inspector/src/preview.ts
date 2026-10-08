@@ -5,7 +5,7 @@ import { withComponentInspector } from "./componentInspector";
 
 const preview: ProjectAnnotations<Renderer> = {
   initialGlobals: {
-    [KEY]: false,
+    [KEY]: "off",
   },
   decorators: [withComponentInspector],
 };

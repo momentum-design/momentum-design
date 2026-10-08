@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useChannel, useParameter } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 import { createPortal } from "react-dom";
@@ -57,37 +57,10 @@ const Label = styled.span<{ empty: boolean }>(({ empty }) => ({
   opacity: empty ? 0.6 : 1,
 }));
 
-const Kbd = styled.kbd(({ theme }) => ({
-  display: "inline-block",
-  minWidth: 18,
-  padding: "1px 6px",
-  textAlign: "center",
-  borderRadius: 3,
-  background: theme.base === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)",
-  border: `1px solid ${theme.appBorderColor}`,
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: theme.typography.size.s1 - 1,
-  lineHeight: "16px",
-  whiteSpace: "nowrap",
-}));
-
 const Hint = styled.div(({ theme }) => ({
   color: theme.textMutedColor,
   paddingTop: 2,
 }));
-
-/**
- * The `Meta` key maps to a different physical key (and glyph) per platform, so
- * the "inspect parts" hint reflects the user's OS.
- */
-const detectMetaKeyLabel = (): string => {
-  const nav = navigator as Navigator & { userAgentData?: { platform?: string } };
-  const platform = (nav.userAgentData?.platform || nav.platform || "").toLowerCase();
-  const ua = nav.userAgent.toLowerCase();
-  if (platform.includes("mac") || ua.includes("mac")) return "\u2318 Cmd";
-  if (platform.includes("win") || ua.includes("win")) return "\u229E Win";
-  return "Meta";
-};
 
 interface LegendState {
   payload: LegendPayload;
@@ -115,11 +88,8 @@ export const InspectorLegend = memo(function InspectorLegend() {
     emit(EVENTS.REQUEST);
   }, [emit]);
 
-  const metaKeyLabel = useMemo(detectMetaKeyLabel, []);
-
   const { prefix } = useParameter<ComponentInspectorParameters>(PARAM_KEY, {});
   const targetText = prefix ? `<${prefix.toLowerCase()}\u2026>` : "HTML";
-  const shiftKey = "\u21E7 Shift";
 
   const reposition = useCallback(() => {
     setState((prev) => (prev ? { ...prev, tick: prev.tick + 1 } : prev));
@@ -153,7 +123,7 @@ export const InspectorLegend = memo(function InspectorLegend() {
 
   const kind = payload.mode === "parts" ? "Parts" : "Slots";
 
-  // Nothing is selected yet: guide the user on how to inspect an element.
+  // Nothing is hovered yet: guide the user on how to inspect an element.
   // Anchor the help to the bottom center of the preview so it doesn't cover
   // the rendered component (which may be small).
   if (!payload.tag) {
@@ -163,8 +133,7 @@ export const InspectorLegend = memo(function InspectorLegend() {
       <Panel style={{ top: bottom, left: centerX, transform: "translate(-50%, -100%)" }}>
         <Title>Component Inspector</Title>
         <div>
-          To inspect, <b>Hold</b> <Kbd>{shiftKey}</Kbd> (for Slots) or <Kbd>{metaKeyLabel}</Kbd> (for Parts) and{" "}
-          <b>Click</b> on any {targetText} element.
+          Hover any {targetText} element to see its {kind.toLowerCase()}.
         </div>
       </Panel>,
       wrapper,
@@ -174,27 +143,13 @@ export const InspectorLegend = memo(function InspectorLegend() {
   return createPortal(
     <Panel style={{ top, left }}>
       <Title>{`${kind} \u00B7 <${payload.tag}>`}</Title>
+      {payload.items.length === 0 && <Hint>This component has no {kind.toLowerCase()}.</Hint>}
       {payload.items.map((item, index) => (
         <Row key={`${item.label}-${index}`}>
           <Swatch bg={item.empty ? item.bgColor : item.borderColor} border={item.borderColor} />
           <Label empty={item.empty}>{item.empty ? `${item.label} (empty)` : item.label}</Label>
         </Row>
       ))}
-      <div style={{ transform: "scale(.85)", transformOrigin: "left" }}>
-        {kind === "Parts" && (
-          <Hint>
-            Hold <Kbd>{shiftKey}</Kbd> to show Slots.
-          </Hint>
-        )}
-        {kind === "Slots" && (
-          <Hint>
-            Hold <Kbd>{metaKeyLabel}</Kbd> to show Parts.
-          </Hint>
-        )}
-        <Hint>
-          Hold <Kbd>{shiftKey}</Kbd> / <Kbd>{metaKeyLabel}</Kbd> and Click on any {targetText} element to inspect it.
-        </Hint>
-      </div>
     </Panel>,
     wrapper,
   );

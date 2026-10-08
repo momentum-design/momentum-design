@@ -34,7 +34,17 @@ export interface ComponentInspectorParameters {
    * selected.
    */
   prefix?: string;
+  /**
+   * CSS selector of a container element. When set and a matching element
+   * exists in the story, only elements inside that container can be hovered
+   * and selected. When omitted, or no matching element exists, the whole
+   * story root is used.
+   */
+  contentContainer?: string;
 }
+
+/** Inspector mode selected from the toolbar dropdown. */
+export type InspectorMode = "off" | "slots" | "parts";
 
 /** A single slot / shadow-part row shown in the legend. */
 export interface LegendItem {
@@ -44,7 +54,7 @@ export interface LegendItem {
   bgColor: string;
 }
 
-/** Viewport rect of the inspected element, used to anchor the legend. */
+/** Viewport rect of the hovered element, used to anchor the floating legend. */
 export interface LegendAnchor {
   top: number;
   left: number;
@@ -55,8 +65,7 @@ export interface LegendAnchor {
 /** Payload streamed from the preview to the manager to render the legend. */
 export interface LegendPayload {
   tag: string | null;
-  mode: 'slots' | 'parts';
+  mode: "slots" | "parts";
   items: LegendItem[];
   anchor: LegendAnchor | null;
 }
-

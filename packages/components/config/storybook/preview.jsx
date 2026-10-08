@@ -162,6 +162,7 @@ const preview = {
     componentInspector: {
       customElements: rawCustomElementsManifest,
       prefix: 'mdc-',
+      contentContainer: '.backgroundGradient',
     },
   },
   decorators: [

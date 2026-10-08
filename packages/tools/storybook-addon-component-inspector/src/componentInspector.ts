@@ -6,6 +6,7 @@ import { EVENTS, KEY, PARAM_KEY } from "./constants";
 import type {
   ComponentInspectorParameters,
   CustomElementsManifest,
+  InspectorMode,
   LegendPayload,
   ManifestCssPart,
   ManifestSlot,
@@ -15,23 +16,19 @@ import type {
  * Storybook decorator that renders an interactive overlay to highlight the
  * slots or CSS Parts of a web component.
  *
- * The overlay is only mounted while the inspector is turned on through the
- * toolbar toggle (the `component-inspector` Storybook global). Once active:
- *  - Hold the `Shift` key to reveal the slot overlay.
- *  - Hold the `Meta` key to reveal the shadow-part overlay instead.
- *  - `Shift + click` / `Meta + click` any element to inspect it.
+ * The overlay is mounted whenever the toolbar dropdown (the `component-inspector`
+ * Storybook global) is set to `slots` or `parts`. While active, simply hovering
+ * any matching element reveals its slot / shadow-part overlay — no modifier key
+ * is required.
  *
  * Each region is drawn on a full-viewport `<canvas>` that is transparent to
  * pointer events, so the story underneath stays fully interactive. The colour
- * legend itself is rendered in the Storybook manager (using Storybook's own UI
- * components and theme); this decorator only streams the legend data and the
- * anchor rect over the Storybook channel. While nothing is selected the manager
- * shows an OS-aware help message instead. Slot and part definitions are read
- * from the custom-elements manifest provided via
- * `parameters.componentInspector.customElements`.
+ * legend itself is rendered in the Storybook "Inspect" panel (using Storybook's
+ * own UI components and theme); this decorator only streams the legend data
+ * over the Storybook channel. While nothing is hovered the panel shows a help
+ * message instead. Slot and part definitions are read from the custom-elements
+ * manifest provided via `parameters.componentInspector.customElements`.
  */
-
-// Inspection modes: `slots` is toggled with Shift, `parts` with Meta.
 type Mode = "slots" | "parts";
 
 const MODE: Record<"SLOTS" | "PARTS", Mode> = { SLOTS: "slots", PARTS: "parts" };
@@ -45,7 +42,7 @@ const OVERLAY_CANVAS_STYLES: Partial<CSSStyleDeclaration> = {
   inset: "0",
   zIndex: "2147483000",
   pointerEvents: "none",
-  display: "none",
+  display: "block",
 };
 
 /** A DOMRect-like box, the common shape produced by unions and measurements. */
@@ -74,10 +71,16 @@ interface ManifestMaps {
 
 /**
  * Whether `node` is an inspectable element. With a `prefix` only elements whose
- * tag name starts with it match; without one, any element is selectable.
+ * tag name starts with it match; without one, any element is selectable. When
+ * `contentContainer` is set, the element must also be contained within it.
  */
-const matchesTarget = (node: EventTarget | null, prefix: string | null): node is Element => {
+const matchesTarget = (
+  node: EventTarget | null,
+  prefix: string | null,
+  contentContainer: Element | null,
+): node is Element => {
   if (!(node instanceof Element)) return false;
+  if (contentContainer && !contentContainer.contains(node)) return false;
   if (!prefix) return true;
   return node.tagName.toLowerCase().startsWith(prefix);
 };
@@ -171,8 +174,8 @@ const buildManifestMaps = (manifest: CustomElementsManifest | undefined): Manife
   return maps;
 };
 
-// Controller that owns the canvas rendering, the legend channel messages,
-// selection state and the listeners/observers that keep the overlay in sync
+// Controller that owns the canvas rendering, the legend channel messages, the
+// hovered element and the listeners/observers that keep the overlay in sync
 // with the story.
 class ComponentInspector {
   private readonly canvas: HTMLCanvasElement;
@@ -189,11 +192,11 @@ class ComponentInspector {
 
   private readonly prefix: string | null;
 
-  private selected: Element | null = null;
+  private readonly contentContainerSelector: string | null;
 
-  private active = false;
+  private hovered: Element | null = null;
 
-  private mode: Mode = MODE.SLOTS;
+  private mode: Mode;
 
   private frame: number | null = null;
 
@@ -208,6 +211,8 @@ class ComponentInspector {
     partsByTag: Map<string, ManifestCssPart[]>,
     channel: Channel | null,
     prefix: string | null,
+    contentContainerSelector: string | null,
+    mode: Mode,
   ) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -216,10 +221,11 @@ class ComponentInspector {
     this.partsByTag = partsByTag;
     this.channel = channel;
     this.prefix = prefix;
+    this.contentContainerSelector = contentContainerSelector;
+    this.mode = mode;
 
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onKeyUp = this.onKeyUp.bind(this);
-    this.onClick = this.onClick.bind(this);
+    this.onPointerOver = this.onPointerOver.bind(this);
+    this.onPointerOut = this.onPointerOut.bind(this);
     this.onRequest = this.onRequest.bind(this);
     this.scheduleDraw = this.scheduleDraw.bind(this);
 
@@ -230,12 +236,10 @@ class ComponentInspector {
   }
 
   private attach(): void {
-    window.addEventListener("keydown", this.onKeyDown, true);
-    window.addEventListener("keyup", this.onKeyUp, true);
-    window.addEventListener("blur", this.onKeyUp);
+    document.addEventListener("pointerover", this.onPointerOver, true);
+    document.addEventListener("pointerout", this.onPointerOut, true);
     window.addEventListener("resize", this.scheduleDraw);
     window.addEventListener("scroll", this.scheduleDraw, true);
-    document.addEventListener("click", this.onClick, true);
     this.channel?.on(EVENTS.REQUEST, this.onRequest);
 
     this.resizeObserver.observe(this.container);
@@ -246,16 +250,14 @@ class ComponentInspector {
       characterData: true,
     });
 
-    this.updateVisibility();
+    this.emitHelp();
   }
 
   destroy(): void {
-    window.removeEventListener("keydown", this.onKeyDown, true);
-    window.removeEventListener("keyup", this.onKeyUp, true);
-    window.removeEventListener("blur", this.onKeyUp);
+    document.removeEventListener("pointerover", this.onPointerOver, true);
+    document.removeEventListener("pointerout", this.onPointerOut, true);
     window.removeEventListener("resize", this.scheduleDraw);
     window.removeEventListener("scroll", this.scheduleDraw, true);
-    document.removeEventListener("click", this.onClick, true);
     this.channel?.off(EVENTS.REQUEST, this.onRequest);
     this.resizeObserver.disconnect();
     this.mutationObserver.disconnect();
@@ -264,75 +266,52 @@ class ComponentInspector {
     this.canvas.remove();
   }
 
-  private setSelected(element: Element, mode: Mode): void {
-    this.selected = element;
+  /** Switch the active inspection mode (called when the toolbar selection changes). */
+  setMode(mode: Mode): void {
+    if (this.mode === mode) return;
     this.mode = mode;
-    this.active = true;
-    this.updateVisibility();
     this.scheduleDraw();
   }
 
-  // Activate an inspection mode when its modifier key is pressed.
-  private activateMode(mode: Mode): void {
-    if (this.active && this.mode === mode) return;
-    this.active = true;
-    this.mode = mode;
-    this.updateVisibility();
-    this.scheduleDraw();
+  // Resolved on every lookup (rather than once at construction) because the
+  // story — and therefore the selector's target — may not exist in the DOM
+  // yet when the inspector is first mounted.
+  private getContentContainer(): Element | null {
+    if (!this.contentContainerSelector) return null;
+    return this.container.querySelector(this.contentContainerSelector);
   }
 
-  private onKeyDown(event: KeyboardEvent): void {
-    if (event.key === "Shift") {
-      this.activateMode(MODE.SLOTS);
-    } else if (event.key === "Meta") {
-      this.activateMode(MODE.PARTS);
-    }
-  }
-
-  private onKeyUp(event: KeyboardEvent | FocusEvent): void {
-    const key = "key" in event ? event.key : undefined;
-    const releasesActive =
-      event.type === "blur" ||
-      (key === "Shift" && this.mode === MODE.SLOTS) ||
-      (key === "Meta" && this.mode === MODE.PARTS);
-    if (releasesActive && this.active) {
-      this.active = false;
-      this.updateVisibility();
-    }
-  }
-
-  private onClick(event: MouseEvent): void {
-    let mode: Mode | null = null;
-    if (event.shiftKey) mode = MODE.SLOTS;
-    else if (event.metaKey) mode = MODE.PARTS;
-    if (!mode) return;
+  // Track the innermost matching ancestor of the hovered element so the
+  // overlay always targets a whole component, not one of its internals.
+  private onPointerOver(event: PointerEvent): void {
+    const contentContainer = this.getContentContainer();
     const target = event
       .composedPath()
-      .find((node) => matchesTarget(node, this.prefix) && node.getRootNode() === document);
-    if (!matchesTarget(target ?? null, this.prefix)) return;
-    // Prevent the modifier+click from triggering the component's own behaviour
-    // while it is being selected for inspection.
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    this.setSelected(target as Element, mode);
-    window.getSelection()?.empty();
+      .find(
+        (node) => matchesTarget(node, this.prefix, contentContainer) && (node as Element).getRootNode() === document,
+      );
+    if (!matchesTarget(target ?? null, this.prefix, contentContainer) || target === this.hovered) return;
+    this.hovered = target as Element;
+    this.scheduleDraw();
   }
 
-  // Re-emit the current legend/help so a freshly mounted manager panel (which
-  // may have subscribed after the initial emit) picks up the correct state.
+  // Clear the overlay once the pointer actually leaves the hovered element
+  // (and all of its descendants) rather than on every bubbled `pointerout`.
+  private onPointerOut(event: PointerEvent): void {
+    if (!this.hovered) return;
+    const related = event.relatedTarget as Node | null;
+    if (related && this.hovered.contains(related)) return;
+    this.hovered = null;
+    this.scheduleDraw();
+  }
+
+  // Re-emit the current legend/help so a freshly mounted panel (which may have
+  // subscribed after the initial emit) picks up the correct state.
   private onRequest(): void {
-    if (this.active && this.selected?.isConnected) {
+    if (this.hovered?.isConnected) {
       this.draw();
     } else {
       this.emitHelp();
-    }
-  }
-
-  private updateVisibility(): void {
-    this.canvas.style.display = this.active ? "block" : "none";
-    if (!this.active) {
-      if (this.selected) this.clearLegend();
-      else this.emitHelp();
     }
   }
 
@@ -340,8 +319,8 @@ class ComponentInspector {
     this.channel?.emit(EVENTS.UPDATE, payload);
   }
 
-  // With nothing selected there is nothing to outline, so the manager renders
-  // an OS-aware key guide instead (signalled by a `null` tag).
+  // With nothing hovered there is nothing to outline, so the floating panel
+  // renders a help message instead (signalled by a `null` tag).
   private emitHelp(): void {
     this.emitLegend({ tag: null, mode: this.mode, items: [], anchor: null });
   }
@@ -351,7 +330,6 @@ class ComponentInspector {
   }
 
   private scheduleDraw(): void {
-    if (!this.active) return;
     if (this.frame) cancelAnimationFrame(this.frame);
     this.frame = requestAnimationFrame(() => {
       this.frame = null;
@@ -372,15 +350,15 @@ class ComponentInspector {
   }
 
   // Collect the on-screen rectangle and colour for each manifest slot of the
-  // selected element. Named slots are resolved through the shadow `<slot>`
+  // hovered element. Named slots are resolved through the shadow `<slot>`
   // assignment; the default slot counts the element's own light-DOM children
   // that have no explicit `slot` attribute.
   private collectSlots(): InspectedItem[] {
-    const selected = this.selected;
-    if (!selected) return [];
-    const tag = selected.tagName.toLowerCase();
+    const hovered = this.hovered;
+    if (!hovered) return [];
+    const tag = hovered.tagName.toLowerCase();
     const definitions = this.slotsByTag.get(tag) || [];
-    const root = selected.shadowRoot;
+    const root = hovered.shadowRoot;
 
     const slots = definitions
       .filter((definition) => {
@@ -410,13 +388,13 @@ class ComponentInspector {
   }
 
   // Collect the on-screen rectangle and colour for each manifest shadow part of
-  // the selected element by querying its shadow DOM for `[part~="name"]`.
+  // the hovered element by querying its shadow DOM for `[part~="name"]`.
   private collectParts(): InspectedItem[] {
-    const selected = this.selected;
-    if (!selected) return [];
-    const tag = selected.tagName.toLowerCase();
+    const hovered = this.hovered;
+    if (!hovered) return [];
+    const tag = hovered.tagName.toLowerCase();
     const definitions = this.partsByTag.get(tag) || [];
-    const root = selected.shadowRoot;
+    const root = hovered.shadowRoot;
 
     const parts = definitions
       .map<InspectedItem>((definition) => {
@@ -446,11 +424,11 @@ class ComponentInspector {
     return items;
   }
 
-  // Direct light-DOM children (and non-empty text nodes) of the selected
+  // Direct light-DOM children (and non-empty text nodes) of the hovered
   // element with no explicit `slot` attribute — i.e. the default slot content.
   private defaultSlotNodes(): Node[] {
-    if (!this.selected) return [];
-    return Array.from(this.selected.childNodes).filter((node) => {
+    if (!this.hovered) return [];
+    return Array.from(this.hovered.childNodes).filter((node) => {
       if (node.nodeType === Node.TEXT_NODE) {
         return !!(node.textContent && node.textContent.trim());
       }
@@ -470,15 +448,15 @@ class ComponentInspector {
     const { ctx } = this;
     ctx.clearRect(0, 0, width, height);
 
-    if (!this.selected || !this.selected.isConnected) {
+    if (!this.hovered || !this.hovered.isConnected) {
       this.emitHelp();
       return;
     }
 
-    const tag = this.selected.tagName.toLowerCase();
+    const tag = this.hovered.tagName.toLowerCase();
     const items = this.mode === MODE.PARTS ? this.collectParts() : this.collectSlots();
 
-    this.drawSelectedOutline(ctx);
+    this.drawHoveredOutline(ctx);
     items.forEach((item) => {
       if (item.rect) this.drawSlotRect(ctx, item.rect, item);
     });
@@ -492,12 +470,12 @@ class ComponentInspector {
         borderColor: item.borderColor ?? "",
         bgColor: item.bgColor ?? "",
       })),
-      anchor: rectToPlain(this.selected.getBoundingClientRect()),
+      anchor: rectToPlain(this.hovered.getBoundingClientRect()),
     });
   }
 
-  private drawSelectedOutline(ctx: CanvasRenderingContext2D): void {
-    const rect = this.selected!.getBoundingClientRect();
+  private drawHoveredOutline(ctx: CanvasRenderingContext2D): void {
+    const rect = this.hovered!.getBoundingClientRect();
     ctx.save();
     ctx.strokeStyle = "rgba(255, 255, 255, 0.6)";
     ctx.lineWidth = 1;
@@ -522,19 +500,43 @@ class ComponentInspector {
 /** Only a single inspector can be active at a time (one story is visible). */
 let currentInspector: ComponentInspector | null = null;
 
+/**
+ * Identity of the configuration the current inspector was built from, used to
+ * avoid tearing down (and losing hover state / observers) on every re-render
+ * when only the active mode changed.
+ */
+let currentConfig: {
+  container: Element;
+  slotsByTag: Map<string, ManifestSlot[]>;
+  partsByTag: Map<string, ManifestCssPart[]>;
+  prefix: string | null;
+  contentContainerSelector: string | null;
+} | null = null;
+
 const teardownInspector = (): void => {
   if (currentInspector) {
     currentInspector.destroy();
     currentInspector = null;
+    currentConfig = null;
   }
 };
 
+const isSameConfig = (config: NonNullable<typeof currentConfig>): boolean =>
+  !!currentConfig &&
+  currentConfig.container === config.container &&
+  currentConfig.slotsByTag === config.slotsByTag &&
+  currentConfig.partsByTag === config.partsByTag &&
+  currentConfig.prefix === config.prefix &&
+  currentConfig.contentContainerSelector === config.contentContainerSelector;
+
 /**
- * Storybook decorator. Mounts the inspector overlay only while the toolbar
- * toggle (the `component-inspector` global) is on, and never in docs view.
+ * Storybook decorator. Mounts the inspector overlay whenever the toolbar
+ * dropdown (the `component-inspector` global) is set to `slots` or `parts`,
+ * and never in docs view.
  */
 export const withComponentInspector = (story: PartialStoryFn<Renderer>, context: StoryContext<Renderer>) => {
-  const isEnabled = !!(context.globals && context.globals[KEY]);
+  const globalMode = (context.globals?.[KEY] as InspectorMode | undefined) ?? "off";
+  const isEnabled = globalMode === "slots" || globalMode === "parts";
 
   if (context.viewMode === "docs" || !isEnabled) {
     teardownInspector();
@@ -544,6 +546,16 @@ export const withComponentInspector = (story: PartialStoryFn<Renderer>, context:
   const parameters = context.parameters?.[PARAM_KEY] as ComponentInspectorParameters | undefined;
   const { slotsByTag, partsByTag } = buildManifestMaps(parameters?.customElements);
   const prefix = parameters?.prefix ? parameters.prefix.toLowerCase() : null;
+  const container = document.getElementById("storybook-root") || document.body;
+  const contentContainerSelector = parameters?.contentContainer ?? null;
+  const mode: Mode = globalMode === "parts" ? MODE.PARTS : MODE.SLOTS;
+
+  const config = { container, slotsByTag, partsByTag, prefix, contentContainerSelector };
+
+  if (currentInspector && isSameConfig(config)) {
+    currentInspector.setMode(mode);
+    return story();
+  }
 
   let channel: Channel | null = null;
   try {
@@ -555,14 +567,22 @@ export const withComponentInspector = (story: PartialStoryFn<Renderer>, context:
   // Any previously mounted overlay is torn down before a new one is created.
   teardownInspector();
 
-  const container = document.getElementById("storybook-root") || document.body;
-
   const canvas = document.createElement("canvas");
   canvas.className = OVERLAY_CANVAS_CLASS;
   Object.assign(canvas.style, OVERLAY_CANVAS_STYLES);
   document.body.appendChild(canvas);
 
-  currentInspector = new ComponentInspector(canvas, container, slotsByTag, partsByTag, channel, prefix);
+  currentInspector = new ComponentInspector(
+    canvas,
+    container,
+    slotsByTag,
+    partsByTag,
+    channel,
+    prefix,
+    contentContainerSelector,
+    mode,
+  );
+  currentConfig = config;
 
   return story();
 };
