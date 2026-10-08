@@ -2,6 +2,7 @@
 // source=https://github.com/momentum-design/momentum-design/blob/main/packages/components/src/components/radio/radio.component.ts
 // component=mdc-radio
 import figma from 'figma';
+
 import { attribute, booleanAttribute, element } from '../../../../config/code-connect/html';
 
 const instance = figma.selectedInstance;
