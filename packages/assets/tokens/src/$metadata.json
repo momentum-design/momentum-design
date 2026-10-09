@@ -5,6 +5,7 @@
     "core/elevation",
     "core/motion",
     "core/effect",
+    "core/dimension",
     "theme/stable/dark",
     "theme/stable/light",
     "theme/stable/highcontrast/hc_dark",
