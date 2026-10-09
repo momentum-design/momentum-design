@@ -54,6 +54,14 @@
       "websitePath": "foundations/color"
     },
     {
+      "id": "tier2/packages/assets/tokens/knowledge-base/dimension",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/dimension.md",
+      "title": "Dimension",
+      "summary": "Momentum dimension tokens for spacing, border width, corner radius, and fixed size, including the stable and fluid density contracts.",
+      "canonical": null
+    },
+    {
       "id": "tier2/packages/assets/tokens/knowledge-base/elevation",
       "tier": 2,
       "path": "packages/assets/tokens/knowledge-base/elevation.md",

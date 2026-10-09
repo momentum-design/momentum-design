@@ -10,6 +10,7 @@
       "cssSelector": ".mds-theme-stable-darkIndigoWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/dark.json",
         "additionaltheme/dark/indigo.json"
       ]
@@ -24,6 +25,7 @@
       "cssSelector": ".mds-theme-stable-darkJadeWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/dark.json",
         "additionaltheme/dark/jade.json"
       ]
@@ -38,6 +40,7 @@
       "cssSelector": ".mds-theme-stable-darkBronzeWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/dark.json",
         "additionaltheme/dark/bronze.json"
       ]
@@ -52,6 +55,7 @@
       "cssSelector": ".mds-theme-stable-darkRoseWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/dark.json",
         "additionaltheme/dark/rose.json"
       ]
@@ -66,6 +70,7 @@
       "cssSelector": ".mds-theme-stable-darkLavenderWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/dark.json",
         "additionaltheme/dark/lavender.json"
       ]
@@ -80,6 +85,7 @@
       "cssSelector": ".mds-theme-stable-lightIndigoWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/light.json",
         "additionaltheme/light/indigo.json"
       ]
@@ -94,6 +100,7 @@
       "cssSelector": ".mds-theme-stable-lightJadeWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/light.json",
         "additionaltheme/light/jade.json"
       ]
@@ -108,6 +115,7 @@
       "cssSelector": ".mds-theme-stable-lightBronzeWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/light.json",
         "additionaltheme/light/bronze.json"
       ]
@@ -122,6 +130,7 @@
       "cssSelector": ".mds-theme-stable-lightRoseWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/light.json",
         "additionaltheme/light/rose.json"
       ]
@@ -136,6 +145,7 @@
       "cssSelector": ".mds-theme-stable-lightLavenderWebex",
       "targets": [
         "core/value.json",
+        "core/dimension.json",
         "theme/stable/light.json",
         "additionaltheme/light/lavender.json"
       ]
