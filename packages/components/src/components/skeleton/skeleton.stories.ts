@@ -215,6 +215,14 @@ export const Motion: StoryObj = {
   },
 };
 
+export const AnimationDelay: StoryObj = {
+  args: {
+    motion: true,
+    variant: DEFAULTS.VARIANT,
+    style: '--mdc-skeleton-animation-delay: -750ms;',
+  },
+};
+
 export const WithContent: StoryObj = {
   render: renderWithContent,
   args: {

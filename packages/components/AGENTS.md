@@ -32,6 +32,10 @@ To create or update a Code Connect template, follow the
 [`momentum-figma-code-connect` skill](../../.github/skills/momentum-figma-code-connect/SKILL.md).
 It owns the workflow; this section records the conventions it depends on.
 
+To check an existing mapping for drift between the component source, the
+templates and the Figma component set, follow the
+[`momentum-verify-code-connect-sync` skill](../../.github/skills/momentum-verify-code-connect-sync/SKILL.md).
+
 **Iron rule — never assert anything Code Connect related from memory.** Always
 read the relevant page on <https://developers.figma.com/docs/code-connect/>
 first, and cite it. The API changes often, much of what is widely known is the
