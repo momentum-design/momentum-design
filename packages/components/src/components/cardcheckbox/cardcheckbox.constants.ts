@@ -19,4 +19,11 @@ const DEFAULTS = {
   ICON_LENGTH_UNIT: 'rem',
 } as const;
 
-export { TAG_NAME, DEFAULTS, SELECTION_TYPE, CHECK_MARK };
+const DATA_MOTION = {
+  BACKGROUND: 'data-motion-background',
+  ACTIVE: 'data-motion-active',
+} as const;
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+export { TAG_NAME, DEFAULTS, SELECTION_TYPE, CHECK_MARK, DATA_MOTION, REDUCED_MOTION_QUERY };

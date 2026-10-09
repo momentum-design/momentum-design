@@ -237,6 +237,34 @@ export const ContentAfterBody: StoryObj = {
   },
 };
 
+export const Motion: StoryObj = {
+  render: () => html`
+    <div role="main" style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem;">
+      <p style="margin: 0; max-width: 36rem; font-size: 0.875rem;">
+        Click each card to observe checked/unchecked motion on the card background and selection indicator. Wrap with
+        <code>mdc-motionprovider</code> or enable OS reduced motion to verify instant updates.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+        <mdc-cardcheckbox
+          card-title="Check indicator"
+          subtitle='selection-type="check"'
+          icon-name="placeholder-bold"
+          selection-type="check"
+          style="--mdc-card-width: 16rem;"
+        ></mdc-cardcheckbox>
+        <mdc-cardcheckbox
+          card-title="Checkbox indicator"
+          subtitle='selection-type="checkbox"'
+          icon-name="placeholder-bold"
+          selection-type="checkbox"
+          style="--mdc-card-width: 16rem;"
+        ></mdc-cardcheckbox>
+      </div>
+    </div>
+  `,
+  ...hideAllControls(),
+};
+
 export const CardsInCheckboxGroup: StoryObj = {
   render: () => html`
     <mdc-formfieldgroup label="Checkbox Cards" help-text="Help Text" data-aria-label="Checkbox Cards">

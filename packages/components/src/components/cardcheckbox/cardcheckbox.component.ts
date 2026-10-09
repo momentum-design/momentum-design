@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+import { keyed } from 'lit/directives/keyed.js';
 
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
@@ -8,7 +9,13 @@ import { ROLE } from '../../utils/roles';
 import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
-import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
+import {
+  CHECK_MARK,
+  DATA_MOTION,
+  DEFAULTS,
+  REDUCED_MOTION_QUERY,
+  SELECTION_TYPE,
+} from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
 import styles from './cardcheckbox.styles';
 
@@ -46,6 +53,7 @@ import styles from './cardcheckbox.styles';
  * @csspart icon-button - The icon button part of the card header
  * @csspart text - The text part of the card
  * @csspart check - The check part of the card
+ * @csspart check-icon-container - The wrapper for the check icon animation
  * @csspart check-icon - The check icon part of the card
  * @csspart check-icon-button - The check icon button part of the card
  *
@@ -78,12 +86,43 @@ class CardCheckbox extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(Ta
   override connectedCallback() {
     super.connectedCallback();
     this.role = ROLE.CHECKBOX;
+    this.addEventListener('transitionend', this.handleTransitionEnd);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('transitionend', this.handleTransitionEnd);
+  }
+
+  private handleTransitionEnd = (event: TransitionEvent) => {
+    if (event.target !== this || event.propertyName !== 'background-color') {
+      return;
+    }
+
+    this.removeAttribute(DATA_MOTION.BACKGROUND);
+  };
+
+  private prefersReducedMotion(): boolean {
+    return window.matchMedia(REDUCED_MOTION_QUERY).matches;
   }
 
   override update(changedProperties: PropertyValues<CardCheckbox>) {
     super.update(changedProperties);
     if (changedProperties.has('checked')) {
       this.setAttribute('aria-checked', `${this.checked}`);
+
+      // The first update records the initial value. Only a later change is a toggle.
+      if (changedProperties.get('checked') !== undefined) {
+        this.setAttribute(DATA_MOTION.BACKGROUND, '');
+
+        if (this.prefersReducedMotion()) {
+          this.removeAttribute(DATA_MOTION.BACKGROUND);
+        }
+
+        if (!this.hasAttribute(DATA_MOTION.ACTIVE)) {
+          this.setAttribute(DATA_MOTION.ACTIVE, '');
+        }
+      }
     }
     if (changedProperties.has('disabled')) {
       this.setAttribute('aria-disabled', `${this.disabled}`);
@@ -137,12 +176,17 @@ class CardCheckbox extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(Ta
     const ICON_NAME = this.checked ? CHECK_MARK.CHECKED : CHECK_MARK.DEFAULT;
     switch (this.selectionType) {
       case SELECTION_TYPE.CHECK: {
-        return html`<mdc-icon
-          part="check check-icon"
-          size="${DEFAULTS.ICON_SIZE}"
-          length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"
-          name="${ICON_NAME}"
-        ></mdc-icon>`;
+        return keyed(
+          this.checked ? 'checked' : 'unchecked',
+          html`<div part="check check-icon-container">
+            <mdc-icon
+              part="check-icon"
+              size="${DEFAULTS.ICON_SIZE}"
+              length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"
+              name="${ICON_NAME}"
+            ></mdc-icon>
+          </div>`,
+        );
       }
 
       case SELECTION_TYPE.CHECKBOX: {

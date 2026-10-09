@@ -84,6 +84,18 @@ Listen for the `change` event to react to toggles; the new state is available on
 - **No built-in group** — the component provides no group container or group label. Wrap related cards in an element with `role="group"` and a label so the set is announced.
 - **Accessible name required** — `card-title` (or the `title` slot) is the only source of the name, with no fallback. Always provide one.
 
+### Motion
+
+These transitions run when an ancestor has the `mds-animation` class and the animation token stylesheet is loaded.
+
+Checked and unchecked toggles animate the card `background-color` using `--mds-transition-background-color`. Hover and active background colors remain instant.
+
+For `selection-type="check"` (default), the header check icon scales and fades in when selected and scales and fades when cleared, using `--mds-transition-grow-shrink`, `--mds-transition-fade-in`, and `--mds-transition-fade-out`. Icon color changes remain instant.
+
+For `selection-type="checkbox"`, the card surface background still animates on toggle. The embedded `mdc-staticcheckbox` does not run its own indicator transition here.
+
+When `prefers-reduced-motion: reduce` is active, or the transition tokens resolve to `none`, checked and unchecked updates apply immediately.
+
 ## Accessibility
 
 ### Built-in features
