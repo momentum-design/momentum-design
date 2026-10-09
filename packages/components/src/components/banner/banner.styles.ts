@@ -9,17 +9,90 @@ const styles = css`
     --mdc-banner-elevation: var(--mds-elevation-3);
     --mdc-banner-padding: calc(0.75rem - var(--mdc-banner-border-width));
     --mdc-banner-gap: 0.5rem;
+    --mdc-banner-slide-offset: 1rem;
 
+    display: block;
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--mdc-banner-slide-offset)));
+    align-self: stretch;
+    width: 100%;
+    transition: var(--mds-transition-slide-exit), var(--mds-transition-fade-out);
+    transition-behavior: allow-discrete;
+  }
+
+  :host([data-motion-phase='entering']),
+  :host([data-motion-phase='visible']) {
+    opacity: 1;
+    transform: none;
+  }
+
+  :host([data-motion-phase='entering']) {
+    transition: var(--mds-transition-slide-entrance), var(--mds-transition-fade-in);
+    transition-behavior: allow-discrete;
+  }
+
+  :host([data-motion-phase='exiting']) {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--mdc-banner-slide-offset)));
+    transition: var(--mds-transition-slide-exit), var(--mds-transition-fade-out);
+    transition-behavior: allow-discrete;
+  }
+
+  .banner-inner {
+    display: grid;
+    grid-template-rows: 0fr;
+    width: 100%;
+    transition: var(--mds-transition-collapse);
+    transition-behavior: allow-discrete;
+  }
+
+  :host([data-motion-phase='entering']) .banner-inner,
+  :host([data-motion-phase='visible']) .banner-inner {
+    grid-template-rows: 1fr;
+  }
+
+  :host([data-motion-phase='entering']) .banner-inner {
+    transition: var(--mds-transition-expand);
+  }
+
+  :host([data-motion-phase='exiting']) .banner-inner {
+    grid-template-rows: 0fr;
+    transition: var(--mds-transition-collapse);
+  }
+
+  .banner-content {
+    min-height: 0;
+    overflow: hidden;
     display: flex;
     padding: var(--mdc-banner-padding);
     align-items: flex-start;
     gap: var(--mdc-banner-gap);
-    align-self: stretch;
     width: 100%;
     background-color: var(--mdc-banner-background-color);
     border: var(--mdc-banner-border-width) solid var(--mdc-banner-border-color);
     border-radius: 0.5rem;
     filter: var(--mdc-banner-elevation);
+  }
+
+  @starting-style {
+    :host([data-motion-phase='entering']) {
+      opacity: 0;
+      transform: translateY(calc(-1 * var(--mdc-banner-slide-offset)));
+    }
+
+    :host([data-motion-phase='entering']) .banner-inner {
+      grid-template-rows: 0fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host,
+    :host([data-motion-phase='entering']),
+    :host([data-motion-phase='visible']),
+    :host([data-motion-phase='exiting']),
+    .banner-inner {
+      transition: none;
+    }
   }
 
   :host([variant='success']) {

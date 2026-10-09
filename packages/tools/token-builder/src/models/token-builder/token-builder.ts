@@ -14,7 +14,13 @@ import {
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
 import { CONSTANTS, Config as ExternalConfig } from '../../common';
 import { ElevationTransform, PxToRemTransform } from '../../transforms';
-import { IOSWebexFormat, JsonMinimalFormat, AnimationCssFormat, AnimationScssFormat } from '../../formats';
+import {
+  IOSWebexFormat,
+  JsonMinimalFormat,
+  AnimationCssFormat,
+  AnimationScssFormat,
+  MotionCssFormat,
+} from '../../formats';
 import { AnimationParser } from '../../parsers';
 import Dictionary from '../dictionary';
 
@@ -106,7 +112,12 @@ class TokenBuilder {
             .forEach((formatKey) => {
               const formatName = CONSTANTS.FORMATS[formatKey].NAME;
 
-              let format: JsonMinimalFormat | IOSWebexFormat | AnimationCssFormat | AnimationScssFormat;
+              let format:
+                | JsonMinimalFormat
+                | IOSWebexFormat
+                | AnimationCssFormat
+                | AnimationScssFormat
+                | MotionCssFormat;
 
               switch (formatName) {
                 case CONSTANTS.LOCAL_FORMATS.MD_JSON_MINIMAL.NAME:
@@ -117,6 +128,12 @@ class TokenBuilder {
 
                 case CONSTANTS.LOCAL_FORMATS.MD_ANIMATION_CSS.NAME:
                   format = new AnimationCssFormat();
+
+                  StyleDictionary.registerFormat(format.sdConfig);
+                  break;
+
+                case CONSTANTS.LOCAL_FORMATS.MD_MOTION_CSS.NAME:
+                  format = new MotionCssFormat();
 
                   StyleDictionary.registerFormat(format.sdConfig);
                   break;
