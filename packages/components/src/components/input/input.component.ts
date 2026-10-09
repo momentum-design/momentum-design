@@ -274,6 +274,7 @@ class Input
    * @internal
    */
   protected onInput(event: Event) {
+    if (this.preventSoftDisabledChange(event, this.value)) return;
     this.updateValue();
     this.setInputValidity();
     this.checkValidity();
@@ -298,6 +299,7 @@ class Input
    * @internal
    */
   protected onChange(event: Event) {
+    if (this.preventSoftDisabledChange(event, this.value)) return;
     this.updateValue();
     this.setInputValidity();
     const EventConstructor = event.constructor as typeof Event;
@@ -310,6 +312,10 @@ class Input
    * @param event - Keyboard event
    */
   protected handleKeyDown(event: KeyboardEvent) {
+    if (this.softDisabled) {
+      if (this.getActionForKeyEvent(event) === ACTIONS.ENTER) event.preventDefault();
+      return;
+    }
     if (this.getActionForKeyEvent(event) === ACTIONS.ENTER && this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
       this.form?.requestSubmit();
     }
@@ -366,6 +372,7 @@ class Input
    * Clears the input field.
    */
   protected clearInputText() {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     this.value = '';
     // focus the input field after clearing the text
     this.inputElement?.focus();
@@ -390,7 +397,8 @@ class Input
         size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
         aria-label="${this.clearAriaLabel}"
         @click=${this.clearInputText}
-        ?disabled=${this.disabled || this.readonly || !showBtn}
+        ?disabled=${this.disabled || this.softDisabled || this.readonly || !showBtn}
+        ?soft-disabled=${this.softDisabled}
       ></mdc-button>
     `;
   }
@@ -406,6 +414,7 @@ class Input
       .value="${live(this.value)}"
       ?disabled="${this.disabled}"
       ?readonly="${this.readonly}"
+      aria-disabled="${this.disabled || this.softDisabled}"
       ?required="${this.required}"
       type="${type}"
       aria-labelledby="${ifDefined(this.label ? DEFAULTS.HEADING_ID : undefined)}"
@@ -423,6 +432,7 @@ class Input
       pattern=${ifDefined(this.pattern)}
       list=${ifDefined(this.list)}
       size=${ifDefined(this.size)}
+      @beforeinput=${this.preventSoftDisabledInput}
       @input=${this.onInput}
       @change=${this.onChange}
       @keydown=${this.handleKeyDown}

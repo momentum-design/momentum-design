@@ -260,6 +260,7 @@ class Combobox
 
   /** @internal */
   private openPopover(): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     this.isOpen = true;
   }
 
@@ -363,7 +364,7 @@ class Combobox
 
   /** @internal */
   private handleTriggerClick(): void {
-    if (this.disabled) {
+    if (this.disabled || this.softDisabled || this.readonly) {
       return;
     }
 
@@ -595,10 +596,12 @@ class Combobox
       this.visualCombobox?.setAttribute('aria-controls', this.listboxId);
     }
 
-    if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
-      if (this.disabled || this.readonly) {
-        // If the combobox is disabled or readonly,
-        // we close the popover if it is open.
+    if (
+      changedProperties.has('disabled') ||
+      changedProperties.has('softDisabled') ||
+      changedProperties.has('readonly')
+    ) {
+      if (this.disabled || this.softDisabled || this.readonly) {
         this.closePopover();
       }
     }
@@ -751,6 +754,7 @@ class Combobox
    * @internal
    */
   private handleBlurChange(): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const options = this.getVisibleOptions(this.filteredValue);
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
 
@@ -801,6 +805,7 @@ class Combobox
 
   /** @internal */
   private handleInputKeydown(event: KeyboardEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const options = this.getVisibleOptions(this.filteredValue).filter(option => !option.hasAttribute('disabled'));
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     const isSpatialNavigation = this.getKeyboardNavMode() === NAV_MODES.SPATIAL;
@@ -926,6 +931,7 @@ class Combobox
 
   /** @internal */
   private handleInputChange(event: InputEvent): void {
+    if (this.preventSoftDisabledChange(event, this.filteredValue)) return;
     event.preventDefault();
     event.stopPropagation();
 
@@ -945,6 +951,7 @@ class Combobox
 
   /** @internal */
   private handleOptionsClick(event: MouseEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     event.preventDefault();
     event.stopPropagation();
 
@@ -960,7 +967,7 @@ class Combobox
 
   /** @internal */
   private shouldDisplayPopover(optionsLength: number): boolean {
-    if (this.disabled || this.readonly) {
+    if (this.disabled || this.softDisabled || this.readonly) {
       return false;
     }
     if (optionsLength || this.noResultText) {
@@ -1017,13 +1024,14 @@ class Combobox
         role="${ROLE.COMBOBOX}"
         ?readonly="${this.readonly}"
         ?required="${this.required}"
+        @beforeinput=${this.preventSoftDisabledInput}
         @input=${this.handleInputChange}
         @keydown=${this.handleInputKeydown}
         @blur="${this.handleBlurChange}"
         aria-autocomplete="${AUTOCOMPLETE_LIST}"
         aria-controls=""
         aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-        aria-disabled="${this.disabled ? 'true' : 'false'}"
+        aria-disabled="${this.disabled || this.softDisabled}"
         aria-expanded="${this.isOpen ? 'true' : 'false'}"
         aria-haspopup="${ROLE.LISTBOX}"
         aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
@@ -1052,6 +1060,7 @@ class Combobox
           @click="${this.handleTriggerClick}"
           ?disabled="${this.disabled}"
           ?readonly="${this.readonly}"
+          ?soft-disabled="${this.softDisabled}"
           help-text-type="${this.helpTextType}"
         >
           ${this.renderBaseInput()}
@@ -1059,6 +1068,7 @@ class Combobox
         <mdc-buttonsimple
           @click="${this.handleTriggerClick}"
           part="combobox-button"
+          ?soft-disabled="${this.softDisabled}"
           ?disabled="${this.disabled}"
           tabindex="-1"
           aria-expanded="${this.isOpen ? 'true' : 'false'}"

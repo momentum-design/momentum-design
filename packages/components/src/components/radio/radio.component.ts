@@ -220,6 +220,10 @@ class Radio
     if (this.disabled) return;
 
     const action = this.getActionForKeyEvent(event);
+    if (this.softDisabled && action === ACTIONS.ENTER) {
+      event.preventDefault();
+      return;
+    }
 
     if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
       event.preventDefault();
@@ -287,6 +291,9 @@ class Radio
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
+    if (changedProperties.has('disabled') || changedProperties.has('softDisabled')) {
+      this.ariaDisabled = String(this.disabled || this.softDisabled);
+    }
     if (changedProperties.has('checked')) {
       this.ariaChecked = this.checked.toString();
       this.setActualFormValue();
