@@ -59,6 +59,47 @@ test.describe('soft-disabled form fields', () => {
     });
   });
 
+  textFields
+    .filter(({ name }) => ['input', 'searchfield', 'textarea'].includes(name))
+    .forEach(({ name, value, extra }) => {
+      test(`should skip the unavailable action button when ${name} is soft-disabled`, async ({ componentsPage }) => {
+        await setup(
+          componentsPage,
+          `<div><mdc-${name} label="Field" value="${value}" ${extra} soft-disabled></mdc-${name}><button>Next</button></div>`,
+        );
+        const field = componentsPage.page.locator(`mdc-${name}`);
+        const input = field.locator('input, textarea').first();
+        const action = field.getByRole('button');
+        const next = componentsPage.page.getByRole('button', { name: 'Next', exact: true });
+
+        await componentsPage.actionability.pressTab();
+        await expect(input).toBeFocused();
+        await expect(action).toBeDisabled();
+        await componentsPage.actionability.pressTab();
+        await expect(next).toBeFocused();
+
+        await componentsPage.removeAttribute(field, 'soft-disabled');
+        await expect(action).toBeEnabled();
+        await input.focus();
+        await componentsPage.actionability.pressTab();
+        await expect(action).toBeFocused();
+        if (name === 'textarea') {
+          const rows = await input.evaluate((element: HTMLTextAreaElement) => element.rows);
+          await action.press('ArrowDown');
+          await expect(input).toHaveJSProperty('rows', rows + 1);
+        } else {
+          await action.click();
+          await expect(input).toHaveValue('');
+        }
+
+        await componentsPage.setAttributes(field, { 'soft-disabled': '', value });
+        await expect(action).toBeDisabled();
+        await input.focus();
+        await componentsPage.actionability.pressTab();
+        await expect(next).toBeFocused();
+      });
+    });
+
   ['input', 'textarea', 'numberinput'].forEach(name => {
     test(`should restore uncancelable edits without emitting changes when ${name} is soft-disabled`, async ({
       componentsPage,

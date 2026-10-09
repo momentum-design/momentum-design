@@ -407,7 +407,7 @@ class Textarea extends CharacterLimitMixin(
                 size="24"
                 prefix-icon="resize-corner-regular"
                 aria-label=${this.resizeButtonAriaLabel ?? ''}
-                ?disabled="${this.disabled || this.readonly}"
+                ?disabled="${this.disabled || this.softDisabled || this.readonly}"
                 ?soft-disabled="${this.softDisabled}"
                 @keydown=${this.handleResizeKeyDown}
                 @pointerdown=${this.handlePointerDown}

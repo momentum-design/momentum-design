@@ -397,7 +397,7 @@ class Input
         size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
         aria-label="${this.clearAriaLabel}"
         @click=${this.clearInputText}
-        ?disabled=${this.disabled || this.readonly || !showBtn}
+        ?disabled=${this.disabled || this.softDisabled || this.readonly || !showBtn}
         ?soft-disabled=${this.softDisabled}
       ></mdc-button>
     `;
