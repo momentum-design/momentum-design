@@ -11,9 +11,8 @@ scale supplies primitive measurements, while spacing, border, radius, and size
 tokens give those measurements a role that designers and developers can apply
 consistently.
 
-Use the role-based tokens in components and product layouts. Treat the core
-`dimension.*` scale as the foundation for those roles, not as a menu of values
-to apply directly.
+Use theme tokens in components and product layouts. Do not pick a core
+`dimension.*` step just because the number looks right.
 
 ## Token layers
 
@@ -24,28 +23,25 @@ describe their pixel-equivalent size at the default root font size, while the
 source uses relative units where appropriate. `dimension.full` is the
 percentage-based primitive for circles and fully rounded shapes.
 
-Semantic tokens reference this scale. Do not select a core step because its
-current value happens to fit a design; select the spacing, border, radius, or
-size token that describes the element's role.
+Theme tokens reference this scale. Select a spacing, border, radius, or
+size theme token. Do not use the core step directly.
 
 Authoritative source:
 `packages/assets/tokens/src/core/dimension.json`.
 
-## Semantic uses
+## Theme tokens
 
-Semantic dimensions are grouped by purpose:
+Theme dimensions are grouped by purpose:
 
-- `spacing.*` controls padding and gaps.
-- `border.*` controls stroke width.
-- `radius.*` controls corner shape.
-- `size.*` controls fixed dimensions and minimum dimensions.
+- `spacing.theme.*` controls padding and gaps.
+- `border.theme.*` controls stroke width.
+- `radius.theme.*` controls corner shape.
+- `size.theme.*` controls fixed dimensions and minimum dimensions.
 
-The stable and fluid source sets currently resolve to the same core dimensions.
-They remain separate contracts so Momentum can adjust density without changing
-the token names used by components. Apply `.mds-theme-stable` or
-`.mds-theme-fluid` alongside the product's color theme class. See
-[Theming](./theming.md) for the general rule that consumers reference stable
-semantic keys while a selected theme supplies their values.
+These tokens ship in the same complete theme CSS as color (`light-stable`,
+`dark-stable`, and high-contrast). Apply the product's existing theme class.
+No extra `.mds-spacing` or `.mds-border` class is required. See
+[Theming](./theming.md).
 
 ### Spacing
 
@@ -57,20 +53,24 @@ siblings, groups, or sections.
 | `pad-none` | Flush controls that need no internal padding |
 | `pad-v-xs` | Compact vertical padding. Default control v pad |
 | `pad-v-sm` | Standard vertical padding |
-| `pad-v-md` | Roomy vertical padding. Cards, dialogs, headers |
-| `pad-h-xs` | Compact horizontal padding. Chips, dense controls |
+| `pad-v-md` | Roomy vertical padding |
+| `pad-v-lg` | Large vertical padding |
+| `pad-v-xl` | Extra-large vertical padding |
+| `pad-h-xs` | Compact horizontal padding |
 | `pad-h-sm` | Standard horizontal padding. Default control h pad |
-| `pad-h-md` | Roomy horizontal padding. Buttons, sidenav, toast |
+| `pad-h-md` | Roomy horizontal padding |
+| `pad-h-lg` | Large horizontal padding |
+| `pad-h-xl` | Extra-large horizontal padding |
 | `gap-none` | Intentionally collapsed space between elements |
-| `gap-ultra-tight` | Ultra-tight sibling gap. Chips, icon clusters |
+| `gap-ultra-tight` | Ultra-tight sibling gap |
 | `gap-tight` | Tight sibling gap. Icon-to-label, most control internals |
 | `gap-wide` | Wide layout gap. Roomy stacks |
 | `gap-loose` | Separating blocks or sections |
 | `gap-ultraloose` | The largest layout separation in the scale |
 
 Authoritative sources:
-`packages/assets/tokens/src/theme/stable/spacing.json` and
-`packages/assets/tokens/src/theme/fluid/spacing.json`.
+`packages/assets/tokens/src/theme/stable/light.json` and
+`packages/assets/tokens/src/theme/stable/dark.json`.
 
 ### Border
 
@@ -83,8 +83,8 @@ communicates the border's state and prominence.
 | `emphasis` | Selected states or container edges that need stronger definition |
 
 Authoritative sources:
-`packages/assets/tokens/src/theme/stable/border.json` and
-`packages/assets/tokens/src/theme/fluid/border.json`.
+`packages/assets/tokens/src/theme/stable/light.json` and
+`packages/assets/tokens/src/theme/stable/dark.json`.
 
 ### Radius
 
@@ -103,8 +103,8 @@ edges retain the expected shape.
 | `full` | Circles such as avatars, radios, slider thumbs, and presence indicators |
 
 Authoritative sources:
-`packages/assets/tokens/src/theme/stable/radius.json` and
-`packages/assets/tokens/src/theme/fluid/radius.json`.
+`packages/assets/tokens/src/theme/stable/light.json` and
+`packages/assets/tokens/src/theme/stable/dark.json`.
 
 ### Size
 
@@ -148,30 +148,21 @@ consumers can compare nearby options without losing the token's role.
 | `size.xl.124` | Maximum avatar and hero dimensions |
 
 Authoritative sources:
-`packages/assets/tokens/src/theme/stable/size.json` and
-`packages/assets/tokens/src/theme/fluid/size.json`.
+`packages/assets/tokens/src/theme/stable/light.json` and
+`packages/assets/tokens/src/theme/stable/dark.json`.
 
 ## Usage
 
-Import the spacing, border, radius, or size outputs needed from
-`@momentum-design/tokens`, then apply the stable or fluid density class at the
-scope where the semantic dimensions should resolve. Use the compiled custom
-properties from those outputs rather than copying their resolved values into
-component styles.
-
-Dimension roles are available for component code to consume, but repository
-search currently finds no component implementations using their compiled custom
-properties. Until components adopt them, use the tables above as the intended
-contract and verify implementation support before assuming a component responds
-to a density-class change.
+Import the theme complete CSS from `@momentum-design/tokens` and apply the
+same theme class already used for color. Use the compiled custom properties
+rather than copying resolved values into component styles.
 
 ### Common misuses
 
 - **Common misuse:** using a `dimension.*` primitive directly because its
   current value looks right.
   **Why it's wrong:** the primitive communicates a measurement, not a role.
-  **Use instead:** the matching `spacing.*`, `border.*`, `radius.*`, or `size.*`
-  token.
+  **Use instead:** the matching theme spacing, border, radius, or size token.
 - **Common misuse:** using a spacing token for a control's fixed height.
   **Why it's wrong:** spacing describes a relationship around or between
   elements.
@@ -190,8 +181,8 @@ to a density-class change.
 - **Common misuse:** adding a one-off CSS length between existing steps.
   **Why it's wrong:** arbitrary values weaken shared rhythm and make density
   changes harder.
-  **Use instead:** the nearest role-based token, or propose a token when no
-  existing role represents the need.
+  **Use instead:** the nearest theme token, or propose a token when no
+  existing theme token represents the need.
 
 ## Related
 

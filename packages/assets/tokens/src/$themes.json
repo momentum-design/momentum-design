@@ -813,6 +813,7 @@
     },
     "selectedTokenSets": {
       "core/value": "source",
+      "core/dimension": "source",
       "theme/stable/dark": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
@@ -1190,6 +1191,7 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "core/value": "source",
+      "core/dimension": "source",
       "theme/stable/light": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
@@ -1567,7 +1569,8 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "theme/stable/highcontrast/hc_dark": "enabled",
-      "core/value": "source"
+      "core/value": "source",
+      "core/dimension": "source"
     },
     "$figmaCollectionId": "VariableCollectionId:18173:24271",
     "$figmaModeId": "18173:0",
@@ -1937,7 +1940,8 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "theme/stable/highcontrast/hc_light": "enabled",
-      "core/value": "source"
+      "core/value": "source",
+      "core/dimension": "source"
     },
     "$figmaCollectionId": "VariableCollectionId:18173:24271",
     "$figmaModeId": "18173:1",
@@ -2414,35 +2418,5 @@
       "color.theme.border.decorative.gradient.device.2": "de3b13a2eb568b59c444a4d4c1f76ad8f06ec6fe"
     },
     "group": "theme/aaos"
-  },
-  {
-    "id": "3097d4049bc9d9b10d39a239a7bcd9304fc74d73",
-    "name": "stable",
-    "$figmaStyleReferences": {},
-    "selectedTokenSets": {
-      "core/dimension": "source",
-      "theme/stable/spacing": "enabled",
-      "theme/stable/border": "enabled",
-      "theme/stable/radius": "enabled",
-      "theme/stable/size": "enabled"
-    },
-    "group": "theme/product"
-  },
-  {
-    "id": "48714dde4a5dfc79eb4143ad6c0bda5d896ec3a9",
-    "name": "fluid",
-    "$figmaStyleReferences": {},
-    "selectedTokenSets": {
-      "core/dimension": "source",
-      "theme/fluid/spacing": "enabled",
-      "theme/fluid/border": "enabled",
-      "theme/fluid/radius": "enabled",
-      "theme/fluid/size": "enabled",
-      "theme/stable/spacing": "source",
-      "theme/stable/border": "source",
-      "theme/stable/radius": "source",
-      "theme/stable/size": "source"
-    },
-    "group": "theme/product"
   }
 ]

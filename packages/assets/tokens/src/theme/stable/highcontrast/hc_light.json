@@ -2654,5 +2654,275 @@
         }
       }
     }
+  },
+  "spacing": {
+    "theme": {
+      "pad-none": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "Flush padding on both axes."
+      },
+      "pad-v-xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Compact vertical padding. Default control vertical pad."
+      },
+      "pad-v-sm": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard vertical padding."
+      },
+      "pad-v-md": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Roomy vertical padding."
+      },
+      "pad-v-lg": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large vertical padding."
+      },
+      "pad-v-xl": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large vertical padding."
+      },
+      "pad-h-xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Compact horizontal padding."
+      },
+      "pad-h-sm": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard horizontal padding. Default control horizontal pad."
+      },
+      "pad-h-md": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Roomy horizontal padding."
+      },
+      "pad-h-lg": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large horizontal padding."
+      },
+      "pad-h-xl": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large horizontal padding."
+      },
+      "gap-none": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "Collapsed layout space."
+      },
+      "gap-ultra-tight": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Ultra-tight sibling gap."
+      },
+      "gap-tight": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Tight sibling gap."
+      },
+      "gap-wide": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Wide layout gap."
+      },
+      "gap-loose": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Section or block separation."
+      },
+      "gap-ultraloose": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large layout space."
+      }
+    }
+  },
+  "border": {
+    "theme": {
+      "default": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.1}",
+        "description": "Standard stroke weight."
+      },
+      "emphasis": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.2}",
+        "description": "Stronger stroke weight."
+      }
+    }
+  },
+  "radius": {
+    "theme": {
+      "none": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "No rounding. Flat edge."
+      },
+      "subtle": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.2}",
+        "description": "Barely softened corners."
+      },
+      "small": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Compact rounding."
+      },
+      "medium": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Default surface rounding."
+      },
+      "large": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "More prominent rounding."
+      },
+      "pill": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Capsule silhouette."
+      },
+      "full": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.full}",
+        "description": "Circle."
+      }
+    }
+  },
+  "size": {
+    "theme": {
+      "sm": {
+        "4": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.4}",
+          "description": "Micro fixed size."
+        },
+        "8": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.8}",
+          "description": "Smallest icon slot."
+        },
+        "12": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.12}",
+          "description": "Compact icon slot."
+        }
+      },
+      "md": {
+        "16": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.16}",
+          "description": "Standard icon slot."
+        },
+        "20": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.20}",
+          "description": "Compact inline row."
+        },
+        "24": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.24}",
+          "description": "Compact control height."
+        },
+        "28": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.28}",
+          "description": "Between compact and standard control height."
+        },
+        "32": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.32}",
+          "description": "Default control height."
+        }
+      },
+      "lg": {
+        "40": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.40}",
+          "description": "Large control or toolbar row."
+        },
+        "52": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.52}",
+          "description": "Wide control minimum."
+        },
+        "64": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.64}",
+          "description": "Chrome band."
+        }
+      },
+      "xl": {
+        "72": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.72}",
+          "description": "Large portrait size."
+        },
+        "88": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.88}",
+          "description": "Extra-large portrait size."
+        },
+        "100": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.100}",
+          "description": "Content minimum height."
+        },
+        "124": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.124}",
+          "description": "Maximum portrait or hero size."
+        }
+      }
+    }
   }
 }
