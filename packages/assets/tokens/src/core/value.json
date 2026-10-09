@@ -724,6 +724,328 @@
           "value": "#170b02",
           "description": "HEX Code: #170B02"
         }
+      },
+      "brand": {
+        "medium-blue": {
+          "95": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#0F214D",
+            "description": "Medium Blue 95 — darkest"
+          },
+          "90": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#12275C",
+            "description": "Medium Blue 90"
+          },
+          "80": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#15337D",
+            "description": "Medium Blue 80"
+          },
+          "70": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#0E3A99",
+            "description": "Medium Blue 70"
+          },
+          "60": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#124FC9",
+            "description": "Medium Blue 60"
+          },
+          "50": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#1869FF",
+            "description": "Medium Blue 50 — base/primary shade for this palette"
+          },
+          "40": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#478EFF",
+            "description": "Medium Blue 40"
+          },
+          "30": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#75AAFF",
+            "description": "Medium Blue 30"
+          },
+          "20": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#91BFFF",
+            "description": "Medium Blue 20"
+          },
+          "10": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#B8D5FF",
+            "description": "Medium Blue 10"
+          },
+          "5": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#E0EEFF",
+            "description": "Medium Blue 05 — lightest"
+          }
+        },
+        "cisco-blue": {
+          "95": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#01242E",
+            "description": "Cisco Blue 95 — darkest"
+          },
+          "90": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#013545",
+            "description": "Cisco Blue 90"
+          },
+          "80": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#015269",
+            "description": "Cisco Blue 80"
+          },
+          "70": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#027494",
+            "description": "Cisco Blue 70"
+          },
+          "60": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#11A5CF",
+            "description": "Cisco Blue 60"
+          },
+          "50": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#02C8FF",
+            "description": "Cisco Blue 50 — base/primary shade for this palette"
+          },
+          "40": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#45D4FF",
+            "description": "Cisco Blue 40"
+          },
+          "30": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#7AE2FF",
+            "description": "Cisco Blue 30"
+          },
+          "20": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#A8ECFF",
+            "description": "Cisco Blue 20"
+          },
+          "10": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#CCF4FF",
+            "description": "Cisco Blue 10"
+          },
+          "5": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#EBFBFF",
+            "description": "Cisco Blue 05 — lightest"
+          }
+        },
+        "magenta": {
+          "95": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#240D19",
+            "description": "Magenta 95 — darkest"
+          },
+          "90": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#401028",
+            "description": "Magenta 90"
+          },
+          "80": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#591638",
+            "description": "Magenta 80"
+          },
+          "70": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#80174B",
+            "description": "Magenta 70"
+          },
+          "60": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#BD0D5F",
+            "description": "Magenta 60"
+          },
+          "50": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FF007F",
+            "description": "Magenta 50 — base/primary shade for this palette"
+          },
+          "40": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FF4FA4",
+            "description": "Magenta 40"
+          },
+          "30": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FF7DBA",
+            "description": "Magenta 30"
+          },
+          "20": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FFB2D6",
+            "description": "Magenta 20"
+          },
+          "10": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FFDBEC",
+            "description": "Magenta 10"
+          },
+          "5": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FFF2F9",
+            "description": "Magenta 05 — lightest"
+          }
+        },
+        "orange": {
+          "95": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#291A02",
+            "description": "Orange 95 — darkest (brand; not color.core.orange)"
+          },
+          "90": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#472C02",
+            "description": "Orange 90 (brand)"
+          },
+          "80": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#6E4303",
+            "description": "Orange 80 (brand)"
+          },
+          "70": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#A16205",
+            "description": "Orange 70 (brand)"
+          },
+          "60": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#D97A00",
+            "description": "Orange 60 (brand)"
+          },
+          "50": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FF9000",
+            "description": "Orange 50 — base/primary shade for this palette (brand)"
+          },
+          "40": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FFA838",
+            "description": "Orange 40 (brand)"
+          },
+          "30": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FFC278",
+            "description": "Orange 30 (brand)"
+          },
+          "20": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FFD7A6",
+            "description": "Orange 20 (brand)"
+          },
+          "10": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FFEDD6",
+            "description": "Orange 10 (brand)"
+          },
+          "5": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#FFF8F0",
+            "description": "Orange 05 — lightest (brand)"
+          }
+        },
+        "gradient": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#0A60FF",
+              "description": "Brand primary gradient stop 0. Gradient-only hex (not in solid brand ramps)."
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#02C8FF",
+              "description": "Brand primary gradient stop 1. Same hex as color.core.brand.cisco-blue.50."
+            },
+            "2": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#02C8FF",
+              "description": "Brand primary gradient stop 2. Same hex as color.core.brand.cisco-blue.50."
+            },
+            "3": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#FF007F",
+              "description": "Brand primary gradient stop 3. Same hex as color.core.brand.magenta.50."
+            },
+            "4": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#FF9000",
+              "description": "Brand primary gradient stop 4. Same hex as color.core.brand.orange.50."
+            }
+          },
+          "secondary-blue": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#0A60FF",
+              "description": "Brand secondary-blue gradient stop 0. Gradient-only hex (not in solid brand ramps)."
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#02C8FF",
+              "description": "Brand secondary-blue gradient stop 1. Same hex as color.core.brand.cisco-blue.50."
+            }
+          }
+        }
       }
     },
     "decorative": {
