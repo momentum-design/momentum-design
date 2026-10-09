@@ -89,8 +89,17 @@ Listen for `shown`/`hidden` to react to visibility changes, and for `created`/`d
 | `disable-aria-expanded` | Stops the popover writing `aria-expanded`/`aria-haspopup` on the trigger — set it on all but one popover that share a trigger. |
 | `keep-connected-tooltip-open` | Keeps a tooltip wired to the same trigger visible while this popover is open, instead of closing it. |
 | `append-to` / `z-index` / `stack-group-name` | Escape clipping ancestors (`append-to`) and control stacking; a depth manager computes `z-index` and groups by `stack-group-name` when unset. |
+| `--mdc-popover-slide-offset` | CSS custom property tuning slide distance for entrance and exit motion (default `1rem`). |
 
 **Note:** `aria-labelledby`/`aria-describedby` name and describe the popover; for interactive popovers with neither set, it falls back to the trigger's accessible name. `show()`/`hide()` are public methods, and `shown`/`hidden`/`created`/`destroyed` events bubble and are composed.
+
+### Motion
+
+On open, the popover host slides from the placement direction and fades in using Momentum motion tokens (`slideEntrance`, `fadeIn`). On close, it slides back and fades out (`slideExit`, `fadeOut`). Slide direction follows the resolved placement side (`data-floating-side` from Floating UI, with `placement` as fallback on exit). When `show-arrow` is enabled, the arrow moves with the panel.
+
+Subclasses built on `mdc-popover` — including `mdc-menupopover`, `mdc-tooltip`, `mdc-toggletip`, and `mdc-coachmark` — inherit the same motion. Backdrop fade (when `backdrop` is enabled) is independent and unchanged.
+
+With `prefers-reduced-motion: reduce` or when motion tokens are disabled via `mdc-motionprovider`, show and hide are instant with no slide or opacity transition. `shown` and `hidden` still fire when `visible` changes; they are not deferred until the exit animation completes.
 
 ### Limitations
 

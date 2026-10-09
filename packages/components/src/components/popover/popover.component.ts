@@ -53,6 +53,7 @@ import { PopoverUtils } from './popover.utils';
  * @cssproperty --mdc-popover-max-height - max height of the popover
  * @cssproperty --mdc-popover-width - width of the popover
  * @cssproperty --mdc-popover-backdrop-color - background color of the backdrop (if backdrop is enabled)
+ * @cssproperty --mdc-popover-slide-offset - slide distance for entrance and exit motion (default 1rem)
  *
  * @slot - Default slot for the popover content
  *
@@ -864,6 +865,7 @@ class Popover
 
       // cleanup floating-ui on closing the popover
       this.floatingUICleanupFunction?.();
+      this.removeAttribute('data-floating-side');
 
       if (this.backdrop) {
         this.moveElementBackAfterBackdropRemoval(triggerElement);
@@ -1180,6 +1182,7 @@ class Popover
         });
 
         this.utils.updatePopoverStyle(x, y);
+        this.setAttribute('data-floating-side', placement.split('-')[0]);
         if (middlewareData.arrow && this.arrowElement) {
           this.utils.updateArrowStyle(middlewareData.arrow, placement);
         }

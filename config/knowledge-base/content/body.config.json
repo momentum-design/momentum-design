@@ -72,6 +72,13 @@
                                 "description": "Detailed reference for the component's public properties and attributes that need extra explanation beyond the generated API table: accepted values, defaults, interaction with other properties, and intended use. Do not duplicate the auto-generated API table - add context the table cannot express."
                             },
                             {
+                                "heading": "Motion",
+                                "level": 3,
+                                "required": false,
+                                "recommended": false,
+                                "description": "Token-based entrance, exit, and update animations: which phases run, what triggers them, which Momentum animation tokens apply, how `data-motion-phase` is reflected for debugging, and how reduced-motion or `mdc-motionprovider` gating affects behavior. Include consumer guidance for deferring DOM removal until exit completes."
+                            },
+                            {
                                 "heading": "Limitations",
                                 "level": 3,
                                 "required": false,

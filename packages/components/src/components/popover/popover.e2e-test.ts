@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
+import { expect, type Locator } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { KEYS } from '../../utils/keys';
@@ -42,6 +42,15 @@ type SetupOptions = {
   role?: HTMLElement['role'];
   elementIndexToReceiveFocus?: number;
   children?: any;
+};
+
+const waitForPopoverMotionSettled = async (popover: Locator) => {
+  await expect
+    .poll(async () => {
+      const transform = await popover.evaluate((element) => getComputedStyle(element).transform);
+      return transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)';
+    })
+    .toBe(true);
 };
 
 const setup = async (args: SetupOptions) => {
@@ -1730,22 +1739,28 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       clearDocument: true,
     });
     const trigger = componentsPage.page.locator('#trigger');
-    await trigger.click();
+    const parentPopover = componentsPage.page.locator('#parent-popover');
+    const parentBackdrop = componentsPage.page.locator('.popover-backdrop');
 
-    await expect(componentsPage.page.locator('#parent-popover')).toHaveCSS('z-index', '1000');
+    await trigger.click();
+    await expect(parentPopover).toHaveAttribute('visible');
+    await waitForPopoverMotionSettled(parentPopover);
+    await expect(parentPopover).toHaveCSS('z-index', '1000');
     await expect(trigger).toHaveCSS('z-index', '999');
-    await expect(componentsPage.page.locator('div[class="popover-backdrop"]')).toHaveCSS('z-index', '998');
+    await expect(parentBackdrop).toHaveCSS('z-index', '998');
 
     const nestedPopoverTrigger = componentsPage.page.locator('#nested-popover-trigger');
+    const nestedPopover = componentsPage.page.locator('#nested-popover');
     await nestedPopoverTrigger.waitFor();
     await nestedPopoverTrigger.click();
+    await expect(nestedPopover).toHaveAttribute('visible');
+    await waitForPopoverMotionSettled(nestedPopover);
 
-    await expect(componentsPage.page.locator('#nested-popover')).toHaveCSS('z-index', '1003');
+    await expect(nestedPopover).toHaveCSS('z-index', '1003');
     await expect(nestedPopoverTrigger).toHaveCSS('z-index', '1002');
-    await expect(componentsPage.page.locator('#parent-popover div[class="popover-backdrop"]')).toHaveCSS(
-      'z-index',
-      '1001',
-    );
+    const nestedBackdrop = componentsPage.page.locator('#parent-popover .popover-backdrop');
+    await expect(nestedBackdrop).toHaveCount(1);
+    await expect(nestedBackdrop).toHaveCSS('z-index', '1001');
   });
 
   await test.step('Popover should determine z-index for backdrop with custom z-index values', async () => {
@@ -1765,22 +1780,27 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       clearDocument: true,
     });
     const trigger = componentsPage.page.locator('#trigger');
-    await trigger.click();
+    const parentPopover = componentsPage.page.locator('#parent-popover');
+    const parentBackdrop = componentsPage.page.locator('.popover-backdrop');
 
-    await expect(componentsPage.page.locator('#parent-popover')).toHaveCSS('z-index', '2500');
+    await trigger.click();
+    await expect(parentPopover).toHaveAttribute('visible');
+    await waitForPopoverMotionSettled(parentPopover);
+    await expect(parentPopover).toHaveCSS('z-index', '2500');
     await expect(trigger).toHaveCSS('z-index', '2499');
-    await expect(componentsPage.page.locator('div[class="popover-backdrop"]')).toHaveCSS('z-index', '2498');
+    await expect(parentBackdrop).toHaveCSS('z-index', '2498');
 
     const nestedPopoverTrigger = componentsPage.page.locator('#nested-popover-trigger');
+    const nestedPopover = componentsPage.page.locator('#nested-popover');
     await nestedPopoverTrigger.waitFor();
     await nestedPopoverTrigger.click();
-
-    await expect(componentsPage.page.locator('#nested-popover')).toHaveCSS('z-index', '3500');
+    await expect(nestedPopover).toHaveAttribute('visible');
+    await waitForPopoverMotionSettled(nestedPopover);
+    await expect(nestedPopover).toHaveCSS('z-index', '3500');
     await expect(nestedPopoverTrigger).toHaveCSS('z-index', '3499');
-    await expect(componentsPage.page.locator('#parent-popover div[class="popover-backdrop"]')).toHaveCSS(
-      'z-index',
-      '3498',
-    );
+    const nestedBackdrop = componentsPage.page.locator('#parent-popover .popover-backdrop');
+    await expect(nestedBackdrop).toHaveCount(1);
+    await expect(nestedBackdrop).toHaveCSS('z-index', '3498');
   });
 };
 
@@ -1814,6 +1834,7 @@ test('mdc-popover', async ({ componentsPage }) => {
       // open the popover
       await triggerButton.click();
       await expect(popover).toBeVisible();
+      await waitForPopoverMotionSettled(popover);
       // With the default offset, the popover should be positioned at the bottom of the trigger with a 4px gap
       const defaultOffsetBBox = (await popover.boundingBox())!;
       // Firefox round values differently than other browsers, so we need to use Math.floor to compare the values
@@ -1834,6 +1855,7 @@ test('mdc-popover', async ({ componentsPage }) => {
       // open the popover
       await triggerButton.click();
       await expect(popover).toBeVisible();
+      await waitForPopoverMotionSettled(popover);
       // With the custom offset, the popover should be centered to the trigger
       const centeredOffsetBBox = (await popover.boundingBox())!;
       expect(Math.floor(centeredOffsetBBox.x)).toEqual(132);

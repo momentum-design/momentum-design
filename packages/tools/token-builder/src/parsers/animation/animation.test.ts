@@ -4,16 +4,16 @@ const PARSER_INPUT = {
   // Single fixture with two tokens: covers single-property and multi-property transitions
   transition: JSON.stringify({
     animation: {
-      buttonBackground: {
-        description: 'Button background transition',
+      backgroundColor: {
+        description: 'Surface background transition',
         type: 'transition',
         properties: ['background-color'],
         duration: '{motion.duration.instant}',
         easing: '{motion.easing.standard}',
         delay: '{motion.delay.none}',
       },
-      buttonBorder: {
-        description: 'Button border and shadow',
+      borderColor: {
+        description: 'Surface border and shadow',
         type: 'transition',
         properties: ['border-color', 'box-shadow'],
         duration: '{motion.duration.instant}',
@@ -47,7 +47,7 @@ const PARSER_INPUT = {
   }),
   transitionCompound: JSON.stringify({
     animation: {
-      buttonBackground: {
+      backgroundColor: {
         description: 'Background',
         type: 'transition',
         properties: ['background-color'],
@@ -55,7 +55,7 @@ const PARSER_INPUT = {
         easing: '{motion.easing.standard}',
         delay: '{motion.delay.none}',
       },
-      buttonBorder: {
+      borderColor: {
         description: 'Border',
         type: 'transition',
         properties: ['border-color', 'box-shadow'],
@@ -63,10 +63,10 @@ const PARSER_INPUT = {
         easing: '{motion.easing.standard}',
         delay: '{motion.delay.none}',
       },
-      buttonHover: {
-        description: 'Hover compound',
+      surfaceHover: {
+        description: 'Surface hover compound',
         type: 'transitionCompound',
-        animations: ['buttonBackground', 'buttonBorder'],
+        animations: ['backgroundColor', 'borderColor'],
         composition: 'parallel',
       },
     },
@@ -133,13 +133,13 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
   });
 
   describe('pattern', () => {
-    it('should match motion/animation.json paths', () => {
-      expect(parser.pattern.test('src/motion/animation.json')).toBe(true);
-      expect(parser.pattern.test('/abs/path/motion/animation.json')).toBe(true);
+    it('should match animation/animation.json paths', () => {
+      expect(parser.pattern.test('src/animation/animation.json')).toBe(true);
+      expect(parser.pattern.test('/abs/path/animation/animation.json')).toBe(true);
     });
 
     it('should not match unrelated paths', () => {
-      expect(parser.pattern.test('src/motion/complete.json')).toBe(false);
+      expect(parser.pattern.test('src/animation/complete.json')).toBe(false);
       expect(parser.pattern.test('src/core/color.json')).toBe(false);
     });
   });
@@ -148,17 +148,17 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     let result: any;
 
     beforeEach(() => {
-      result = parser.parser({ contents: PARSER_INPUT.transition, filePath: 'motion/animation.json' });
+      result = parser.parser({ contents: PARSER_INPUT.transition, filePath: 'animation/animation.json' });
     });
 
     it('should inject a value string composed from properties, duration, easing and delay', () => {
-      expect(result.animation.buttonBackground.value).toBe(
+      expect(result.animation.backgroundColor.value).toBe(
         'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
       );
     });
 
     it('should build a comma-separated list for multi-property transitions', () => {
-      expect(result.animation.buttonBorder.value).toBe(
+      expect(result.animation.borderColor.value).toBe(
         'border-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
         + ' box-shadow {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
       );
@@ -169,7 +169,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     let result: any;
 
     beforeEach(() => {
-      result = parser.parser({ contents: PARSER_INPUT.keyframe, filePath: 'motion/animation.json' });
+      result = parser.parser({ contents: PARSER_INPUT.keyframe, filePath: 'animation/animation.json' });
     });
 
     it('should inject a value string including duration, easing, delay, iterationCount and keyframe name', () => {
@@ -188,9 +188,9 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
   describe('parser — transitionCompound token', () => {
     it('should expand compound by concatenating the parts of each referenced primitive', () => {
       const result = parser.parser(
-        { contents: PARSER_INPUT.transitionCompound, filePath: 'motion/animation.json' },
+        { contents: PARSER_INPUT.transitionCompound, filePath: 'animation/animation.json' },
       ) as any;
-      expect(result.animation.buttonHover.value).toBe(
+      expect(result.animation.surfaceHover.value).toBe(
         'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
         + ' border-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
         + ' box-shadow {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
@@ -202,7 +202,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     let result: any;
 
     beforeEach(() => {
-      result = parser.parser({ contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' });
+      result = parser.parser({ contents: PARSER_INPUT.keyframeCompound, filePath: 'animation/animation.json' });
     });
 
     it('should expand compound to a comma-separated animation shorthand list', () => {
@@ -232,7 +232,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
           },
         },
       });
-      expect(() => parser.parser({ contents: badInput, filePath: 'motion/animation.json' })).toThrow(
+      expect(() => parser.parser({ contents: badInput, filePath: 'animation/animation.json' })).toThrow(
         'AnimationParser: compound token "bad" references unknown animation "doesNotExist".',
       );
     });
