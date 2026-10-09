@@ -8,6 +8,8 @@
     "core/dimension",
     "theme/stable/dark",
     "theme/stable/light",
+    "theme/fluid/dark",
+    "theme/fluid/light",
     "theme/stable/highcontrast/hc_dark",
     "theme/stable/highcontrast/hc_light",
     "aaos/night",
