@@ -522,9 +522,10 @@ export const popoverWithSelect: StoryObj = {
         hide-on-outside-click
         focus-trap
         focus-back-to-trigger
+        size
       >
         <div style="width: 15rem;">
-          <mdc-select>
+          <mdc-select strategy="fixed">
             <mdc-selectlistbox>
               <mdc-option label="Option 1" value="option-1"></mdc-option>
               <mdc-option label="Option 2" value="option-2"></mdc-option>
@@ -549,6 +550,47 @@ export const popoverWithSelect: StoryObj = {
       </mdc-popover>
     </div>
   `,
+  ...hideAllControls(),
+};
+
+const renderSizedPopoverWithFixedSelect = (elevation: boolean) => html`
+  <div
+    class="${elevation ? 'mds-elevation' : ''}"
+    style="padding: 10rem 14rem; ${elevation ? '' : '--mds-elevation-3: none;'}"
+  >
+    <mdc-button id="fixed-select-popover-trigger">Open</mdc-button>
+    <mdc-popover
+      id="fixed-select-outer-popover"
+      triggerID="fixed-select-popover-trigger"
+      interactive
+      focus-trap
+      size
+      style="width: 22rem; max-width: 22rem;"
+    >
+      <mdc-select strategy="fixed" placement="bottom-start" data-aria-label="Options">
+        <mdc-selectlistbox>
+          <mdc-option value="1" label="Option 1" selected></mdc-option>
+          <mdc-option value="2" label="Option 2"></mdc-option>
+          <mdc-option value="3" label="Option 3"></mdc-option>
+          <mdc-option value="4" label="Option 4"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-select>
+        <p>Some text</p>
+        <p>to force</p>
+        <p>the popover</p>
+        <p>to show</p>
+        <p>scrollbar</p>
+    </mdc-popover>
+  </div>
+`;
+
+export const sizedPopoverWithFixedSelect: StoryObj = {
+  render: () => renderSizedPopoverWithFixedSelect(true),
+  ...hideAllControls(),
+};
+
+export const sizedPopoverWithFixedSelectWithoutElevation: StoryObj = {
+  render: () => renderSizedPopoverWithFixedSelect(false),
   ...hideAllControls(),
 };
 

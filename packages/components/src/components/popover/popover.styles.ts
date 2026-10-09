@@ -31,6 +31,12 @@ const styles = css`
     width: var(--mdc-popover-width, var(--mdc-popover-max-width));
   }
 
+  :host([size]) {
+    /* Safari workaround: use this popover as (0, 0) when positioning nested fixed Select lists.
+       The 3D form also prevents Safari from clipping the bottom of the list. */
+    transform: translate3d(0, 0, 0);
+  }
+
   :host([strategy='absolute']) {
     position: absolute;
   }
