@@ -2,7 +2,7 @@ import AnimationScssFormat from './animation-scss';
 import { makeToken, makeDictionary } from '../animation/animation.fixture';
 
 const TRANSITION_TOKEN = makeToken(
-  'buttonBackground',
+  'backgroundColor',
   'transition',
   'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
   'background-color 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
@@ -19,7 +19,7 @@ const KEYFRAME_TOKEN = makeToken(
 );
 
 const COMPOUND_TRANSITION_TOKEN = makeToken(
-  'buttonHover',
+  'surfaceHover',
   'transitionCompound',
   'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
   + ' border-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
@@ -59,7 +59,7 @@ describe('@momentum-design/token-builder - formats.AnimationScssFormat', () => {
     });
 
     it('should emit a $mds-transition-* SCSS variable', () => {
-      expect(output).toContain('$mds-transition-button-background:');
+      expect(output).toContain('$mds-transition-background-color:');
     });
 
     it('should output resolved scalar values (not token references)', () => {
@@ -75,7 +75,7 @@ describe('@momentum-design/token-builder - formats.AnimationScssFormat', () => {
     });
 
     it('should emit variables at file level (not indented)', () => {
-      const varLine = output.split('\n').find((l) => l.includes('$mds-transition-button-background'));
+      const varLine = output.split('\n').find((l) => l.includes('$mds-transition-background-color'));
       expect(varLine).toBeDefined();
       expect(varLine!.startsWith('$')).toBe(true);
     });
@@ -113,7 +113,7 @@ describe('@momentum-design/token-builder - formats.AnimationScssFormat', () => {
   describe('formatter — transitionCompound token', () => {
     it('should emit a $mds-transition-* SCSS variable with resolved values', () => {
       const output = format.formatter({ dictionary: makeDictionary([COMPOUND_TRANSITION_TOKEN]) } as any);
-      expect(output).toContain('$mds-transition-button-hover:');
+      expect(output).toContain('$mds-transition-surface-hover:');
       expect(output).toContain('100ms');
       expect(output).not.toContain('var(--');
     });
