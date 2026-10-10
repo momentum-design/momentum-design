@@ -2133,3 +2133,55 @@ test('mdc-popover', async ({ componentsPage }) => {
     });
   });
 });
+
+test.describe('mdc-popover with a nested Select', () => {
+  for (const elevation of [true, false]) {
+    test(`should align a fixed Select dropdown in a sized Popover ${elevation ? 'with' : 'without'} elevation`, async ({
+      componentsPage,
+    }) => {
+      await componentsPage.mount({
+        html: `
+          <div class="${elevation ? 'mds-elevation' : ''}" style="padding: 10rem 14rem;">
+            <mdc-button id="outer-trigger">Open</mdc-button>
+            <mdc-popover
+              id="outer-popover" triggerid="outer-trigger" visible interactive focus-trap size
+              style="width: 22rem; max-width: 22rem;"
+            >
+              <mdc-select strategy="fixed" placement="bottom-start" data-aria-label="Options">
+                <mdc-selectlistbox>
+                  <mdc-option value="1" label="Option 1" selected></mdc-option>
+                  <mdc-option value="2" label="Option 2"></mdc-option>
+                  <mdc-option value="3" label="Option 3"></mdc-option>
+                  <mdc-option value="4" label="Option 4"></mdc-option>
+                </mdc-selectlistbox>
+              </mdc-select>
+            </mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const outerPopover = componentsPage.page.locator('#outer-popover');
+      const select = outerPopover.locator('mdc-select');
+      const combobox = select.getByRole('combobox', { name: 'Options' });
+      const dropdown = select.locator('mdc-popover');
+      await combobox.click();
+      await expect(dropdown).toBeVisible();
+      await expect(async () => {
+        const triggerBox = (await combobox.boundingBox())!;
+        const dropdownBox = (await dropdown.boundingBox())!;
+        // bottom-start in LTR aligns the dropdown's left edge with the trigger's left edge.
+        expect(Math.round(dropdownBox.x - triggerBox.x)).toBe(0);
+        // The dropdown's top edge sits 4px below the trigger's bottom edge (the default offset).
+        expect(Math.round(dropdownBox.y - triggerBox.y - triggerBox.height)).toBe(4);
+      }).toPass({ timeout: 5000 });
+
+      const lastOption = select.getByRole('option', { name: 'Option 4', exact: true });
+      await expect(lastOption).toBeInViewport({ ratio: 1 });
+      await lastOption.click();
+      await expect(combobox).toHaveText('Option 4');
+      await expect(dropdown).not.toBeVisible();
+      await expect(outerPopover).toBeVisible();
+    });
+  }
+});

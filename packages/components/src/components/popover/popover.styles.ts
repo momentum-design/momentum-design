@@ -31,6 +31,10 @@ const styles = css`
     width: var(--mdc-popover-width, var(--mdc-popover-max-width));
   }
 
+  :host([size]) {
+    transform: translate(0);
+  }
+
   :host([strategy='absolute']) {
     position: absolute;
   }
