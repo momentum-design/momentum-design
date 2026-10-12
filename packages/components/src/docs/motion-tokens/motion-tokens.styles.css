@@ -1,0 +1,578 @@
+.motionTokensDemo {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  max-width: 1440px;
+  margin: 0 auto;
+  gap: 1rem;
+  color: var(--mds-color-theme-text-primary-normal);
+}
+
+header {
+  width: 100%;
+  grid-column: 1 / 4;
+}
+
+section {
+  width: 100%;
+  grid-column: 1 / 4;
+  margin: 1rem 0;
+}
+
+p {
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+}
+
+h1 {
+  font-size: 6rem;
+}
+
+h2 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 1.2rem 0;
+}
+
+h4.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: .5rem 0;
+}
+
+h4.subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0 0 1rem 0;
+  font-style: italic;
+  color: var(--mds-color-theme-text-secondary-normal);
+}
+
+.motionTokensGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(16rem, 1fr));
+  gap: 2rem;
+}
+
+.motionTokensCard {
+  --motion-tokens-demo-color: var(--mds-color-theme-text-accent-normal);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.motionTokensStage {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  min-height: auto;
+  margin: 0 0.5rem;
+}
+
+.motionTokensStage> :not(.motionTokensPlayButton) {
+  flex: 1;
+  min-width: 0;
+}
+
+p.motionTokensCardDescription {
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  margin: .5rem 0;
+  color: var(--mds-color-theme-text-secondary-normal);
+}
+
+.motionTokensDurationTrack {
+  position: relative;
+  flex: 1;
+  height: .5rem;
+  border-radius: 999px;
+  background: var(--mds-color-theme-outline-secondary-normal);
+}
+
+.motionTokensDurationDot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--mds-color-theme-text-accent-normal);
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  transition: left var(--demo-duration) var(--mds-motion-easing-standard);
+}
+
+
+/* Responsive */
+@media (max-width: 56rem) {
+  .motionTokensGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+
+.motionTokensIntroTitle {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.motionTokensIntroText {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--mds-color-theme-text-secondary-normal);
+}
+
+.motionTokensSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.motionTokensSectionTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.motionTokensSectionHint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--mds-color-theme-text-secondary-normal);
+}
+
+.motionTokensCard.is-resetting,
+.motionTokensCard.is-resetting * {
+  transition: none !important;
+}
+
+.motionTokensCardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.motionTokensCardMeta {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--mds-color-theme-text-secondary-normal);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.motionTokensPlayButton {
+  flex-shrink: 0;
+}
+
+
+.motionTokensCard.is-active .motionTokensDurationDot {
+  left: 100%;
+}
+
+.motionTokensCard.is-fading-out .motionTokensDurationDot {
+  opacity: 0;
+  transition: opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-exit);
+}
+
+.motionTokensCard.is-fading-in .motionTokensDurationDot {
+  left: 0;
+  opacity: 0;
+  transition: opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-entrance);
+}
+
+.motionTokensCard.is-fading-in.is-fading-in-visible .motionTokensDurationDot {
+  opacity: 1;
+}
+
+.motionTokensEasingGraph {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--mds-color-theme-outline-secondary-normal);
+  border-radius: 12px;
+}
+
+.motionTokensEasingGraphHandle {
+  stroke: var(--mds-color-theme-outline-primary-normal);
+  stroke-width: 1;
+}
+
+.motionTokensEasingGraphCurve {
+  fill: none;
+  stroke: var(--motion-tokens-demo-color);
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.motionTokensEasingGraphControl {
+  fill: var(--mds-color-theme-outline-primary-normal);
+}
+
+.motionTokensEasingGraphEndpoint {
+  fill: var(--motion-tokens-demo-color);
+}
+
+.motionTokensEasingTrack {
+  position: relative;
+  flex: 1;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--mds-color-theme-outline-secondary-normal);
+}
+
+.motionTokensEasingSquare,
+.motionTokensEasingCircle {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.motionTokensEasingSquare {
+  z-index: 1;
+  border-radius: 0.375rem;
+  border: 3px solid var(--mds-color-theme-outline-secondary-normal);
+  background: transparent;
+  transition: left 1s var(--mds-motion-easing-linear);
+}
+
+.motionTokensEasingCircle {
+  z-index: 0;
+  border-radius: 50%;
+  background: var(--motion-tokens-demo-color);
+  transition: left 1s var(--demo-easing);
+}
+
+.motionTokensCard.is-active .motionTokensEasingSquare,
+.motionTokensCard.is-active .motionTokensEasingCircle {
+  left: 100%;
+}
+
+.motionTokensCard.is-fading-out .motionTokensEasingSquare,
+.motionTokensCard.is-fading-out .motionTokensEasingCircle {
+  opacity: 0;
+  transition: opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-exit);
+}
+
+.motionTokensCard.is-fading-in .motionTokensEasingSquare,
+.motionTokensCard.is-fading-in .motionTokensEasingCircle {
+  left: 0;
+  opacity: 0;
+  transition: opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-entrance);
+}
+
+.motionTokensCard.is-fading-in.is-fading-in-visible .motionTokensEasingSquare,
+.motionTokensCard.is-fading-in.is-fading-in-visible .motionTokensEasingCircle {
+  opacity: 1;
+}
+
+.motionTokensDelayTrack {
+  position: relative;
+  flex: 1;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--mds-color-theme-outline-secondary-normal);
+}
+
+.motionTokensDelaySquare,
+.motionTokensDelayCircle {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.motionTokensDelaySquare {
+  z-index: 1;
+  border-radius: 0.375rem;
+  border: 3px solid var(--mds-color-theme-outline-secondary-normal);
+  background: transparent;
+  transition: left 1s linear;
+}
+
+.motionTokensDelayCircle {
+  z-index: 0;
+  border-radius: 50%;
+  background: var(--motion-tokens-demo-color);
+  transition: left 1s linear var(--demo-delay);
+}
+
+.motionTokensCard.is-active .motionTokensDelaySquare,
+.motionTokensCard.is-active .motionTokensDelayCircle {
+  left: 100%;
+}
+
+.motionTokensCard.is-fading-out .motionTokensDelaySquare,
+.motionTokensCard.is-fading-out .motionTokensDelayCircle {
+  opacity: 0;
+  transition: opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-exit);
+}
+
+.motionTokensCard.is-fading-in .motionTokensDelaySquare,
+.motionTokensCard.is-fading-in .motionTokensDelayCircle {
+  left: 0;
+  opacity: 0;
+  transition: opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-entrance);
+}
+
+.motionTokensCard.is-fading-in.is-fading-in-visible .motionTokensDelaySquare,
+.motionTokensCard.is-fading-in.is-fading-in-visible .motionTokensDelayCircle {
+  opacity: 1;
+}
+
+.motionTokensStaggerList {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.motionTokensStaggerItem {
+  flex: 1;
+  height: 2rem;
+  border-radius: 0.25rem;
+  background: var(--mds-color-theme-text-accent-normal);
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition:
+    opacity var(--mds-motion-duration-fast) var(--mds-motion-easing-entrance),
+    transform var(--mds-motion-duration-fast) var(--mds-motion-easing-entrance);
+  transition-delay: calc(var(--stagger-delay) * var(--item-index));
+}
+
+.motionTokensCard.is-active .motionTokensStaggerItem {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.motionTokensAnimationCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.motionTokensAnimationCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.motionTokensAnimationCardHeader .title {
+  flex: 1;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.motionTokensAnimationPlayButton {
+  flex-shrink: 0;
+}
+
+.motionTokensAnimationPreview,
+.motionTokensEasingGraph {
+  background-color: var(--mds-color-theme-background-solid-secondary-normal);
+  background-image: radial-gradient(circle,
+      color-mix(in srgb, var(--mds-color-theme-outline-secondary-normal) 45%, transparent) 1px,
+      transparent 0.75px);
+  background-size: 16px 16px;
+}
+
+.motionTokensAnimationPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 17.1875rem;
+  padding: 2.75rem 1.25rem;
+  border: 1px solid var(--mds-color-theme-outline-secondary-normal);
+  border-radius: 0.75rem;
+}
+
+.motionTokensAnimationObject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  border: 1px solid var(--mds-color-theme-outline-primary-normal);
+  border-radius: 0.75rem;
+  background: var(--mds-color-theme-background-solid-secondary-normal);
+}
+
+.motionTokensAnimationIcon {
+  --mdc-icon-size: 2.5rem;
+  color: var(--mds-color-theme-text-primary-normal);
+}
+
+.motionTokensAnimationText {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  color: var(--mds-color-theme-text-primary-normal);
+}
+
+.motionTokensAnimationCard--backgroundColor .motionTokensAnimationObject {
+  transition: var(--mds-transition-background-color);
+}
+
+.motionTokensAnimationCard--backgroundColor.is-active .motionTokensAnimationObject {
+  background: var(--mds-color-theme-text-accent-normal);
+}
+
+.motionTokensAnimationCard--borderColor .motionTokensAnimationObject {
+  transition: var(--demo-border-transition);
+}
+
+.motionTokensAnimationCard--borderColor.is-active .motionTokensAnimationObject {
+  border-color: var(--mds-color-theme-outline-theme-normal);
+}
+
+.motionTokensAnimationCard--objectColor .motionTokensAnimationIcon {
+  transition: var(--mds-transition-object-color);
+}
+
+.motionTokensAnimationCard--objectColor.is-active .motionTokensAnimationIcon {
+  color: var(--mds-color-theme-text-accent-normal);
+}
+
+.motionTokensAnimationCard--textChange .motionTokensAnimationText {
+  transition: var(--mds-transition-text-change);
+}
+
+.motionTokensAnimationCard--textChange.is-active .motionTokensAnimationText {
+  font-weight: 600;
+  color: var(--mds-color-theme-text-accent-normal);
+}
+
+.motionTokensAnimationPreview--slide {
+  overflow: hidden;
+}
+
+.motionTokensAnimationCard--growShrink .motionTokensAnimationObject {
+  transform: scale(1);
+  transition: var(--mds-transition-grow-shrink);
+}
+
+.motionTokensAnimationCard--growShrink.is-active .motionTokensAnimationObject {
+  transform: scale(3);
+}
+
+.motionTokensAnimationObject--fade {
+  opacity: 0;
+  display: flex;
+  transition: var(--mds-transition-fade-out);
+  transition-behavior: allow-discrete;
+}
+
+.motionTokensAnimationCard--fadeInOut:not(.is-cycling) .motionTokensAnimationObject--fade {
+  display: none;
+}
+
+.motionTokensAnimationCard--fadeInOut.is-active .motionTokensAnimationObject--fade,
+.motionTokensAnimationCard--fadeInOut[data-animation-phase='hold'] .motionTokensAnimationObject--fade {
+  opacity: 1;
+  display: flex;
+  transition: var(--demo-fade-in-transition, var(--mds-transition-fade-in));
+  transition-behavior: allow-discrete;
+}
+
+.motionTokensAnimationCard--fadeInOut[data-animation-phase='exit'] .motionTokensAnimationObject--fade {
+  opacity: 0;
+  display: flex;
+  transition: var(--mds-transition-fade-out);
+  transition-behavior: allow-discrete;
+}
+
+@starting-style {
+  .motionTokensAnimationCard--fadeInOut.is-active .motionTokensAnimationObject--fade {
+    opacity: 0;
+  }
+}
+
+.motionTokensAnimationExpandCollapse {
+  display: grid;
+  width: 5rem;
+  grid-template-rows: 1.25rem;
+  overflow: hidden;
+  transition: var(--mds-transition-collapse);
+  transition-behavior: allow-discrete;
+  border: 1px solid var(--mds-color-theme-outline-primary-normal);
+  border-radius: 0.75rem;
+  background: var(--mds-color-theme-background-solid-secondary-normal);
+}
+
+.motionTokensAnimationExpandCollapseInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.motionTokensAnimationExpandCollapseSurface {
+  width: 5rem;
+  height: 5rem;
+}
+
+.motionTokensAnimationCard--expandCollapse.is-active .motionTokensAnimationExpandCollapse,
+.motionTokensAnimationCard--expandCollapse[data-animation-phase='hold'] .motionTokensAnimationExpandCollapse {
+  grid-template-rows: 5rem;
+  transition: var(--mds-transition-expand);
+  transition-behavior: allow-discrete;
+}
+
+.motionTokensAnimationCard--expandCollapse[data-animation-phase='exit'] .motionTokensAnimationExpandCollapse {
+  grid-template-rows: 1.25rem;
+  transition: var(--mds-transition-collapse);
+  transition-behavior: allow-discrete;
+}
+
+@starting-style {
+  .motionTokensAnimationCard--expandCollapse.is-active .motionTokensAnimationExpandCollapse {
+    grid-template-rows: 1.25rem;
+  }
+}
+
+.motionTokensAnimationCard--slideEntranceExit .motionTokensAnimationObject--slide {
+  --demo-slide-offset: 12rem;
+
+  transform: translateY(calc(-100% - var(--demo-slide-offset)));
+  visibility: visible;
+  transition: var(--mds-transition-slide-exit);
+}
+
+.motionTokensAnimationCard--slideEntranceExit:not(.is-cycling) .motionTokensAnimationObject--slide {
+  visibility: hidden;
+}
+
+.motionTokensAnimationCard--slideEntranceExit.is-active .motionTokensAnimationObject--slide,
+.motionTokensAnimationCard--slideEntranceExit[data-animation-phase='hold'] .motionTokensAnimationObject--slide {
+  transform: translateY(0);
+  visibility: visible;
+  transition: var(--mds-transition-slide-entrance);
+}
+
+.motionTokensAnimationCard--slideEntranceExit[data-animation-phase='exit'] .motionTokensAnimationObject--slide {
+  transform: translateY(calc(-100% - var(--demo-slide-offset)));
+  visibility: visible;
+  transition: var(--mds-transition-slide-exit);
+}
+
+@starting-style {
+  .motionTokensAnimationCard--slideEntranceExit.is-active .motionTokensAnimationObject--slide {
+    transform: translateY(calc(-100% - var(--demo-slide-offset)));
+  }
+}

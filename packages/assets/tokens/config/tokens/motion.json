@@ -9,7 +9,7 @@
     }
   ],
   "formats": [
-    "CSS_VARIABLES",
+    "MD_MOTION_CSS",
     "SCSS_VARIABLES",
     "WEB_JSON",
     "ANDROID_RESOURCES",

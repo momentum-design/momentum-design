@@ -53,6 +53,14 @@ const LOCAL_FORMATS = {
     PATH: './css/',
     TRANSFORMS: [] as Array<Transform>,
   },
+  MD_MOTION_CSS: {
+    EXTENSION: 'css',
+    FORMAT: 'md-motion-css',
+    GROUP: 'css',
+    NAME: 'md/motion-css',
+    PATH: './css/',
+    TRANSFORMS: [] as Array<Transform>,
+  },
   MD_ANIMATION_SCSS: {
     EXTENSION: 'scss',
     FORMAT: 'md-animation-scss',

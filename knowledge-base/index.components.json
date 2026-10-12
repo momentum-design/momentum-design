@@ -509,6 +509,15 @@
       "component": "menusection"
     },
     {
+      "id": "tier3/packages/components/src/components/motionprovider/knowledge-base/motionprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/motionprovider/knowledge-base/motionprovider.component.md",
+      "title": "Motion Provider",
+      "summary": "Usage and guidelines for mdc-motionprovider — the wrapper that scopes Momentum motion and animation tokens and controls token-based motion for a subtree.",
+      "canonical": null,
+      "component": "motionprovider"
+    },
+    {
       "id": "tier3/packages/components/src/components/navmenuitem/knowledge-base/navmenuitem.component",
       "tier": 3,
       "path": "packages/components/src/components/navmenuitem/knowledge-base/navmenuitem.component.md",

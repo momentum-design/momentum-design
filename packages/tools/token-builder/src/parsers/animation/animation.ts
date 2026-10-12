@@ -4,7 +4,7 @@ import StyleDictionary, {
 } from 'style-dictionary';
 import { toKebabCase } from '../../common';
 
-const ANIMATION_FILE_PATTERN = /motion[/\\\\]animation\.json$/;
+const ANIMATION_FILE_PATTERN = /animation[/\\\\]animation\.json$/;
 
 type AnimationTransition = {
   type: 'transition';

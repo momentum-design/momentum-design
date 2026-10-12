@@ -118,6 +118,21 @@ const LOCAL_FORMATS = {
     PATH: './css/',
     TRANSFORMS: [] as Array<Transform>,
   },
+  MD_MOTION_CSS: {
+    EXTENSION: 'css',
+    FORMAT: 'md-motion-css',
+    GROUP: 'css',
+    NAME: 'md/motion-css',
+    PATH: './css/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_KABAB',
+      'MD_ELEVATION',
+      'PX_TO_REM',
+      'RESOLVE_MATH',
+      'COLOR_MODIFIER',
+    ] as Array<Transform>,
+  },
   MD_ANIMATION_SCSS: {
     EXTENSION: 'scss',
     FORMAT: 'md-animation-scss',

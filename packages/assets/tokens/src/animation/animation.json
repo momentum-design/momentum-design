@@ -115,7 +115,120 @@
       "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
+    },
+    "backgroundColor": {
+      "description": "Surface background color transition on state change",
+      "type": "transition",
+      "properties": [
+        "background-color"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "borderColor": {
+      "description": "Surface border color and shadow transition on state change",
+      "type": "transition",
+      "properties": [
+        "border-color",
+        "box-shadow"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "objectColor": {
+      "description": "Object color transition on state change",
+      "type": "transition",
+      "properties": [
+        "color"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "growShrink": {
+      "description": "Scale along the inline axis — transform transition for grow-in effects",
+      "type": "transition",
+      "properties": [
+        "transform"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "textChange": {
+      "description": "Text emphasis transition — color and font-weight between inactive and active states",
+      "type": "transition",
+      "properties": [
+        "color",
+        "font-weight"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "fadeIn": {
+      "description": "Overlay fade entrance — opacity and display when appearing",
+      "type": "transition",
+      "properties": [
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "fadeOut": {
+      "description": "Overlay fade exit — opacity and display when disappearing",
+      "type": "transition",
+      "properties": [
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
+      "delay": "{motion.delay.none}"
+    },
+    "expand": {
+      "description": "Panel expand — grid-template-rows from collapsed to open",
+      "type": "transition",
+      "properties": [
+        "grid-template-rows"
+      ],
+      "duration": "{motion.duration.normal}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "collapse": {
+      "description": "Panel collapse — grid-template-rows from open to collapsed",
+      "type": "transition",
+      "properties": [
+        "grid-template-rows"
+      ],
+      "duration": "{motion.duration.normal}",
+      "easing": "{motion.easing.exit}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideEntrance": {
+      "description": "Slide entrance — transform only; direction is set by the consuming component",
+      "type": "transition",
+      "properties": [
+        "transform"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideExit": {
+      "description": "Slide exit — transform only; direction is set by the consuming component",
+      "type": "transition",
+      "properties": [
+        "transform"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
+      "delay": "{motion.delay.none}"
     }
   }
 }
-
