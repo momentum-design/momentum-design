@@ -1,3 +1,5 @@
+import type { Locator } from '@playwright/test';
+
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -82,6 +84,28 @@ test.describe('mdc-numberinput', () => {
     decrementAriaLabel: 'Decrement',
     secondButtonForFocus: true,
   };
+
+  test.describe('with a comma decimal separator locale', () => {
+    test.use({ locale: 'de-DE' });
+
+    test('does not block the locale decimal separator when decimals are allowed', async ({ componentsPage }) => {
+      // Native number inputs only honor the locale separator in some browsers, so assert on the beforeinput guard.
+      const isBlocked = (inputEl: Locator, data: string) =>
+        inputEl.evaluate((el: HTMLInputElement, text: string) => {
+          const event = new InputEvent('beforeinput', { data: text, inputType: 'insertText', cancelable: true });
+          el.dispatchEvent(event);
+          return event.defaultPrevented;
+        }, data);
+
+      const decimalNumber = (await setup({ componentsPage, ...defaultSetupOptions, step: 'any' })).locator('input');
+      await expect(isBlocked(decimalNumber, ',')).resolves.toBe(false);
+      await expect(isBlocked(decimalNumber, '.')).resolves.toBe(false);
+
+      const integerNumber = (await setup({ componentsPage, ...defaultSetupOptions })).locator('input');
+      await expect(isBlocked(integerNumber, ',')).resolves.toBe(true);
+      await expect(isBlocked(integerNumber, '.')).resolves.toBe(true);
+    });
+  });
 
   /**
    * ATTRIBUTES
@@ -364,12 +388,12 @@ test.describe('mdc-numberinput', () => {
     });
 
     await test.step('should keep a value below min on commit and report rangeUnderflow (native behavior)', async () => {
-      const number = await setup({ componentsPage, ...defaultSetupOptions, min: 0 });
+      const number = await setup({ componentsPage, ...defaultSetupOptions, min: 10 });
       const inputEl = number.locator('input');
 
-      await inputEl.fill('-42');
+      await inputEl.fill('5');
       await componentsPage.actionability.pressTab();
-      await expect(inputEl).toHaveValue('-42');
+      await expect(inputEl).toHaveValue('5');
       const rangeUnderflow = await inputEl.evaluate((el: HTMLInputElement) => el.validity.rangeUnderflow);
       expect(rangeUnderflow).toBe(true);
     });
@@ -396,12 +420,12 @@ test.describe('mdc-numberinput', () => {
     });
 
     await test.step('should clamp a typed value below min to min on commit when clamp="auto"', async () => {
-      const number = await setup({ componentsPage, ...defaultSetupOptions, min: 0, clamp: 'auto' });
+      const number = await setup({ componentsPage, ...defaultSetupOptions, min: 10, clamp: 'auto' });
       const inputEl = number.locator('input');
 
-      await inputEl.fill('-42');
+      await inputEl.fill('5');
       await componentsPage.actionability.pressTab();
-      await expect(inputEl).toHaveValue('0');
+      await expect(inputEl).toHaveValue('10');
       const rangeUnderflow = await inputEl.evaluate((el: HTMLInputElement) => el.validity.rangeUnderflow);
       expect(rangeUnderflow).toBe(false);
     });
@@ -497,13 +521,22 @@ test.describe('mdc-numberinput', () => {
     });
 
     await test.step('should reject non-numeric characters typed into the field', async () => {
-      const number = await setup({ componentsPage, ...defaultSetupOptions });
+      const number = await setup({ componentsPage, ...defaultSetupOptions, step: 'any' });
       const inputEl = number.locator('input');
 
       await inputEl.click();
       // Letters and the native-number extras e/E/+ are dropped; digits, the sign and the decimal point are kept.
       await inputEl.pressSequentially('-1a2E3e+4.5');
       await expect(inputEl).toHaveValue('-1234.5');
+    });
+
+    await test.step('should reject the decimal point when the step is a whole number', async () => {
+      const number = await setup({ componentsPage, ...defaultSetupOptions });
+      const inputEl = number.locator('input');
+
+      await inputEl.click();
+      await inputEl.pressSequentially('4.5');
+      await expect(inputEl).toHaveValue('45');
     });
 
     await test.step('should not step or focus the input when disabled, skipping the whole component', async () => {

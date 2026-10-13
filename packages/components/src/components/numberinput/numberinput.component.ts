@@ -137,6 +137,8 @@ class NumberInput extends Input {
    * in `data`; pasted/dropped text arrives in `dataTransfer`. Deletions, caret navigation and IME
    * composition carry neither, so they pass through. The sign (`-`) and decimal point (`.`) are
    * numeric structural characters, so they are allowed and left to native range/step validation.
+   * Decimal separators (`.` plus the browser locale's, e.g. `,`) are allowed only when the step
+   * permits decimals.
    */
   private handleBeforeInput = (event: InputEvent) => {
     const inserted = event.data ?? event.dataTransfer?.getData('text') ?? '';
@@ -144,10 +146,26 @@ class NumberInput extends Input {
       return;
     }
 
-    if (!/^[\d.-]*$/.test(inserted)) {
+    let allowedCharacters = '\\d';
+
+    if (this.min === undefined || this.min < 0) {
+      allowedCharacters += '\\-';
+    }
+
+    if (this.step === DEFAULTS.STEP_ANY || (Number.isFinite(this.step) && !Number.isInteger(this.step))) {
+      allowedCharacters += `\\.${NumberInput.getLocaleDecimalSeparator()}`;
+    }
+
+    if (!new RegExp(`^[${allowedCharacters}]*$`).test(inserted)) {
       event.preventDefault();
     }
   };
+
+  private static getLocaleDecimalSeparator(): string {
+    const separator =
+      new Intl.NumberFormat(navigator.language).formatToParts(1.1).find(part => part.type === 'decimal')?.value ?? '.';
+    return separator.replace(/[\\\]^-]/g, '\\$&');
+  }
 
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.updated(changedProperties);
