@@ -61,9 +61,6 @@ class CardRadio extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabIn
   /**
    * The name of the radio group. Cards with the same name are grouped together,
    * ensuring only one card in the group can be selected at a time.
-   *
-   * Reflected so that grouping keeps working when `name` is set as a property
-   * rather than an attribute, which is what framework wrappers do.
    * @default ''
    */
   @property({ type: String, reflect: true })
