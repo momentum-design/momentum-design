@@ -41,6 +41,16 @@ describe('Animation tokens (post-build)', () => {
     expect(css).toContain('Do not edit directly');
   });
 
+  it('transition tokens should emit --mds-transition-* variables', () => {
+    const transitionTokens = Object.entries(source).filter(
+      ([, t]) => t.type === 'transition' || t.type === 'transitionCompound',
+    );
+    expect(transitionTokens.length).toBeGreaterThan(0);
+    transitionTokens.forEach(([name]) => {
+      expect(css).toContain(`--mds-transition-${kebabCase(name)}:`);
+    });
+  });
+
   it('no CSS variable should have an empty or unresolved value', () => {
     const varLines = css.split('\n').filter((l) => l.trim().startsWith('--'));
     expect(varLines.length).toBeGreaterThan(0);
