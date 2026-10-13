@@ -289,9 +289,7 @@ test.describe.parallel('mdc-cardradio', () => {
 
         // Framework wrappers set name as a property, never as an attribute.
         await cardRadios.evaluateAll((elements: Element[]) => {
-          elements.forEach(element => {
-            (element as Element & { name: string }).name = 'cardradio-property-group';
-          });
+          elements.forEach(element => Object.assign(element, { name: 'cardradio-property-group' }));
         });
 
         await expect(cardRadios.nth(0)).toHaveAttribute('name', 'cardradio-property-group');
