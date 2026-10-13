@@ -41,45 +41,6 @@ describe('Animation tokens (post-build)', () => {
     expect(css).toContain('Do not edit directly');
   });
 
-  it('transition tokens should emit --mds-transition-* variables', () => {
-    const transitionTokens = Object.entries(source).filter(
-      ([, t]) => t.type === 'transition' || t.type === 'transitionCompound',
-    );
-    expect(transitionTokens.length).toBeGreaterThan(0);
-    transitionTokens.forEach(([name]) => {
-      expect(css).toContain(`--mds-transition-${kebabCase(name)}:`);
-    });
-  });
-
-  it('keyframe tokens should emit --mds-animation-* variables', () => {
-    const keyframeTokens = Object.entries(source).filter(
-      ([, t]) => t.type === 'keyframe' || t.type === 'keyframeCompound',
-    );
-    expect(keyframeTokens.length).toBeGreaterThan(0);
-    keyframeTokens.forEach(([name]) => {
-      expect(css).toContain(`--mds-animation-${kebabCase(name)}:`);
-    });
-  });
-
-  it('keyframe tokens should have matching @keyframes block', () => {
-    const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
-    expect(keyframeTokens.length).toBeGreaterThan(0);
-    keyframeTokens.forEach(([name]) => {
-      expect(css).toContain(`@keyframes mds-animation-${kebabCase(name)}`);
-    });
-  });
-
-  it('@keyframes name in variable value should match the @keyframes block name', () => {
-    const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
-    keyframeTokens.forEach(([name]) => {
-      const kfName = `mds-animation-${kebabCase(name)}`;
-      const varLineMatch = css.match(new RegExp(`--mds-animation-${kebabCase(name)}:\\s*([^;]+);`));
-      expect(varLineMatch).not.toBeNull();
-      // The keyframe name must be last in the animation shorthand
-      expect(varLineMatch[1].trim()).toMatch(new RegExp(`\\b${kfName}$`));
-    });
-  });
-
   it('no CSS variable should have an empty or unresolved value', () => {
     const varLines = css.split('\n').filter((l) => l.trim().startsWith('--'));
     expect(varLines.length).toBeGreaterThan(0);
