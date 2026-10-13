@@ -271,6 +271,38 @@ test.describe.parallel('mdc-cardradio', () => {
         await expect(cardRadio).not.toHaveAttribute('checked');
         await expect(waitForClickAfterDisabled).not.toEventEmitted();
       });
+
+      await test.step('name set as a property reflects and keeps grouping working', async () => {
+        await componentsPage.mount({
+          html: `
+          <div style="display: flex; gap: 0.5rem">
+          ${Array.from(
+            { length: 3 },
+            (_, i) => `<mdc-cardradio card-title="cardradio-${i}">${defaultChildren}</mdc-cardradio>`,
+          ).join('')}
+          </div>`,
+          clearDocument: true,
+        });
+
+        const cardRadios = componentsPage.page.locator('mdc-cardradio');
+        await cardRadios.first().waitFor();
+
+        // Framework wrappers set name as a property, never as an attribute.
+        await cardRadios.evaluateAll((elements: Element[]) => {
+          elements.forEach(element => {
+            (element as Element & { name: string }).name = 'cardradio-property-group';
+          });
+        });
+
+        await expect(cardRadios.nth(0)).toHaveAttribute('name', 'cardradio-property-group');
+
+        await cardRadios.nth(0).click();
+        await expect(cardRadios.nth(0)).toHaveAttribute('checked');
+
+        await cardRadios.nth(1).click();
+        await expect(cardRadios.nth(1)).toHaveAttribute('checked');
+        await expect(cardRadios.nth(0)).not.toHaveAttribute('checked');
+      });
     });
   });
 
