@@ -422,7 +422,7 @@
           "normal": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.core.black-alpha.100}",
+            "value": "{color.core.black-alpha.80}",
             "description": ""
           }
         },
@@ -621,7 +621,7 @@
             "normal": {
               "parent": "theme/fluid/light",
               "type": "color",
-              "value": "{color.core.white-alpha.100}",
+              "value": "{color.core.white-alpha.80}",
               "description": ""
             }
           },
@@ -629,7 +629,7 @@
             "normal": {
               "parent": "theme/fluid/light",
               "type": "color",
-              "value": "{color.core.gray.5}",
+              "value": "{color.core.white-alpha.60}",
               "description": ""
             }
           },
@@ -637,7 +637,7 @@
             "normal": {
               "parent": "theme/fluid/light",
               "type": "color",
-              "value": "{color.core.gray.10}",
+              "value": "{color.core.white-alpha.40}",
               "description": ""
             }
           },
@@ -645,7 +645,7 @@
             "normal": {
               "parent": "theme/fluid/light",
               "type": "color",
-              "value": "{color.core.white-alpha.100}",
+              "value": "{color.core.white-alpha.40}",
               "description": ""
             }
           }
@@ -1020,19 +1020,19 @@
           },
           "default": {
             "normal": {
-              "value": "{color.core.gray.10}",
+              "value": "{color.core.black-alpha.0}",
               "type": "color",
-              "description": "HEX: #ededed\nUsed for chips."
+              "description": "HEX: #000000 0%\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.gray.20}",
+              "value": "{color.core.black-alpha.7}",
               "type": "color",
-              "description": "HEX: #dedede\nUsed for chips."
+              "description": "HEX: #000000 7%\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.gray.30}",
+              "value": "{color.core.black-alpha.11}",
               "type": "color",
-              "description": "HEX: #c9c9c9\nUsed for chips."
+              "description": "HEX: #000000 11%\nUsed for chips."
             }
           },
           "error": {
@@ -1113,7 +1113,7 @@
             },
             "2": {
               "type": "color",
-              "value": "{color.core.gray.80}",
+              "value": "{color.core.gray.5}",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1164,6 +1164,12 @@
               "type": "color",
               "description": "Used for operation pop background. "
             }
+          },
+          "legacy": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.60}",
+            "description": ""
           }
         },
         "input": {
@@ -1192,6 +1198,185 @@
             },
             "description": "Used for overlay background"
           }
+        },
+        "app": {
+          "canvas": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.100}",
+            "description": ""
+          }
+        },
+        "tertiary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.5}",
+            "description": ""
+          }
+        },
+        "glow": {
+          "accent": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.ai.mediumblue}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.ai.steelblue}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.ai.skyblue}",
+                "description": ""
+              }
+            }
+          },
+          "large": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              }
+            }
+          },
+          "light": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.100}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": ""
+              },
+              "4": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              },
+              "5": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0",
+                      "space": "lch"
+                    }
+                  }
+                },
+                "description": ""
+              }
+            }
+          },
+          "medium": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.40}",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.25",
+                      "space": "lch"
+                    }
+                  }
+                },
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.40}",
+                "description": ""
+              }
+            }
+          },
+          "small": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.50}",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.75",
+                      "space": "lch"
+                    }
+                  }
+                },
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.blue.40}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.40}",
+                "description": ""
+              }
+            }
+          }
         }
       },
       "button": {
@@ -1200,24 +1385,25 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.95}",
-            "description": ""
+            "description": "button, tab"
           },
           "hover": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.80}",
-            "description": ""
+            "description": "button, tab"
           },
           "pressed": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.70}",
-            "description": ""
+            "description": "button, tab"
           },
           "disabled": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}"
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, tab"
           }
         },
         "secondary": {
@@ -1225,50 +1411,50 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.0}",
-            "description": ""
+            "description": "tab"
           },
           "hover": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.7}",
-            "description": ""
+            "description": "button, navmenuitem, tab"
           },
           "pressed": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.20}",
-            "description": ""
+            "description": "button, navmenuitem, tab"
           },
           "disabled": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.0}",
-            "description": ""
+            "description": "button, navmenuitem, tab"
           },
           "active": {
             "normal": {
               "parent": "theme/fluid/light",
               "type": "color",
               "value": "{color.core.black-alpha.20}",
-              "description": ""
+              "description": "button, navmenuitem, tab"
             },
             "hover": {
               "parent": "theme/fluid/light",
               "type": "color",
               "value": "{color.core.black-alpha.30}",
-              "description": ""
+              "description": "button, navmenuitem, tab"
             },
             "pressed": {
               "parent": "theme/fluid/light",
               "type": "color",
               "value": "{color.core.black-alpha.40}",
-              "description": ""
+              "description": "button, navmenuitem, tab"
             },
             "disabled": {
               "parent": "theme/fluid/light",
               "type": "color",
               "value": "{color.core.black-alpha.11}",
-              "description": ""
+              "description": "button, navmenuitem"
             }
           }
         },
@@ -1277,19 +1463,19 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.green.60}",
-            "description": ""
+            "description": "button"
           },
           "hover": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.green.70}",
-            "description": ""
+            "description": "button"
           },
           "pressed": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.green.80}",
-            "description": ""
+            "description": "button"
           }
         },
         "cancel": {
@@ -1297,19 +1483,19 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.red.60}",
-            "description": ""
+            "description": "button"
           },
           "hover": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.red.70}",
-            "description": ""
+            "description": "button"
           },
           "pressed": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.red.80}",
-            "description": ""
+            "description": "button"
           }
         },
         "accent": {
@@ -1317,19 +1503,19 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.blue.60}",
-            "description": ""
+            "description": "button"
           },
           "hover": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.blue.70}",
-            "description": ""
+            "description": "button"
           },
           "pressed": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.blue.80}",
-            "description": ""
+            "description": "button"
           }
         },
         "glass": {
@@ -1337,17 +1523,17 @@
             "normal": {
               "value": "{color.core.black-alpha.80}",
               "type": "color",
-              "description": "Used for Operation pop button"
+              "description": ""
             },
             "hover": {
               "value": "{color.core.black-alpha.70}",
               "type": "color",
-              "description": "Used for Operation pop button"
+              "description": ""
             },
             "pressed": {
               "value": "{color.core.black-alpha.60}",
               "type": "color",
-              "description": "Used for Operation pop button"
+              "description": ""
             }
           }
         }
@@ -1358,12 +1544,13 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.46}",
-            "description": "Theme Token: OutlinePrimary-normal\nCore Token: white-alpha-40"
+            "description": "buttongroup, card, staticcheckbox, stepperconnector, toast"
           },
           "disabled": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}"
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, cardcheckbox, cardradio, chip, datepicker, filterchip, input (+7 more)"
           }
         },
         "theme": {
@@ -1371,7 +1558,7 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.blue.60}",
-            "description": ""
+            "description": "alertchip, banner, button, staticchip, stepperconnector"
           }
         },
         "secondary": {
@@ -1379,7 +1566,7 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.20}",
-            "description": ""
+            "description": "accordionbutton, accordiongroup, banner, bullet, buttongroup, dialog, divider (+4 more)"
           }
         },
         "input": {
@@ -1387,13 +1574,13 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.50}",
-            "description": ""
+            "description": "calendar, combobox, datepicker, input, select, slider, staticcheckbox (+4 more)"
           },
           "active": {
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.90}",
-            "description": ""
+            "description": "cardcheckbox, cardradio, input, slider, tab, textarea"
           }
         },
         "button": {
@@ -1401,7 +1588,7 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.black-alpha.50}",
-            "description": "Theme Token: OutlineButton-normal\nCore Token: white-alpha-50"
+            "description": "alertchip, button, buttongroup, inputchip, staticchip"
           }
         },
         "join": {
@@ -1409,7 +1596,7 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.green.70}",
-            "description": ""
+            "description": "alertchip, banner, button"
           }
         },
         "cancel": {
@@ -1417,7 +1604,7 @@
             "parent": "theme/fluid/light",
             "type": "color",
             "value": "{color.core.red.70}",
-            "description": ""
+            "description": "alertchip, banner, button, checkbox, inputchip, stepperitem"
           }
         },
         "share": {
@@ -1460,81 +1647,91 @@
           "cobalt": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.decorative.cobalt.60}"
+            "value": "{color.decorative.cobalt.60}",
+            "description": ""
           },
           "gold": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.decorative.gold.60}"
+            "value": "{color.decorative.gold.60}",
+            "description": "staticchip"
           },
           "lime": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.decorative.lime.60}"
+            "value": "{color.decorative.lime.60}",
+            "description": "staticchip"
           },
           "mint": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.decorative.mint.60}"
+            "value": "{color.decorative.mint.60}",
+            "description": "staticchip"
           },
           "orange": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.core.orange.60}"
+            "value": "{color.core.orange.60}",
+            "description": "staticchip"
           },
           "pink": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.decorative.pink.60}"
+            "value": "{color.decorative.pink.60}",
+            "description": "staticchip"
           },
           "purple": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.decorative.purple.60}"
+            "value": "{color.decorative.purple.60}",
+            "description": "staticchip"
           },
           "slate": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.decorative.slate.60}"
+            "value": "{color.decorative.slate.60}",
+            "description": "staticchip"
           },
           "violet": {
             "parent": "theme/fluid/light",
             "type": "color",
-            "value": "{color.decorative.violet.60}"
+            "value": "{color.decorative.violet.60}",
+            "description": "staticchip"
           }
         },
         "promotion": {
           "normal": {
             "type": "color",
             "value": "{color.decorative.purple.60}",
-            "description": "Used for border of promotional banner"
+            "description": "button, card, dialog"
           }
         },
         "gradient": {
           "active": {
             "type": "color",
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%)",
-            "description": "Used for Webex Assitant AI"
+            "description": ""
           }
         },
         "warning": {
           "normal": {
             "value": "{color.core.yellow.70}",
-            "type": "color"
+            "type": "color",
+            "description": "alertchip, banner"
           }
         },
         "glass": {
           "normal": {
             "value": "linear-gradient(180deg, {color.core.black-alpha.7} 0%, {color.core.black-alpha.20} 100%)",
             "type": "color",
-            "description": "Used for operation pop"
+            "description": ""
           }
         },
         "ai": {
           "normal": {
-            "value": "linear-gradient(27deg, {color.ai.steelblue} 10.22%, {color.ai.skyblue} 88.93%, {color.ai.aquablue} 162.86%)",
+            "value": "{color.core.white-alpha.100}",
             "type": "color",
-            "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%)\nUsed for AI assistant feature"
+            "description": ""
           }
         }
       },
@@ -1633,6 +1830,34 @@
               "value": "{color.core.gray.20}",
               "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
             }
+          }
+        },
+        "header": {
+          "0": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.5}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.0}",
+            "description": ""
+          }
+        },
+        "navigation": {
+          "0": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.0}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.gray.30}",
+            "description": ""
           }
         }
       },
@@ -1944,6 +2169,12 @@
               "parent": "theme/fluid/light",
               "type": "color",
               "value": "{color.core.white-alpha.7}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
               "description": ""
             },
             "active": {
@@ -2927,7 +3158,7 @@
             "description": "Used for focus ring effect"
           },
           "2": {
-            "value": "{color.core.blue.60}",
+            "value": "#1570cf",
             "type": "color",
             "$extensions": {
               "studio.tokens": {
@@ -2939,6 +3170,82 @@
               }
             },
             "description": "Used for focus ring effect"
+          }
+        }
+      },
+      "ai-hint": {
+        "primary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.80}",
+              "description": ""
+            }
+          }
+        },
+        "secondary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "3": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
+            },
+            "4": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": ""
+            }
           }
         }
       }
@@ -2956,61 +3263,61 @@
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Compact vertical padding. Default control vertical pad."
+        "description": "Compact v padding. Default control v pad."
       },
       "pad-v-sm": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "Standard vertical padding."
+        "description": "Standard v padding."
       },
       "pad-v-md": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Roomy vertical padding."
+        "description": "Roomy v padding. Cards, dialogs, headers."
       },
       "pad-v-lg": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.24}",
-        "description": "Large vertical padding."
+        "description": "Large v padding."
       },
       "pad-v-xl": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.32}",
-        "description": "Extra-large vertical padding."
+        "description": "Extra-large v padding."
       },
       "pad-h-xs": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Compact horizontal padding."
+        "description": "Compact h padding. Chips, dense controls."
       },
       "pad-h-sm": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "Standard horizontal padding. Default control horizontal pad."
+        "description": "Standard h padding. Default control h pad."
       },
       "pad-h-md": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Roomy horizontal padding."
+        "description": "Roomy h padding. Buttons, sidenav, toast."
       },
       "pad-h-lg": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.24}",
-        "description": "Large horizontal padding."
+        "description": "Large h padding."
       },
       "pad-h-xl": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.32}",
-        "description": "Extra-large horizontal padding."
+        "description": "Extra-large h padding."
       },
       "gap-none": {
         "parent": "theme/fluid/light",
@@ -3022,19 +3329,19 @@
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Ultra-tight sibling gap."
+        "description": "Ultra-tight sibling gap. Chips, icon clusters, compact controls."
       },
       "gap-tight": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Tight sibling gap."
+        "description": "Tight sibling gap. Icon-to-label, most control internals."
       },
       "gap-wide": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Wide layout gap."
+        "description": "Wide layout gap. Roomy stacks. Use pad-v-md / pad-h-md when 16px is padding."
       },
       "gap-loose": {
         "parent": "theme/fluid/light",
@@ -3056,13 +3363,13 @@
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.1}",
-        "description": "Standard stroke weight."
+        "description": "Default stroke weight — chips, banner, buttongroup, inputs."
       },
       "emphasis": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.2}",
-        "description": "Stronger stroke weight."
+        "description": "Emphasis stroke weight — selected filterchip, heavier container chrome."
       }
     }
   },
@@ -3072,43 +3379,37 @@
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.0}",
-        "description": "No rounding. Flat edge."
+        "description": "No rounding; flat edge in compound shapes (accordion, combobox, nav joins)."
       },
-      "subtle": {
+      "xs": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.2}",
         "description": "Barely softened corners."
       },
-      "small": {
+      "sm": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Compact rounding."
+        "description": "Compact rounding — chips, icons, inputchip, tab partials."
       },
-      "medium": {
+      "md": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Default surface rounding."
+        "description": "Default surface rounding — card, input, dialog, listitem, toast."
       },
-      "large": {
+      "lg": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "More prominent rounding."
-      },
-      "pill": {
-        "parent": "theme/fluid/light",
-        "type": "dimension",
-        "value": "{dimension.20}",
-        "description": "Capsule silhouette."
+        "description": "More prominent rounding — statictoggle, softer bounded controls."
       },
       "full": {
         "parent": "theme/fluid/light",
         "type": "dimension",
         "value": "{dimension.full}",
-        "description": "Circle."
+        "description": "True circle — avatar, radio, slider thumb, presence."
       }
     }
   },
@@ -3119,19 +3420,19 @@
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.4}",
-          "description": "Micro fixed size."
+          "description": "Micro fixed size — nav notch, indicator. Was size/xxs."
         },
         "8": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.8}",
-          "description": "Smallest icon slot."
+          "description": "Smallest icon slot — bullet, compact glyph. Was size/xs."
         },
         "12": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.12}",
-          "description": "Compact icon slot."
+          "description": "Compact icon slot — badge, nav icon. Was size/sm."
         }
       },
       "md": {
@@ -3139,31 +3440,31 @@
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.16}",
-          "description": "Standard icon slot."
+          "description": "Standard icon slot — avatar, badge, popover, radio. Was size/md and size/lg."
         },
         "20": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.20}",
-          "description": "Compact inline row."
+          "description": "Compact inline row — divider, chip icon, timepicker. Was size/xl."
         },
         "24": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.24}",
-          "description": "Compact control height."
+          "description": "Compact control height — chip, alertchip, inputchip. Was size/2xl."
         },
         "28": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.28}",
-          "description": "Between compact and standard control height."
+          "description": "Between compact and standard control — buttongroup, calendar, stepper. Was size/3xl."
         },
         "32": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.32}",
-          "description": "Default control height."
+          "description": "Default control height — input, select, tab, combobox. Was size/4xl."
         }
       },
       "lg": {
@@ -3171,19 +3472,19 @@
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.40}",
-          "description": "Large control or toolbar row."
+          "description": "Large control / toolbar row — nav, datepicker trigger. Was size/5xl."
         },
         "52": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.52}",
-          "description": "Wide control minimum."
+          "description": "Wide control minimum — input min-width. Was size/6xl."
         },
         "64": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.64}",
-          "description": "Chrome band."
+          "description": "Chrome band — app header, searchfield, avatar lg. Was size/7xl."
         }
       },
       "xl": {
@@ -3191,25 +3492,25 @@
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.72}",
-          "description": "Large portrait size."
+          "description": "Large avatar tier. Was size/8xl."
         },
         "88": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.88}",
-          "description": "Extra-large portrait size."
+          "description": "Extra-large avatar tier. Was size/9xl."
         },
         "100": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.100}",
-          "description": "Content minimum height."
+          "description": "Content min-height — textarea. Was size/10xl."
         },
         "124": {
           "parent": "theme/fluid/light",
           "type": "dimension",
           "value": "{dimension.124}",
-          "description": "Maximum portrait or hero size."
+          "description": "Max avatar / hero. Was size/11xl."
         }
       }
     }

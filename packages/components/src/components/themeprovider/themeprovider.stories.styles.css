@@ -2,21 +2,47 @@
   display: flex;
   flex-direction: column;
   width: calc(30%);
-  background: var(--mds-color-theme-background-solid-primary-normal);
-  padding: 10px;
-  border: 1px solid var(--mds-color-theme-text-primary-normal);
+  min-width: 0;
+  max-width: 100%;
+  width: 200px;
+  padding: var(--mds-spacing-theme-pad-v-md) var(--mds-spacing-theme-pad-h-md);
+  border: var(--mds-border-theme-default) solid var(--mds-color-theme-outline-secondary-normal);
+  border-radius: var(--mds-radius-theme-md);
+  margin-bottom: 8px;
+  backdrop-filter: var(--mds-effect-backdrop-filter-blur20);
+  -webkit-backdrop-filter: var(--mds-effect-backdrop-filter-blur20);
 }
 
-.themeWrapper + .themeWrapper {
-  margin-top: 10px;
+.themeWrapper__glassNormal {
+  background: var(--mds-color-theme-background-glass-normal);
+}
+
+.themeWrapper__glassActive {
+  background: var(--mds-color-theme-background-glass-active);
+}
+
+.themeWrapper__glassLight {
+  background: var(--mds-color-theme-background-glass-light);
+}
+
+.themeWrapper__glassMedium {
+  background: var(--mds-color-theme-background-glass-medium);
+}
+
+.themeWrapper__glassHeavy {
+  background: var(--mds-color-theme-background-glass-heavy);
+}
+
+.themeWrapper+.themeWrapper {
+  margin-top: 16px;
 }
 
 .colorBox {
   width: 100%;
   height: 10px;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
-.colorBox + .colorBox {
-  margin-top: 10px;
+.colorBox+.colorBox {
+  margin-top: 12px;
 }

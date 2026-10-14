@@ -1164,6 +1164,12 @@
               "type": "color",
               "description": "Used for operation pop background. "
             }
+          },
+          "legacy": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.black-alpha.40}",
+            "description": ""
           }
         },
         "input": {
@@ -1191,6 +1197,176 @@
               ]
             },
             "description": "Used for overlay background"
+          }
+        },
+        "app": {
+          "canvas": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.100}",
+            "description": ""
+          }
+        },
+        "tertiary": {
+          "normal": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.80}",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.5",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "glow": {
+          "accent": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.ai.mediumblue}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.ai.steelblue}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.ai.skyblue}",
+                "description": ""
+              }
+            }
+          },
+          "large": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.40}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.90}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.gray.100}",
+                "description": ""
+              }
+            }
+          },
+          "light": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.white-alpha.100}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": ""
+              },
+              "4": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              },
+              "5": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
+              }
+            }
+          },
+          "medium": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.lime.30}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": ""
+              }
+            }
+          },
+          "small": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.50}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.gray.55}",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.5",
+                      "space": "lch"
+                    }
+                  }
+                },
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.lime.50}",
+                "description": ""
+              }
+            }
           }
         }
       },
@@ -1543,7 +1719,7 @@
         "ai": {
           "normal": {
             "type": "color",
-            "value": "linear-gradient(27deg, {color.ai.steelblue} 10.22%, {color.ai.skyblue} 88.93%, {color.ai.aquablue} 162.86%)",
+            "value": "{color.core.white-alpha.100}",
             "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%)\nUsed for AI assistant feature"
           }
         }
@@ -1643,6 +1819,52 @@
               "value": "{color.core.gray.80}",
               "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
             }
+          }
+        },
+        "header": {
+          "0": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.95}",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.5",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.95}",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "navigation": {
+          "0": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.80}",
+            "description": ""
           }
         }
       },
@@ -1954,6 +2176,12 @@
               "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.white-alpha.7}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
               "description": ""
             },
             "active": {
@@ -2914,7 +3142,7 @@
             "description": "Used for focus ring effect"
           },
           "2": {
-            "value": "{color.core.blue.40}",
+            "value": "#64B4FA",
             "type": "color",
             "$extensions": {
               "studio.tokens": {
@@ -2926,6 +3154,82 @@
               }
             },
             "description": "Used for focus ring effect"
+          }
+        }
+      },
+      "ai-hint": {
+        "primary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.80}",
+              "description": ""
+            }
+          }
+        },
+        "secondary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "3": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
+            },
+            "4": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": ""
+            }
           }
         }
       }
@@ -2943,61 +3247,61 @@
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Compact vertical padding. Default control vertical pad."
+        "description": "Compact v padding. Default control v pad."
       },
       "pad-v-sm": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "Standard vertical padding."
+        "description": "Standard v padding."
       },
       "pad-v-md": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Roomy vertical padding."
+        "description": "Roomy v padding. Cards, dialogs, headers."
       },
       "pad-v-lg": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.24}",
-        "description": "Large vertical padding."
+        "description": "Large v padding."
       },
       "pad-v-xl": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.32}",
-        "description": "Extra-large vertical padding."
+        "description": "Extra-large v padding."
       },
       "pad-h-xs": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Compact horizontal padding."
+        "description": "Compact h padding. Chips, dense controls."
       },
       "pad-h-sm": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "Standard horizontal padding. Default control horizontal pad."
+        "description": "Standard h padding. Default control h pad."
       },
       "pad-h-md": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Roomy horizontal padding."
+        "description": "Roomy h padding. Buttons, sidenav, toast."
       },
       "pad-h-lg": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.24}",
-        "description": "Large horizontal padding."
+        "description": "Large h padding."
       },
       "pad-h-xl": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.32}",
-        "description": "Extra-large horizontal padding."
+        "description": "Extra-large h padding."
       },
       "gap-none": {
         "parent": "theme/stable/dark",
@@ -3009,19 +3313,19 @@
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Ultra-tight sibling gap."
+        "description": "Ultra-tight sibling gap. Chips, icon clusters, compact controls."
       },
       "gap-tight": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Tight sibling gap."
+        "description": "Tight sibling gap. Icon-to-label, most control internals."
       },
       "gap-wide": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Wide layout gap."
+        "description": "Wide layout gap. Roomy stacks. Use pad-v-md / pad-h-md when 16px is padding."
       },
       "gap-loose": {
         "parent": "theme/stable/dark",
@@ -3043,13 +3347,13 @@
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.1}",
-        "description": "Standard stroke weight."
+        "description": "Default stroke weight — chips, banner, buttongroup, inputs."
       },
       "emphasis": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.2}",
-        "description": "Stronger stroke weight."
+        "description": "Emphasis stroke weight — selected filterchip, heavier container chrome."
       }
     }
   },
@@ -3059,43 +3363,37 @@
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.0}",
-        "description": "No rounding. Flat edge."
+        "description": "No rounding; flat edge in compound shapes (accordion, combobox, nav joins)."
       },
-      "subtle": {
+      "xs": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.2}",
         "description": "Barely softened corners."
       },
-      "small": {
+      "sm": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Compact rounding."
+        "description": "Compact rounding — chips, icons, inputchip, tab partials."
       },
-      "medium": {
+      "md": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Default surface rounding."
+        "description": "Default surface rounding — card, input, dialog, listitem, toast."
       },
-      "large": {
+      "lg": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "More prominent rounding."
-      },
-      "pill": {
-        "parent": "theme/stable/dark",
-        "type": "dimension",
-        "value": "{dimension.20}",
-        "description": "Capsule silhouette."
+        "description": "More prominent rounding — statictoggle, softer bounded controls."
       },
       "full": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.full}",
-        "description": "Circle."
+        "description": "True circle — avatar, radio, slider thumb, presence."
       }
     }
   },
@@ -3106,19 +3404,19 @@
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.4}",
-          "description": "Micro fixed size."
+          "description": "Micro fixed size — nav notch, indicator. Was size/xxs."
         },
         "8": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.8}",
-          "description": "Smallest icon slot."
+          "description": "Smallest icon slot — bullet, compact glyph. Was size/xs."
         },
         "12": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.12}",
-          "description": "Compact icon slot."
+          "description": "Compact icon slot — badge, nav icon. Was size/sm."
         }
       },
       "md": {
@@ -3126,31 +3424,31 @@
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.16}",
-          "description": "Standard icon slot."
+          "description": "Standard icon slot — avatar, badge, popover, radio. Was size/md and size/lg."
         },
         "20": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.20}",
-          "description": "Compact inline row."
+          "description": "Compact inline row — divider, chip icon, timepicker. Was size/xl."
         },
         "24": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.24}",
-          "description": "Compact control height."
+          "description": "Compact control height — chip, alertchip, inputchip. Was size/2xl."
         },
         "28": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.28}",
-          "description": "Between compact and standard control height."
+          "description": "Between compact and standard control — buttongroup, calendar, stepper. Was size/3xl."
         },
         "32": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.32}",
-          "description": "Default control height."
+          "description": "Default control height — input, select, tab, combobox. Was size/4xl."
         }
       },
       "lg": {
@@ -3158,19 +3456,19 @@
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.40}",
-          "description": "Large control or toolbar row."
+          "description": "Large control / toolbar row — nav, datepicker trigger. Was size/5xl."
         },
         "52": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.52}",
-          "description": "Wide control minimum."
+          "description": "Wide control minimum — input min-width. Was size/6xl."
         },
         "64": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.64}",
-          "description": "Chrome band."
+          "description": "Chrome band — app header, searchfield, avatar lg. Was size/7xl."
         }
       },
       "xl": {
@@ -3178,25 +3476,25 @@
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.72}",
-          "description": "Large portrait size."
+          "description": "Large avatar tier. Was size/8xl."
         },
         "88": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.88}",
-          "description": "Extra-large portrait size."
+          "description": "Extra-large avatar tier. Was size/9xl."
         },
         "100": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.100}",
-          "description": "Content minimum height."
+          "description": "Content min-height — textarea. Was size/10xl."
         },
         "124": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.124}",
-          "description": "Maximum portrait or hero size."
+          "description": "Max avatar / hero. Was size/11xl."
         }
       }
     }
