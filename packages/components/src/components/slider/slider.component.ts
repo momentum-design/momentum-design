@@ -209,6 +209,7 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     super();
     this.addEventListener('keydown', this.handleKeyEvent.bind(this));
     this.addEventListener('mousedown', this.preventChange.bind(this));
+    this.addEventListener('pointerdown', this.preventChange.bind(this));
   }
 
   protected override updated(changedProperties: PropertyValueMap<Slider>): void {
@@ -225,10 +226,6 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       changedProperties.has('valueEnd')
     ) {
       this.updateTrackStyling();
-    }
-
-    if (changedProperties.has('softDisabled')) {
-      this.setSoftDisabled();
     }
 
     if (changedProperties.has('range') || changedProperties.has('valueStart') || changedProperties.has('valueEnd')) {
@@ -255,9 +252,15 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
    */
   private handleKeyEvent(evt: KeyboardEvent) {
     const action = this.getActionForKeyEvent(evt);
+    if (this.softDisabled) {
+      if (action !== ACTIONS.TAB) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
+      return;
+    }
 
     if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
-      if (this.softDisabled) return;
       const activeElement = this.shadowRoot?.activeElement as HTMLInputElement | null;
       const isInputFocused = activeElement?.tagName === 'INPUT';
 
@@ -292,25 +295,7 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
           this.handleInput(activeElement);
         }
       }
-    } else if (this.softDisabled && action !== ACTIONS.TAB) {
-      evt.preventDefault();
-      evt.stopPropagation();
     }
-  }
-
-  /**
-   * Sets the soft-disabled state for the slider.
-   * Applies the appropriate ARIA attributes.
-   */
-  private setSoftDisabled() {
-    this.inputElements.forEach(input => {
-      const inputElement = input as HTMLInputElement;
-      if (this.softDisabled) {
-        inputElement.setAttribute('aria-disabled', 'true');
-      } else {
-        inputElement.removeAttribute('aria-disabled');
-      }
-    });
   }
 
   /**
@@ -463,11 +448,24 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     }
   }
 
+  private preventSoftDisabledChange(event: Event): boolean {
+    if (!this.softDisabled) return false;
+    const input = event.currentTarget as HTMLInputElement;
+    let value = this.value ?? this.min;
+    if (this.range) {
+      value = input.id === 'start-slider' ? (this.valueStart ?? this.min) : (this.valueEnd ?? this.max);
+    }
+    input.value = String(value);
+    event.stopImmediatePropagation();
+    return true;
+  }
+
   /**
    * Handles the input event for the single value slider.
    * @param e - The input event.
    */
   onInput(e: Event) {
+    if (this.preventSoftDisabledChange(e)) return;
     const input = e.target as HTMLInputElement;
     this.handleInput(input);
   }
@@ -477,6 +475,7 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
    * @param e - The change event.
    */
   onChange(e: Event) {
+    if (this.preventSoftDisabledChange(e)) return;
     const input = e.target as HTMLInputElement;
     this.value = Number(input.value);
     this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value } }));
@@ -487,6 +486,7 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
    * @param e - The change event.
    */
   onChangeStart(e: Event) {
+    if (this.preventSoftDisabledChange(e)) return;
     const input = e.target as HTMLInputElement;
     this.valueStart = Number(input.value);
     this.dispatchEvent(new CustomEvent('change', { detail: { valueStart: this.valueStart, valueEnd: this.valueEnd } }));
@@ -497,6 +497,7 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
    * @param e - The change event.
    */
   onChangeEnd(e: Event) {
+    if (this.preventSoftDisabledChange(e)) return;
     const input = e.target as HTMLInputElement;
     this.valueEnd = Number(input.value);
     this.dispatchEvent(new CustomEvent('change', { detail: { valueEnd: this.valueEnd, valueStart: this.valueStart } }));
@@ -569,6 +570,7 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
                   step="${this.step ?? 1}"
                   .value="${String(this.valueStart ?? this.min)}"
                   ?disabled="${this.disabled}"
+                  aria-disabled="${this.disabled || this.softDisabled || false}"
                   name="${this.nameStart ?? ''}"
                   aria-valuemin="${this.min}"
                   aria-valuemax="${this.max}"
@@ -605,6 +607,7 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
                   step="${this.step ?? 1}"
                   .value="${String(this.valueEnd ?? this.max)}"
                   ?disabled="${this.disabled}"
+                  aria-disabled="${this.disabled || this.softDisabled || false}"
                   name="${this.nameEnd ?? ''}"
                   aria-valuemin="${this.min}"
                   aria-valuemax="${this.max}"
@@ -643,6 +646,7 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
                   step="${this.step ?? 1}"
                   .value="${String(this.value ?? this.min)}"
                   ?disabled="${this.disabled}"
+                  aria-disabled="${this.disabled || this.softDisabled || false}"
                   name="${this.name ?? ''}"
                   aria-valuemin="${this.min}"
                   aria-valuemax="${this.max}"

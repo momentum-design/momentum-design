@@ -109,6 +109,7 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
    */
   override handleKeyDown(event: KeyboardEvent) {
     super.handleKeyDown(event);
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const action = this.getActionForKeyEvent(event);
 
     if (action === ACTIONS.ESCAPE) {
@@ -238,6 +239,7 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
    * @param chip - The chip element to be removed
    */
   private removeChip(chip: HTMLElement) {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     this.dispatchEvent(new CustomEvent('chipRemove', { detail: { chip }, bubbles: true, composed: true }));
     if (this.controlType !== 'controlled') {
       chip.remove();
@@ -245,6 +247,7 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
   }
 
   override clearInputText() {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     super.clearInputText();
     // Directly remove all chips from DOM since not all chip types support the 'removed' event
     // In uncontrolled mode, removeChip handles DOM removal.
@@ -276,6 +279,7 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
    * @internal
    */
   private handleChipKeyDown = (event: KeyboardEvent) => {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const action = this.getActionForKeyEvent(event);
 
     if (event.key === 'Backspace' || event.key === 'Delete') {
@@ -383,6 +387,7 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
    * @internal
    */
   private removeChipAtIndex(index: number) {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     if (!this.chips || index < 0 || index >= this.chips.length) return;
     const chip = this.chips[index];
     this.removeChipListeners(chip);

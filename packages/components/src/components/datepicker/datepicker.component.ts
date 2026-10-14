@@ -259,6 +259,19 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   protected override willUpdate(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.willUpdate(changedProperties);
 
+    if (
+      changedProperties.has('disabled') ||
+      changedProperties.has('softDisabled') ||
+      changedProperties.has('readonly')
+    ) {
+      if (this.disabled || this.softDisabled || this.readonly) {
+        this.closePopover();
+        if (this.pendingDigitTimeout) clearTimeout(this.pendingDigitTimeout);
+        this.pendingDigits = '';
+        this.parseValueToInternal();
+      }
+    }
+
     if (changedProperties.has('value') && !this.displayPopover) {
       this.parseValueToInternal();
       this.syncFormValue();
@@ -374,6 +387,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   private commitValue(): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const newVal = this.internalToValue();
     if (newVal) {
       const clampedVal = this.clampValueToRange(newVal);
@@ -424,7 +438,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   // -- Popover handling --
 
   private handleCalendarButtonClick(): void {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.softDisabled || this.readonly) return;
     if (this.displayPopover) {
       this.closePopover();
       return;
@@ -434,7 +448,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   private handleSelectTriggerClick(): void {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.softDisabled || this.readonly) return;
     if (this.displayPopover) {
       this.closePopover();
       return;
@@ -443,7 +457,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   private handleSelectKeydown(event: KeyboardEvent): void {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.softDisabled || this.readonly) return;
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE || event.key === KEYS.ARROW_DOWN) {
       event.preventDefault();
       this.displayPopover = true;
@@ -471,6 +485,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   private handleDateSelected(event: CustomEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const { detail } = event;
     const mode = this.effectiveSelectionMode;
 
@@ -545,7 +560,10 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   private handleSpinbuttonKeydown(event: KeyboardEvent, field: 'month' | 'day' | 'year'): void {
-    if (this.readonly) return;
+    if (this.disabled || this.softDisabled || this.readonly) {
+      if (event.key === KEYS.ARROW_UP || event.key === KEYS.ARROW_DOWN) event.preventDefault();
+      return;
+    }
     const range = this.getFieldRange(field);
     const currentVal = parseInt(this.getFieldValue(field), 10) || 0;
 
@@ -764,6 +782,9 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         autocomplete="off"
         ?disabled="${this.disabled}"
         ?readonly="${this.readonly}"
+        aria-disabled="${this.disabled || this.softDisabled}"
+        @beforeinput="${this.preventSoftDisabledInput}"
+        @input="${(event: Event) => this.preventSoftDisabledChange(event, value)}"
         tabindex="${this.disabled ? '-1' : '0'}"
         @keydown="${(e: KeyboardEvent) => this.handleSpinbuttonKeydown(e, field)}"
         @focus="${this.handleSpinbuttonFocus}"
@@ -798,8 +819,10 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           prefix-icon="${CALENDAR_ICON}"
           aria-label="${this.localeCalendarLabel}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+          aria-disabled="${this.disabled || this.softDisabled}"
           aria-haspopup="dialog"
           ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
           size="20"
           @click="${this.handleCalendarButtonClick}"
         ></mdc-button>
@@ -822,6 +845,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         class="mdc-focus-ring"
         role="combobox"
         aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+        aria-disabled="${this.disabled || this.softDisabled}"
         aria-haspopup="dialog"
         aria-label="${this.localeCalendarLabel}"
         tabindex="${this.disabled ? '-1' : '0'}"

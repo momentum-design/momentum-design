@@ -184,6 +184,10 @@ class Checkbox
    */
   private handleKeyDown(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
+    if (this.softDisabled && action === ACTIONS.ENTER) {
+      event.preventDefault();
+      return;
+    }
     if (this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
       if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
         event.preventDefault();
@@ -283,6 +287,7 @@ class Checkbox
           aria-checked="${this.indeterminate ? 'mixed' : this.checked}"
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
+          aria-disabled="${this.disabled || this.softDisabled}"
           ?readonly="${this.readonly}"
           aria-label="${this.dataAriaLabel ?? ''}"
           tabindex="${this.disabled ? -1 : this.tabIndex}"

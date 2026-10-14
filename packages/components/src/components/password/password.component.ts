@@ -87,6 +87,7 @@ class Password extends Input {
    * Toggles the visibility of the password.
    */
   private toggleShowPassword() {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     this.showPassword = !this.showPassword;
   }
 
@@ -104,6 +105,7 @@ class Password extends Input {
         class="own-focus-ring ${!showBtn ? 'hidden' : ''}"
         variant=${BUTTON_VARIANTS.TERTIARY}
         ?disabled=${this.disabled || this.readonly || !showBtn}
+        ?soft-disabled=${this.softDisabled}
         size="${DEFAULTS.ICON_SIZE}"
         @click=${this.toggleShowPassword}
         aria-label=${this.showPassword ? this.hideButtonAriaLabel : this.showButtonAriaLabel}

@@ -196,6 +196,11 @@ class NumberInput extends Input {
    */
   protected override handleKeyDown(event: KeyboardEvent) {
     const isStepKey = event.key === KEYS.ARROW_UP || event.key === KEYS.ARROW_DOWN;
+    if (this.softDisabled) {
+      if (isStepKey) event.preventDefault();
+      super.handleKeyDown(event);
+      return;
+    }
 
     if (this.step === DEFAULTS.STEP_ANY && isStepKey && !this.disabled && !this.readonly) {
       event.preventDefault();
@@ -214,6 +219,7 @@ class NumberInput extends Input {
    * Stepping already clamps, so this only covers manual keyboard entry.
    */
   protected override onChange(event: Event) {
+    if (this.preventSoftDisabledChange(event, this.value)) return;
     if (this.clamp === CLAMP.AUTO && this.clampInputToRange()) {
       this.inputElement.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true }));
     }
@@ -249,6 +255,7 @@ class NumberInput extends Input {
    * needed. Otherwise the native step algorithm handles stepping and step-base alignment.
    */
   private stepBy(direction: 'increment' | 'decrement') {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const inputElement = this.inputElement as HTMLInputElement;
     const previousValue = inputElement.value;
 
@@ -304,6 +311,7 @@ class NumberInput extends Input {
         prefix-icon="${isIncrement ? DEFAULTS.INCREMENT_ICON : DEFAULTS.DECREMENT_ICON}"
         aria-label="${isIncrement ? this.incrementAriaLabel : this.decrementAriaLabel}"
         ?disabled=${this.disabled || this.readonly}
+        ?soft-disabled=${this.softDisabled}
         @click=${isIncrement ? this.handleIncrement : this.handleDecrement}
         tabindex="-1"
       ></mdc-button>

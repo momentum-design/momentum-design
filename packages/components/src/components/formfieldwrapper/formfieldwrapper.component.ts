@@ -122,6 +122,23 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   /** @internal */
   protected shouldRenderLabel: Boolean = true;
 
+  /** @internal */
+  protected preventSoftDisabledInput(event: InputEvent): void {
+    if (this.softDisabled) {
+      event.preventDefault();
+    }
+  }
+
+  /** @internal */
+  protected preventSoftDisabledChange(event: Event, value: string): boolean {
+    if (!this.softDisabled) return false;
+    // Restore edits from non-cancelable beforeinput events, including IME composition.
+    const input = event.currentTarget as HTMLInputElement | HTMLTextAreaElement;
+    input.value = value;
+    event.stopImmediatePropagation();
+    return true;
+  }
+
   /**
    * creates the label element when the label property is set.
    * id is used to link the label with the input field.
