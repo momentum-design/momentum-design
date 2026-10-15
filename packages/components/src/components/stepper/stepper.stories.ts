@@ -1,11 +1,11 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import '../stepperitem';
 import '../stepperconnector';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { VARIANT } from '../stepperitem/stepperitem.constants';
+import { STATUS, VARIANT } from '../stepperitem/stepperitem.constants';
 import { ORIENTATION } from '../stepperconnector/stepperconnector.constants';
 
 const render = (args: Args) =>
@@ -125,4 +125,48 @@ export const WithLargeLabel: StoryObj = {
     orientation: ORIENTATION.HORIZONTAL,
     variant: VARIANT.INLINE,
   },
+};
+
+export const WithLoadingStep: StoryObj = {
+  args: {
+    orientation: ORIENTATION.HORIZONTAL,
+    variant: VARIANT.STACKED,
+    status: STATUS.LOADING,
+  },
+  argTypes: {
+    status: {
+      control: { type: 'select' },
+      options: [STATUS.CURRENT, STATUS.LOADING, STATUS.COMPLETED, STATUS.ERROR_CURRENT],
+    },
+  },
+  render: args => html`
+    <mdc-stepper orientation=${args.orientation} variant=${args.variant} aria-label="Staffing plan steps">
+      <mdc-stepperitem
+        label="Staffing plan details"
+        status="completed"
+        aria-label="Step 1 of 4, staffing plan details, completed"
+      ></mdc-stepperitem>
+      <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+      <mdc-stepperitem
+        label="Review forecast"
+        status="completed"
+        aria-label="Step 2 of 4, review forecast, completed"
+      ></mdc-stepperitem>
+      <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+      <mdc-stepperitem
+        label="Add activities (optional)"
+        status="completed"
+        aria-label="Step 3 of 4, add activities, completed"
+      ></mdc-stepperitem>
+      <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+      <mdc-stepperitem
+        label="Generate staffing plan"
+        status=${args.status}
+        aria-current=${args.status === STATUS.COMPLETED ? nothing : 'step'}
+        aria-label=${args.status === STATUS.LOADING
+          ? 'Step 4 of 4, generating staffing plan'
+          : `Step 4 of 4, generate staffing plan, ${args.status}`}
+      ></mdc-stepperitem>
+    </mdc-stepper>
+  `,
 };
