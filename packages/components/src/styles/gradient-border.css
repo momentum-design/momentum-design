@@ -64,6 +64,7 @@
 /* Everything below is gated: engines without the unprefixed mask (Chrome and
    Edge below 120) parse none of it and render the element unchanged. */
 @supports (mask-composite: exclude) {
+
   .mdc-gradient-border-primary,
   .mdc-gradient-border-secondary {
     position: relative;
@@ -89,22 +90,17 @@
      once and never see the animation, which runs on this pseudo-element. The
      start angle is added here too, so it also applies when static. */
   .mdc-gradient-border-primary::after {
-    background: linear-gradient(
-      calc(var(--mdc-gradient-border-start-angle) + var(--mds-gradient-border-angle, 0deg)),
-      var(--mdc-gradient-border-stops)
-    );
+    background: linear-gradient(calc(var(--mdc-gradient-border-start-angle) + var(--mds-gradient-border-angle, 0deg)),
+        var(--mdc-gradient-border-stops));
   }
 
   .mdc-gradient-border-secondary::after {
-    background: conic-gradient(
-      from calc(var(--mdc-gradient-border-start-angle) + var(--mds-gradient-border-angle, 0deg)),
-      var(--mdc-gradient-border-stops)
-    );
+    background: conic-gradient(from calc(var(--mdc-gradient-border-start-angle) + var(--mds-gradient-border-angle, 0deg)),
+        var(--mdc-gradient-border-stops));
   }
 
   .mdc-gradient-border-animated::after {
-    animation: var(--mdc-gradient-border-duration) linear 0ms var(--mdc-gradient-border-iteration-count)
-      mdc-gradient-border-rotate;
+    animation: var(--mdc-gradient-border-duration) linear 0ms var(--mdc-gradient-border-iteration-count) mdc-gradient-border-rotate;
   }
 }
 
@@ -116,6 +112,7 @@
 
 /* Gradients are not rendered in forced-colors mode. */
 @media (forced-colors: active) {
+
   .mdc-gradient-border-primary::after,
   .mdc-gradient-border-secondary::after {
     background: CanvasText;
