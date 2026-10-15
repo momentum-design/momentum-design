@@ -413,8 +413,10 @@
               "description": ""
             },
             "active": {
+              "parent": "theme/stable/light",
+              "type": "color",
               "value": "{color.core.blue.20}",
-              "type": "color"
+              "description": ""
             }
           }
         },
@@ -515,8 +517,9 @@
           },
           "input": {
             "normal": {
-              "value": "{color.core.white-alpha.50}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.white-alpha.50}",
               "description": "Used for inverted control components outline (checkbox, toggles)"
             }
           }
@@ -583,8 +586,9 @@
           "indicator": {
             "inactive": {
               "normal": {
-                "value": "{color.core.gray.50}",
+                "parent": "theme/stable/light",
                 "type": "color",
+                "value": "{color.core.gray.50}",
                 "description": "Used for inverted controls (checkbox, toggle, radio, progress bar, spinner)"
               }
             }
@@ -596,7 +600,8 @@
           "ghost": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.0}"
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
           },
           "hover": {
             "parent": "theme/stable/light",
@@ -613,7 +618,8 @@
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.0}"
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
           }
         },
         "solid": {
@@ -676,8 +682,9 @@
             "description": ""
           },
           "subtle": {
-            "value": "{color.core.black-alpha.7}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.black-alpha.7}",
             "description": "Used in the Agent/Supervisor Desktop"
           }
         },
@@ -1020,35 +1027,41 @@
           },
           "default": {
             "normal": {
-              "value": "{color.core.gray.10}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.gray.10}",
               "description": "HEX: #ededed\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.gray.20}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.gray.20}",
               "description": "HEX: #dedede\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.gray.30}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.gray.30}",
               "description": "HEX: #c9c9c9\nUsed for chips."
             }
           },
           "error": {
             "normal": {
-              "value": "{color.core.red.10}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.red.10}",
               "description": "HEX: #ffe8ea\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.red.20}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.red.20}",
               "description": "HEX: #ffd4da\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.red.30}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.red.30}",
               "description": "HEX: #ffb8c1\nUsed for chips."
             }
           }
@@ -1057,7 +1070,8 @@
           "normal": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.70}"
+            "value": "{color.core.black-alpha.70}",
+            "description": ""
           }
         },
         "gradient": {
@@ -1080,6 +1094,7 @@
         },
         "reaction": {
           "normal": {
+            "parent": "theme/stable/light",
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.white-alpha.90} 0%, {color.core.white-alpha.0} 100%)",
             "description": "linear-gradient(90deg, #ffffffe6 0%, #ffffff00 100%)\nUsed for background of meeting reaction"
@@ -1087,14 +1102,17 @@
         },
         "skeleton": {
           "normal": {
+            "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.core.gray.30}",
             "description": "Used for skeleton component"
           },
           "shimmer": {
             "0": {
+              "parent": "theme/stable/light",
               "type": "color",
               "value": "{color.core.gray.5}",
+              "description": "Use for skeleton component",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1103,17 +1121,19 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": "Use for skeleton component"
+              }
             },
             "1": {
+              "parent": "theme/stable/light",
               "type": "color",
               "value": "{color.core.gray.5}",
               "description": "Use for skeleton component"
             },
             "2": {
+              "parent": "theme/stable/light",
               "type": "color",
               "value": "{color.core.gray.5}",
+              "description": "Use for skeleton component",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1122,46 +1142,52 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": "Use for skeleton component"
+              }
             }
           }
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.40}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.40}",
             "description": "Used for glass effect background for operation pop. "
           },
           "active": {
-            "value": "{color.core.white-alpha.60}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.60}",
             "description": "Used for glass effect background for operation pop. "
           },
           "light": {
-            "value": "{color.core.white-alpha.40}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.40}",
             "description": "Used for glass effect background for operation pop. "
           },
           "medium": {
-            "value": "{color.core.white-alpha.60}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.60}",
             "description": "Used for glass effect background for operation pop. "
           },
           "heavy": {
-            "value": "{color.core.white-alpha.80}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.80}",
             "description": "Used for glass effect background for operation pop. "
           },
           "radial": {
             "0": {
-              "value": "{color.core.white-alpha.5}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.white-alpha.5}",
               "description": "Used for operation pop background. "
             },
             "1": {
-              "value": "{color.core.white-alpha.0}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.white-alpha.0}",
               "description": "Used for operation pop background. "
             }
           },
@@ -1174,15 +1200,18 @@
         },
         "input": {
           "disabled": {
-            "value": "{color.core.black-alpha.11}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.black-alpha.11}",
             "description": "Used for disabled/read-only/read-only focus states for input components. "
           }
         },
         "overlay": {
           "normal": {
-            "value": "{color.core.blue.100}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.blue.100}",
+            "description": "Used for overlay background",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -1195,8 +1224,7 @@
                 "ALL_FILLS",
                 "FRAME_FILL"
               ]
-            },
-            "description": "Used for overlay background"
+            }
           }
         },
         "app": {
@@ -1212,7 +1240,16 @@
             "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.core.white-alpha.5}",
-            "description": ""
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.05",
+                  "space": "lch"
+                }
+              }
+            }
           }
         },
         "glow": {
@@ -1302,6 +1339,7 @@
                 "parent": "theme/stable/light",
                 "type": "color",
                 "value": "{color.core.brand.medium-blue.10}",
+                "description": "",
                 "$extensions": {
                   "studio.tokens": {
                     "modify": {
@@ -1310,8 +1348,7 @@
                       "space": "lch"
                     }
                   }
-                },
-                "description": ""
+                }
               }
             }
           },
@@ -1321,6 +1358,7 @@
                 "parent": "theme/stable/light",
                 "type": "color",
                 "value": "{color.core.yellow.40}",
+                "description": "",
                 "$extensions": {
                   "studio.tokens": {
                     "modify": {
@@ -1329,8 +1367,7 @@
                       "space": "lch"
                     }
                   }
-                },
-                "description": ""
+                }
               },
               "1": {
                 "parent": "theme/stable/light",
@@ -1352,6 +1389,7 @@
                 "parent": "theme/stable/light",
                 "type": "color",
                 "value": "{color.core.brand.medium-blue.50}",
+                "description": "",
                 "$extensions": {
                   "studio.tokens": {
                     "modify": {
@@ -1360,14 +1398,22 @@
                       "space": "lch"
                     }
                   }
-                },
-                "description": ""
+                }
               },
               "1": {
                 "parent": "theme/stable/light",
                 "type": "color",
                 "value": "{color.core.blue.40}",
-                "description": ""
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "1",
+                      "space": "lch"
+                    }
+                  }
+                }
               },
               "2": {
                 "parent": "theme/stable/light",
@@ -1521,18 +1567,21 @@
         "glass": {
           "primary": {
             "normal": {
-              "value": "{color.core.black-alpha.80}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.black-alpha.80}",
               "description": "Used for Operation pop button"
             },
             "hover": {
-              "value": "{color.core.black-alpha.70}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.black-alpha.70}",
               "description": "Used for Operation pop button"
             },
             "pressed": {
-              "value": "{color.core.black-alpha.60}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.black-alpha.60}",
               "description": "Used for Operation pop button"
             }
           }
@@ -1701,6 +1750,7 @@
         },
         "promotion": {
           "normal": {
+            "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.decorative.purple.60}",
             "description": "Used for border of promotional banner"
@@ -1708,6 +1758,7 @@
         },
         "gradient": {
           "active": {
+            "parent": "theme/stable/light",
             "type": "color",
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%)",
             "description": "Used for Webex Assitant AI"
@@ -1715,22 +1766,25 @@
         },
         "warning": {
           "normal": {
-            "value": "{color.core.yellow.70}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.yellow.70}",
             "description": "alertchip, banner"
           }
         },
         "glass": {
           "normal": {
-            "value": "linear-gradient(180deg, {color.core.black-alpha.7} 0%, {color.core.black-alpha.20} 100%)",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "linear-gradient(180deg, {color.core.black-alpha.7} 0%, {color.core.black-alpha.20} 100%)",
             "description": "Used for operation pop"
           }
         },
         "ai": {
           "normal": {
-            "value": "{color.core.white-alpha.100}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.100}",
             "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%)\nUsed for AI assistant feature"
           }
         }
@@ -1782,22 +1836,26 @@
           "normal": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.11}"
+            "value": "{color.core.black-alpha.11}",
+            "description": ""
           },
           "hover": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}"
+            "value": "{color.core.black-alpha.20}",
+            "description": ""
           },
           "pressed": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.30}"
+            "value": "{color.core.black-alpha.30}",
+            "description": ""
           },
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.7}"
+            "value": "{color.core.black-alpha.7}",
+            "description": ""
           }
         }
       },
@@ -1837,13 +1895,31 @@
             "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.core.white-alpha.5}",
-            "description": ""
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.05",
+                  "space": "lch"
+                }
+              }
+            }
           },
           "1": {
             "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.core.white-alpha.0}",
-            "description": ""
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0",
+                  "space": "lch"
+                }
+              }
+            }
           }
         },
         "navigation": {
@@ -2054,15 +2130,18 @@
                 "description": ""
               },
               "disabled": {
+                "parent": "theme/stable/light",
+                "type": "color",
                 "value": "{color.core.black-alpha.40}",
-                "type": "color"
+                "description": ""
               }
             },
             "secondary": {
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.60}"
+                "value": "{color.core.black-alpha.60}",
+                "description": ""
               }
             }
           },
@@ -2071,22 +2150,26 @@
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.0}"
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
               },
               "hover": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.7}"
+                "value": "{color.core.black-alpha.7}",
+                "description": ""
               },
               "pressed": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.20}"
+                "value": "{color.core.black-alpha.20}",
+                "description": ""
               },
               "disabled": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.0}"
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
               }
             }
           }
@@ -2181,7 +2264,8 @@
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.white-alpha.20}"
+                "value": "{color.core.white-alpha.20}",
+                "description": ""
               },
               "hover": {
                 "parent": "theme/stable/light",
@@ -2192,7 +2276,8 @@
               "pressed": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.white-alpha.40}"
+                "value": "{color.core.white-alpha.40}",
+                "description": ""
               },
               "disabled": {
                 "parent": "theme/stable/light",
@@ -2210,42 +2295,58 @@
           },
           "promotion": {
             "normal": {
-              "0": {
-                "value": "{color.decorative.purple.70}",
-                "type": "color"
-              },
-              "1": {
-                "value": "{color.decorative.pink.70}",
-                "type": "color"
-              },
               "parent": "theme/stable/light",
               "type": "color",
               "value": "linear-gradient(46deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
-              "description": "Used for rest state of promotional button"
-            },
-            "hover": {
+              "description": "Used for rest state of promotional button",
               "0": {
-                "value": "{color.decorative.purple.80}",
-                "type": "color"
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.purple.70}",
+                "description": ""
               },
               "1": {
-                "value": "{color.decorative.pink.80}",
-                "type": "color"
-              },
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.pink.70}",
+                "description": ""
+              }
+            },
+            "hover": {
               "parent": "theme/stable/light",
               "type": "color",
               "value": "linear-gradient(46deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
-              "description": "Used for hover state of promotion button"
+              "description": "Used for hover state of promotion button",
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.pink.80}",
+                "description": ""
+              }
             },
             "active": {
-              "0": {
-                "value": "{color.decorative.purple.90}",
-                "type": "color"
-              },
               "parent": "theme/stable/light",
               "type": "color",
               "value": "linear-gradient(46deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)",
-              "description": "Used for active state of promotion button"
+              "description": "Used for active state of promotion button",
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.purple.90}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.pink.90}",
+                "description": ""
+              }
             }
           },
           "join": {
@@ -2266,7 +2367,8 @@
             "normal": {
               "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.white-alpha.50}"
+              "value": "{color.core.white-alpha.50}",
+              "description": ""
             }
           },
           "primary": {
@@ -2293,18 +2395,24 @@
           },
           "secondary": {
             "normal": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
             },
             "disabled": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
             }
           },
           "warning": {
             "normal": {
+              "parent": "theme/stable/light",
+              "type": "color",
               "value": "{color.core.yellow.40}",
-              "type": "color"
+              "description": ""
             }
           }
         },
@@ -2353,12 +2461,16 @@
           },
           "solid": {
             "dark": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.gray.95}"
+              "value": "{color.core.gray.95}",
+              "description": ""
             },
             "light": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.white-alpha.100}"
+              "value": "{color.core.white-alpha.100}",
+              "description": ""
             }
           }
         },
@@ -2533,8 +2645,10 @@
               }
             },
             "transparent": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.black-alpha.0}"
+              "value": "{color.core.black-alpha.0}",
+              "description": ""
             }
           },
           "icon": {
@@ -2935,8 +3049,10 @@
       },
       "avatar": {
         "ghost": {
+          "parent": "theme/stable/light",
+          "type": "color",
           "value": "{color.core.black-alpha.0}",
-          "type": "color"
+          "description": ""
         },
         "default": {
           "parent": "theme/stable/light",
@@ -3011,22 +3127,28 @@
           "description": ""
         },
         "hover": {
+          "parent": "theme/stable/light",
+          "type": "color",
           "value": "{color.core.black-alpha.7}",
-          "type": "color"
+          "description": ""
         },
         "pressed": {
+          "parent": "theme/stable/light",
+          "type": "color",
           "value": "{color.core.black-alpha.20}",
-          "type": "color"
+          "description": ""
         },
         "glass": {
           "normal": {
-            "value": "{color.core.black-alpha.7}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.black-alpha.7}",
             "description": "Used for Operation pop"
           },
           "active": {
-            "value": "{color.core.white-alpha.80}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.80}",
             "description": "Used for Operation pop"
           }
         }
@@ -3148,18 +3270,22 @@
       "focus": {
         "default": {
           "0": {
-            "value": "{color.core.white-alpha.100}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.100}",
             "description": "Used for focus ring effect"
           },
           "1": {
-            "value": "{color.core.blue.60}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.blue.60}",
             "description": "Used for focus ring effect"
           },
           "2": {
-            "value": "#1570cf",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "#1570cf",
+            "description": "Used for focus ring effect",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -3168,8 +3294,7 @@
                   "space": "lch"
                 }
               }
-            },
-            "description": "Used for focus ring effect"
+            }
           }
         }
       },
@@ -3202,6 +3327,7 @@
               "parent": "theme/stable/light",
               "type": "color",
               "value": "{color.core.brand.medium-blue.50}",
+              "description": "",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -3210,8 +3336,7 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": ""
+              }
             },
             "1": {
               "parent": "theme/stable/light",
@@ -3235,6 +3360,7 @@
               "parent": "theme/stable/light",
               "type": "color",
               "value": "{color.core.brand.orange.40}",
+              "description": "",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -3243,8 +3369,7 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": ""
+              }
             }
           }
         }

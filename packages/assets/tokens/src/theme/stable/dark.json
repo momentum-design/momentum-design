@@ -387,7 +387,8 @@
             "disabled": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.40}"
+              "value": "{color.core.black-alpha.40}",
+              "description": ""
             }
           },
           "secondary": {
@@ -414,7 +415,8 @@
             "active": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.blue.90}"
+              "value": "{color.core.blue.90}",
+              "description": ""
             }
           }
         },
@@ -515,8 +517,9 @@
           },
           "input": {
             "normal": {
-              "value": "{color.core.black-alpha.50}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.black-alpha.50}",
               "description": "Used for inverted control components outline (checkbox, toggles)"
             }
           }
@@ -583,8 +586,9 @@
           "indicator": {
             "inactive": {
               "normal": {
-                "value": "{color.core.gray.50}",
+                "parent": "theme/stable/dark",
                 "type": "color",
+                "value": "{color.core.gray.50}",
                 "description": "Used for inverted controls (checkbox, toggle, radio, progress bar, spinner)"
               }
             }
@@ -614,7 +618,8 @@
           "disabled": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.0}"
+            "value": "{color.core.white-alpha.0}",
+            "description": ""
           }
         },
         "solid": {
@@ -667,7 +672,8 @@
           "active": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.30}"
+            "value": "{color.core.white-alpha.30}",
+            "description": ""
           },
           "disabled": {
             "parent": "theme/stable/dark",
@@ -690,8 +696,9 @@
             "description": ""
           },
           "active": {
-            "value": "{color.core.blue.40}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.blue.40}",
             "description": "Used for selected text paragraph background"
           }
         },
@@ -1020,35 +1027,41 @@
           },
           "default": {
             "normal": {
-              "value": "{color.core.gray.90}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.gray.90}",
               "description": "HEX: #262626\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.gray.80}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.gray.80}",
               "description": "HEX: ##3b3b3b\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.gray.70}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.gray.70}",
               "description": "HEX: #545454\nUsed for chips."
             }
           },
           "error": {
             "normal": {
-              "value": "{color.core.red.90}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.red.90}",
               "description": "HEX: #4f0e10\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.red.80}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.red.80}",
               "description": "HEX: ##780d13\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.red.70}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.red.70}",
               "description": "HEX: #ab0a15\nUsed for chips."
             }
           }
@@ -1057,7 +1070,8 @@
           "normal": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.black-alpha.70}"
+            "value": "{color.core.black-alpha.70}",
+            "description": ""
           }
         },
         "gradient": {
@@ -1080,6 +1094,7 @@
         },
         "reaction": {
           "normal": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.gray.95}e6 0%, {color.core.gray.95}00 100%)",
             "description": "linear-gradient(90deg, #1a1a1ae6 0%, #1a1a1a00 100%)\nUsed for meeting reaction background  "
@@ -1087,14 +1102,17 @@
         },
         "skeleton": {
           "normal": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.core.gray.90}",
             "description": "Use for skeleton component"
           },
           "shimmer": {
             "0": {
+              "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.gray.80}",
+              "description": "Use for skeleton component",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1103,17 +1121,19 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": "Use for skeleton component"
+              }
             },
             "1": {
+              "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.gray.80}",
               "description": "Use for skeleton component"
             },
             "2": {
+              "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.gray.80}",
+              "description": "Use for skeleton component",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1122,46 +1142,52 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": "Use for skeleton component"
+              }
             }
           }
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.5}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.5}",
             "description": "Used for glass effect background for operation pop. "
           },
           "active": {
-            "value": "{color.core.white-alpha.11}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.11}",
             "description": "Used for glass effect background for operation pop. "
           },
           "light": {
-            "value": "{color.core.black-alpha.40}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.black-alpha.40}",
             "description": "Used for glass effect background for operation pop. "
           },
           "medium": {
-            "value": "{color.core.black-alpha.60}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.black-alpha.60}",
             "description": "Used for glass effect background for operation pop. "
           },
           "heavy": {
-            "value": "{color.core.black-alpha.80}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.black-alpha.80}",
             "description": "Used for glass effect background for operation pop. "
           },
           "radial": {
             "0": {
-              "value": "{color.core.white-alpha.5}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.5}",
               "description": "Used for operation pop background. "
             },
             "1": {
-              "value": "{color.core.white-alpha.0}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.0}",
               "description": "Used for operation pop background. "
             }
           },
@@ -1174,15 +1200,18 @@
         },
         "input": {
           "disabled": {
-            "value": "{color.core.white-alpha.11}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.11}",
             "description": "Used for disabled/read-only/read-only focus states for input components. "
           }
         },
         "overlay": {
           "normal": {
-            "value": "{color.core.blue.100}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.blue.100}",
+            "description": "Used for overlay background",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -1195,8 +1224,7 @@
                 "ALL_FILLS",
                 "FRAME_FILL"
               ]
-            },
-            "description": "Used for overlay background"
+            }
           }
         },
         "app": {
@@ -1212,6 +1240,7 @@
             "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.core.gray.80}",
+            "description": "",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -1220,8 +1249,7 @@
                   "space": "lch"
                 }
               }
-            },
-            "description": ""
+            }
           }
         },
         "glow": {
@@ -1311,7 +1339,16 @@
                 "parent": "theme/stable/dark",
                 "type": "color",
                 "value": "{color.core.black-alpha.0}",
-                "description": ""
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0",
+                      "space": "lch"
+                    }
+                  }
+                }
               }
             }
           },
@@ -1321,7 +1358,16 @@
                 "parent": "theme/stable/dark",
                 "type": "color",
                 "value": "{color.decorative.lime.30}",
-                "description": ""
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "1",
+                      "space": "lch"
+                    }
+                  }
+                }
               },
               "1": {
                 "parent": "theme/stable/dark",
@@ -1343,12 +1389,22 @@
                 "parent": "theme/stable/dark",
                 "type": "color",
                 "value": "{color.core.brand.medium-blue.50}",
-                "description": ""
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "1",
+                      "space": "lch"
+                    }
+                  }
+                }
               },
               "1": {
                 "parent": "theme/stable/dark",
                 "type": "color",
                 "value": "{color.core.gray.55}",
+                "description": "",
                 "$extensions": {
                   "studio.tokens": {
                     "modify": {
@@ -1357,8 +1413,7 @@
                       "space": "lch"
                     }
                   }
-                },
-                "description": ""
+                }
               },
               "2": {
                 "parent": "theme/stable/dark",
@@ -1512,18 +1567,21 @@
         "glass": {
           "primary": {
             "normal": {
-              "value": "{color.core.white-alpha.80}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.80}",
               "description": "Used for Operation pop button"
             },
             "hover": {
-              "value": "{color.core.white-alpha.70}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.70}",
               "description": "Used for Operation pop button"
             },
             "pressed": {
-              "value": "{color.core.white-alpha.60}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.60}",
               "description": "Used for Operation pop button"
             }
           }
@@ -1692,6 +1750,7 @@
         },
         "promotion": {
           "normal": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.decorative.purple.60}",
             "description": "Used for border of promotional banner"
@@ -1699,6 +1758,7 @@
         },
         "gradient": {
           "active": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.40} 51.1%, {color.core.green.30} 85.36%)",
             "description": "linear-gradient(44deg, #3492eb 14.64%, #22c7d6 51.1%, #68debd 85.36%)\nUsed for Webex Assitant AI"
@@ -1706,20 +1766,23 @@
         },
         "warning": {
           "normal": {
-            "value": "{color.core.yellow.40}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.yellow.40}",
             "description": "alertchip, banner"
           }
         },
         "glass": {
           "normal": {
-            "value": "linear-gradient(180deg, {color.core.white-alpha.11} 0%, {color.core.white-alpha.5} 100%)",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "linear-gradient(180deg, {color.core.white-alpha.11} 0%, {color.core.white-alpha.5} 100%)",
             "description": "Used for operation pop"
           }
         },
         "ai": {
           "normal": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.core.white-alpha.100}",
             "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%)\nUsed for AI assistant feature"
@@ -1773,22 +1836,26 @@
           "normal": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.11}"
+            "value": "{color.core.white-alpha.11}",
+            "description": ""
           },
           "hover": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.20}"
+            "value": "{color.core.white-alpha.20}",
+            "description": ""
           },
           "pressed": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.30}"
+            "value": "{color.core.white-alpha.30}",
+            "description": ""
           },
           "disabled": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.7}"
+            "value": "{color.core.white-alpha.7}",
+            "description": ""
           }
         }
       },
@@ -1828,6 +1895,7 @@
             "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.core.gray.95}",
+            "description": "",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -1836,13 +1904,13 @@
                   "space": "lch"
                 }
               }
-            },
-            "description": ""
+            }
           },
           "1": {
             "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.core.gray.95}",
+            "description": "",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -1851,8 +1919,7 @@
                   "space": "lch"
                 }
               }
-            },
-            "description": ""
+            }
           }
         },
         "navigation": {
@@ -2059,7 +2126,8 @@
               "normal": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.60}"
+                "value": "{color.core.black-alpha.60}",
+                "description": ""
               }
             },
             "primary": {
@@ -2072,7 +2140,8 @@
               "disabled": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.40}"
+                "value": "{color.core.black-alpha.40}",
+                "description": ""
               }
             }
           },
@@ -2081,22 +2150,26 @@
               "normal": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.0}"
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
               },
               "hover": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.7}"
+                "value": "{color.core.black-alpha.7}",
+                "description": ""
               },
               "pressed": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.20}"
+                "value": "{color.core.black-alpha.20}",
+                "description": ""
               },
               "disabled": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.0}"
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
               }
             }
           }
@@ -2172,7 +2245,8 @@
             "normal": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.0}"
+              "value": "{color.core.white-alpha.0}",
+              "description": ""
             },
             "hover": {
               "parent": "theme/stable/dark",
@@ -2190,7 +2264,8 @@
               "normal": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.white-alpha.20}"
+                "value": "{color.core.white-alpha.20}",
+                "description": ""
               },
               "hover": {
                 "parent": "theme/stable/dark",
@@ -2201,7 +2276,8 @@
               "pressed": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.white-alpha.40}"
+                "value": "{color.core.white-alpha.40}",
+                "description": ""
               },
               "disabled": {
                 "parent": "theme/stable/dark",
@@ -2217,31 +2293,72 @@
               "description": ""
             }
           },
+          "promotion": {
+            "normal": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(45deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
+              "description": "linear-gradient(45deg, #932099 0%, #a12a3a 100%)",
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.70}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.pink.70}",
+                "description": ""
+              }
+            },
+            "hover": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(45deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
+              "description": "linear-gradient(45deg, #601e66 0%, #66262d 100%)",
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.pink.80}",
+                "description": ""
+              }
+            },
+            "active": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(45deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)",
+              "description": "",
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.90}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.pink.90}",
+                "description": ""
+              }
+            }
+          },
           "join": {
             "animated": {
               "gradient": {
                 "normal": {
+                  "parent": "theme/stable/dark",
                   "type": "color",
                   "value": "linear-gradient(90deg, {color.decorative.mint.40} 0%, {color.core.blue.40} 51%, {color.decorative.mint.40} 100%)",
                   "description": "linear-gradient(90deg, #30c9b0 0%, #64b4fa 51%, #529e91 100%)\nlinear-gradient(90deg, {color.decorative.mint.40} 0%, {color.core.blue.40} 51%, {color.decorative.mint.40} 100%)"
                 }
               }
-            }
-          },
-          "promotion": {
-            "normal": {
-              "type": "color",
-              "value": "linear-gradient(45deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
-              "description": "linear-gradient(45deg, #932099 0%, #a12a3a 100%)"
-            },
-            "hover": {
-              "type": "color",
-              "value": "linear-gradient(45deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
-              "description": "linear-gradient(45deg, #601e66 0%, #66262d 100%)"
-            },
-            "active": {
-              "type": "color",
-              "value": "linear-gradient(45deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)"
             }
           }
         },
@@ -2250,7 +2367,8 @@
             "normal": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.50}"
+              "value": "{color.core.white-alpha.50}",
+              "description": ""
             }
           },
           "primary": {
@@ -2277,18 +2395,24 @@
           },
           "secondary": {
             "normal": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
             },
             "disabled": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
             }
           },
           "warning": {
             "normal": {
+              "parent": "theme/stable/dark",
+              "type": "color",
               "value": "{color.core.yellow.40}",
-              "type": "color"
+              "description": ""
             }
           }
         },
@@ -2337,12 +2461,16 @@
           },
           "solid": {
             "dark": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.gray.95}"
+              "value": "{color.core.gray.95}",
+              "description": ""
             },
             "light": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.100}"
+              "value": "{color.core.white-alpha.100}",
+              "description": ""
             }
           }
         },
@@ -2517,8 +2645,10 @@
               }
             },
             "transparent": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.0}"
+              "value": "{color.core.black-alpha.0}",
+              "description": ""
             }
           },
           "icon": {
@@ -3033,8 +3163,10 @@
       },
       "avatar": {
         "ghost": {
+          "parent": "theme/stable/dark",
+          "type": "color",
           "value": "{color.core.white-alpha.0}",
-          "type": "color"
+          "description": ""
         },
         "default": {
           "parent": "theme/stable/dark",
@@ -3045,12 +3177,14 @@
         "hover": {
           "parent": "theme/stable/dark",
           "type": "color",
-          "value": "{color.core.white-alpha.7}"
+          "value": "{color.core.white-alpha.7}",
+          "description": ""
         },
         "pressed": {
           "parent": "theme/stable/dark",
           "type": "color",
-          "value": "{color.core.white-alpha.20}"
+          "value": "{color.core.white-alpha.20}",
+          "description": ""
         },
         "cobalt": {
           "parent": "theme/stable/dark",
@@ -3120,13 +3254,15 @@
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.7}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.7}",
             "description": "Used for Operation pop"
           },
           "active": {
-            "value": "{color.core.white-alpha.80}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.80}",
             "description": "Used for Operation pop"
           }
         }
@@ -3134,18 +3270,22 @@
       "focus": {
         "default": {
           "0": {
-            "value": "{color.core.black-alpha.100}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.black-alpha.100}",
             "description": "Used for focus ring effect"
           },
           "1": {
-            "value": "{color.core.blue.40}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.blue.40}",
             "description": "Used for focus ring effect"
           },
           "2": {
-            "value": "#64B4FA",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "#64B4FA",
+            "description": "Used for focus ring effect",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -3154,8 +3294,7 @@
                   "space": "lch"
                 }
               }
-            },
-            "description": "Used for focus ring effect"
+            }
           }
         }
       },
@@ -3188,6 +3327,7 @@
               "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.brand.medium-blue.50}",
+              "description": "",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -3196,8 +3336,7 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": ""
+              }
             },
             "1": {
               "parent": "theme/stable/dark",
@@ -3221,6 +3360,7 @@
               "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.brand.orange.40}",
+              "description": "",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -3229,8 +3369,7 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": ""
+              }
             }
           }
         }
