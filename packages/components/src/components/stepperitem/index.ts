@@ -1,6 +1,7 @@
 import StepperItem from './stepperitem.component';
 import { TAG_NAME } from './stepperitem.constants';
 import '../icon';
+import '../spinner';
 import '../text';
 
 StepperItem.register(TAG_NAME);
