@@ -1402,7 +1402,8 @@
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}"
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, tab"
           }
         },
         "secondary": {
@@ -1548,7 +1549,8 @@
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}"
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, cardcheckbox, cardradio, chip, datepicker, filterchip, input (+7 more)"
           }
         },
         "theme": {
@@ -1645,47 +1647,56 @@
           "cobalt": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.cobalt.60}"
+            "value": "{color.decorative.cobalt.60}",
+            "description": ""
           },
           "gold": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.gold.60}"
+            "value": "{color.decorative.gold.60}",
+            "description": "staticchip"
           },
           "lime": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.lime.60}"
+            "value": "{color.decorative.lime.60}",
+            "description": "staticchip"
           },
           "mint": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.mint.60}"
+            "value": "{color.decorative.mint.60}",
+            "description": "staticchip"
           },
           "orange": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.orange.60}"
+            "value": "{color.core.orange.60}",
+            "description": "staticchip"
           },
           "pink": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.pink.60}"
+            "value": "{color.decorative.pink.60}",
+            "description": "staticchip"
           },
           "purple": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.purple.60}"
+            "value": "{color.decorative.purple.60}",
+            "description": "staticchip"
           },
           "slate": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.slate.60}"
+            "value": "{color.decorative.slate.60}",
+            "description": "staticchip"
           },
           "violet": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.violet.60}"
+            "value": "{color.decorative.violet.60}",
+            "description": "staticchip"
           }
         },
         "promotion": {
@@ -1705,7 +1716,8 @@
         "warning": {
           "normal": {
             "value": "{color.core.yellow.70}",
-            "type": "color"
+            "type": "color",
+            "description": "alertchip, banner"
           }
         },
         "glass": {
