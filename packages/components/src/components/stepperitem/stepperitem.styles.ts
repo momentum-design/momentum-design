@@ -47,15 +47,6 @@ const styles = css`
     --mdc-spinner-size: 1rem;
   }
 
-  :host([status='completed'])::part(status-spinner) {
-    --mdc-spinner-default-color: var(--mds-color-theme-inverted-text-primary-normal);
-  }
-
-  :host([status='error-current'])::part(status-spinner),
-  :host([status='error-incomplete'])::part(status-spinner) {
-    --mdc-spinner-default-color: var(--mds-color-theme-text-error-normal);
-  }
-
   :host::part(label-container) {
     background-color: var(--mdc-stepperitem-label-container-background);
     border-radius: 0.5rem;
@@ -82,7 +73,8 @@ const styles = css`
   :host([status='completed'])::part(status-icon) {
     --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-normal);
   }
-  :host([status='current'])::part(status-container) {
+  :host([status='current'])::part(status-container),
+  :host([status='loading'])::part(status-container) {
     --mdc-stepperitem-status-container-border-color: var(--mds-color-theme-control-active-normal);
   }
   :host([status='error-current'])::part(status-container) {
@@ -115,11 +107,13 @@ const styles = css`
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-control-active-active);
   }
 
-  :host([status='current']:hover)::part(status-container) {
+  :host([status='current']:hover)::part(status-container),
+  :host([status='loading']:hover)::part(status-container) {
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-outline-secondary-normal);
     --mdc-stepperitem-status-container-border-color: var(--mds-color-theme-control-active-hover);
   }
-  :host([status='current']:active)::part(status-container) {
+  :host([status='current']:active)::part(status-container),
+  :host([status='loading']:active)::part(status-container) {
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-background-secondary-active);
     --mdc-stepperitem-status-container-border-color: var(--mds-color-theme-control-active-hover);
   }
@@ -220,10 +214,6 @@ const styles = css`
 
   :host([disabled])::part(status-spinner) {
     --mdc-spinner-default-color: var(--mds-color-theme-text-primary-disabled);
-  }
-
-  :host([disabled][status='completed'])::part(status-spinner) {
-    --mdc-spinner-default-color: var(--mds-color-theme-inverted-text-primary-disabled);
   }
 `;
 

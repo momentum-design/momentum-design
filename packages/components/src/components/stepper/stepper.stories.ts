@@ -1,11 +1,11 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import '../stepperitem';
 import '../stepperconnector';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { VARIANT } from '../stepperitem/stepperitem.constants';
+import { STATUS, VARIANT } from '../stepperitem/stepperitem.constants';
 import { ORIENTATION } from '../stepperconnector/stepperconnector.constants';
 
 const render = (args: Args) =>
@@ -131,10 +131,13 @@ export const WithLoadingStep: StoryObj = {
   args: {
     orientation: ORIENTATION.HORIZONTAL,
     variant: VARIANT.STACKED,
-    loading: true,
+    status: STATUS.LOADING,
   },
   argTypes: {
-    loading: { control: { type: 'boolean' } },
+    status: {
+      control: { type: 'select' },
+      options: [STATUS.CURRENT, STATUS.LOADING, STATUS.COMPLETED, STATUS.ERROR_CURRENT],
+    },
   },
   render: args => html`
     <mdc-stepper orientation=${args.orientation} variant=${args.variant} aria-label="Staffing plan steps">
@@ -158,12 +161,11 @@ export const WithLoadingStep: StoryObj = {
       <mdc-stepperconnector status="complete"></mdc-stepperconnector>
       <mdc-stepperitem
         label="Generate staffing plan"
-        status="current"
-        aria-current="step"
-        aria-label=${args.loading
+        status=${args.status}
+        aria-current=${args.status === STATUS.COMPLETED ? nothing : 'step'}
+        aria-label=${args.status === STATUS.LOADING
           ? 'Step 4 of 4, generating staffing plan'
-          : 'Step 4 of 4, generate staffing plan, current'}
-        ?loading=${args.loading}
+          : `Step 4 of 4, generate staffing plan, ${args.status}`}
       ></mdc-stepperitem>
     </mdc-stepper>
   `,

@@ -19,7 +19,6 @@ const render = (args: Args) =>
     step-number=${args['step-number']}
     aria-label=${args['aria-label']}
     ?disabled=${args.disabled}
-    ?loading=${args.loading}
     class=${args.class}
     style=${args.style}
   ></mdc-stepperitem>`;
@@ -52,9 +51,6 @@ const meta: Meta = {
       control: { type: 'text' },
     },
     disabled: {
-      control: { type: 'boolean' },
-    },
-    loading: {
       control: { type: 'boolean' },
     },
     ...classArgType,
@@ -120,11 +116,10 @@ export const Disabled: StoryObj = {
 export const Loading: StoryObj = {
   args: {
     variant: VARIANT.STACKED,
-    status: STATUS.CURRENT,
+    status: STATUS.LOADING,
     label: 'Generate staffing plan',
     'step-number': '4',
     'aria-label': 'Step 4 of 4, generating staffing plan',
-    loading: true,
   },
 };
 
