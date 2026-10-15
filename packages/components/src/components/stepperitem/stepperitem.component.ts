@@ -20,16 +20,18 @@ import type { StatusType, VariantType } from './stepperitem.types';
  * @tagname mdc-stepperitem
  *
  * @dependency mdc-icon
+ * @dependency mdc-spinner
  * @dependency mdc-text
  *
  * @event click - (React: onClick) This event is dispatched when the stepperitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the stepperitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the stepperitem.
  *
- * @csspart status-container - The container for the status icon or step number.
+ * @csspart status-container - The container for the status icon, step number, or loading spinner.
  * @csspart label-container - The container for the label and help text.
  * @csspart help-text-container - The container for the help text and error icon when applicable.
  * @csspart status-icon - The icon representing the status of the stepper item.
+ * @csspart status-spinner - The inset spinner displayed in place of the status indicator while loading.
  * @csspart step-number - The text representing the step number.
  * @csspart label - The text representing the label of the stepper item.
  * @csspart help-text - The text providing additional information about the stepper item.
@@ -55,6 +57,15 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
    */
   @property({ type: String, reflect: true })
   status: StatusType = DEFAULT.STATUS;
+
+  /**
+   * Replaces the status icon or step number with an inset loading spinner without changing status or disabled.
+   * Sets aria-busy on the host. Consumers must include the loading state in the accessible label
+   * and provide a live region in the application when progress announcements are needed.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true })
+  loading: boolean = false;
 
   /**
    * The label for the stepper item, which is displayed as the main text of the step.
@@ -175,6 +186,7 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
 
   /**
    * Renders the status icon based on the current status of the stepper item.
+   * - If loading, it renders a spinner in place of the status icon or step number.
    * - If the status is `completed`, it renders a check icon.
    * - If the status is `current` or `error-current`, it renders a pencil icon.
    * - If the status is `not-started` or `error-incomplete`, it renders the step number.
@@ -182,6 +194,9 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
    * @returns A template literal that renders the status icon based on the current status of the stepper item.
    */
   private renderStatusIcon() {
+    if (this.loading) {
+      return html`<mdc-spinner part="status-spinner" .size=${undefined}></mdc-spinner>`;
+    }
     if (this.status === STATUS.COMPLETED) {
       return html`<mdc-icon part="status-icon" name=${STATUS_ICON.COMPLETED} length-unit="rem" size="1"></mdc-icon>`;
     }
@@ -224,6 +239,10 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
 
   public override update(changedProperties: PropertyValues<StepperItem>): void {
     super.update(changedProperties);
+
+    if (changedProperties.has('loading')) {
+      this.ariaBusy = this.loading ? 'true' : null;
+    }
 
     if (changedProperties.has('disabled')) {
       this.tabIndex = this.disabled ? -1 : 0;

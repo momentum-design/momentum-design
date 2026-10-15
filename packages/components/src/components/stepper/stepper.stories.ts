@@ -126,3 +126,45 @@ export const WithLargeLabel: StoryObj = {
     variant: VARIANT.INLINE,
   },
 };
+
+export const WithLoadingStep: StoryObj = {
+  args: {
+    orientation: ORIENTATION.HORIZONTAL,
+    variant: VARIANT.STACKED,
+    loading: true,
+  },
+  argTypes: {
+    loading: { control: { type: 'boolean' } },
+  },
+  render: args => html`
+    <mdc-stepper orientation=${args.orientation} variant=${args.variant} aria-label="Staffing plan steps">
+      <mdc-stepperitem
+        label="Staffing plan details"
+        status="completed"
+        aria-label="Step 1 of 4, staffing plan details, completed"
+      ></mdc-stepperitem>
+      <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+      <mdc-stepperitem
+        label="Review forecast"
+        status="completed"
+        aria-label="Step 2 of 4, review forecast, completed"
+      ></mdc-stepperitem>
+      <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+      <mdc-stepperitem
+        label="Add activities (optional)"
+        status="completed"
+        aria-label="Step 3 of 4, add activities, completed"
+      ></mdc-stepperitem>
+      <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+      <mdc-stepperitem
+        label="Generate staffing plan"
+        status="current"
+        aria-current="step"
+        aria-label=${args.loading
+          ? 'Step 4 of 4, generating staffing plan'
+          : 'Step 4 of 4, generate staffing plan, current'}
+        ?loading=${args.loading}
+      ></mdc-stepperitem>
+    </mdc-stepper>
+  `,
+};

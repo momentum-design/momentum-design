@@ -4,6 +4,7 @@ import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 import { STATUS, VARIANT } from './stepperitem.constants';
+import type StepperItem from './stepperitem.component';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -14,6 +15,7 @@ type SetupOptions = {
   'aria-label'?: string;
   'aria-current'?: string;
   disabled?: boolean;
+  loading?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -27,6 +29,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
       ${restArgs['aria-current'] ? `aria-current="${restArgs['aria-current']}"` : ''}
       ${restArgs.disabled ? 'disabled' : ''}
+      ${restArgs.loading ? 'loading' : ''}
     ></mdc-stepperitem>
   `;
   await componentsPage.mount({ html, clearDocument: true });
@@ -44,6 +47,8 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
     await expect(stepperitem).toHaveAttribute('role', 'listitem');
     await expect(stepperitem).toHaveAttribute('tabindex', '0');
     await expect(stepperitem).toHaveAttribute('status', 'not-started');
+    await expect(stepperitem).not.toHaveAttribute('loading');
+    await expect(stepperitem).not.toHaveAttribute('aria-busy');
   });
 
   await test.step('should render with label', async () => {
@@ -266,5 +271,126 @@ test('should match disabled visual regression screenshot', async ({ componentsPa
 
   await componentsPage.visualRegression.takeScreenshot('mdc-stepperitem-disabled', {
     element: stepperitem,
+  });
+});
+
+test('should replace and restore each status indicator when loading changes', async ({ componentsPage }) => {
+  for (const status of Object.values(STATUS)) {
+    const { stepperitem } = await setup({
+      componentsPage,
+      label: 'Generate staffing plan',
+      status,
+      'step-number': '4',
+      'help-text': 'Step details',
+      'aria-label': 'Step 4 of 4, generating staffing plan',
+    });
+
+    await stepperitem.evaluate(element => {
+      const item = element as StepperItem;
+      item.loading = true;
+    });
+    const spinner = stepperitem.locator('mdc-spinner');
+    await expect(spinner).toBeVisible();
+    await expect(spinner).toHaveAttribute('aria-hidden', 'true');
+    await expect(stepperitem).toHaveAttribute('loading', '');
+    await expect(stepperitem).toHaveAttribute('aria-busy', 'true');
+    await expect(stepperitem).toHaveAttribute('status', status);
+    await expect(stepperitem).not.toHaveAttribute('disabled');
+    await expect(stepperitem).toHaveAccessibleName('Step 4 of 4, generating staffing plan');
+    await expect(stepperitem.locator('[part="status-icon"], [part="step-number"]')).toHaveCount(0);
+    await expect(stepperitem.locator('[part="label"]')).toHaveText('Generate staffing plan');
+    await expect(stepperitem.locator('[part="help-text"]')).toHaveText('Step details');
+
+    await stepperitem.evaluate(element => {
+      const item = element as StepperItem;
+      item.loading = false;
+    });
+    await expect(spinner).toHaveCount(0);
+    await expect(stepperitem).not.toHaveAttribute('loading');
+    await expect(stepperitem).not.toHaveAttribute('aria-busy');
+    await expect(stepperitem).toHaveAttribute('status', status);
+    if (status === STATUS.NOT_STARTED || status === STATUS.ERROR_INCOMPLETE) {
+      await expect(stepperitem.locator('[part="step-number"]')).toHaveText('4');
+    } else {
+      await expect(stepperitem.locator('[part="status-icon"]')).toHaveAttribute(
+        'name',
+        status === STATUS.COMPLETED ? 'check-bold' : 'edit-bold',
+      );
+    }
+  }
+});
+
+test('should keep loading independent of activation and disabled', async ({ componentsPage }) => {
+  const { stepperitem } = await setup({
+    componentsPage,
+    label: 'Generate staffing plan',
+    status: STATUS.CURRENT,
+    'aria-label': 'Step 4 of 4, generating staffing plan',
+    'aria-current': 'step',
+    loading: true,
+  });
+  await expect(stepperitem.locator('mdc-spinner')).toBeVisible();
+  await expect(stepperitem).toHaveAttribute('aria-current', 'step');
+  await expect(stepperitem).toHaveAttribute('tabindex', '0');
+  const waitForClick = await componentsPage.waitForEvent(stepperitem, 'click');
+  await stepperitem.click();
+  await expect(waitForClick).toEventEmitted();
+  await stepperitem.focus();
+  const waitForKeyClick = await componentsPage.waitForEvent(stepperitem, 'click');
+  await componentsPage.page.keyboard.press('Enter');
+  await expect(waitForKeyClick).toEventEmitted();
+
+  await stepperitem.evaluate(element => {
+    const item = element as StepperItem;
+    item.disabled = true;
+  });
+  await expect(stepperitem).toHaveAttribute('aria-disabled', 'true');
+  await expect(stepperitem).toHaveAttribute('tabindex', '-1');
+  await expect(stepperitem.locator('mdc-spinner')).toBeVisible();
+  const waitForDisabledClick = await componentsPage.waitForEvent(stepperitem, 'click');
+  await stepperitem.click();
+  await expect(waitForDisabledClick).not.toEventEmitted();
+  await stepperitem.focus();
+  const waitForDisabledKeyClick = await componentsPage.waitForEvent(stepperitem, 'click');
+  await componentsPage.page.keyboard.press('Enter');
+  await componentsPage.page.keyboard.press('Space');
+  await expect(waitForDisabledKeyClick).not.toEventEmitted();
+
+  await stepperitem.evaluate(element => {
+    element.removeAttribute('loading');
+  });
+  await expect(stepperitem.locator('mdc-spinner')).toHaveCount(0);
+  await expect(stepperitem).not.toHaveAttribute('aria-busy');
+  await expect(stepperitem).toHaveAttribute('disabled', '');
+});
+
+test('should expose loading steps accessibly in both variants', async ({ componentsPage }) => {
+  for (const variant of Object.values(VARIANT)) {
+    await componentsPage.mount({
+      html: `<mdc-stepper variant="${variant}" aria-label="Staffing plan steps">
+        <mdc-stepperitem label="Staffing plan details" status="completed"
+          aria-label="Step 1 of 2, staffing plan details, completed"></mdc-stepperitem>
+        <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+        <mdc-stepperitem label="Generate staffing plan" status="current" loading
+          aria-current="step" aria-label="Step 2 of 2, generating staffing plan"></mdc-stepperitem>
+      </mdc-stepper>`,
+      clearDocument: true,
+    });
+    await expect(componentsPage.page.locator('mdc-spinner')).toBeVisible();
+    await componentsPage.accessibility.checkForA11yViolations(`stepperitem-loading-${variant}`);
+  }
+});
+
+test('should match loading visual regression screenshot', async ({ componentsPage }) => {
+  await componentsPage.page.setViewportSize({ width: 800, height: 800 });
+  const sheet = new StickerSheet(componentsPage, 'mdc-stepperitem', 'margin: 0.5rem;');
+  sheet.setAttributes({ label: 'Generate staffing plan', 'step-number': '4', loading: '' });
+  await sheet.createMarkupWithCombination({ variant: VARIANT, status: STATUS });
+  sheet.setAttributes({ label: 'Generate staffing plan', 'step-number': '4', loading: '', disabled: '' });
+  await sheet.createMarkupWithCombination({ variant: VARIANT, status: STATUS });
+  await sheet.mountStickerSheet();
+  await componentsPage.visualRegression.takeScreenshot('mdc-stepperitem-loading', {
+    element: sheet.getWrapperContainer(),
+    animations: 'disabled',
   });
 });

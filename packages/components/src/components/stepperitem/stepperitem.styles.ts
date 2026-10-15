@@ -43,6 +43,19 @@ const styles = css`
     color: var(--mdc-stepperitem-label-color);
   }
 
+  :host::part(status-spinner) {
+    --mdc-spinner-size: 1rem;
+  }
+
+  :host([status='completed'])::part(status-spinner) {
+    --mdc-spinner-default-color: var(--mds-color-theme-inverted-text-primary-normal);
+  }
+
+  :host([status='error-current'])::part(status-spinner),
+  :host([status='error-incomplete'])::part(status-spinner) {
+    --mdc-spinner-default-color: var(--mds-color-theme-text-error-normal);
+  }
+
   :host::part(label-container) {
     background-color: var(--mdc-stepperitem-label-container-background);
     border-radius: 0.5rem;
@@ -203,6 +216,14 @@ const styles = css`
 
   :host([disabled][status='completed'])::part(status-icon) {
     --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-disabled);
+  }
+
+  :host([disabled])::part(status-spinner) {
+    --mdc-spinner-default-color: var(--mds-color-theme-text-primary-disabled);
+  }
+
+  :host([disabled][status='completed'])::part(status-spinner) {
+    --mdc-spinner-default-color: var(--mds-color-theme-inverted-text-primary-disabled);
   }
 `;
 
