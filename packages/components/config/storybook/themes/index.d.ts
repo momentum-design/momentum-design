@@ -3,3 +3,5 @@ export const themes: Array<{
   displayName: string;
   className: string;
 }>;
+
+export const isFluidTheme: (displayName: string) => boolean;

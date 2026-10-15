@@ -70,3 +70,6 @@ export const themes = [
     className: 'lightFluid',
   },
 ];
+
+export const isFluidTheme = displayName =>
+  themes.some(theme => theme.displayName === displayName && theme.themeclass.startsWith('mds-theme-fluid-'));

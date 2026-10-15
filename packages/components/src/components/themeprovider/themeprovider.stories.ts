@@ -6,34 +6,35 @@ import '.';
 import './themeprovider.stories.styles.css';
 import './themeprovider.stories.utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { themes } from '../../../config/storybook/themes';
 import { disableControls } from '../../../config/storybook/utils';
 
-const themeClassByName = new Map(themes.map(theme => [theme.displayName, theme.themeclass]));
+const THEMES = ['mds-theme-stable-darkWebex', 'mds-theme-stable-lightWebex'];
 
-const render = (args: Args, context: { globals?: { theme?: string } }) => {
-  const themeclass = themeClassByName.get(context.globals?.theme ?? '') ?? themes[0].themeclass;
-
-  return html`
-  <mdc-themeprovider class="${classMap({ [args.class]: true })}" style="${args.style}" themeclass="${themeclass}">
-    <div class="themeWrapper themeWrapper__glassNormal">
-        Glass Normal
-    </div>
-    <div class="themeWrapper themeWrapper__glassActive">
-        Glass Active
-    </div>
-    <div class="themeWrapper themeWrapper__glassLight">
-        Glass Light
-    </div>
-    <div class="themeWrapper themeWrapper__glassMedium">
-        Glass Medium
-    </div>
-    <div class="themeWrapper themeWrapper__glassHeavy">
-        Glass Heavy
+const render = (args: Args) => html`
+  <mdc-themeprovider class="${classMap({ [args.class]: true })}" style="${args.style}" themeclass="${args.themeclass}">
+    <div class="${classMap({ themeWrapper: true })}">
+      <mdc-subcomponent></mdc-subcomponent>
+      <p>Color examples:</p>
+      <div style="height: 250px; overflow: scroll">
+        <div class="colorBox" style="background: var(--mds-color-theme-text-primary-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-error-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-warning-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-success-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-accent-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-cobalt-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-cyan-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-mint-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-lime-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-gold-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-orange-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-pink-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-purple-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-violet-normal);"></div>
+        <div class="colorBox" style="background: var(--mds-color-theme-text-team-slate-normal);"></div>
+      </div>
     </div>
   </mdc-themeprovider>
 `;
-};
 
 const meta: Meta = {
   title: 'Providers/Theme Provider',
@@ -42,7 +43,11 @@ const meta: Meta = {
   render,
 
   argTypes: {
-    ...disableControls(['Context', 'themeclass']),
+    themeclass: {
+      options: THEMES,
+      control: { type: 'radio' },
+    },
+    ...disableControls(['Context']),
     ...classArgType,
     ...styleArgType,
   },
@@ -52,6 +57,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    themeclass: THEMES[0],
     class: 'custom-classname',
     style: 'margin-top: 20px;',
   },
