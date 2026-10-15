@@ -2418,5 +2418,27 @@
       "color.theme.border.decorative.gradient.device.2": "de3b13a2eb568b59c444a4d4c1f76ad8f06ec6fe"
     },
     "group": "theme/aaos"
+  },
+  {
+    "id": "a1c3e5f709b2d4e6f8a0c1d2e3f40516",
+    "name": "fluid-dark",
+    "$figmaStyleReferences": {},
+    "selectedTokenSets": {
+      "core/value": "source",
+      "core/dimension": "source",
+      "theme/fluid/dark": "enabled"
+    },
+    "group": "theme/fluid"
+  },
+  {
+    "id": "b2d4f608a1c3e5f709d1e2f3a4b51627",
+    "name": "fluid-light",
+    "$figmaStyleReferences": {},
+    "selectedTokenSets": {
+      "core/value": "source",
+      "core/dimension": "source",
+      "theme/fluid/light": "enabled"
+    },
+    "group": "theme/fluid"
   }
 ]

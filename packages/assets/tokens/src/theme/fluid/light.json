@@ -1,0 +1,3691 @@
+{
+  "color": {
+    "theme": {
+      "text": {
+        "primary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.95}",
+            "description": "HEX: #000000 95%"
+          },
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.40}",
+            "description": ""
+          }
+        },
+        "secondary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.70}",
+            "description": ""
+          }
+        },
+        "error": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.red.70}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.red.90}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.red.90}",
+            "description": ""
+          }
+        },
+        "success": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.70}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.90}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.90}",
+            "description": ""
+          }
+        },
+        "warning": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.yellow.70}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.yellow.90}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.yellow.90}",
+            "description": ""
+          }
+        },
+        "highlight": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.blue.20}",
+          "description": "description test"
+        },
+        "accent": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.70}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.90}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.90}",
+            "description": ""
+          }
+        },
+        "teamdefault": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.70}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.70}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.95}",
+            "description": ""
+          }
+        },
+        "alert": {
+          "purple": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.90}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.90}",
+              "description": ""
+            }
+          },
+          "orange": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.90}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.90}",
+              "description": ""
+            }
+          }
+        },
+        "team": {
+          "cobalt": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.90}",
+              "description": ""
+            }
+          },
+          "cyan": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cyan.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cyan.90}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cyan.90}",
+              "description": ""
+            }
+          },
+          "mint": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.mint.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.mint.90}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.mint.90}",
+              "description": ""
+            }
+          },
+          "lime": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.90}",
+              "description": ""
+            }
+          },
+          "gold": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.gold.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.gold.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.gold.90}",
+              "description": ""
+            }
+          },
+          "orange": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.90}",
+              "description": ""
+            }
+          },
+          "pink": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.pink.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.pink.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.pink.90}",
+              "description": ""
+            }
+          },
+          "purple": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.90}",
+              "description": ""
+            }
+          },
+          "violet": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.90}",
+              "description": ""
+            }
+          },
+          "slate": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.slate.70}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.slate.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.slate.90}",
+              "description": ""
+            }
+          }
+        }
+      },
+      "inverted": {
+        "text": {
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.95}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.40}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.70}",
+              "description": ""
+            }
+          },
+          "accent": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.40}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.20}",
+              "description": ""
+            }
+          }
+        },
+        "background": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.80}",
+            "description": ""
+          }
+        },
+        "button": {
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.95}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.80}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.70}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.0}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.7}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.0}",
+              "description": ""
+            }
+          }
+        },
+        "outline": {
+          "button": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.50}",
+              "description": ""
+            }
+          },
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.40}",
+              "description": ""
+            }
+          },
+          "disabled": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            }
+          },
+          "theme": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.40}",
+              "description": ""
+            }
+          },
+          "input": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.50}",
+              "description": "Used for inverted control components outline (checkbox, toggles)"
+            }
+          }
+        },
+        "control": {
+          "active": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.40}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.50}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.60}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.60}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            }
+          },
+          "inactive": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.11}",
+              "description": "Used for inverted control component (checkbox, radio, toggle)"
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.30}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.40}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": "Core: {color.core.black-alpha.20} \nHEX: #000000 20%"
+            }
+          },
+          "indicator": {
+            "inactive": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.gray.50}",
+                "description": "Used for inverted controls (checkbox, toggle, radio, progress bar, spinner)"
+              }
+            }
+          }
+        }
+      },
+      "background": {
+        "primary": {
+          "ghost": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.7}",
+            "description": "Core Token: color.core.white-alpha.7\nHEX: #FFFFFF 7%"
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.11}",
+            "description": ""
+          },
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
+          }
+        },
+        "solid": {
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.80}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.60}",
+              "description": ""
+            }
+          },
+          "tertiary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.40}",
+              "description": ""
+            }
+          },
+          "quaternary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.40}",
+              "description": ""
+            }
+          }
+        },
+        "secondary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.11}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.20}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.30}",
+            "description": ""
+          },
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
+          },
+          "subtle": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.7}",
+            "description": "Used in the Agent/Supervisor Desktop"
+          }
+        },
+        "accent": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.60}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.70}",
+            "description": "Used for selected text paragraph background"
+          }
+        },
+        "alert": {
+          "default": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.20}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.30}",
+              "description": ""
+            }
+          },
+          "success": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.green.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.green.10}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.green.20}",
+              "description": ""
+            }
+          },
+          "warning": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.10}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.20}",
+              "description": ""
+            }
+          },
+          "error": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.10}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.20}",
+              "description": ""
+            }
+          },
+          "theme": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.10}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.20}",
+              "description": ""
+            }
+          },
+          "purple": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.10}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.20}",
+              "description": ""
+            }
+          },
+          "orange": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.10}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.20}",
+              "description": ""
+            }
+          }
+        },
+        "label": {
+          "cobalt": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.30}",
+              "description": ""
+            }
+          },
+          "gold": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.gold.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.gold.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.gold.30}",
+              "description": ""
+            }
+          },
+          "lime": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.30}",
+              "description": ""
+            }
+          },
+          "mint": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.mint.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.mint.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.mint.30}",
+              "description": ""
+            }
+          },
+          "orange": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.30}",
+              "description": ""
+            }
+          },
+          "pink": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.pink.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.pink.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.pink.30}",
+              "description": ""
+            }
+          },
+          "purple": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.30}",
+              "description": ""
+            }
+          },
+          "slate": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.slate.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.slate.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.slate.30}",
+              "description": ""
+            }
+          },
+          "violet": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.10}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.20}",
+              "description": ""
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.30}",
+              "description": ""
+            }
+          },
+          "default": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.0}",
+              "description": "HEX: #000000 0%\nUsed for chips."
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.7}",
+              "description": "HEX: #000000 7%\nUsed for chips."
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.11}",
+              "description": "HEX: #000000 11%\nUsed for chips."
+            }
+          },
+          "error": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.10}",
+              "description": "HEX: #ffe8ea\nUsed for chips."
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.20}",
+              "description": "HEX: #ffd4da\nUsed for chips."
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.30}",
+              "description": "HEX: #ffb8c1\nUsed for chips."
+            }
+          }
+        },
+        "namelabel": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.70}",
+            "description": ""
+          }
+        },
+        "gradient": {
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "linear-gradient(180deg, {color.gradient.default.light.primary.0} 0%, {color.gradient.default.light.primary.1} 100%)",
+              "description": "linear-gradient(180deg, #F0F0F0 0%, #FFFFFF 100%)"
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "linear-gradient(180deg, {color.gradient.default.light.secondary.0} 0%, {color.gradient.default.light.secondary.1} 100%)",
+              "description": "linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%)"
+            }
+          }
+        },
+        "reaction": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.white-alpha.90} 0%, {color.core.white-alpha.0} 100%)",
+            "description": "linear-gradient(90deg, #ffffffe6 0%, #ffffff00 100%)\nUsed for background of meeting reaction"
+          }
+        },
+        "skeleton": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.gray.30}",
+            "description": "Used for skeleton component"
+          },
+          "shimmer": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.5}",
+              "description": "Use for skeleton component",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.5}",
+              "description": "Use for skeleton component"
+            },
+            "2": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.5}",
+              "description": "Use for skeleton component",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "glass": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.40}",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.60}",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "light": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.40}",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "medium": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.60}",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "heavy": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.80}",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "radial": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.5}",
+              "description": "Used for operation pop background. "
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.0}",
+              "description": "Used for operation pop background. "
+            }
+          },
+          "legacy": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.60}",
+            "description": ""
+          }
+        },
+        "input": {
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.11}",
+            "description": "Used for disabled/read-only/read-only focus states for input components. "
+          }
+        },
+        "overlay": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.100}",
+            "description": "Used for overlay background",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.4",
+                  "space": "lch"
+                }
+              },
+              "com.figma.scopes": [
+                "ALL_FILLS",
+                "FRAME_FILL"
+              ]
+            }
+          }
+        },
+        "app": {
+          "canvas": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.100}",
+            "description": ""
+          }
+        },
+        "tertiary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.5}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.05",
+                  "space": "lch"
+                }
+              }
+            }
+          }
+        },
+        "glow": {
+          "accent": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.ai.mediumblue}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.ai.steelblue}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.ai.skyblue}",
+                "description": ""
+              }
+            }
+          },
+          "large": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              }
+            }
+          },
+          "light": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.100}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": ""
+              },
+              "4": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              },
+              "5": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0",
+                      "space": "lch"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "medium": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.40}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.25",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.40}",
+                "description": ""
+              }
+            }
+          },
+          "small": {
+            "stop": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.50}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.75",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.blue.40}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "1",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.40}",
+                "description": ""
+              }
+            }
+          }
+        }
+      },
+      "button": {
+        "primary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.95}",
+            "description": "button, tab"
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.80}",
+            "description": "button, tab"
+          },
+          "pressed": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.70}",
+            "description": "button, tab"
+          },
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, tab"
+          }
+        },
+        "secondary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.0}",
+            "description": "tab"
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.7}",
+            "description": "button, navmenuitem, tab"
+          },
+          "pressed": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, navmenuitem, tab"
+          },
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.0}",
+            "description": "button, navmenuitem, tab"
+          },
+          "active": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.20}",
+              "description": "button, navmenuitem, tab"
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.30}",
+              "description": "button, navmenuitem, tab"
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.40}",
+              "description": "button, navmenuitem, tab"
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.11}",
+              "description": "button, navmenuitem"
+            }
+          }
+        },
+        "join": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.60}",
+            "description": "button"
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.70}",
+            "description": "button"
+          },
+          "pressed": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.80}",
+            "description": "button"
+          }
+        },
+        "cancel": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.red.60}",
+            "description": "button"
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.red.70}",
+            "description": "button"
+          },
+          "pressed": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.red.80}",
+            "description": "button"
+          }
+        },
+        "accent": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.60}",
+            "description": "button"
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.70}",
+            "description": "button"
+          },
+          "pressed": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.80}",
+            "description": "button"
+          }
+        },
+        "glass": {
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.80}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.70}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.60}",
+              "description": ""
+            }
+          }
+        }
+      },
+      "outline": {
+        "primary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.46}",
+            "description": "buttongroup, card, staticcheckbox, stepperconnector, toast"
+          },
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, cardcheckbox, cardradio, chip, datepicker, filterchip, input (+7 more)"
+          }
+        },
+        "theme": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.60}",
+            "description": "alertchip, banner, button, staticchip, stepperconnector"
+          }
+        },
+        "secondary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.20}",
+            "description": "accordionbutton, accordiongroup, banner, bullet, buttongroup, dialog, divider (+4 more)"
+          }
+        },
+        "input": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.50}",
+            "description": "calendar, combobox, datepicker, input, select, slider, staticcheckbox (+4 more)"
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.90}",
+            "description": "cardcheckbox, cardradio, input, slider, tab, textarea"
+          }
+        },
+        "button": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.50}",
+            "description": "alertchip, button, buttongroup, inputchip, staticchip"
+          }
+        },
+        "join": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.70}",
+            "description": "alertchip, banner, button"
+          }
+        },
+        "cancel": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.red.70}",
+            "description": "alertchip, banner, button, checkbox, inputchip, stepperitem"
+          }
+        },
+        "share": {
+          "selected": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.50}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.orange.50}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.gray.50}",
+            "description": ""
+          }
+        },
+        "overlay": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.gray.60}",
+            "description": ""
+          }
+        },
+        "high-contrast": {
+          "focus": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.100}",
+            "description": ""
+          }
+        },
+        "label": {
+          "cobalt": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.cobalt.60}",
+            "description": ""
+          },
+          "gold": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.gold.60}",
+            "description": "staticchip"
+          },
+          "lime": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.lime.60}",
+            "description": "staticchip"
+          },
+          "mint": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.mint.60}",
+            "description": "staticchip"
+          },
+          "orange": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.orange.60}",
+            "description": "staticchip"
+          },
+          "pink": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.pink.60}",
+            "description": "staticchip"
+          },
+          "purple": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.purple.60}",
+            "description": "staticchip"
+          },
+          "slate": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.slate.60}",
+            "description": "staticchip"
+          },
+          "violet": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.violet.60}",
+            "description": "staticchip"
+          }
+        },
+        "promotion": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.purple.60}",
+            "description": "button, card, dialog"
+          }
+        },
+        "gradient": {
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%)",
+            "description": ""
+          }
+        },
+        "warning": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.yellow.70}",
+            "description": "alertchip, banner"
+          }
+        },
+        "glass": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "linear-gradient(180deg, {color.core.black-alpha.7} 0%, {color.core.black-alpha.20} 100%)",
+            "description": ""
+          }
+        },
+        "ai": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.100}",
+            "description": ""
+          }
+        }
+      },
+      "control": {
+        "active": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.60}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.70}",
+            "description": ""
+          },
+          "pressed": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.80}",
+            "description": ""
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.80}",
+            "description": ""
+          },
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.20}",
+            "description": ""
+          }
+        },
+        "indicator": {
+          "inactive": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.60}",
+              "description": "Core Token: {color.core.gray.60}\nHEX: #707070\nUsed for progress bar indicator"
+            }
+          }
+        },
+        "inactive": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.11}",
+            "description": ""
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.20}",
+            "description": ""
+          },
+          "pressed": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.30}",
+            "description": ""
+          },
+          "disabled": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.7}",
+            "description": ""
+          }
+        }
+      },
+      "overlay": {
+        "meetings": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.80}",
+            "description": ""
+          }
+        },
+        "button": {
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.100}",
+              "description": "Theme Token: overlay.button.secondary.normal\nCore Token: color.core.gray.100"
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.10}",
+              "description": "Theme Token: overlay.button.secondary.hover\nCore Token: color.core.gray.90"
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.20}",
+              "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
+            }
+          }
+        },
+        "header": {
+          "0": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.5}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.05",
+                  "space": "lch"
+                }
+              }
+            }
+          },
+          "1": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.0}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0",
+                  "space": "lch"
+                }
+              }
+            }
+          }
+        },
+        "navigation": {
+          "0": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.0}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.gray.30}",
+            "description": ""
+          }
+        }
+      },
+      "indicator": {
+        "unstable": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.orange.60}",
+          "description": ""
+        },
+        "attention": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.red.60}",
+          "description": ""
+        },
+        "stable": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.green.60}",
+          "description": ""
+        },
+        "locked": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.gray.60}",
+          "description": ""
+        },
+        "caution": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.yellow.60}",
+          "description": ""
+        },
+        "secure": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.blue.60}",
+          "description": ""
+        }
+      },
+      "common": {
+        "whiteboard": {
+          "stickyNote": {
+            "yellow": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.30}",
+              "description": ""
+            },
+            "red": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.40}",
+              "description": ""
+            },
+            "purple": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.40}",
+              "description": ""
+            },
+            "cyan": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cyan.40}",
+              "description": ""
+            },
+            "mint": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.mint.40}",
+              "description": ""
+            }
+          },
+          "pen": {
+            "black": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.100}",
+              "description": ""
+            },
+            "red": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.50}",
+              "description": ""
+            },
+            "purple": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.purple.60}",
+              "description": ""
+            },
+            "blue": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.40}",
+              "description": ""
+            },
+            "green": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.green.40}",
+              "description": ""
+            },
+            "yellow": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.40}",
+              "description": ""
+            },
+            "white": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.100}",
+              "description": ""
+            }
+          }
+        },
+        "text": {
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.95}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.40}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.70}",
+              "description": ""
+            }
+          },
+          "success": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.green.40}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.green.20}",
+              "description": ""
+            }
+          },
+          "error": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.40}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.20}",
+              "description": ""
+            }
+          },
+          "warning": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.40}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.20}",
+              "description": ""
+            }
+          }
+        },
+        "inverted": {
+          "text": {
+            "primary": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.95}",
+                "description": ""
+              },
+              "disabled": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.40}",
+                "description": ""
+              }
+            },
+            "secondary": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.60}",
+                "description": ""
+              }
+            }
+          },
+          "button": {
+            "secondary": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
+              },
+              "hover": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.7}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.20}",
+                "description": ""
+              },
+              "disabled": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
+              }
+            }
+          }
+        },
+        "overlays": {
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.90}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.40}",
+              "description": ""
+            }
+          },
+          "meeting": {
+            "normal": {
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.30}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.80}",
+                "description": ""
+              }
+            }
+          }
+        },
+        "button": {
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.95}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.80}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.70}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.0}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.7}",
+              "description": ""
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            },
+            "active": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.20}",
+                "description": ""
+              },
+              "hover": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.30}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.40}",
+                "description": ""
+              },
+              "disabled": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.11}",
+                "description": ""
+              }
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.0}",
+              "description": ""
+            }
+          },
+          "promotion": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "linear-gradient(46deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
+              "description": "Used for rest state of promotional button",
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.70}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.pink.70}",
+                "description": ""
+              }
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "linear-gradient(46deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
+              "description": "Used for hover state of promotion button",
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.pink.80}",
+                "description": ""
+              }
+            },
+            "active": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "linear-gradient(46deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)",
+              "description": "Used for active state of promotion button",
+              "0": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.90}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.pink.90}",
+                "description": ""
+              }
+            }
+          },
+          "join": {
+            "animated": {
+              "gradient": {
+                "normal": {
+                  "parent": "theme/fluid/light",
+                  "type": "color",
+                  "value": "linear-gradient(90deg, {color.decorative.mint.40} 0%, {color.core.blue.40} 51%, {color.decorative.mint.40} 100%)",
+                  "description": "linear-gradient(90deg, #30C9B0 0%, #64B4FA 51%, #529E91 100%)"
+                }
+              }
+            }
+          }
+        },
+        "outline": {
+          "button": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.50}",
+              "description": ""
+            }
+          },
+          "primary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.40}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            }
+          },
+          "input": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.50}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
+            }
+          },
+          "warning": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.40}",
+              "description": ""
+            }
+          }
+        },
+        "control": {
+          "share": {
+            "content": {
+              "selected": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.green.40}",
+                "description": ""
+              },
+              "active": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.orange.60}",
+                "description": ""
+              },
+              "inactive": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.gray.60}",
+                "description": ""
+              }
+            }
+          },
+          "inactive": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
+            }
+          }
+        },
+        "background": {
+          "alert": {
+            "share": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.orange.60}",
+                "description": ""
+              }
+            }
+          },
+          "solid": {
+            "dark": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.gray.95}",
+              "description": ""
+            },
+            "light": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.100}",
+              "description": ""
+            }
+          }
+        },
+        "content": {
+          "pdf": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.pdf}",
+            "description": "HEX: EE0507\n---------------\nUsed for bacakground of attachment for content-list components."
+          },
+          "word": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.word}",
+            "description": "HEX: 0078D6\n---------------\nUsed for bacakground of attachment for content-list components."
+          },
+          "powerpoint": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.powerpoint}",
+            "description": "HEX:D93E17\n---------------\nUsed for bacakground of attachment for content-list components."
+          },
+          "excel": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.excel}",
+            "description": "HEX:00893E\n---------------\nUsed for bacakground of attachment for content-list components."
+          },
+          "onenote": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.onenote}",
+            "description": "HEX:B839DB\n---------------\nUsed for bacakground of attachment for content-list components."
+          },
+          "sheets": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.sheets}",
+            "description": "HEX:F4B400\n---------------\nUsed for bacakground of attachment for content-list components."
+          },
+          "slides": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.slides}",
+            "description": "HEX:0F9D58\n---------------\nUsed for bacakground of attachment for content-list components."
+          },
+          "keynote": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.keynote}",
+            "description": "HEX:029CFB\n---------------\nUsed for bacakground of attachment for content-list components."
+          },
+          "doc": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.partner.doc}",
+            "description": "HEX Value: 4285F4"
+          }
+        },
+        "touchbar": {
+          "background": {
+            "blue": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.blue.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.blue.80}",
+                "description": ""
+              }
+            },
+            "pink": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.pink.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.pink.80}",
+                "description": ""
+              }
+            },
+            "mint": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.mint.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.mint.80}",
+                "description": ""
+              }
+            },
+            "purple": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": ""
+              }
+            },
+            "violet": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.violet.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.violet.80}",
+                "description": ""
+              }
+            },
+            "orange": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.orange.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.orange.80}",
+                "description": ""
+              }
+            },
+            "green": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.green.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.green.80}",
+                "description": ""
+              }
+            },
+            "red": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.red.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.red.80}",
+                "description": ""
+              }
+            },
+            "transparent": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.0}",
+              "description": ""
+            }
+          },
+          "icon": {
+            "attention": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.40}",
+              "description": ""
+            },
+            "stable": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.green.50}",
+              "description": ""
+            },
+            "secure": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.blue.40}",
+              "description": ""
+            }
+          }
+        },
+        "caption": {
+          "background": {
+            "dark": {
+              "green": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.green.90}",
+                "description": "HEX: #0E2B20\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.blue.90}",
+                "description": "HEX: #0A274A\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.90}",
+                "description": "HEX: #3B1840\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.90}",
+                "description": "HEX: #36220C\nUsed for closed-caption component"
+              }
+            },
+            "light": {
+              "green": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.green.10}",
+                "description": "HEX: #CEF5EB\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.blue.10}",
+                "description": "HEX: #DBF0FF\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.10}",
+                "description": "HEX: #FCF2FC\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.10}",
+                "description": "HEX: #FFEBC2\nUsed for closed-caption component"
+              }
+            }
+          },
+          "text": {
+            "dark": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.95}",
+                "description": "HEX: #000000 95%\nUsed for closed-caption component"
+              },
+              "green": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.green.40}",
+                "description": "HEX: #3CC29A\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.blue.40}",
+                "description": "HEX: #64B4FA\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.40}",
+                "description": "HEX: #F294F1\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.40}",
+                "description": "HEX: #F2990A\nUsed for closed-caption component"
+              }
+            },
+            "light": {
+              "normal": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.95}",
+                "description": "HEX: #FFFFFF 95%\nUsed for closed-caption component"
+              },
+              "green": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.green.70}",
+                "description": "HEX: #185E46\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.blue.70}",
+                "description": "HEX: #0353A8\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.decorative.purple.70}",
+                "description": "HEX: #932099\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/fluid/light",
+                "type": "color",
+                "value": "{color.core.yellow.70}",
+                "description": "HEX: #7D4705\nUsed for closed-caption component"
+              }
+            }
+          }
+        }
+      },
+      "scrollbar": {
+        "button": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.46}",
+            "description": "Theme Token: ScrollbarButton-normal\nCoreToken: white-alpha-40"
+          },
+          "hover": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.50}",
+            "description": "Theme Token: ScrollbarButton-hover\nCoreToken: white-alpha-50"
+          },
+          "pressed": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.60}",
+            "description": "Theme Token: ScrollbarButton-pressed\nCoreToken: white-alpha-60"
+          }
+        },
+        "arrow": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.60}",
+            "description": ""
+          },
+          "background": {
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.0}",
+              "description": ""
+            },
+            "hover": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.20}",
+              "description": "Theme Token: ScrollbarArrowBackground-hover\nCoreToken: white-alpha-20"
+            },
+            "pressed": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.30}",
+              "description": "Theme Token: ScrollbarArrowBackground-press\nCoreToken: white-alpha-30"
+            }
+          }
+        },
+        "background": {
+          "secondary": {
+            "ghost": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.0}",
+              "description": ""
+            },
+            "normal": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.11}",
+              "description": ""
+            }
+          }
+        }
+      },
+      "illustrations": {
+        "empty": {
+          "primary": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.40}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.50}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.50}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.60}",
+              "description": ""
+            }
+          }
+        },
+        "onboarding": {
+          "primary": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.30}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.40}",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.red.50}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.60}",
+              "description": ""
+            }
+          },
+          "tertiary": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.yellow.30}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.orange.50}",
+              "description": ""
+            }
+          },
+          "quartenary": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.lime.40}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.50}",
+              "description": ""
+            }
+          },
+          "quinary": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.cobalt.50}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.decorative.violet.60}",
+              "description": ""
+            }
+          }
+        },
+        "success": {
+          "0": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.green.40}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.lime.40}",
+            "description": ""
+          }
+        },
+        "error": {
+          "0": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.decorative.pink.50}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.red.60}",
+            "description": ""
+          }
+        },
+        "default": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.black-alpha.100}",
+          "description": ""
+        }
+      },
+      "globaltint": {
+        "normal": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.blue.60}",
+          "description": ""
+        },
+        "selected": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.blue.60}",
+          "description": ""
+        }
+      },
+      "groupedbackground": {
+        "primary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.gray.5}",
+            "description": ""
+          }
+        },
+        "secondary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.100}",
+            "description": ""
+          }
+        },
+        "tertiary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.gray.5}",
+            "description": ""
+          }
+        },
+        "quaternary": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.100}",
+            "description": ""
+          }
+        }
+      },
+      "avatar": {
+        "ghost": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.black-alpha.0}",
+          "description": ""
+        },
+        "default": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.gray.70}",
+          "description": ""
+        },
+        "cobalt": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.cobalt.70}",
+          "description": ""
+        },
+        "cyan": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.cyan.70}",
+          "description": ""
+        },
+        "gold": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.gold.70}",
+          "description": ""
+        },
+        "lime": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.lime.70}",
+          "description": ""
+        },
+        "mint": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.mint.70}",
+          "description": ""
+        },
+        "orange": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.orange.70}",
+          "description": ""
+        },
+        "pink": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.pink.70}",
+          "description": ""
+        },
+        "purple": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.purple.70}",
+          "description": ""
+        },
+        "slate": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.slate.70}",
+          "description": ""
+        },
+        "violet": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.decorative.violet.70}",
+          "description": ""
+        },
+        "yellow": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.yellow.70}",
+          "description": ""
+        },
+        "hover": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.black-alpha.7}",
+          "description": ""
+        },
+        "pressed": {
+          "parent": "theme/fluid/light",
+          "type": "color",
+          "value": "{color.core.black-alpha.20}",
+          "description": ""
+        },
+        "glass": {
+          "normal": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.black-alpha.7}",
+            "description": "Used for Operation pop"
+          },
+          "active": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.80}",
+            "description": "Used for Operation pop"
+          }
+        }
+      },
+      "gradientdivider": {
+        "default": {
+          "normal": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.0} 100%)",
+            "description": "linear-gradient(90deg, #00000000 0%, #00000033 22.4%, #00000033 72.4%, #00000000 100%)\nUsed for default default on compose area in space"
+          },
+          "hover": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.60} 22.4%, {color.core.black-alpha.60} 72.4%, {color.core.black-alpha.0} 100%)",
+            "description": "linear-gradient(90deg, #00000000 0%, #00000099 22.4%, #00000099 72.4%, #00000000 100%)\nUsed for hover state of gradient divider for spaces"
+          }
+        },
+        "error": {
+          "normal": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.red.70}00 0%, {color.core.red.70}99 22.4%, {color.core.red.70}99 22.4%, {color.core.red.70}00 100%)",
+            "description": "linear-gradient(90deg, #ab0a15 0%, #ab0a15 60%, #ab0a15 60%, #ab0a15 0%)\nUsed for divider on the compose area for classified spaces"
+          },
+          "hover": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.red.70}00 0%, {color.core.red.70}e6 22.4%, {color.core.red.70}e6 76.04%, {color.core.red.70}00 100%)",
+            "description": "linear-gradient(90deg, #ab0a15 0%, #ab0a15 90%, #ab0a15 90%, #ab0a15 0%)\n"
+          }
+        },
+        "warning": {
+          "normal": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.yellow.70}00 0%, {color.core.yellow.70}99 22.4%, {color.core.yellow.70}99 76.04%, {color.core.yellow.70}00 100%)",
+            "description": "linear-gradient(90deg, #7d470500 0%, #7d470599 22.4%, #7d470599 76.04%, #7d470500 100%)"
+          },
+          "hover": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.yellow.70}00 0%, {color.core.yellow.70}e6 22.4%, {color.core.yellow.70}e6 76.04%, {color.core.yellow.70}00 100%)",
+            "description": "linear-gradient(90deg, #7d470500 0%, #7d4705e6 22.4%, #7d4705e6 76.04%, #7d470500 100%)"
+          }
+        },
+        "announce": {
+          "normal": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.blue.70}00 0%, {color.core.blue.70}99 22.4%, {color.core.blue.70}99 22.4%, {color.core.blue.70}00 100%)",
+            "description": "linear-gradient(90deg, #0352a600 0%, #0352a699 22.4%, #0352a699 76.04%, #0352a600 100%)"
+          },
+          "hover": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.blue.70}00 0%, {color.core.blue.70}E6 76.04%, {color.core.blue.70}E6 76.04%, {color.core.blue.70}00 100%)",
+            "description": "linear-gradient(90deg, #0353a8 0%, #0353a8 90%, #0353a8 90%, #0353a8 0%)"
+          }
+        },
+        "success": {
+          "normal": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.green.70}00 0%, {color.core.green.70}99 22.4%, {color.core.green.70}99 76.04%, {color.core.green.70}00 100%)",
+            "description": "linear-gradient(90deg, #185e4600 0%, #185e4699 22.4%, #185e4699 76.04%, #185e4600 100%)"
+          },
+          "hover": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.green.70}00 0%, {color.core.green.70}E6 22.4%, {color.core.green.70}E6 76.04%, {color.core.green.70}00 100%)",
+            "description": "linear-gradient(90deg, #185e5100 0%, #185e46e6 22.4%, #185e46e6 76.04%, #185e4600 100%)"
+          }
+        },
+        "orange": {
+          "normal": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.orange.70}00 0%, {color.core.orange.70}99 22.4%, {color.core.orange.70}99 76.04%, {color.core.orange.70}00 100%)",
+            "description": "linear-gradient(90deg, #9c320200 0%, #9c320299 15.1%, #9c320299 76.04%, #9c320200 100%)"
+          },
+          "hover": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.core.orange.70}00 0%, {color.core.orange.70}e6 22.4%, {color.core.orange.70}e6 76.04%, {color.core.orange.70}00 100%)",
+            "description": "linear-gradient(90deg, #91401700 0%, #914017e6 22.4%, #914017e6 76.04%, #91401700 100%)"
+          }
+        },
+        "purple": {
+          "normal": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.decorative.purple.70}00 0%, {color.decorative.purple.70}99 22.4%, {color.decorative.purple.70}99 76.04%, {color.decorative.purple.70}00 100%)",
+            "description": "linear-gradient(90deg, #932099 0%, #932099 60%, #932099 60%, #fd884e 0%)\n"
+          },
+          "hover": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(90deg, {color.decorative.purple.70}00 0%,{color.decorative.purple.70}E6 22.4%, {color.decorative.purple.70}E6 76.04%, {color.decorative.purple.70}00 100%)",
+            "description": "linear-gradient(90deg, #932099 0%, #932099 90%, #932099 90%, #fd884e 0%)\n"
+          }
+        },
+        "vertical": {
+          "normal": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(0deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.0} 100%)",
+            "description": "linear-gradient(0deg, #00000000 0%, #00000033 22.4%, #00000033 72.4%, #00000000 100%)\nUsed for default default on compose area in space"
+          },
+          "hover": {
+            "parent": "theme/fluid/dark",
+            "type": "color",
+            "value": "linear-gradient(0deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.60} 22.4%, {color.core.black-alpha.60} 72.4%, {color.core.black-alpha.0} 100%)",
+            "description": "linear-gradient(0deg, #00000000 0%, #00000099 22.4%, #00000099 72.4%, #00000000 100%)\nUsed for hover state of gradient divider for spaces"
+          }
+        }
+      },
+      "focus": {
+        "default": {
+          "0": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.100}",
+            "description": "Used for focus ring effect"
+          },
+          "1": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "{color.core.blue.60}",
+            "description": "Used for focus ring effect"
+          },
+          "2": {
+            "parent": "theme/fluid/light",
+            "type": "color",
+            "value": "#1570cf",
+            "description": "Used for focus ring effect",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.35",
+                  "space": "lch"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ai-hint": {
+        "primary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.80}",
+              "description": ""
+            }
+          }
+        },
+        "secondary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "description": "",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            },
+            "1": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "3": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
+            },
+            "4": {
+              "parent": "theme/fluid/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": "",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "spacing": {
+    "theme": {
+      "pad-none": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "Flush padding on both axes."
+      },
+      "pad-v-2xs": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest v padding."
+      },
+      "pad-v-xs": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Compact v padding. Default control v pad."
+      },
+      "pad-v-sm": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard v padding."
+      },
+      "pad-v-md": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Roomy v padding. Cards, dialogs, headers."
+      },
+      "pad-v-lg": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy and large v padding."
+      },
+      "pad-v-xl": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large v padding."
+      },
+      "pad-v-2xl": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large v padding."
+      },
+      "pad-h-2xs": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest h padding."
+      },
+      "pad-h-xs": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Compact h padding. Chips, dense controls."
+      },
+      "pad-h-sm": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard h padding. Default control h pad."
+      },
+      "pad-h-md": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Roomy h padding. Buttons, sidenav, toast."
+      },
+      "pad-h-lg": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy and large h padding."
+      },
+      "pad-h-xl": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large h padding."
+      },
+      "pad-h-2xl": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large h padding."
+      },
+      "gap-none": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "Collapsed layout space."
+      },
+      "gap-2xs": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest sibling gap. Chips, icon clusters, compact controls."
+      },
+      "gap-xs": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Tight sibling gap. Icon-to-label, most control internals."
+      },
+      "gap-sm": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard sibling gap. Lists, tabs, cards."
+      },
+      "gap-md": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Wide layout gap. Roomy stacks. Use pad-v-md / pad-h-md when 16px is padding."
+      },
+      "gap-lg": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy stacks and section separation."
+      },
+      "gap-xl": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Section or block separation."
+      },
+      "gap-2xl": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large layout space."
+      }
+    }
+  },
+  "border": {
+    "theme": {
+      "none": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "No stroke. A side or state with no border — accordion, table, grabber."
+      },
+      "default": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.1}",
+        "description": "Default stroke weight — chips, banner, buttongroup, inputs."
+      },
+      "emphasis": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.2}",
+        "description": "Emphasis stroke weight — selected filterchip, heavier container chrome."
+      }
+    }
+  },
+  "radius": {
+    "theme": {
+      "none": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "No rounding; flat edge in compound shapes (accordion, combobox, nav joins)."
+      },
+      "2xs": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.2}",
+        "description": "Barely softened corners."
+      },
+      "xs": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Compact rounding — chips, icons, inputchip, tab partials."
+      },
+      "sm": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Default surface rounding — card, input, dialog, listitem, toast."
+      },
+      "md": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "More prominent rounding — statictoggle, softer bounded controls."
+      },
+      "lg": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Larger corner radius above md, short of a pill."
+      },
+      "full": {
+        "parent": "theme/fluid/light",
+        "type": "dimension",
+        "value": "{dimension.full}",
+        "description": "True circle — avatar, radio, slider thumb, presence."
+      }
+    }
+  },
+  "size": {
+    "theme": {
+      "sm": {
+        "4": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.4}",
+          "description": "Micro fixed size — nav notch, indicator. Was size/xxs."
+        },
+        "8": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.8}",
+          "description": "Smallest icon slot — bullet, compact glyph. Was size/xs."
+        },
+        "12": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.12}",
+          "description": "Compact icon slot — badge, nav icon. Was size/sm."
+        }
+      },
+      "md": {
+        "16": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.16}",
+          "description": "Standard icon slot — avatar, badge, popover, radio. Was size/md and size/lg."
+        },
+        "20": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.20}",
+          "description": "Compact inline row — divider, chip icon, timepicker. Was size/xl."
+        },
+        "24": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.24}",
+          "description": "Compact control height — chip, alertchip, inputchip. Was size/2xl."
+        },
+        "28": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.28}",
+          "description": "Between compact and standard control — buttongroup, calendar, stepper. Was size/3xl."
+        },
+        "32": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.32}",
+          "description": "Default control height — input, select, tab, combobox. Was size/4xl."
+        }
+      },
+      "lg": {
+        "40": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.40}",
+          "description": "Large control / toolbar row — nav, datepicker trigger. Was size/5xl."
+        },
+        "52": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.52}",
+          "description": "Wide control minimum — input min-width. Was size/6xl."
+        },
+        "64": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.64}",
+          "description": "Chrome band — app header, searchfield, avatar lg. Was size/7xl."
+        }
+      },
+      "xl": {
+        "72": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.72}",
+          "description": "Large avatar tier. Was size/8xl."
+        },
+        "88": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.88}",
+          "description": "Extra-large avatar tier. Was size/9xl."
+        },
+        "100": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.100}",
+          "description": "Content min-height — textarea. Was size/10xl."
+        },
+        "124": {
+          "parent": "theme/fluid/light",
+          "type": "dimension",
+          "value": "{dimension.124}",
+          "description": "Max avatar / hero. Was size/11xl."
+        }
+      }
+    }
+  }
+}

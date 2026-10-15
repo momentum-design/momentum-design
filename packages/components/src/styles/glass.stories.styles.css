@@ -1,0 +1,32 @@
+/* Scaffolding for the Glass stories only — not shipped. See copyStyles.js. */
+.glassStoryCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.glassStoryRow {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.glassStoryPanel {
+  box-sizing: border-box;
+  width: 11rem;
+  height: 7rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  color: var(--mds-color-theme-text-primary-normal);
+  font-size: var(--mds-font-size-body-midsize);
+  line-height: var(--mds-font-lineheight-body-midsize);
+}
+
+.glassStoryPanel__large {
+  width: 16rem;
+  height: 10rem;
+  justify-content: center;
+}

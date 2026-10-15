@@ -144,6 +144,7 @@ const preview = {
           'Setup',
           'Styling',
           'Attributes',
+          'Styles',
           'Providers',
           'Components',
           ['Docs', 'Accessibility', 'Example'],

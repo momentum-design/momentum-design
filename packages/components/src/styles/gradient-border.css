@@ -1,0 +1,121 @@
+/**
+ * Gradient Border
+ *
+ * A shared style, not a component. Import this stylesheet once, then add
+ * `mdc-gradient-border-primary` or `mdc-gradient-border-secondary` to any
+ * element that should carry an AI hint border, and
+ * `mdc-gradient-border-animated` to make that gradient travel around it.
+ *
+ *   import '@momentum-design/components/dist/styles/gradient-border.css';
+ *
+ *   <div class="mdc-gradient-border-primary mdc-gradient-border-animated">…</div>
+ *
+ * Requires a Momentum theme stylesheet to be loaded for the AI hint colour
+ * tokens to resolve.
+ *
+ * The ring is a masked pseudo-element rather than a box-shadow, so it leaves
+ * box-shadow free for the focus ring and never tints translucent or glass
+ * surfaces underneath it.
+ */
+
+/* Registered so the angle is a typed <angle> and can therefore be animated.
+   A rule in a shadow root is ignored, which is why this ships as a document
+   level stylesheet; registration from here applies to shadow roots too. */
+@property --mds-gradient-border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* A full turn, so engines without the Properties and Values API (Firefox below
+   128) land on a value identical to the first frame instead of jumping. */
+@keyframes mdc-gradient-border-rotate {
+  from {
+    --mds-gradient-border-angle: 0deg;
+  }
+
+  to {
+    --mds-gradient-border-angle: 360deg;
+  }
+}
+
+.mdc-gradient-border-primary,
+.mdc-gradient-border-secondary {
+  --mdc-gradient-border-width: 0.125rem;
+  --mdc-gradient-border-duration: 6s;
+  --mdc-gradient-border-iteration-count: infinite;
+}
+
+/* Opaque end to end, so the ring reads as a steady hint. */
+.mdc-gradient-border-primary {
+  --mdc-gradient-border-start-angle: 90deg;
+  --mdc-gradient-border-stops: var(--mds-color-theme-ai-hint-primary-gradient-0) 0%,
+    var(--mds-color-theme-ai-hint-primary-gradient-1) 53%, var(--mds-color-theme-ai-hint-primary-gradient-2) 100%;
+}
+
+/* First and last stops are transparent, so the ring tapers into a comet tail. */
+.mdc-gradient-border-secondary {
+  --mdc-gradient-border-start-angle: 180deg;
+  --mdc-gradient-border-stops: var(--mds-color-theme-ai-hint-secondary-gradient-0) 0%,
+    var(--mds-color-theme-ai-hint-secondary-gradient-1) 24%, var(--mds-color-theme-ai-hint-secondary-gradient-2) 41%,
+    var(--mds-color-theme-ai-hint-secondary-gradient-3) 62%, var(--mds-color-theme-ai-hint-secondary-gradient-4) 82%;
+}
+
+/* Everything below is gated: engines without the unprefixed mask (Chrome and
+   Edge below 120) parse none of it and render the element unchanged. */
+@supports (mask-composite: exclude) {
+
+  .mdc-gradient-border-primary,
+  .mdc-gradient-border-secondary {
+    position: relative;
+  }
+
+  .mdc-gradient-border-primary::after,
+  .mdc-gradient-border-secondary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--mdc-gradient-border-width);
+    pointer-events: none;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  /* Composed in the rule that paints the ring rather than in a token or in a
+     custom property on the host: a custom property's var() is substituted
+     where it is declared, so an angle baked in further up would resolve there
+     once and never see the animation, which runs on this pseudo-element. The
+     start angle is added here too, so it also applies when static. */
+  .mdc-gradient-border-primary::after {
+    background: linear-gradient(calc(var(--mdc-gradient-border-start-angle) + var(--mds-gradient-border-angle, 0deg)),
+        var(--mdc-gradient-border-stops));
+  }
+
+  .mdc-gradient-border-secondary::after {
+    background: conic-gradient(from calc(var(--mdc-gradient-border-start-angle) + var(--mds-gradient-border-angle, 0deg)),
+        var(--mdc-gradient-border-stops));
+  }
+
+  .mdc-gradient-border-animated::after {
+    animation: var(--mdc-gradient-border-duration) linear 0ms var(--mdc-gradient-border-iteration-count) mdc-gradient-border-rotate;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mdc-gradient-border-animated::after {
+    animation: none;
+  }
+}
+
+/* Gradients are not rendered in forced-colors mode. */
+@media (forced-colors: active) {
+
+  .mdc-gradient-border-primary::after,
+  .mdc-gradient-border-secondary::after {
+    background: CanvasText;
+    animation: none;
+  }
+}

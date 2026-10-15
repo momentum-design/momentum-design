@@ -1,0 +1,54 @@
+/* 1px outline drawn as a pseudo-element, because the glass outline token is a gradient. */
+.mdc-glass-border {
+  --mdc-glass-border-color: var(--mds-color-theme-outline-glass-normal, rgba(255, 255, 255, 0.1));
+  --mdc-glass-border-radius: var(--mds-radius-theme-lg);
+
+  position: relative;
+  border-radius: var(--mdc-glass-border-radius);
+}
+
+.mdc-glass-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--mdc-glass-border-color);
+  z-index: 0;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.mdc-glass-overlay-background {
+  --mdc-glass-background: var(--mds-color-theme-background-glass-heavy);
+  --mdc-glass-backdrop-filter: var(--mds-effect-backdrop-filter-blur20);
+  --mdc-glass-border-radius: var(--mds-radius-theme-lg);
+
+  position: relative;
+  border-radius: var(--mdc-glass-border-radius);
+  background: var(--mdc-glass-background);
+  backdrop-filter: var(--mdc-glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--mdc-glass-backdrop-filter);
+}
+
+/* Figma applies the radial highlight as a separate 11% layer; ::after keeps that
+   opacity applied to the resolved token values at runtime. */
+.mdc-glass-overlay-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.11;
+  background: radial-gradient(85.92% 85.92% at 50.12% -1.41%,
+      var(--mds-color-theme-background-glass-radial-0) 0%,
+      var(--mds-color-theme-background-glass-radial-1) 100%);
+  pointer-events: none;
+}

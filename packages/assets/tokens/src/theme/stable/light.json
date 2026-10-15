@@ -413,8 +413,10 @@
               "description": ""
             },
             "active": {
+              "parent": "theme/stable/light",
+              "type": "color",
               "value": "{color.core.blue.20}",
-              "type": "color"
+              "description": ""
             }
           }
         },
@@ -515,8 +517,9 @@
           },
           "input": {
             "normal": {
-              "value": "{color.core.white-alpha.50}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.white-alpha.50}",
               "description": "Used for inverted control components outline (checkbox, toggles)"
             }
           }
@@ -583,8 +586,9 @@
           "indicator": {
             "inactive": {
               "normal": {
-                "value": "{color.core.gray.50}",
+                "parent": "theme/stable/light",
                 "type": "color",
+                "value": "{color.core.gray.50}",
                 "description": "Used for inverted controls (checkbox, toggle, radio, progress bar, spinner)"
               }
             }
@@ -596,7 +600,8 @@
           "ghost": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.0}"
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
           },
           "hover": {
             "parent": "theme/stable/light",
@@ -613,7 +618,8 @@
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.0}"
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
           }
         },
         "solid": {
@@ -676,8 +682,9 @@
             "description": ""
           },
           "subtle": {
-            "value": "{color.core.black-alpha.7}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.black-alpha.7}",
             "description": "Used in the Agent/Supervisor Desktop"
           }
         },
@@ -1020,35 +1027,41 @@
           },
           "default": {
             "normal": {
-              "value": "{color.core.gray.10}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.gray.10}",
               "description": "HEX: #ededed\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.gray.20}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.gray.20}",
               "description": "HEX: #dedede\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.gray.30}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.gray.30}",
               "description": "HEX: #c9c9c9\nUsed for chips."
             }
           },
           "error": {
             "normal": {
-              "value": "{color.core.red.10}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.red.10}",
               "description": "HEX: #ffe8ea\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.red.20}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.red.20}",
               "description": "HEX: #ffd4da\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.red.30}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.red.30}",
               "description": "HEX: #ffb8c1\nUsed for chips."
             }
           }
@@ -1057,7 +1070,8 @@
           "normal": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.70}"
+            "value": "{color.core.black-alpha.70}",
+            "description": ""
           }
         },
         "gradient": {
@@ -1080,6 +1094,7 @@
         },
         "reaction": {
           "normal": {
+            "parent": "theme/stable/light",
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.white-alpha.90} 0%, {color.core.white-alpha.0} 100%)",
             "description": "linear-gradient(90deg, #ffffffe6 0%, #ffffff00 100%)\nUsed for background of meeting reaction"
@@ -1087,14 +1102,17 @@
         },
         "skeleton": {
           "normal": {
+            "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.core.gray.30}",
             "description": "Used for skeleton component"
           },
           "shimmer": {
             "0": {
+              "parent": "theme/stable/light",
               "type": "color",
               "value": "{color.core.gray.5}",
+              "description": "Use for skeleton component",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1103,17 +1121,19 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": "Use for skeleton component"
+              }
             },
             "1": {
+              "parent": "theme/stable/light",
               "type": "color",
               "value": "{color.core.gray.5}",
               "description": "Use for skeleton component"
             },
             "2": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.gray.80}",
+              "value": "{color.core.gray.5}",
+              "description": "Use for skeleton component",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1122,61 +1142,76 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": "Use for skeleton component"
+              }
             }
           }
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.40}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.40}",
             "description": "Used for glass effect background for operation pop. "
           },
           "active": {
-            "value": "{color.core.white-alpha.60}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.60}",
             "description": "Used for glass effect background for operation pop. "
           },
           "light": {
-            "value": "{color.core.white-alpha.40}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.40}",
             "description": "Used for glass effect background for operation pop. "
           },
           "medium": {
-            "value": "{color.core.white-alpha.60}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.60}",
             "description": "Used for glass effect background for operation pop. "
           },
           "heavy": {
-            "value": "{color.core.white-alpha.80}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.80}",
             "description": "Used for glass effect background for operation pop. "
           },
           "radial": {
             "0": {
-              "value": "{color.core.white-alpha.5}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.white-alpha.5}",
               "description": "Used for operation pop background. "
             },
             "1": {
-              "value": "{color.core.white-alpha.0}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.white-alpha.0}",
               "description": "Used for operation pop background. "
             }
+          },
+          "legacy": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.60}",
+            "description": ""
           }
         },
         "input": {
           "disabled": {
-            "value": "{color.core.black-alpha.11}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.black-alpha.11}",
             "description": "Used for disabled/read-only/read-only focus states for input components. "
           }
         },
         "overlay": {
           "normal": {
-            "value": "{color.core.blue.100}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.blue.100}",
+            "description": "Used for overlay background",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -1189,8 +1224,204 @@
                 "ALL_FILLS",
                 "FRAME_FILL"
               ]
-            },
-            "description": "Used for overlay background"
+            }
+          }
+        },
+        "app": {
+          "canvas": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.100}",
+            "description": ""
+          }
+        },
+        "tertiary": {
+          "normal": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.5}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.05",
+                  "space": "lch"
+                }
+              }
+            }
+          }
+        },
+        "glow": {
+          "accent": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.ai.mediumblue}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.ai.steelblue}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.ai.skyblue}",
+                "description": ""
+              }
+            }
+          },
+          "large": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              }
+            }
+          },
+          "light": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.100}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": ""
+              },
+              "4": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              },
+              "5": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0",
+                      "space": "lch"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "medium": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.yellow.40}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.25",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.40}",
+                "description": ""
+              }
+            }
+          },
+          "small": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.50}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.75",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.blue.40}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "1",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "2": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.brand.magenta.40}",
+                "description": ""
+              }
+            }
           }
         }
       },
@@ -1217,7 +1448,8 @@
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}"
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, tab"
           }
         },
         "secondary": {
@@ -1335,18 +1567,21 @@
         "glass": {
           "primary": {
             "normal": {
-              "value": "{color.core.black-alpha.80}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.black-alpha.80}",
               "description": "Used for Operation pop button"
             },
             "hover": {
-              "value": "{color.core.black-alpha.70}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.black-alpha.70}",
               "description": "Used for Operation pop button"
             },
             "pressed": {
-              "value": "{color.core.black-alpha.60}",
+              "parent": "theme/stable/light",
               "type": "color",
+              "value": "{color.core.black-alpha.60}",
               "description": "Used for Operation pop button"
             }
           }
@@ -1363,7 +1598,8 @@
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}"
+            "value": "{color.core.black-alpha.20}",
+            "description": "button, cardcheckbox, cardradio, chip, datepicker, filterchip, input (+7 more)"
           }
         },
         "theme": {
@@ -1460,51 +1696,61 @@
           "cobalt": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.cobalt.60}"
+            "value": "{color.decorative.cobalt.60}",
+            "description": ""
           },
           "gold": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.gold.60}"
+            "value": "{color.decorative.gold.60}",
+            "description": "staticchip"
           },
           "lime": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.lime.60}"
+            "value": "{color.decorative.lime.60}",
+            "description": "staticchip"
           },
           "mint": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.mint.60}"
+            "value": "{color.decorative.mint.60}",
+            "description": "staticchip"
           },
           "orange": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.orange.60}"
+            "value": "{color.core.orange.60}",
+            "description": "staticchip"
           },
           "pink": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.pink.60}"
+            "value": "{color.decorative.pink.60}",
+            "description": "staticchip"
           },
           "purple": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.purple.60}"
+            "value": "{color.decorative.purple.60}",
+            "description": "staticchip"
           },
           "slate": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.slate.60}"
+            "value": "{color.decorative.slate.60}",
+            "description": "staticchip"
           },
           "violet": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.violet.60}"
+            "value": "{color.decorative.violet.60}",
+            "description": "staticchip"
           }
         },
         "promotion": {
           "normal": {
+            "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.decorative.purple.60}",
             "description": "Used for border of promotional banner"
@@ -1512,6 +1758,7 @@
         },
         "gradient": {
           "active": {
+            "parent": "theme/stable/light",
             "type": "color",
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%)",
             "description": "Used for Webex Assitant AI"
@@ -1519,21 +1766,25 @@
         },
         "warning": {
           "normal": {
+            "parent": "theme/stable/light",
+            "type": "color",
             "value": "{color.core.yellow.70}",
-            "type": "color"
+            "description": "alertchip, banner"
           }
         },
         "glass": {
           "normal": {
-            "value": "linear-gradient(180deg, {color.core.black-alpha.7} 0%, {color.core.black-alpha.20} 100%)",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "linear-gradient(180deg, {color.core.black-alpha.7} 0%, {color.core.black-alpha.20} 100%)",
             "description": "Used for operation pop"
           }
         },
         "ai": {
           "normal": {
-            "value": "linear-gradient(27deg, {color.ai.steelblue} 10.22%, {color.ai.skyblue} 88.93%, {color.ai.aquablue} 162.86%)",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.100}",
             "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%)\nUsed for AI assistant feature"
           }
         }
@@ -1585,22 +1836,26 @@
           "normal": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.11}"
+            "value": "{color.core.black-alpha.11}",
+            "description": ""
           },
           "hover": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}"
+            "value": "{color.core.black-alpha.20}",
+            "description": ""
           },
           "pressed": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.30}"
+            "value": "{color.core.black-alpha.30}",
+            "description": ""
           },
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.7}"
+            "value": "{color.core.black-alpha.7}",
+            "description": ""
           }
         }
       },
@@ -1633,6 +1888,52 @@
               "value": "{color.core.gray.20}",
               "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
             }
+          }
+        },
+        "header": {
+          "0": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.5}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.05",
+                  "space": "lch"
+                }
+              }
+            }
+          },
+          "1": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.0}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0",
+                  "space": "lch"
+                }
+              }
+            }
+          }
+        },
+        "navigation": {
+          "0": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.white-alpha.0}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.gray.30}",
+            "description": ""
           }
         }
       },
@@ -1829,15 +2130,18 @@
                 "description": ""
               },
               "disabled": {
+                "parent": "theme/stable/light",
+                "type": "color",
                 "value": "{color.core.black-alpha.40}",
-                "type": "color"
+                "description": ""
               }
             },
             "secondary": {
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.60}"
+                "value": "{color.core.black-alpha.60}",
+                "description": ""
               }
             }
           },
@@ -1846,22 +2150,26 @@
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.0}"
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
               },
               "hover": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.7}"
+                "value": "{color.core.black-alpha.7}",
+                "description": ""
               },
               "pressed": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.20}"
+                "value": "{color.core.black-alpha.20}",
+                "description": ""
               },
               "disabled": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.black-alpha.0}"
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
               }
             }
           }
@@ -1946,11 +2254,18 @@
               "value": "{color.core.white-alpha.7}",
               "description": ""
             },
+            "pressed": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            },
             "active": {
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.white-alpha.20}"
+                "value": "{color.core.white-alpha.20}",
+                "description": ""
               },
               "hover": {
                 "parent": "theme/stable/light",
@@ -1961,7 +2276,8 @@
               "pressed": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.white-alpha.40}"
+                "value": "{color.core.white-alpha.40}",
+                "description": ""
               },
               "disabled": {
                 "parent": "theme/stable/light",
@@ -1979,42 +2295,58 @@
           },
           "promotion": {
             "normal": {
-              "0": {
-                "value": "{color.decorative.purple.70}",
-                "type": "color"
-              },
-              "1": {
-                "value": "{color.decorative.pink.70}",
-                "type": "color"
-              },
               "parent": "theme/stable/light",
               "type": "color",
               "value": "linear-gradient(46deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
-              "description": "Used for rest state of promotional button"
-            },
-            "hover": {
+              "description": "Used for rest state of promotional button",
               "0": {
-                "value": "{color.decorative.purple.80}",
-                "type": "color"
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.purple.70}",
+                "description": ""
               },
               "1": {
-                "value": "{color.decorative.pink.80}",
-                "type": "color"
-              },
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.pink.70}",
+                "description": ""
+              }
+            },
+            "hover": {
               "parent": "theme/stable/light",
               "type": "color",
               "value": "linear-gradient(46deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
-              "description": "Used for hover state of promotion button"
+              "description": "Used for hover state of promotion button",
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.pink.80}",
+                "description": ""
+              }
             },
             "active": {
-              "0": {
-                "value": "{color.decorative.purple.90}",
-                "type": "color"
-              },
               "parent": "theme/stable/light",
               "type": "color",
               "value": "linear-gradient(46deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)",
-              "description": "Used for active state of promotion button"
+              "description": "Used for active state of promotion button",
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.purple.90}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.pink.90}",
+                "description": ""
+              }
             }
           },
           "join": {
@@ -2035,7 +2367,8 @@
             "normal": {
               "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.white-alpha.50}"
+              "value": "{color.core.white-alpha.50}",
+              "description": ""
             }
           },
           "primary": {
@@ -2062,18 +2395,24 @@
           },
           "secondary": {
             "normal": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
             },
             "disabled": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
             }
           },
           "warning": {
             "normal": {
+              "parent": "theme/stable/light",
+              "type": "color",
               "value": "{color.core.yellow.40}",
-              "type": "color"
+              "description": ""
             }
           }
         },
@@ -2122,12 +2461,16 @@
           },
           "solid": {
             "dark": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.gray.95}"
+              "value": "{color.core.gray.95}",
+              "description": ""
             },
             "light": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.white-alpha.100}"
+              "value": "{color.core.white-alpha.100}",
+              "description": ""
             }
           }
         },
@@ -2302,8 +2645,10 @@
               }
             },
             "transparent": {
+              "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.black-alpha.0}"
+              "value": "{color.core.black-alpha.0}",
+              "description": ""
             }
           },
           "icon": {
@@ -2704,8 +3049,10 @@
       },
       "avatar": {
         "ghost": {
+          "parent": "theme/stable/light",
+          "type": "color",
           "value": "{color.core.black-alpha.0}",
-          "type": "color"
+          "description": ""
         },
         "default": {
           "parent": "theme/stable/light",
@@ -2780,22 +3127,28 @@
           "description": ""
         },
         "hover": {
+          "parent": "theme/stable/light",
+          "type": "color",
           "value": "{color.core.black-alpha.7}",
-          "type": "color"
+          "description": ""
         },
         "pressed": {
+          "parent": "theme/stable/light",
+          "type": "color",
           "value": "{color.core.black-alpha.20}",
-          "type": "color"
+          "description": ""
         },
         "glass": {
           "normal": {
-            "value": "{color.core.black-alpha.7}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.black-alpha.7}",
             "description": "Used for Operation pop"
           },
           "active": {
-            "value": "{color.core.white-alpha.80}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.80}",
             "description": "Used for Operation pop"
           }
         }
@@ -2917,18 +3270,22 @@
       "focus": {
         "default": {
           "0": {
-            "value": "{color.core.white-alpha.100}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.white-alpha.100}",
             "description": "Used for focus ring effect"
           },
           "1": {
-            "value": "{color.core.blue.60}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "{color.core.blue.60}",
             "description": "Used for focus ring effect"
           },
           "2": {
-            "value": "{color.core.blue.60}",
+            "parent": "theme/stable/light",
             "type": "color",
+            "value": "#1570cf",
+            "description": "Used for focus ring effect",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -2937,8 +3294,83 @@
                   "space": "lch"
                 }
               }
+            }
+          }
+        }
+      },
+      "ai-hint": {
+        "primary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
             },
-            "description": "Used for focus ring effect"
+            "1": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.80}",
+              "description": ""
+            }
+          }
+        },
+        "secondary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "description": "",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            },
+            "1": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "3": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
+            },
+            "4": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": "",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2952,65 +3384,89 @@
         "value": "{dimension.0}",
         "description": "Flush padding on both axes."
       },
+      "pad-v-2xs": {
+        "parent": "theme/stable/light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest v padding."
+      },
       "pad-v-xs": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Compact vertical padding. Default control vertical pad."
+        "description": "Compact v padding. Default control v pad."
       },
       "pad-v-sm": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "Standard vertical padding."
+        "description": "Standard v padding."
       },
       "pad-v-md": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Roomy vertical padding."
+        "description": "Roomy v padding. Cards, dialogs, headers."
       },
       "pad-v-lg": {
         "parent": "theme/stable/light",
         "type": "dimension",
-        "value": "{dimension.24}",
-        "description": "Large vertical padding."
+        "value": "{dimension.20}",
+        "description": "Between roomy and large v padding."
       },
       "pad-v-xl": {
         "parent": "theme/stable/light",
         "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large v padding."
+      },
+      "pad-v-2xl": {
+        "parent": "theme/stable/light",
+        "type": "dimension",
         "value": "{dimension.32}",
-        "description": "Extra-large vertical padding."
+        "description": "Extra-large v padding."
+      },
+      "pad-h-2xs": {
+        "parent": "theme/stable/light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest h padding."
       },
       "pad-h-xs": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Compact horizontal padding."
+        "description": "Compact h padding. Chips, dense controls."
       },
       "pad-h-sm": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "Standard horizontal padding. Default control horizontal pad."
+        "description": "Standard h padding. Default control h pad."
       },
       "pad-h-md": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Roomy horizontal padding."
+        "description": "Roomy h padding. Buttons, sidenav, toast."
       },
       "pad-h-lg": {
         "parent": "theme/stable/light",
         "type": "dimension",
-        "value": "{dimension.24}",
-        "description": "Large horizontal padding."
+        "value": "{dimension.20}",
+        "description": "Between roomy and large h padding."
       },
       "pad-h-xl": {
         "parent": "theme/stable/light",
         "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large h padding."
+      },
+      "pad-h-2xl": {
+        "parent": "theme/stable/light",
+        "type": "dimension",
         "value": "{dimension.32}",
-        "description": "Extra-large horizontal padding."
+        "description": "Extra-large h padding."
       },
       "gap-none": {
         "parent": "theme/stable/light",
@@ -3018,31 +3474,43 @@
         "value": "{dimension.0}",
         "description": "Collapsed layout space."
       },
-      "gap-ultra-tight": {
+      "gap-2xs": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Ultra-tight sibling gap."
+        "description": "Smallest sibling gap. Chips, icon clusters, compact controls."
       },
-      "gap-tight": {
+      "gap-xs": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Tight sibling gap."
+        "description": "Tight sibling gap. Icon-to-label, most control internals."
       },
-      "gap-wide": {
+      "gap-sm": {
+        "parent": "theme/stable/light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard sibling gap. Lists, tabs, cards."
+      },
+      "gap-md": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Wide layout gap."
+        "description": "Wide layout gap. Roomy stacks. Use pad-v-md / pad-h-md when 16px is padding."
       },
-      "gap-loose": {
+      "gap-lg": {
+        "parent": "theme/stable/light",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy stacks and section separation."
+      },
+      "gap-xl": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.24}",
         "description": "Section or block separation."
       },
-      "gap-ultraloose": {
+      "gap-2xl": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.32}",
@@ -3052,17 +3520,23 @@
   },
   "border": {
     "theme": {
+      "none": {
+        "parent": "theme/stable/light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "No stroke. A side or state with no border — accordion, table, grabber."
+      },
       "default": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.1}",
-        "description": "Standard stroke weight."
+        "description": "Default stroke weight — chips, banner, buttongroup, inputs."
       },
       "emphasis": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.2}",
-        "description": "Stronger stroke weight."
+        "description": "Emphasis stroke weight — selected filterchip, heavier container chrome."
       }
     }
   },
@@ -3072,43 +3546,43 @@
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.0}",
-        "description": "No rounding. Flat edge."
+        "description": "No rounding; flat edge in compound shapes (accordion, combobox, nav joins)."
       },
-      "subtle": {
+      "2xs": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.2}",
         "description": "Barely softened corners."
       },
-      "small": {
+      "xs": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Compact rounding."
+        "description": "Compact rounding — chips, icons, inputchip, tab partials."
       },
-      "medium": {
+      "sm": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Default surface rounding."
+        "description": "Default surface rounding — card, input, dialog, listitem, toast."
       },
-      "large": {
+      "md": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "More prominent rounding."
+        "description": "More prominent rounding — statictoggle, softer bounded controls."
       },
-      "pill": {
+      "lg": {
         "parent": "theme/stable/light",
         "type": "dimension",
-        "value": "{dimension.20}",
-        "description": "Capsule silhouette."
+        "value": "{dimension.16}",
+        "description": "Larger corner radius above md, short of a pill."
       },
       "full": {
         "parent": "theme/stable/light",
         "type": "dimension",
         "value": "{dimension.full}",
-        "description": "Circle."
+        "description": "True circle — avatar, radio, slider thumb, presence."
       }
     }
   },
@@ -3119,19 +3593,19 @@
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.4}",
-          "description": "Micro fixed size."
+          "description": "Micro fixed size — nav notch, indicator. Was size/xxs."
         },
         "8": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.8}",
-          "description": "Smallest icon slot."
+          "description": "Smallest icon slot — bullet, compact glyph. Was size/xs."
         },
         "12": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.12}",
-          "description": "Compact icon slot."
+          "description": "Compact icon slot — badge, nav icon. Was size/sm."
         }
       },
       "md": {
@@ -3139,31 +3613,31 @@
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.16}",
-          "description": "Standard icon slot."
+          "description": "Standard icon slot — avatar, badge, popover, radio. Was size/md and size/lg."
         },
         "20": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.20}",
-          "description": "Compact inline row."
+          "description": "Compact inline row — divider, chip icon, timepicker. Was size/xl."
         },
         "24": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.24}",
-          "description": "Compact control height."
+          "description": "Compact control height — chip, alertchip, inputchip. Was size/2xl."
         },
         "28": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.28}",
-          "description": "Between compact and standard control height."
+          "description": "Between compact and standard control — buttongroup, calendar, stepper. Was size/3xl."
         },
         "32": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.32}",
-          "description": "Default control height."
+          "description": "Default control height — input, select, tab, combobox. Was size/4xl."
         }
       },
       "lg": {
@@ -3171,19 +3645,19 @@
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.40}",
-          "description": "Large control or toolbar row."
+          "description": "Large control / toolbar row — nav, datepicker trigger. Was size/5xl."
         },
         "52": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.52}",
-          "description": "Wide control minimum."
+          "description": "Wide control minimum — input min-width. Was size/6xl."
         },
         "64": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.64}",
-          "description": "Chrome band."
+          "description": "Chrome band — app header, searchfield, avatar lg. Was size/7xl."
         }
       },
       "xl": {
@@ -3191,25 +3665,25 @@
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.72}",
-          "description": "Large portrait size."
+          "description": "Large avatar tier. Was size/8xl."
         },
         "88": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.88}",
-          "description": "Extra-large portrait size."
+          "description": "Extra-large avatar tier. Was size/9xl."
         },
         "100": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.100}",
-          "description": "Content minimum height."
+          "description": "Content min-height — textarea. Was size/10xl."
         },
         "124": {
           "parent": "theme/stable/light",
           "type": "dimension",
           "value": "{dimension.124}",
-          "description": "Maximum portrait or hero size."
+          "description": "Max avatar / hero. Was size/11xl."
         }
       }
     }

@@ -3,112 +3,112 @@
     "0": {
       "value": "0",
       "type": "dimension",
-      "description": "0px — flush corners and collapsed gaps"
+      "description": "0px — Flush corners, collapsed gaps, and no stroke. Theme: radius/none, border/none, spacing/pad-none, spacing/gap-none."
     },
     "1": {
       "value": "1px",
       "type": "dimension",
-      "description": "1px — default stroke (chips, banner, divider, list item)"
+      "description": "1px — Default stroke. Theme: border/default."
     },
     "2": {
       "value": "0.125rem",
       "type": "dimension",
-      "description": "2px — emphasis stroke; subtle radius (checkbox, sm pickers)"
+      "description": "2px — Emphasis stroke; barely softened corners. Theme: border/emphasis, radius/2xs."
     },
     "4": {
       "value": "0.25rem",
       "type": "dimension",
-      "description": "4px — ultra-tight gap; small radius; micro size"
+      "description": "4px — Smallest gap and padding; compact radius; micro size. Theme: spacing/gap-2xs, spacing/pad-v-2xs, spacing/pad-h-2xs, radius/xs, size/sm/4."
     },
     "8": {
       "value": "0.5rem",
       "type": "dimension",
-      "description": "8px — tight gap; pad-v-xs / pad-h-xs; medium radius; compact size"
+      "description": "8px — Tight gap; compact padding; default surface radius; compact size. Theme: spacing/gap-xs, spacing/pad-v-xs, spacing/pad-h-xs, radius/sm, size/sm/8."
     },
     "12": {
       "value": "0.75rem",
       "type": "dimension",
-      "description": "12px — pad-v-sm / pad-h-sm; large radius; compact icon slot"
+      "description": "12px — Standard gap and padding; prominent radius; compact icon slot. Theme: spacing/gap-sm, spacing/pad-v-sm, spacing/pad-h-sm, radius/md, size/sm/12."
     },
     "16": {
       "value": "1rem",
       "type": "dimension",
-      "description": "16px — gap-wide; pad-v-md / pad-h-md; standard icon slot"
+      "description": "16px — Roomy gap and padding; larger radius; standard icon slot. Theme: spacing/gap-md, spacing/pad-v-md, spacing/pad-h-md, radius/lg, size/md/16."
     },
     "20": {
       "value": "1.25rem",
       "type": "dimension",
-      "description": "20px — pill radius; compact control row"
+      "description": "20px — Between roomy and large spacing; compact inline row. Theme: spacing/gap-lg, spacing/pad-v-lg, spacing/pad-h-lg, size/md/20."
     },
     "24": {
       "value": "1.5rem",
       "type": "dimension",
-      "description": "24px — gap-loose; pad-v-lg / pad-h-lg; compact control height"
+      "description": "24px — Large gap and padding; compact control height. Theme: spacing/gap-xl, spacing/pad-v-xl, spacing/pad-h-xl, size/md/24."
     },
     "28": {
       "value": "1.75rem",
       "type": "dimension",
-      "description": "28px — buttongroup / calendar / stepper height"
+      "description": "28px — Between compact and standard control. Theme: size/md/28 (buttongroup, calendar, stepper)."
     },
     "32": {
       "value": "2rem",
       "type": "dimension",
-      "description": "32px — gap-ultraloose; pad-v-xl / pad-h-xl; default control height"
+      "description": "32px — Extra-large gap and padding; default control height. Theme: spacing/gap-2xl, spacing/pad-v-2xl, spacing/pad-h-2xl, size/md/32."
     },
     "36": {
       "value": "2.25rem",
       "type": "dimension",
-      "description": "36px — optgroup row height"
+      "description": "36px — Optgroup row height. Core only — no theme size role."
     },
     "40": {
       "value": "2.5rem",
       "type": "dimension",
-      "description": "40px — large control / toolbar row"
+      "description": "40px — Large control / toolbar row. Theme: size/lg/40."
     },
     "44": {
       "value": "2.75rem",
       "type": "dimension",
-      "description": "44px — presence indicator (Core only; no theme step)"
+      "description": "44px — Presence indicator. Core only — no theme size role."
     },
     "48": {
       "value": "3rem",
       "type": "dimension",
-      "description": "48px — extra-large section break; avatar / spinner"
+      "description": "48px — Avatar / spinner mid-scale. Core only — not in size grouping."
     },
     "52": {
       "value": "3.25rem",
       "type": "dimension",
-      "description": "52px — input min-width"
+      "description": "52px — Wide control minimum (input min-width). Theme: size/lg/52."
     },
     "64": {
       "value": "4rem",
       "type": "dimension",
-      "description": "64px — maximum layout rhythm; header / avatar lg"
+      "description": "64px — Chrome band: header, searchfield, avatar lg. Theme: size/lg/64."
     },
     "72": {
       "value": "4.5rem",
       "type": "dimension",
-      "description": "72px — large avatar tier"
+      "description": "72px — Large avatar tier. Theme: size/xl/72."
     },
     "88": {
       "value": "5.5rem",
       "type": "dimension",
-      "description": "88px — extra-large avatar tier"
+      "description": "88px — Extra-large avatar tier. Theme: size/xl/88."
     },
     "100": {
       "value": "6.25rem",
       "type": "dimension",
-      "description": "100px — textarea min-height"
+      "description": "100px — Textarea min-height. Theme: size/xl/100."
     },
     "124": {
       "value": "7.75rem",
       "type": "dimension",
-      "description": "124px — maximum avatar / hero"
+      "description": "124px — Maximum avatar / hero. Theme: size/xl/124."
     },
     "full": {
       "value": "50%",
       "type": "dimension",
-      "description": "Circle / fully rounded (avatar, radio, slider thumb). CSS 50%; Figma corner radius needs a numeric stand-in like 9999."
+      "description": "True circle. Theme: radius/full. Figma FLOAT cannot store %."
     }
   }
 }
