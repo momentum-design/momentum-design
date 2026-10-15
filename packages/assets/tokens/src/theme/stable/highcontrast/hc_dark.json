@@ -2687,6 +2687,12 @@
         "value": "{dimension.0}",
         "description": "Flush padding on both axes."
       },
+      "pad-v-2xs": {
+        "parent": "theme/stable/highcontrast/hc_dark",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest v padding."
+      },
       "pad-v-xs": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
@@ -2708,14 +2714,26 @@
       "pad-v-lg": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
-        "value": "{dimension.24}",
-        "description": "Large v padding."
+        "value": "{dimension.20}",
+        "description": "Between roomy and large v padding."
       },
       "pad-v-xl": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large v padding."
+      },
+      "pad-v-2xl": {
+        "parent": "theme/stable/highcontrast/hc_dark",
+        "type": "dimension",
         "value": "{dimension.32}",
         "description": "Extra-large v padding."
+      },
+      "pad-h-2xs": {
+        "parent": "theme/stable/highcontrast/hc_dark",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest h padding."
       },
       "pad-h-xs": {
         "parent": "theme/stable/highcontrast/hc_dark",
@@ -2738,10 +2756,16 @@
       "pad-h-lg": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy and large h padding."
+      },
+      "pad-h-xl": {
+        "parent": "theme/stable/highcontrast/hc_dark",
+        "type": "dimension",
         "value": "{dimension.24}",
         "description": "Large h padding."
       },
-      "pad-h-xl": {
+      "pad-h-2xl": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.32}",
@@ -2753,31 +2777,43 @@
         "value": "{dimension.0}",
         "description": "Collapsed layout space."
       },
-      "gap-ultra-tight": {
+      "gap-2xs": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Ultra-tight sibling gap. Chips, icon clusters, compact controls."
+        "description": "Smallest sibling gap. Chips, icon clusters, compact controls."
       },
-      "gap-tight": {
+      "gap-xs": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.8}",
         "description": "Tight sibling gap. Icon-to-label, most control internals."
       },
-      "gap-wide": {
+      "gap-sm": {
+        "parent": "theme/stable/highcontrast/hc_dark",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard sibling gap. Lists, tabs, cards."
+      },
+      "gap-md": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.16}",
         "description": "Wide layout gap. Roomy stacks. Use pad-v-md / pad-h-md when 16px is padding."
       },
-      "gap-loose": {
+      "gap-lg": {
+        "parent": "theme/stable/highcontrast/hc_dark",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy stacks and section separation."
+      },
+      "gap-xl": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.24}",
         "description": "Section or block separation."
       },
-      "gap-ultraloose": {
+      "gap-2xl": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.32}",
@@ -2787,6 +2823,12 @@
   },
   "border": {
     "theme": {
+      "none": {
+        "parent": "theme/stable/highcontrast/hc_dark",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "No stroke. A side or state with no border — accordion, table, grabber."
+      },
       "default": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
@@ -2809,29 +2851,35 @@
         "value": "{dimension.0}",
         "description": "No rounding; flat edge in compound shapes (accordion, combobox, nav joins)."
       },
-      "xs": {
+      "2xs": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.2}",
         "description": "Barely softened corners."
       },
-      "sm": {
+      "xs": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.4}",
         "description": "Compact rounding — chips, icons, inputchip, tab partials."
       },
-      "md": {
+      "sm": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.8}",
         "description": "Default surface rounding — card, input, dialog, listitem, toast."
       },
-      "lg": {
+      "md": {
         "parent": "theme/stable/highcontrast/hc_dark",
         "type": "dimension",
         "value": "{dimension.12}",
         "description": "More prominent rounding — statictoggle, softer bounded controls."
+      },
+      "lg": {
+        "parent": "theme/stable/highcontrast/hc_dark",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Larger corner radius above md, short of a pill."
       },
       "full": {
         "parent": "theme/stable/highcontrast/hc_dark",

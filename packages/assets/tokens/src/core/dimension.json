@@ -3,7 +3,7 @@
     "0": {
       "value": "0",
       "type": "dimension",
-      "description": "0px — Flush corners and collapsed gaps. Theme: radius/none, spacing/pad-none, spacing/gap-none."
+      "description": "0px — Flush corners, collapsed gaps, and no stroke. Theme: radius/none, border/none, spacing/pad-none, spacing/gap-none."
     },
     "1": {
       "value": "1px",
@@ -13,37 +13,37 @@
     "2": {
       "value": "0.125rem",
       "type": "dimension",
-      "description": "2px — Emphasis stroke; barely softened corners. Theme: border/emphasis, radius/extra-small."
+      "description": "2px — Emphasis stroke; barely softened corners. Theme: border/emphasis, radius/2xs."
     },
     "4": {
       "value": "0.25rem",
       "type": "dimension",
-      "description": "4px — Ultra-tight gap; small radius; micro size. Theme: spacing/gap-ultra-tight, radius/small, size/sm/4."
+      "description": "4px — Smallest gap and padding; compact radius; micro size. Theme: spacing/gap-2xs, spacing/pad-v-2xs, spacing/pad-h-2xs, radius/xs, size/sm/4."
     },
     "8": {
       "value": "0.5rem",
       "type": "dimension",
-      "description": "8px — Tight gap; pad-v-xs / pad-h-xs; medium radius; compact size. Theme: spacing/gap-tight, spacing/pad-v-xs, spacing/pad-h-xs, radius/medium, size/sm/8."
+      "description": "8px — Tight gap; compact padding; default surface radius; compact size. Theme: spacing/gap-xs, spacing/pad-v-xs, spacing/pad-h-xs, radius/sm, size/sm/8."
     },
     "12": {
       "value": "0.75rem",
       "type": "dimension",
-      "description": "12px — Pad-v-sm / pad-h-sm; large radius; compact icon slot. Theme: spacing/pad-v-sm, spacing/pad-h-sm, radius/large, size/sm/12."
+      "description": "12px — Standard gap and padding; prominent radius; compact icon slot. Theme: spacing/gap-sm, spacing/pad-v-sm, spacing/pad-h-sm, radius/md, size/sm/12."
     },
     "16": {
       "value": "1rem",
       "type": "dimension",
-      "description": "16px — Gap-wide; pad-v-md / pad-h-md; standard icon slot. Theme: spacing/gap-wide, spacing/pad-v-md, spacing/pad-h-md, size/md/16."
+      "description": "16px — Roomy gap and padding; larger radius; standard icon slot. Theme: spacing/gap-md, spacing/pad-v-md, spacing/pad-h-md, radius/lg, size/md/16."
     },
     "20": {
       "value": "1.25rem",
       "type": "dimension",
-      "description": "20px — Compact inline row. Theme: size/md/20."
+      "description": "20px — Between roomy and large spacing; compact inline row. Theme: spacing/gap-lg, spacing/pad-v-lg, spacing/pad-h-lg, size/md/20."
     },
     "24": {
       "value": "1.5rem",
       "type": "dimension",
-      "description": "24px — Gap-loose; pad-v-lg / pad-h-lg; compact control height. Theme: spacing/gap-loose, spacing/pad-v-lg, spacing/pad-h-lg, size/md/24."
+      "description": "24px — Large gap and padding; compact control height. Theme: spacing/gap-xl, spacing/pad-v-xl, spacing/pad-h-xl, size/md/24."
     },
     "28": {
       "value": "1.75rem",
@@ -53,7 +53,7 @@
     "32": {
       "value": "2rem",
       "type": "dimension",
-      "description": "32px — Gap-ultraloose; pad-v-xl / pad-h-xl; default control height. Theme: spacing/gap-ultraloose, spacing/pad-v-xl, spacing/pad-h-xl, size/md/32."
+      "description": "32px — Extra-large gap and padding; default control height. Theme: spacing/gap-2xl, spacing/pad-v-2xl, spacing/pad-h-2xl, size/md/32."
     },
     "36": {
       "value": "2.25rem",

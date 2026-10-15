@@ -48,25 +48,18 @@ No extra `.mds-spacing` or `.mds-border` class is required. See
 Use padding tokens inside a control or bounded surface. Use gap tokens between
 siblings, groups, or sections.
 
-| Token | Use for |
-| --- | --- |
-| `pad-none` | Flush controls that need no internal padding |
-| `pad-v-xs` | Compact vertical padding. Default control v pad |
-| `pad-v-sm` | Standard vertical padding |
-| `pad-v-md` | Roomy vertical padding |
-| `pad-v-lg` | Large vertical padding |
-| `pad-v-xl` | Extra-large vertical padding |
-| `pad-h-xs` | Compact horizontal padding |
-| `pad-h-sm` | Standard horizontal padding. Default control h pad |
-| `pad-h-md` | Roomy horizontal padding |
-| `pad-h-lg` | Large horizontal padding |
-| `pad-h-xl` | Extra-large horizontal padding |
-| `gap-none` | Intentionally collapsed space between elements |
-| `gap-ultra-tight` | Ultra-tight sibling gap |
-| `gap-tight` | Tight sibling gap. Icon-to-label, most control internals |
-| `gap-wide` | Wide layout gap. Roomy stacks |
-| `gap-loose` | Separating blocks or sections |
-| `gap-ultraloose` | The largest layout separation in the scale |
+The same step name is the same size for gap and padding.
+
+| Token | px | Use for |
+| --- | --- | --- |
+| `pad-none` / `gap-none` | 0 | Flush padding, or intentionally collapsed space |
+| `pad-v-2xs` / `pad-h-2xs` / `gap-2xs` | 4 | Smallest padding or sibling gap. Chips, icon clusters, compact controls |
+| `pad-v-xs` / `pad-h-xs` / `gap-xs` | 8 | Compact padding. Default control v pad. Tight sibling gap, icon-to-label |
+| `pad-v-sm` / `pad-h-sm` / `gap-sm` | 12 | Standard padding. Default control h pad. Lists, tabs, cards |
+| `pad-v-md` / `pad-h-md` / `gap-md` | 16 | Roomy padding and wide layout gap |
+| `pad-v-lg` / `pad-h-lg` / `gap-lg` | 20 | Between roomy spacing and section separation |
+| `pad-v-xl` / `pad-h-xl` / `gap-xl` | 24 | Large padding, or separating blocks and sections |
+| `pad-v-2xl` / `pad-h-2xl` / `gap-2xl` | 32 | Extra-large padding and the largest layout separation |
 
 Authoritative sources:
 `packages/assets/tokens/src/theme/stable/light.json` and
@@ -77,10 +70,11 @@ Authoritative sources:
 Border tokens set stroke width. Pair them with a semantic color token that
 communicates the border's state and prominence.
 
-| Token | Use for |
-| --- | --- |
-| `default` | Standard control and container outlines |
-| `emphasis` | Selected states or container edges that need stronger definition |
+| Token | px | Use for |
+| --- | --- | --- |
+| `none` | 0 | A side or state with no border, such as an accordion, table, or grabber |
+| `default` | 1 | Standard control and container outlines |
+| `emphasis` | 2 | Selected states or container edges that need stronger definition |
 
 Authoritative sources:
 `packages/assets/tokens/src/theme/stable/light.json` and
@@ -92,15 +86,18 @@ Choose radius by the intended silhouette and the scale of the bounded element.
 Compound controls may mix radius roles so joined edges remain flat while outer
 edges retain the expected shape.
 
-| Token | Use for |
-| --- | --- |
-| `none` | Flat edges and joined edges in compound controls |
-| `subtle` | Barely softened corners on small square elements |
-| `small` | Compact controls, chips, icons, and partial tab corners |
-| `medium` | Default surfaces, inputs, dialogs, list items, and toasts |
-| `large` | More prominent rounding on bounded controls |
-| `pill` | Capsule-shaped controls and navigation items |
-| `full` | Circles such as avatars, radios, slider thumbs, and presence indicators |
+Radius uses the same t-shirt words, starting one step below spacing.
+`radius.2xs` is 2px, while spacing `2xs` is 4px.
+
+| Token | px | Use for |
+| --- | --- | --- |
+| `none` | 0 | Flat edges and joined edges in compound controls |
+| `2xs` | 2 | Barely softened corners |
+| `xs` | 4 | Compact controls, chips, icons, and partial tab corners |
+| `sm` | 8 | Default surfaces, inputs, dialogs, list items, and toasts |
+| `md` | 12 | More prominent rounding on bounded controls |
+| `lg` | 16 | Larger corner radius above `md`, short of a pill |
+| `full` | 50% | Circles such as avatars, radios, slider thumbs, and presence indicators |
 
 Authoritative sources:
 `packages/assets/tokens/src/theme/stable/light.json` and
@@ -170,8 +167,9 @@ rather than copying resolved values into component styles.
 - **Common misuse:** using a size token to separate siblings.
   **Why it's wrong:** a fixed dimension does not describe layout rhythm.
   **Use instead:** a `spacing.gap*` token.
-- **Common misuse:** using `radius.pill` to make a square element circular.
-  **Why it's wrong:** a fixed pill radius does not guarantee a circle at every
+- **Common misuse:** using a fixed radius step, such as `radius.lg`, to make a
+  square element circular.
+  **Why it's wrong:** a fixed radius does not guarantee a circle at every
   size.
   **Use instead:** `radius.full`.
 - **Common misuse:** using a radius or spacing step as a stroke width.
