@@ -1,7 +1,19 @@
 import { html } from 'lit';
 import { get } from 'lodash';
+
 import '../../../src/components/text';
 import '../../../src/components/divider';
+import { isFluidTheme } from '../themes';
+
+export const getStoryDescription = context => get(context, 'parameters.docs.description.story');
+
+export const descriptionBanner = docs => html`
+  <div
+    style="padding: 1rem; background: var(--mds-color-theme-background-solid-tertiary-normal); border-bottom: 1px solid var(--mds-color-theme-background-secondary-active); backdrop-filter: var(--mds-effect-backdrop-filter-blur200);"
+  >
+    ${docs}
+  </div>
+`;
 
 /**
  * Usage
@@ -34,22 +46,16 @@ import '../../../src/components/divider';
  * ```
  */
 export const storyDescription = (story, context) => {
-  const docs = get(context, 'parameters.docs.description.story');
-  if (!docs) {
+  const docs = getStoryDescription(context);
+
+  // The fluid canvas renders the banner itself, outside its glass container.
+  if (!docs || isFluidTheme(context.globals.theme)) {
     return html` <div style="padding: 1rem; height: calc(100% - 2rem);">${story()}</div> `;
   }
 
-  let content;
-
-  if (typeof docs !== 'string') {
-    content = html` <mdc-text>${docs}</mdc-text> `;
-  }
-
-  content = html` ${docs} `;
-
   return html`
     <div style="height: calc(100% - 2rem); display: flex; flex-direction: column;">
-      <div style="padding: 1rem; background: #262626; border-bottom: 1px solid #ffffff4d;">${content}</div>
+      ${descriptionBanner(docs)}
       <div style="padding: 1rem; flex: 1 0 auto;">${story()}</div>
     </div>
   `;

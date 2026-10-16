@@ -113,6 +113,16 @@ export const Disabled: StoryObj = {
   },
 };
 
+export const Loading: StoryObj = {
+  args: {
+    variant: VARIANT.STACKED,
+    status: STATUS.LOADING,
+    label: 'Generate staffing plan',
+    'step-number': '4',
+    'aria-label': 'Step 4 of 4, generating staffing plan',
+  },
+};
+
 export const LongText: StoryObj = {
   args: {
     variant: VARIANT.STACKED,

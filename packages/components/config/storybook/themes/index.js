@@ -30,6 +30,11 @@ export const themes = [
     className: 'darkRose',
   },
   {
+    themeclass: 'mds-theme-fluid-darkWebex',
+    displayName: 'darkFluidWebex',
+    className: 'darkFluid',
+  },
+  {
     themeclass: 'mds-theme-stable-lightWebex',
     displayName: 'lightWebex',
     className: 'light',
@@ -59,4 +64,12 @@ export const themes = [
     displayName: 'lightRoseWebex',
     className: 'lightRose',
   },
+  {
+    themeclass: 'mds-theme-fluid-lightWebex',
+    displayName: 'lightFluidWebex',
+    className: 'lightFluid',
+  },
 ];
+
+export const isFluidTheme = displayName =>
+  themes.some(theme => theme.displayName === displayName && theme.themeclass.startsWith('mds-theme-fluid-'));

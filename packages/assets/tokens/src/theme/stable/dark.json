@@ -387,7 +387,8 @@
             "disabled": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.40}"
+              "value": "{color.core.black-alpha.40}",
+              "description": ""
             }
           },
           "secondary": {
@@ -414,7 +415,8 @@
             "active": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.blue.90}"
+              "value": "{color.core.blue.90}",
+              "description": ""
             }
           }
         },
@@ -515,8 +517,9 @@
           },
           "input": {
             "normal": {
-              "value": "{color.core.black-alpha.50}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.black-alpha.50}",
               "description": "Used for inverted control components outline (checkbox, toggles)"
             }
           }
@@ -583,8 +586,9 @@
           "indicator": {
             "inactive": {
               "normal": {
-                "value": "{color.core.gray.50}",
+                "parent": "theme/stable/dark",
                 "type": "color",
+                "value": "{color.core.gray.50}",
                 "description": "Used for inverted controls (checkbox, toggle, radio, progress bar, spinner)"
               }
             }
@@ -614,7 +618,8 @@
           "disabled": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.0}"
+            "value": "{color.core.white-alpha.0}",
+            "description": ""
           }
         },
         "solid": {
@@ -667,7 +672,8 @@
           "active": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.30}"
+            "value": "{color.core.white-alpha.30}",
+            "description": ""
           },
           "disabled": {
             "parent": "theme/stable/dark",
@@ -690,8 +696,9 @@
             "description": ""
           },
           "active": {
-            "value": "{color.core.blue.40}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.blue.40}",
             "description": "Used for selected text paragraph background"
           }
         },
@@ -1020,35 +1027,41 @@
           },
           "default": {
             "normal": {
-              "value": "{color.core.gray.90}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.gray.90}",
               "description": "HEX: #262626\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.gray.80}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.gray.80}",
               "description": "HEX: ##3b3b3b\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.gray.70}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.gray.70}",
               "description": "HEX: #545454\nUsed for chips."
             }
           },
           "error": {
             "normal": {
-              "value": "{color.core.red.90}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.red.90}",
               "description": "HEX: #4f0e10\nUsed for chips."
             },
             "hover": {
-              "value": "{color.core.red.80}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.red.80}",
               "description": "HEX: ##780d13\nUsed for chips."
             },
             "active": {
-              "value": "{color.core.red.70}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.red.70}",
               "description": "HEX: #ab0a15\nUsed for chips."
             }
           }
@@ -1057,7 +1070,8 @@
           "normal": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.black-alpha.70}"
+            "value": "{color.core.black-alpha.70}",
+            "description": ""
           }
         },
         "gradient": {
@@ -1080,6 +1094,7 @@
         },
         "reaction": {
           "normal": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.gray.95}e6 0%, {color.core.gray.95}00 100%)",
             "description": "linear-gradient(90deg, #1a1a1ae6 0%, #1a1a1a00 100%)\nUsed for meeting reaction background  "
@@ -1087,14 +1102,17 @@
         },
         "skeleton": {
           "normal": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.core.gray.90}",
             "description": "Use for skeleton component"
           },
           "shimmer": {
             "0": {
+              "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.gray.80}",
+              "description": "Use for skeleton component",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1103,17 +1121,19 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": "Use for skeleton component"
+              }
             },
             "1": {
+              "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.gray.80}",
               "description": "Use for skeleton component"
             },
             "2": {
+              "parent": "theme/stable/dark",
               "type": "color",
               "value": "{color.core.gray.80}",
+              "description": "Use for skeleton component",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1122,61 +1142,76 @@
                     "space": "lch"
                   }
                 }
-              },
-              "description": "Use for skeleton component"
+              }
             }
           }
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.5}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.5}",
             "description": "Used for glass effect background for operation pop. "
           },
           "active": {
-            "value": "{color.core.white-alpha.11}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.11}",
             "description": "Used for glass effect background for operation pop. "
           },
           "light": {
-            "value": "{color.core.black-alpha.40}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.black-alpha.40}",
             "description": "Used for glass effect background for operation pop. "
           },
           "medium": {
-            "value": "{color.core.black-alpha.60}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.black-alpha.60}",
             "description": "Used for glass effect background for operation pop. "
           },
           "heavy": {
-            "value": "{color.core.black-alpha.80}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.black-alpha.80}",
             "description": "Used for glass effect background for operation pop. "
           },
           "radial": {
             "0": {
-              "value": "{color.core.white-alpha.5}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.5}",
               "description": "Used for operation pop background. "
             },
             "1": {
-              "value": "{color.core.white-alpha.0}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.0}",
               "description": "Used for operation pop background. "
             }
+          },
+          "legacy": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.black-alpha.40}",
+            "description": ""
           }
         },
         "input": {
           "disabled": {
-            "value": "{color.core.white-alpha.11}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.11}",
             "description": "Used for disabled/read-only/read-only focus states for input components. "
           }
         },
         "overlay": {
           "normal": {
-            "value": "{color.core.blue.100}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.blue.100}",
+            "description": "Used for overlay background",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -1189,8 +1224,204 @@
                 "ALL_FILLS",
                 "FRAME_FILL"
               ]
-            },
-            "description": "Used for overlay background"
+            }
+          }
+        },
+        "app": {
+          "canvas": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.100}",
+            "description": ""
+          }
+        },
+        "tertiary": {
+          "normal": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.80}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.5",
+                  "space": "lch"
+                }
+              }
+            }
+          }
+        },
+        "glow": {
+          "accent": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.ai.mediumblue}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.ai.steelblue}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.ai.skyblue}",
+                "description": ""
+              }
+            }
+          },
+          "large": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.40}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.90}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.gray.100}",
+                "description": ""
+              }
+            }
+          },
+          "light": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.white-alpha.100}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.yellow.20}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.magenta.20}",
+                "description": ""
+              },
+              "4": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.10}",
+                "description": ""
+              },
+              "5": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0",
+                      "space": "lch"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "medium": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.lime.30}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "1",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.orange.50}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": ""
+              }
+            }
+          },
+          "small": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.brand.medium-blue.50}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "1",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.gray.55}",
+                "description": "",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.5",
+                      "space": "lch"
+                    }
+                  }
+                }
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.lime.50}",
+                "description": ""
+              }
+            }
           }
         }
       },
@@ -1256,7 +1487,8 @@
             "hover": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.30}"
+              "value": "{color.core.white-alpha.30}",
+              "description": "button, navmenuitem, tab"
             },
             "pressed": {
               "parent": "theme/stable/dark",
@@ -1335,18 +1567,21 @@
         "glass": {
           "primary": {
             "normal": {
-              "value": "{color.core.white-alpha.80}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.80}",
               "description": "Used for Operation pop button"
             },
             "hover": {
-              "value": "{color.core.white-alpha.70}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.70}",
               "description": "Used for Operation pop button"
             },
             "pressed": {
-              "value": "{color.core.white-alpha.60}",
+              "parent": "theme/stable/dark",
               "type": "color",
+              "value": "{color.core.white-alpha.60}",
               "description": "Used for Operation pop button"
             }
           }
@@ -1515,6 +1750,7 @@
         },
         "promotion": {
           "normal": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.decorative.purple.60}",
             "description": "Used for border of promotional banner"
@@ -1522,6 +1758,7 @@
         },
         "gradient": {
           "active": {
+            "parent": "theme/stable/dark",
             "type": "color",
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.40} 51.1%, {color.core.green.30} 85.36%)",
             "description": "linear-gradient(44deg, #3492eb 14.64%, #22c7d6 51.1%, #68debd 85.36%)\nUsed for Webex Assitant AI"
@@ -1529,21 +1766,25 @@
         },
         "warning": {
           "normal": {
+            "parent": "theme/stable/dark",
+            "type": "color",
             "value": "{color.core.yellow.40}",
-            "type": "color"
+            "description": "alertchip, banner"
           }
         },
         "glass": {
           "normal": {
-            "value": "linear-gradient(180deg, {color.core.white-alpha.11} 0%, {color.core.white-alpha.5} 100%)",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "linear-gradient(180deg, {color.core.white-alpha.11} 0%, {color.core.white-alpha.5} 100%)",
             "description": "Used for operation pop"
           }
         },
         "ai": {
           "normal": {
+            "parent": "theme/stable/dark",
             "type": "color",
-            "value": "linear-gradient(27deg, {color.ai.steelblue} 10.22%, {color.ai.skyblue} 88.93%, {color.ai.aquablue} 162.86%)",
+            "value": "{color.core.white-alpha.100}",
             "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%)\nUsed for AI assistant feature"
           }
         }
@@ -1595,22 +1836,26 @@
           "normal": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.11}"
+            "value": "{color.core.white-alpha.11}",
+            "description": ""
           },
           "hover": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.20}"
+            "value": "{color.core.white-alpha.20}",
+            "description": ""
           },
           "pressed": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.30}"
+            "value": "{color.core.white-alpha.30}",
+            "description": ""
           },
           "disabled": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.7}"
+            "value": "{color.core.white-alpha.7}",
+            "description": ""
           }
         }
       },
@@ -1643,6 +1888,52 @@
               "value": "{color.core.gray.80}",
               "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
             }
+          }
+        },
+        "header": {
+          "0": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.95}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.5",
+                  "space": "lch"
+                }
+              }
+            }
+          },
+          "1": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.95}",
+            "description": "",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0",
+                  "space": "lch"
+                }
+              }
+            }
+          }
+        },
+        "navigation": {
+          "0": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.black-alpha.0}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.gray.80}",
+            "description": ""
           }
         }
       },
@@ -1835,7 +2126,8 @@
               "normal": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.60}"
+                "value": "{color.core.black-alpha.60}",
+                "description": ""
               }
             },
             "primary": {
@@ -1848,7 +2140,8 @@
               "disabled": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.40}"
+                "value": "{color.core.black-alpha.40}",
+                "description": ""
               }
             }
           },
@@ -1857,22 +2150,26 @@
               "normal": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.0}"
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
               },
               "hover": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.7}"
+                "value": "{color.core.black-alpha.7}",
+                "description": ""
               },
               "pressed": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.20}"
+                "value": "{color.core.black-alpha.20}",
+                "description": ""
               },
               "disabled": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.black-alpha.0}"
+                "value": "{color.core.black-alpha.0}",
+                "description": ""
               }
             }
           }
@@ -1948,7 +2245,8 @@
             "normal": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.0}"
+              "value": "{color.core.white-alpha.0}",
+              "description": ""
             },
             "hover": {
               "parent": "theme/stable/dark",
@@ -1956,11 +2254,18 @@
               "value": "{color.core.white-alpha.7}",
               "description": ""
             },
+            "pressed": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.white-alpha.20}",
+              "description": ""
+            },
             "active": {
               "normal": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.white-alpha.20}"
+                "value": "{color.core.white-alpha.20}",
+                "description": ""
               },
               "hover": {
                 "parent": "theme/stable/dark",
@@ -1971,7 +2276,8 @@
               "pressed": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.white-alpha.40}"
+                "value": "{color.core.white-alpha.40}",
+                "description": ""
               },
               "disabled": {
                 "parent": "theme/stable/dark",
@@ -1987,31 +2293,72 @@
               "description": ""
             }
           },
+          "promotion": {
+            "normal": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(45deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
+              "description": "linear-gradient(45deg, #932099 0%, #a12a3a 100%)",
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.70}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.pink.70}",
+                "description": ""
+              }
+            },
+            "hover": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(45deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
+              "description": "linear-gradient(45deg, #601e66 0%, #66262d 100%)",
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.pink.80}",
+                "description": ""
+              }
+            },
+            "active": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(45deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)",
+              "description": "",
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.90}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.pink.90}",
+                "description": ""
+              }
+            }
+          },
           "join": {
             "animated": {
               "gradient": {
                 "normal": {
+                  "parent": "theme/stable/dark",
                   "type": "color",
                   "value": "linear-gradient(90deg, {color.decorative.mint.40} 0%, {color.core.blue.40} 51%, {color.decorative.mint.40} 100%)",
                   "description": "linear-gradient(90deg, #30c9b0 0%, #64b4fa 51%, #529e91 100%)\nlinear-gradient(90deg, {color.decorative.mint.40} 0%, {color.core.blue.40} 51%, {color.decorative.mint.40} 100%)"
                 }
               }
-            }
-          },
-          "promotion": {
-            "normal": {
-              "type": "color",
-              "value": "linear-gradient(45deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
-              "description": "linear-gradient(45deg, #932099 0%, #a12a3a 100%)"
-            },
-            "hover": {
-              "type": "color",
-              "value": "linear-gradient(45deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
-              "description": "linear-gradient(45deg, #601e66 0%, #66262d 100%)"
-            },
-            "active": {
-              "type": "color",
-              "value": "linear-gradient(45deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)"
             }
           }
         },
@@ -2020,7 +2367,8 @@
             "normal": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.50}"
+              "value": "{color.core.white-alpha.50}",
+              "description": ""
             }
           },
           "primary": {
@@ -2047,18 +2395,24 @@
           },
           "secondary": {
             "normal": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
             },
             "disabled": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
             }
           },
           "warning": {
             "normal": {
+              "parent": "theme/stable/dark",
+              "type": "color",
               "value": "{color.core.yellow.40}",
-              "type": "color"
+              "description": ""
             }
           }
         },
@@ -2107,12 +2461,16 @@
           },
           "solid": {
             "dark": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.gray.95}"
+              "value": "{color.core.gray.95}",
+              "description": ""
             },
             "light": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.100}"
+              "value": "{color.core.white-alpha.100}",
+              "description": ""
             }
           }
         },
@@ -2287,8 +2645,10 @@
               }
             },
             "transparent": {
+              "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.0}"
+              "value": "{color.core.black-alpha.0}",
+              "description": ""
             }
           },
           "icon": {
@@ -2803,8 +3163,10 @@
       },
       "avatar": {
         "ghost": {
+          "parent": "theme/stable/dark",
+          "type": "color",
           "value": "{color.core.white-alpha.0}",
-          "type": "color"
+          "description": ""
         },
         "default": {
           "parent": "theme/stable/dark",
@@ -2815,12 +3177,14 @@
         "hover": {
           "parent": "theme/stable/dark",
           "type": "color",
-          "value": "{color.core.white-alpha.7}"
+          "value": "{color.core.white-alpha.7}",
+          "description": ""
         },
         "pressed": {
           "parent": "theme/stable/dark",
           "type": "color",
-          "value": "{color.core.white-alpha.20}"
+          "value": "{color.core.white-alpha.20}",
+          "description": ""
         },
         "cobalt": {
           "parent": "theme/stable/dark",
@@ -2890,13 +3254,15 @@
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.7}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.7}",
             "description": "Used for Operation pop"
           },
           "active": {
-            "value": "{color.core.white-alpha.80}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.white-alpha.80}",
             "description": "Used for Operation pop"
           }
         }
@@ -2904,18 +3270,22 @@
       "focus": {
         "default": {
           "0": {
-            "value": "{color.core.black-alpha.100}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.black-alpha.100}",
             "description": "Used for focus ring effect"
           },
           "1": {
-            "value": "{color.core.blue.40}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "{color.core.blue.40}",
             "description": "Used for focus ring effect"
           },
           "2": {
-            "value": "{color.core.blue.40}",
+            "parent": "theme/stable/dark",
             "type": "color",
+            "value": "#64B4FA",
+            "description": "Used for focus ring effect",
             "$extensions": {
               "studio.tokens": {
                 "modify": {
@@ -2924,8 +3294,83 @@
                   "space": "lch"
                 }
               }
+            }
+          }
+        }
+      },
+      "ai-hint": {
+        "primary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
             },
-            "description": "Used for focus ring effect"
+            "1": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.80}",
+              "description": ""
+            }
+          }
+        },
+        "secondary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "description": "",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            },
+            "1": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.medium-blue.50}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.magenta.40}",
+              "description": ""
+            },
+            "3": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": ""
+            },
+            "4": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.brand.orange.40}",
+              "description": "",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2939,65 +3384,89 @@
         "value": "{dimension.0}",
         "description": "Flush padding on both axes."
       },
+      "pad-v-2xs": {
+        "parent": "theme/stable/dark",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest v padding."
+      },
       "pad-v-xs": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Compact vertical padding. Default control vertical pad."
+        "description": "Compact v padding. Default control v pad."
       },
       "pad-v-sm": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "Standard vertical padding."
+        "description": "Standard v padding."
       },
       "pad-v-md": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Roomy vertical padding."
+        "description": "Roomy v padding. Cards, dialogs, headers."
       },
       "pad-v-lg": {
         "parent": "theme/stable/dark",
         "type": "dimension",
-        "value": "{dimension.24}",
-        "description": "Large vertical padding."
+        "value": "{dimension.20}",
+        "description": "Between roomy and large v padding."
       },
       "pad-v-xl": {
         "parent": "theme/stable/dark",
         "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large v padding."
+      },
+      "pad-v-2xl": {
+        "parent": "theme/stable/dark",
+        "type": "dimension",
         "value": "{dimension.32}",
-        "description": "Extra-large vertical padding."
+        "description": "Extra-large v padding."
+      },
+      "pad-h-2xs": {
+        "parent": "theme/stable/dark",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest h padding."
       },
       "pad-h-xs": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Compact horizontal padding."
+        "description": "Compact h padding. Chips, dense controls."
       },
       "pad-h-sm": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "Standard horizontal padding. Default control horizontal pad."
+        "description": "Standard h padding. Default control h pad."
       },
       "pad-h-md": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Roomy horizontal padding."
+        "description": "Roomy h padding. Buttons, sidenav, toast."
       },
       "pad-h-lg": {
         "parent": "theme/stable/dark",
         "type": "dimension",
-        "value": "{dimension.24}",
-        "description": "Large horizontal padding."
+        "value": "{dimension.20}",
+        "description": "Between roomy and large h padding."
       },
       "pad-h-xl": {
         "parent": "theme/stable/dark",
         "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large h padding."
+      },
+      "pad-h-2xl": {
+        "parent": "theme/stable/dark",
+        "type": "dimension",
         "value": "{dimension.32}",
-        "description": "Extra-large horizontal padding."
+        "description": "Extra-large h padding."
       },
       "gap-none": {
         "parent": "theme/stable/dark",
@@ -3005,31 +3474,43 @@
         "value": "{dimension.0}",
         "description": "Collapsed layout space."
       },
-      "gap-ultra-tight": {
+      "gap-2xs": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Ultra-tight sibling gap."
+        "description": "Smallest sibling gap. Chips, icon clusters, compact controls."
       },
-      "gap-tight": {
+      "gap-xs": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Tight sibling gap."
+        "description": "Tight sibling gap. Icon-to-label, most control internals."
       },
-      "gap-wide": {
+      "gap-sm": {
+        "parent": "theme/stable/dark",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard sibling gap. Lists, tabs, cards."
+      },
+      "gap-md": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.16}",
-        "description": "Wide layout gap."
+        "description": "Wide layout gap. Roomy stacks. Use pad-v-md / pad-h-md when 16px is padding."
       },
-      "gap-loose": {
+      "gap-lg": {
+        "parent": "theme/stable/dark",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy stacks and section separation."
+      },
+      "gap-xl": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.24}",
         "description": "Section or block separation."
       },
-      "gap-ultraloose": {
+      "gap-2xl": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.32}",
@@ -3039,17 +3520,23 @@
   },
   "border": {
     "theme": {
+      "none": {
+        "parent": "theme/stable/dark",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "No stroke. A side or state with no border — accordion, table, grabber."
+      },
       "default": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.1}",
-        "description": "Standard stroke weight."
+        "description": "Default stroke weight — chips, banner, buttongroup, inputs."
       },
       "emphasis": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.2}",
-        "description": "Stronger stroke weight."
+        "description": "Emphasis stroke weight — selected filterchip, heavier container chrome."
       }
     }
   },
@@ -3059,43 +3546,43 @@
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.0}",
-        "description": "No rounding. Flat edge."
+        "description": "No rounding; flat edge in compound shapes (accordion, combobox, nav joins)."
       },
-      "subtle": {
+      "2xs": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.2}",
         "description": "Barely softened corners."
       },
-      "small": {
+      "xs": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.4}",
-        "description": "Compact rounding."
+        "description": "Compact rounding — chips, icons, inputchip, tab partials."
       },
-      "medium": {
+      "sm": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.8}",
-        "description": "Default surface rounding."
+        "description": "Default surface rounding — card, input, dialog, listitem, toast."
       },
-      "large": {
+      "md": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.12}",
-        "description": "More prominent rounding."
+        "description": "More prominent rounding — statictoggle, softer bounded controls."
       },
-      "pill": {
+      "lg": {
         "parent": "theme/stable/dark",
         "type": "dimension",
-        "value": "{dimension.20}",
-        "description": "Capsule silhouette."
+        "value": "{dimension.16}",
+        "description": "Larger corner radius above md, short of a pill."
       },
       "full": {
         "parent": "theme/stable/dark",
         "type": "dimension",
         "value": "{dimension.full}",
-        "description": "Circle."
+        "description": "True circle — avatar, radio, slider thumb, presence."
       }
     }
   },
@@ -3106,19 +3593,19 @@
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.4}",
-          "description": "Micro fixed size."
+          "description": "Micro fixed size — nav notch, indicator. Was size/xxs."
         },
         "8": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.8}",
-          "description": "Smallest icon slot."
+          "description": "Smallest icon slot — bullet, compact glyph. Was size/xs."
         },
         "12": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.12}",
-          "description": "Compact icon slot."
+          "description": "Compact icon slot — badge, nav icon. Was size/sm."
         }
       },
       "md": {
@@ -3126,31 +3613,31 @@
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.16}",
-          "description": "Standard icon slot."
+          "description": "Standard icon slot — avatar, badge, popover, radio. Was size/md and size/lg."
         },
         "20": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.20}",
-          "description": "Compact inline row."
+          "description": "Compact inline row — divider, chip icon, timepicker. Was size/xl."
         },
         "24": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.24}",
-          "description": "Compact control height."
+          "description": "Compact control height — chip, alertchip, inputchip. Was size/2xl."
         },
         "28": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.28}",
-          "description": "Between compact and standard control height."
+          "description": "Between compact and standard control — buttongroup, calendar, stepper. Was size/3xl."
         },
         "32": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.32}",
-          "description": "Default control height."
+          "description": "Default control height — input, select, tab, combobox. Was size/4xl."
         }
       },
       "lg": {
@@ -3158,19 +3645,19 @@
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.40}",
-          "description": "Large control or toolbar row."
+          "description": "Large control / toolbar row — nav, datepicker trigger. Was size/5xl."
         },
         "52": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.52}",
-          "description": "Wide control minimum."
+          "description": "Wide control minimum — input min-width. Was size/6xl."
         },
         "64": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.64}",
-          "description": "Chrome band."
+          "description": "Chrome band — app header, searchfield, avatar lg. Was size/7xl."
         }
       },
       "xl": {
@@ -3178,25 +3665,25 @@
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.72}",
-          "description": "Large portrait size."
+          "description": "Large avatar tier. Was size/8xl."
         },
         "88": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.88}",
-          "description": "Extra-large portrait size."
+          "description": "Extra-large avatar tier. Was size/9xl."
         },
         "100": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.100}",
-          "description": "Content minimum height."
+          "description": "Content min-height — textarea. Was size/10xl."
         },
         "124": {
           "parent": "theme/stable/dark",
           "type": "dimension",
           "value": "{dimension.124}",
-          "description": "Maximum portrait or hero size."
+          "description": "Max avatar / hero. Was size/11xl."
         }
       }
     }
