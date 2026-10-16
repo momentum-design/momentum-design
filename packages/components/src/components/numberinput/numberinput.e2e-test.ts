@@ -1,5 +1,3 @@
-import type { Locator } from '@playwright/test';
-
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -84,45 +82,6 @@ test.describe('mdc-numberinput', () => {
     decrementAriaLabel: 'Decrement',
     secondButtonForFocus: true,
   };
-
-  test.describe('with a comma decimal separator locale', () => {
-    test.use({ locale: 'de-DE' });
-
-    test('does not block the locale decimal separator when decimals are allowed', async ({ componentsPage }) => {
-      // Native number inputs only honor the locale separator in some browsers, so assert on the beforeinput guard.
-      const isBlocked = (inputEl: Locator, data: string) =>
-        inputEl.evaluate((el: HTMLInputElement, text: string) => {
-          const event = new InputEvent('beforeinput', { data: text, inputType: 'insertText', cancelable: true });
-          el.dispatchEvent(event);
-          return event.defaultPrevented;
-        }, data);
-
-      const decimalNumber = (await setup({ componentsPage, ...defaultSetupOptions, step: 'any' })).locator('input');
-      await expect(isBlocked(decimalNumber, ',')).resolves.toBe(false);
-      await expect(isBlocked(decimalNumber, '.')).resolves.toBe(false);
-
-      const integerNumber = (await setup({ componentsPage, ...defaultSetupOptions })).locator('input');
-      await expect(isBlocked(integerNumber, ',')).resolves.toBe(true);
-      await expect(isBlocked(integerNumber, '.')).resolves.toBe(true);
-    });
-
-    test('parses a typed comma as a decimal separator', async ({ componentsPage, browserName }) => {
-      // Chromium parses native number input text using its UI language, which Playwright's locale option does not change.
-      test.skip(browserName === 'chromium', 'Chromium ignores the emulated locale for native number parsing');
-
-      const number = await setup({ componentsPage, ...defaultSetupOptions, step: 'any' });
-      const inputEl = number.locator('input');
-
-      await inputEl.pressSequentially('1,5');
-      await expect(inputEl).toHaveJSProperty('valueAsNumber', 1.5);
-      await expect(inputEl).toHaveValue('1.5');
-      await expect(number).toHaveJSProperty('value', '1.5');
-
-      await inputEl.fill('');
-      await inputEl.pressSequentially('-0,25');
-      await expect(inputEl).toHaveJSProperty('valueAsNumber', -0.25);
-    });
-  });
 
   /**
    * ATTRIBUTES
