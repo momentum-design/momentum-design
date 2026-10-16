@@ -17,6 +17,11 @@
   height: 100%;
 }
 
+#storybook-root > mdc-themeprovider {
+  display: block;
+  height: 100%;
+}
+
 .backgroundGradient {
   height: 100%;
   background: var(--mds-color-theme-background-gradient-primary-normal);
@@ -24,18 +29,22 @@
 
 .backgroundImage {
   height: 100%;
+}
+
+body.mds-theme-fluid-darkWebex:has(#storybook-root:not([hidden])) {
+  background-image: url('./backgrounds/fluid-background-dark.webp');
+}
+
+body.mds-theme-fluid-lightWebex:has(#storybook-root:not([hidden])) {
+  background-image: url('./backgrounds/fluid-background-light.webp');
+}
+
+body.mds-theme-fluid-darkWebex:has(#storybook-root:not([hidden])),
+body.mds-theme-fluid-lightWebex:has(#storybook-root:not([hidden])) {
   background-position: left top;
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
-}
-
-.mds-theme-fluid-darkWebex .backgroundImage {
-  background-image: url('./backgrounds/fluid-background-dark.webp');
-}
-
-.mds-theme-fluid-lightWebex .backgroundImage {
-  background-image: url('./backgrounds/fluid-background-light.webp');
 }
 
 .fluidCanvas {
@@ -43,14 +52,14 @@
   flex-direction: column;
   position: relative;
   height: 100%;
+  overflow-y: auto;
 }
 
 .glassContainer {
   --mdc-glass-background: var(--mds-color-theme-background-glass-light);
 
   box-sizing: border-box;
-  flex: 1;
-  min-height: 0;
+  flex: 1 0 auto;
   margin: 24px;
   padding: 24px;
 }
