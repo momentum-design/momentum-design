@@ -2941,6 +2941,12 @@
           "type": "dimension",
           "value": "{dimension.32}",
           "description": "Default control height — input, select, tab, combobox. Was size/4xl."
+        },
+        "36": {
+          "parent": "theme/stable/highcontrast/hc_dark",
+          "type": "dimension",
+          "value": "{dimension.36}",
+          "description": "Table header, sidenav tab, and avatar placeholder."
         }
       },
       "lg": {
@@ -2949,6 +2955,12 @@
           "type": "dimension",
           "value": "{dimension.40}",
           "description": "Large control / toolbar row — nav, datepicker trigger. Was size/5xl."
+        },
+        "48": {
+          "parent": "theme/stable/highcontrast/hc_dark",
+          "type": "dimension",
+          "value": "{dimension.48}",
+          "description": "Avatar, spinner, toggle track, and table body."
         },
         "52": {
           "parent": "theme/stable/highcontrast/hc_dark",
