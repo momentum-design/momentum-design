@@ -105,6 +105,23 @@ test.describe('mdc-numberinput', () => {
       await expect(isBlocked(integerNumber, ',')).resolves.toBe(true);
       await expect(isBlocked(integerNumber, '.')).resolves.toBe(true);
     });
+
+    test('parses a typed comma as a decimal separator', async ({ componentsPage, browserName }) => {
+      // Chromium parses native number input text using its UI language, which Playwright's locale option does not change.
+      test.skip(browserName === 'chromium', 'Chromium ignores the emulated locale for native number parsing');
+
+      const number = await setup({ componentsPage, ...defaultSetupOptions, step: 'any' });
+      const inputEl = number.locator('input');
+
+      await inputEl.pressSequentially('1,5');
+      await expect(inputEl).toHaveJSProperty('valueAsNumber', 1.5);
+      await expect(inputEl).toHaveValue('1.5');
+      await expect(number).toHaveJSProperty('value', '1.5');
+
+      await inputEl.fill('');
+      await inputEl.pressSequentially('-0,25');
+      await expect(inputEl).toHaveJSProperty('valueAsNumber', -0.25);
+    });
   });
 
   /**
