@@ -58,7 +58,7 @@
     "36": {
       "value": "2.25rem",
       "type": "dimension",
-      "description": "36px — Optgroup row height. Core only — no theme size role."
+      "description": "36px — Table header, sidenav tab, avatar placeholder. Theme: size/md/36."
     },
     "40": {
       "value": "2.5rem",
@@ -73,7 +73,7 @@
     "48": {
       "value": "3rem",
       "type": "dimension",
-      "description": "48px — Avatar / spinner mid-scale. Core only — not in size grouping."
+      "description": "48px — Avatar, spinner, toggle track, table body. Theme: size/lg/48."
     },
     "52": {
       "value": "3.25rem",
