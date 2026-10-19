@@ -126,12 +126,14 @@ consumers can compare nearby options without losing the token's role.
 | `size.md.24` | Compact controls such as chips |
 | `size.md.28` | Controls between compact and standard height |
 | `size.md.32` | Default-height inputs, selects, tabs, and comboboxes |
+| `size.md.36` | Table headers, sidenav tabs, and avatar placeholders |
 
 #### Large
 
 | Token | Use for |
 | --- | --- |
 | `size.lg.40` | Large controls and toolbar or navigation rows |
+| `size.lg.48` | Avatars, spinners, toggle tracks, and table body rows |
 | `size.lg.52` | Wide-control minimum dimensions |
 | `size.lg.64` | Application chrome, search fields, and large avatars |
 
