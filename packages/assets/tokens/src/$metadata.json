@@ -23,6 +23,8 @@
     "additionaltheme/light/indigo",
     "additionaltheme/light/jade",
     "additionaltheme/light/lavender",
-    "additionaltheme/light/rose"
+    "additionaltheme/light/rose",
+    "charting/dark",
+    "charting/light"
   ]
 }
