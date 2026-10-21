@@ -4,6 +4,7 @@ import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
+import type Option from '../option/option.component';
 
 import type Select from './select.component';
 import { TRIGGER_ID } from './select.constants';
@@ -69,6 +70,242 @@ const setup = async (args: SetupOptions, isForm = false) => {
   await select.waitFor();
   return select;
 };
+
+const expectSelection = async (select: Locator, value: string, text: string) => {
+  await expect(select).toHaveJSProperty('value', value);
+  await expect(select).toHaveAttribute('value', value);
+  await expect(select.getByRole('combobox')).toContainText(text);
+  await expect(select.locator('mdc-option[selected]')).toHaveCount(value ? 1 : 0);
+  await expect(select.locator('mdc-option[aria-selected="true"]')).toHaveCount(value ? 1 : 0);
+  if (value) {
+    await expect(select.locator(`mdc-option[value="${value}"]`)).toHaveAttribute('selected');
+    await expect(select.locator(`mdc-option[value="${value}"]`)).toHaveAttribute('aria-selected', 'true');
+  }
+  await expect
+    .poll(() => select.evaluate(element => new FormData(element.closest('form')!).get('category')))
+    .toBe(value);
+};
+
+const recordSelectionEvents = (select: Locator) =>
+  select.evaluateHandle(element => {
+    const events: { type: string; detail: { value?: string; label?: string } }[] = [];
+    ['input', 'change'].forEach(type => {
+      element.addEventListener(type, event => events.push({ type, detail: (event as CustomEvent).detail }));
+    });
+    return events;
+  });
+
+test.describe('mdc-select lifecycle compatibility', () => {
+  for (const previouslySelected of [false, true]) {
+    test(`should preserve a pending value during option initialization (${previouslySelected ? 'cleared' : 'initial'} empty state)`, async ({
+      componentsPage,
+    }) => {
+      const form = await setup(
+        {
+          componentsPage,
+          children: previouslySelected ? defaultChildren(true) : '',
+          placeholder: defaultPlaceholder,
+          name: 'category',
+          required: true,
+        },
+        true,
+      );
+      const select = form.locator('mdc-select');
+      if (previouslySelected) {
+        await select.locator('mdc-option[selected]').evaluate(option => option.removeAttribute('selected'));
+        await expectSelection(select, '', defaultPlaceholder);
+        await select.evaluate(element => element.replaceChildren());
+      }
+      const events = await recordSelectionEvents(select);
+      const lifecycle = await select.evaluate(async element => {
+        const host = element as Select;
+        const notifications: { value: string; option: string }[] = [];
+        host.addEventListener('modified', event => {
+          if ((event as CustomEvent).detail.change === 'unselected') {
+            notifications.push({ value: host.value, option: (event.target as Option).value });
+          }
+        });
+        host.innerHTML = `
+          <mdc-selectlistbox>
+            <mdc-option value="other" label="Other"></mdc-option>
+            <mdc-option value="meetings" label="Meetings"></mdc-option>
+          </mdc-selectlistbox>`;
+        host.value = 'meetings';
+        const beforeUpdates = {
+          value: host.value,
+          options: Array.from(host.querySelectorAll<Option>('mdc-option'), option => option.value),
+        };
+        await Promise.all(Array.from(host.querySelectorAll<Option>('mdc-option'), option => option.updateComplete));
+        await host.updateComplete;
+        return { beforeUpdates, notifications };
+      });
+      expect(lifecycle.beforeUpdates).toEqual({ value: 'meetings', options: ['other', 'meetings'] });
+      await expectSelection(select, 'meetings', 'Meetings');
+      expect(lifecycle.notifications).toEqual([
+        { value: 'meetings', option: 'other' },
+        { value: 'meetings', option: 'meetings' },
+      ]);
+      expect(await form.evaluate(element => (element as HTMLFormElement).checkValidity())).toBe(true);
+      expect(await events.jsonValue()).toEqual([]);
+    });
+  }
+
+  for (const placeholder of [defaultPlaceholder, undefined]) {
+    test(`should preserve deselection and dynamic-option fallbacks ${placeholder ? 'with' : 'without'} a placeholder`, async ({
+      componentsPage,
+    }) => {
+      const form = await setup(
+        { componentsPage, children: defaultChildren(true), placeholder, name: 'category', required: true },
+        true,
+      );
+      const select = form.locator('mdc-select');
+      const events = await recordSelectionEvents(select);
+      const fallback = placeholder ? '' : 'option1';
+      const fallbackText = placeholder ?? 'Option Label 1';
+      await expectSelection(select, 'option2', 'Option Label 2');
+      await select.locator('mdc-option[value="option2"]').evaluate(option => option.removeAttribute('selected'));
+      await expectSelection(select, fallback, fallbackText);
+      expect(await form.evaluate(element => (element as HTMLFormElement).checkValidity())).toBe(!placeholder);
+
+      // Queue the old selection's unselected update before the new option's selected update.
+      await select.evaluate(element => {
+        element.querySelector('mdc-option[selected]')?.removeAttribute('selected');
+        element.querySelector('mdc-option[value="option3"]')!.setAttribute('selected', '');
+      });
+      await expectSelection(select, 'option3', 'Option Label 3');
+      await select.locator('mdc-option[value="option3"]').evaluate(option => option.setAttribute('disabled', ''));
+      await expectSelection(select, fallback, fallbackText);
+      await select.locator('mdc-option[value="option3"]').evaluate(async option => {
+        option.removeAttribute('disabled');
+        await (option as Option).updateComplete;
+      });
+      await expectSelection(select, fallback, fallbackText);
+      await select.evaluate(element => {
+        const host = element as Select;
+        host.value = 'option3';
+      });
+      await expectSelection(select, 'option3', 'Option Label 3');
+      await select.locator('mdc-option[value="option3"]').evaluate(option => option.remove());
+      await expectSelection(select, fallback, fallbackText);
+      await select.evaluate(element => element.setAttribute('value', 'option2'));
+      await expectSelection(select, 'option2', 'Option Label 2');
+      await select.evaluate(element => element.setAttribute('value', 'invalid'));
+      await expectSelection(select, fallback, fallbackText);
+      expect(await events.jsonValue()).toEqual([]);
+    });
+  }
+
+  test('should retain B after A unselects and an unrelated option initializes', async ({ componentsPage }) => {
+    const form = await setup(
+      { componentsPage, children: defaultChildren(true), placeholder: defaultPlaceholder, name: 'category' },
+      true,
+    );
+    const select = form.locator('mdc-select');
+    const events = await recordSelectionEvents(select);
+    const notifications = await select.evaluate(async element => {
+      const changes: string[] = [];
+      element.addEventListener('modified', event => {
+        const { change } = (event as CustomEvent).detail;
+        if (change === 'selected' || change === 'unselected') {
+          changes.push(`${(event.target as Option).value}:${change}`);
+        }
+      });
+      element.querySelector('mdc-option[value="option3"]')!.setAttribute('selected', '');
+      await Promise.all(Array.from(element.querySelectorAll<Option>('mdc-option'), option => option.updateComplete));
+      await (element as Select).updateComplete;
+      const listbox = element.querySelector('mdc-selectlistbox')!;
+      listbox.insertAdjacentHTML('beforeend', '<mdc-option value="other" label="Other"></mdc-option>');
+      await (listbox.lastElementChild as Option).updateComplete;
+      await (element as Select).updateComplete;
+      return changes;
+    });
+    expect(notifications).toEqual(['option3:selected', 'option2:unselected', 'other:unselected']);
+    await expectSelection(select, 'option3', 'Option Label 3');
+    await expect(select.locator('mdc-option[value="option3"]')).toHaveAttribute('tabindex', '0');
+    expect(await events.jsonValue()).toEqual([]);
+  });
+
+  test('should resolve conflicting selected attributes using existing option precedence', async ({
+    componentsPage,
+  }) => {
+    const events = await recordSelectionEvents(componentsPage.page.locator('body'));
+    const form = await setup(
+      {
+        componentsPage,
+        children: defaultChildren(true).replace('value="option1"', 'value="option1" selected'),
+        placeholder: defaultPlaceholder,
+        name: 'category',
+      },
+      true,
+    );
+    const select = form.locator('mdc-select');
+    await expectSelection(select, 'option1', 'Option Label 1');
+    await select.evaluate(element => {
+      element.querySelector('mdc-option[value="option2"]')!.setAttribute('selected', '');
+      element.querySelector('mdc-option[value="option3"]')!.setAttribute('selected', '');
+    });
+    await expectSelection(select, 'option2', 'Option Label 2');
+    expect(await events.jsonValue()).toEqual([]);
+  });
+
+  test('should retain the existing default-first-option initialization events', async ({ componentsPage }) => {
+    const events = await recordSelectionEvents(componentsPage.page.locator('body'));
+    const form = await setup({ componentsPage, children: defaultChildren(), name: 'category' }, true);
+    await expectSelection(form.locator('mdc-select'), 'option1', 'Option Label 1');
+    expect(await events.jsonValue()).toEqual([
+      { type: 'input', detail: { value: 'option1', label: 'Option Label 1' } },
+      { type: 'change', detail: { value: 'option1', label: 'Option Label 1' } },
+    ]);
+  });
+
+  test('should preserve rapid programmatic updates and the input/change event contract', async ({ componentsPage }) => {
+    const form = await setup(
+      { componentsPage, children: defaultChildren(true), placeholder: defaultPlaceholder, name: 'category' },
+      true,
+    );
+    const select = form.locator('mdc-select');
+    const events = await recordSelectionEvents(select);
+    await select.evaluate(element => {
+      const host = element as Select;
+      host.value = 'option1';
+      host.value = 'option3';
+    });
+    await expectSelection(select, 'option3', 'Option Label 3');
+    await select.evaluate(element => {
+      element.setAttribute('value', 'option2');
+      element.setAttribute('value', 'option1');
+    });
+    await expectSelection(select, 'option1', 'Option Label 1');
+    await select.evaluate(element => element.setAttribute('value', 'invalid'));
+    await expectSelection(select, '', defaultPlaceholder);
+    expect(await events.jsonValue()).toEqual([]);
+
+    await select.click();
+    await select.locator('mdc-option[value="option3"]').click();
+    await expectSelection(select, 'option3', 'Option Label 3');
+    await select.getByRole('combobox').focus();
+    await componentsPage.page.keyboard.press(KEYS.ENTER);
+    await expect(select.locator('mdc-option[value="option3"]')).toBeFocused();
+    await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+    await componentsPage.page.keyboard.press(KEYS.ENTER);
+    await expectSelection(select, 'option2', 'Option Label 2');
+    await select.evaluate(element => {
+      const host = element as Select;
+      host.value = 'option1';
+    });
+    await expectSelection(select, 'option1', 'Option Label 1');
+    await form.evaluate(element => (element as HTMLFormElement).reset());
+    await expectSelection(select, 'option2', 'Option Label 2');
+    expect(await events.jsonValue()).toEqual([
+      { type: 'input', detail: { value: 'option3', label: 'Option Label 3' } },
+      { type: 'change', detail: { value: 'option3', label: 'Option Label 3' } },
+      { type: 'input', detail: { value: 'option2', label: 'Option Label 2' } },
+      { type: 'change', detail: { value: 'option2', label: 'Option Label 2' } },
+      { type: 'input', detail: { value: 'option2', label: 'Option Label 2' } },
+      { type: 'change', detail: { value: 'option2', label: 'Option Label 2' } },
+    ]);
+  });
+});
 
 test('mdc-select', async ({ componentsPage }) => {
   /**
@@ -321,44 +558,6 @@ test('mdc-select', async ({ componentsPage }) => {
   /**
    * INTERACTIONS
    */
-  await test.step('initialization lifecycle', async () => {
-    await test.step('keeps a requested value when an unselected option initializes', async () => {
-      await componentsPage.mount({
-        html: '<form><mdc-select placeholder="Choose" name="category"></mdc-select></form>',
-        clearDocument: true,
-      });
-      const select = componentsPage.page.locator('mdc-select');
-
-      await componentsPage.page.evaluate(() => {
-        const select = document.querySelector('mdc-select')!;
-        select.innerHTML = `
-          <mdc-selectlistbox>
-            <mdc-option value="other" label="Other"></mdc-option>
-            <mdc-option value="meetings" label="Meetings"></mdc-option>
-          </mdc-selectlistbox>`;
-        (select as HTMLElement & { value: string }).value = 'meetings';
-      });
-
-      await expect(select).toHaveAttribute('value', 'meetings');
-      await expect(select.locator('mdc-option[value="meetings"]')).toHaveAttribute('selected');
-      await expect(select.locator('mdc-option[selected]')).toHaveCount(1);
-      await expect
-        .poll(() => componentsPage.page.locator('form').evaluate(form => new FormData(form as HTMLFormElement).get('category')))
-        .toBe('meetings');
-    });
-
-    await test.step('clears selection when the selected option is genuinely deselected', async () => {
-      const select = await setup({
-        componentsPage,
-        placeholder: defaultPlaceholder,
-        children: defaultChildren(true),
-      });
-      await select.locator('mdc-option[value="option2"]').evaluate(option => option.removeAttribute('selected'));
-      await expect(select).toHaveAttribute('value', '');
-      await expect(select.locator('mdc-option[selected]')).toHaveCount(0);
-    });
-  });
-
   await test.step('interactions', async () => {
     await test.step('mouse/pointer', async () => {
       await test.step('component should open and close dropdown when clicked', async () => {
