@@ -321,6 +321,44 @@ test('mdc-select', async ({ componentsPage }) => {
   /**
    * INTERACTIONS
    */
+  await test.step('initialization lifecycle', async () => {
+    await test.step('keeps a requested value when an unselected option initializes', async () => {
+      await componentsPage.mount({
+        html: '<form><mdc-select placeholder="Choose" name="category"></mdc-select></form>',
+        clearDocument: true,
+      });
+      const select = componentsPage.page.locator('mdc-select');
+
+      await componentsPage.page.evaluate(() => {
+        const select = document.querySelector('mdc-select')!;
+        select.innerHTML = `
+          <mdc-selectlistbox>
+            <mdc-option value="other" label="Other"></mdc-option>
+            <mdc-option value="meetings" label="Meetings"></mdc-option>
+          </mdc-selectlistbox>`;
+        (select as HTMLElement & { value: string }).value = 'meetings';
+      });
+
+      await expect(select).toHaveAttribute('value', 'meetings');
+      await expect(select.locator('mdc-option[value="meetings"]')).toHaveAttribute('selected');
+      await expect(select.locator('mdc-option[selected]')).toHaveCount(1);
+      await expect
+        .poll(() => componentsPage.page.locator('form').evaluate(form => new FormData(form as HTMLFormElement).get('category')))
+        .toBe('meetings');
+    });
+
+    await test.step('clears selection when the selected option is genuinely deselected', async () => {
+      const select = await setup({
+        componentsPage,
+        placeholder: defaultPlaceholder,
+        children: defaultChildren(true),
+      });
+      await select.locator('mdc-option[value="option2"]').evaluate(option => option.removeAttribute('selected'));
+      await expect(select).toHaveAttribute('value', '');
+      await expect(select.locator('mdc-option[selected]')).toHaveCount(0);
+    });
+  });
+
   await test.step('interactions', async () => {
     await test.step('mouse/pointer', async () => {
       await test.step('component should open and close dropdown when clicked', async () => {
