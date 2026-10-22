@@ -17,6 +17,7 @@ import {
   SECONDARY_BUTTON_COLORS,
   TERTIARY_BUTTON_COLORS,
 } from './button.constants';
+import type Button from './button.component';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -294,6 +295,27 @@ test.describe('mdc-button active icons', () => {
   for (const placement of ['prefix', 'postfix'] as const) {
     const attribute = `${placement}-icon`;
     const setupIcon = placement === 'prefix' ? 'prefixIcon' : 'postfixIcon';
+
+    test(`should apply the ${placement} icon fill change in the same update`, async ({ componentsPage }) => {
+      const button = await setup({
+        componentsPage,
+        [setupIcon]: 'placeholder-bold',
+        active: true,
+        children: 'Toggle view',
+      });
+      const icon = button.locator(`mdc-icon[part="${attribute}"]`);
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-filled');
+
+      const updateCompleted = await button.evaluate(async element => {
+        const component = element as Button;
+        await component.updateComplete;
+        component.disableAutoIconFill = true;
+        return component.updateComplete;
+      });
+
+      expect(updateCompleted).toBe(true);
+      await expect(icon).toHaveAttribute('name', 'placeholder-bold');
+    });
 
     test(`should restore the original ${placement} icon when the active state changes`, async ({ componentsPage }) => {
       const button = await setup({ componentsPage, [setupIcon]: 'placeholder-bold', children: 'Toggle view' });

@@ -90,6 +90,10 @@ Set `disable-auto-icon-fill` to avoid requests for inferred filled variants. For
 - **`size="20"` is tertiary-only** — other variants fall back to the default `32`. Use `variant="tertiary"` if you need the 20px icon button.
 - **No built-in busy state** — the button does not manage a loading or pending state. Disable it and show your own spinner while an action is in flight.
 
+### Notes
+
+Button derives icon names in `willUpdate()` when `active`, `disableAutoIconFill`, `prefixIcon`, or `postfixIcon` changes. The names are available to the same render, avoiding the extra update caused by setting them after `super.update()`. Slot-based button-type inference remains after rendering because it reads assigned nodes. See [Lit's lifecycle guidance](https://lit.dev/docs/components/lifecycle/#willupdate) for the hook's contract.
+
 ## Accessibility
 
 ### Built-in features

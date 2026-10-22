@@ -120,8 +120,8 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
     return this.buttonTextPart;
   }
 
-  public override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
+  protected override willUpdate(changedProperties: PropertyValues): void {
+    super.willUpdate(changedProperties);
 
     if (
       changedProperties.has('active') ||
@@ -131,6 +131,11 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
     ) {
       this.inferFilledIconName();
     }
+  }
+
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+
     if (changedProperties.has('size')) {
       this.setSize(this.size);
     }
