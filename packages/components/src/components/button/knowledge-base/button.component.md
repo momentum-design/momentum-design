@@ -68,10 +68,19 @@ Minimal markup example:
 | `prefix-icon` / `postfix-icon` | Adds a leading or trailing icon. An icon with no label produces an icon-only button — set `aria-label`. Avoid icons on both sides at once. |
 | `inverted` | Flips the palette for dark or inverted surfaces. Honored only with `variant="primary"`, `color="default"`, and when not `active`. |
 | `active` + `aria-state-key` | Makes the button a toggle; mirrors state into `aria-pressed` by default (or the listed `aria-*` attributes). Use for pressed/toggle controls, not navigation. |
+| `disable-auto-icon-fill` | Keeps the supplied prefix and postfix icon names in every state. Set it for custom icon sets without filled variants or when your application manages icon changes. In React, use `disableAutoIconFill`. |
 | `soft-disabled` | Looks disabled but stays focusable so assistive tech can reach it and you can explain why the action is unavailable. Prefer over `disabled` when the reason matters. |
 | `type="submit"` / `type="reset"` | Wires native form submit/reset. Prefer over custom click handlers so native form behavior is preserved. |
 
 **Note:** `size` depends on the button type — pill `40`/`32` (default)/`28`/`24`; icon adds `64`/`52` and `20` (tertiary only). Invalid combinations fall back to `32`.
+
+Automatic icon filling is enabled by default for both Momentum and custom icon providers. When `active`, the button replaces a trailing style suffix with `-filled`, or appends `-filled` when there is no style suffix. If that icon fails to load, the button restores the supplied name; for example, `table-bold` is retained when `table-filled` is unavailable. Each icon falls back independently.
+
+Set `disable-auto-icon-fill` to avoid requests for inferred filled variants. For example, this button keeps `table-bold` while active:
+
+```html
+<mdc-button active disable-auto-icon-fill prefix-icon="table-bold" aria-label="Table view"></mdc-button>
+```
 
 ### Limitations
 

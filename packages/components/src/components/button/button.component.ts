@@ -85,6 +85,15 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
   inverted: boolean = DEFAULTS.INVERTED;
 
   /**
+   * Keeps the supplied prefix and postfix icon names when the button is active.
+   * Use for custom icon sets or when icon changes are managed by the consumer.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'disable-auto-icon-fill', reflect: true })
+  disableAutoIconFill: boolean = DEFAULTS.DISABLE_AUTO_ICON_FILL;
+
+  /**
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
    * Consumers should override this role when:
    * - The element is being used in a context where a different role is more appropriate.
@@ -114,8 +123,13 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
-    if (changedProperties.has('active')) {
-      this.inferFilledIconName(this.active);
+    if (
+      changedProperties.has('active') ||
+      changedProperties.has('disableAutoIconFill') ||
+      changedProperties.has('prefixIcon') ||
+      changedProperties.has('postfixIcon')
+    ) {
+      this.inferFilledIconName();
     }
     if (changedProperties.has('size')) {
       this.setSize(this.size);
@@ -132,29 +146,40 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
       this.setSize(this.size);
     }
     if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
-      this.inferFilledIconName(this.active);
       this.inferButtonType();
     }
   }
 
   /**
    * Modifies the icon name based on the active state.
-   * If the button is active, the icon name is suffixed with '-filled'.
+   * If automatic filling is enabled and the button is active, uses the '-filled' variant.
    * If the button is inactive, the icon name is restored to its original value.
    * If '-filled' icon is not available, the icon name remains unchanged.
-   *
-   * @param active - The active state.
    */
-  private inferFilledIconName(active?: boolean) {
-    if (active) {
-      if (this.prefixIcon) {
-        this.prefixFilledIconName = `${getIconNameWithoutStyle(this.prefixIcon)}-filled` as IconNames;
-      }
-      if (this.postfixIcon) {
-        this.postfixFilledIconName = `${getIconNameWithoutStyle(this.postfixIcon)}-filled` as IconNames;
-      }
+  private inferFilledIconName() {
+    if (this.active && !this.disableAutoIconFill) {
+      this.prefixFilledIconName = this.prefixIcon
+        ? (`${getIconNameWithoutStyle(this.prefixIcon)}-filled` as IconNames)
+        : undefined;
+      this.postfixFilledIconName = this.postfixIcon
+        ? (`${getIconNameWithoutStyle(this.postfixIcon)}-filled` as IconNames)
+        : undefined;
     } else {
       this.prefixFilledIconName = this.prefixIcon;
+      this.postfixFilledIconName = this.postfixIcon;
+    }
+  }
+
+  private handlePrefixIconError(event: Event) {
+    if (this.prefixFilledIconName !== this.prefixIcon) {
+      event.stopPropagation();
+      this.prefixFilledIconName = this.prefixIcon;
+    }
+  }
+
+  private handlePostfixIconError(event: Event) {
+    if (this.postfixFilledIconName !== this.postfixIcon) {
+      event.stopPropagation();
       this.postfixFilledIconName = this.postfixIcon;
     }
   }
@@ -167,6 +192,7 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
               name="${this.prefixFilledIconName as IconNames}"
               part="prefix-icon"
               length-unit="rem"
+              @error=${this.handlePrefixIconError}
             ></mdc-icon>`
           : ''}
       </slot>
@@ -177,6 +203,7 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
               name="${this.postfixFilledIconName as IconNames}"
               part="postfix-icon"
               length-unit="rem"
+              @error=${this.handlePostfixIconError}
             ></mdc-icon>`
           : ''}
       </slot>

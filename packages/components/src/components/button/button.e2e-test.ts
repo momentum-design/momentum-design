@@ -1,6 +1,8 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 
+import type { Route } from '@playwright/test';
+
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
@@ -30,6 +32,7 @@ type SetupOptions = {
   ariaLabel?: string;
   secondButtonForFocus?: boolean;
   inverted?: boolean;
+  disableAutoIconFill?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -40,6 +43,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
         <mdc-button
           ${restArgs.active ? 'active' : ''}
+          ${restArgs.disableAutoIconFill ? 'disable-auto-icon-fill' : ''}
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
@@ -61,6 +65,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
         <mdc-button
           ${restArgs.active ? 'active' : ''}
+          ${restArgs.disableAutoIconFill ? 'disable-auto-icon-fill' : ''}
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
@@ -271,6 +276,202 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   };
   return { buttonSheet, commonMount };
 };
+
+test.describe('mdc-button active icons', () => {
+  test('should retain the table icon when its button is active in a button group', async ({ componentsPage }) => {
+    await componentsPage.mount({
+      html: `<mdc-buttongroup>
+        <mdc-button active prefix-icon="table-bold" aria-label="Table view"></mdc-button>
+        <mdc-button prefix-icon="placeholder-bold" aria-label="Alternate view"></mdc-button>
+      </mdc-buttongroup>`,
+      clearDocument: true,
+    });
+    const buttons = componentsPage.page.locator('mdc-button');
+    await expect(buttons.nth(0).locator('mdc-icon svg')).toHaveAttribute('data-name', 'table-bold');
+    await expect(buttons.nth(1).locator('mdc-icon svg')).toHaveAttribute('data-name', 'placeholder-bold');
+  });
+
+  for (const placement of ['prefix', 'postfix'] as const) {
+    const attribute = `${placement}-icon`;
+    const setupIcon = placement === 'prefix' ? 'prefixIcon' : 'postfixIcon';
+
+    test(`should restore the original ${placement} icon when the active state changes`, async ({ componentsPage }) => {
+      const button = await setup({ componentsPage, [setupIcon]: 'placeholder-bold', children: 'Toggle view' });
+      const icon = button.locator(`mdc-icon[part="${attribute}"]`);
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-bold');
+
+      await componentsPage.setAttributes(button, { active: '' });
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-filled');
+      await componentsPage.removeAttribute(button, 'active');
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-bold');
+    });
+
+    for (const initiallyActive of [false, true]) {
+      test(`should retain the ${placement} icon without a filled variant when initially active is ${initiallyActive}`, async ({
+        componentsPage,
+      }) => {
+        const button = await setup({
+          componentsPage,
+          [setupIcon]: 'table-bold',
+          active: initiallyActive,
+          children: 'Table view',
+        });
+        const icon = button.locator(`mdc-icon[part="${attribute}"]`);
+        if (!initiallyActive) {
+          await expect(icon.locator('svg')).toHaveAttribute('data-name', 'table-bold');
+          await componentsPage.setAttributes(button, { active: '' });
+        }
+        await expect(icon).toHaveAttribute('name', 'table-bold');
+        await expect(icon.locator('svg')).toHaveAttribute('data-name', 'table-bold');
+        await expect(button).toHaveAttribute('aria-pressed', 'true');
+
+        await componentsPage.setAttributes(button, { [attribute]: 'placeholder-bold' });
+        await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-filled');
+        await componentsPage.removeAttribute(button, attribute);
+        await expect(icon).toHaveCount(0);
+      });
+    }
+
+    test(`should preserve the ${placement} icon when automatic filling is disabled`, async ({ componentsPage }) => {
+      const requests: string[] = [];
+      componentsPage.page.on('request', request => {
+        if (request.url().endsWith('.svg')) requests.push(request.url());
+      });
+      const button = await setup({
+        componentsPage,
+        [setupIcon]: 'placeholder-bold',
+        active: true,
+        disableAutoIconFill: true,
+        children: 'Toggle view',
+      });
+      const icon = button.locator(`mdc-icon[part="${attribute}"]`);
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-bold');
+      expect(requests.some(url => url.endsWith('/placeholder-filled.svg'))).toBe(false);
+
+      await componentsPage.removeAttribute(button, 'disable-auto-icon-fill');
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-filled');
+      await componentsPage.setAttributes(button, { 'disable-auto-icon-fill': '' });
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-bold');
+      await componentsPage.setAttributes(button, { [attribute]: 'table-bold' });
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'table-bold');
+    });
+
+    for (const cached of [false, true]) {
+      test(`should ignore superseded ${placement} icon errors with caching ${cached ? 'enabled' : 'disabled'}`, async ({
+        componentsPage,
+      }) => {
+        let resolveOldRequest!: (route: Route) => void;
+        const oldRequest = new Promise<Route>(resolve => {
+          resolveOldRequest = resolve;
+        });
+        const requests: string[] = [];
+        await componentsPage.page.route('**/superseded-icons/*.svg', async route => {
+          const name = route.request().url().split('/').pop()!;
+          requests.push(name);
+          if (name === 'old-filled.svg') {
+            resolveOldRequest(route);
+            return;
+          }
+          await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"></svg>' });
+        });
+        await componentsPage.mount({
+          html: `<mdc-iconprovider icon-set="custom-icons" url="/superseded-icons"
+            ${cached ? 'cache-strategy="in-memory-cache" cache-name="superseded-icons"' : ''}>
+            <mdc-button active ${attribute}="old-bold">Toggle view</mdc-button>
+          </mdc-iconprovider>`,
+          clearDocument: true,
+        });
+        const oldRoute = await oldRequest;
+        const button = componentsPage.page.locator('mdc-button');
+        const icon = button.locator(`mdc-icon[part="${attribute}"]`);
+        const errorEvent = await componentsPage.waitForEvent(icon, 'error');
+
+        await componentsPage.setAttributes(button, { [attribute]: 'new-bold' });
+        await expect(icon.locator('svg')).toHaveAttribute('data-name', 'new-filled');
+        await oldRoute.fulfill({ status: 404 });
+
+        await expect(errorEvent).not.toEventEmitted();
+        await expect(icon).toHaveAttribute('name', 'new-filled');
+        await expect(icon.locator('svg')).toHaveAttribute('data-name', 'new-filled');
+        expect(requests).not.toContain('new-bold.svg');
+      });
+    }
+
+    test(`should report an error without retrying when the original ${placement} icon also fails to load`, async ({
+      componentsPage,
+    }) => {
+      const requests: string[] = [];
+      await componentsPage.page.route('**/missing-*.svg', async route => {
+        requests.push(route.request().url());
+        await route.fulfill({ status: 404 });
+      });
+      const button = await setup({ componentsPage, [setupIcon]: 'placeholder-bold', children: 'Toggle view' });
+      const icon = button.locator(`mdc-icon[part="${attribute}"]`);
+      await expect(icon.locator('svg')).toHaveAttribute('data-name', 'placeholder-bold');
+      const errorEvent = await componentsPage.waitForEvent(icon, 'error');
+
+      await componentsPage.setAttributes(button, { active: '', [attribute]: 'missing-bold' });
+      await expect(errorEvent).toEventEmitted();
+      await expect(icon).toHaveAttribute('name', 'missing-bold');
+      expect(requests.map(url => url.split('/').pop())).toEqual(['missing-filled.svg', 'missing-bold.svg']);
+    });
+  }
+
+  test('should preserve custom icon names without requesting filled variants when opted out', async ({
+    componentsPage,
+  }) => {
+    const requests: string[] = [];
+    await componentsPage.page.route('**/test-icons/*.svg', async route => {
+      requests.push(route.request().url());
+      await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"></svg>' });
+    });
+    await componentsPage.mount({
+      html: `<mdc-iconprovider icon-set="custom-icons" url="/test-icons">
+        <mdc-button active disable-auto-icon-fill prefix-icon="custom-view" postfix-icon="custom-light-symbol-bold">
+          Toggle view
+        </mdc-button>
+      </mdc-iconprovider>`,
+      clearDocument: true,
+    });
+    const button = componentsPage.page.locator('mdc-button');
+    const prefix = button.locator('mdc-icon[part="prefix-icon"] svg');
+    const postfix = button.locator('mdc-icon[part="postfix-icon"] svg');
+    await expect(prefix).toHaveAttribute('data-name', 'custom-view');
+    await expect(postfix).toHaveAttribute('data-name', 'custom-light-symbol-bold');
+    expect(requests.map(url => url.split('/').pop()).sort()).toEqual([
+      'custom-light-symbol-bold.svg',
+      'custom-view.svg',
+    ]);
+
+    await componentsPage.removeAttribute(button, 'disable-auto-icon-fill');
+    await expect(prefix).toHaveAttribute('data-name', 'custom-view-filled');
+    await expect(postfix).toHaveAttribute('data-name', 'custom-light-symbol-filled');
+  });
+
+  test('should recover each icon independently when a custom filled variant is unavailable', async ({
+    componentsPage,
+  }) => {
+    await componentsPage.page.route('**/test-icons/*.svg', async route => {
+      if (route.request().url().endsWith('/custom-view-filled.svg')) {
+        await route.fulfill({ status: 404 });
+      } else {
+        await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"></svg>' });
+      }
+    });
+    await componentsPage.mount({
+      html: `<mdc-iconprovider icon-set="custom-icons" url="/test-icons">
+        <mdc-button active prefix-icon="custom-view" postfix-icon="custom-light-symbol-bold">Toggle view</mdc-button>
+      </mdc-iconprovider>`,
+      clearDocument: true,
+    });
+    const button = componentsPage.page.locator('mdc-button');
+    await expect(button.locator('mdc-icon[part="prefix-icon"] svg')).toHaveAttribute('data-name', 'custom-view');
+    await expect(button.locator('mdc-icon[part="postfix-icon"] svg')).toHaveAttribute(
+      'data-name',
+      'custom-light-symbol-filled',
+    );
+  });
+});
 
 test.describe.parallel('mdc-button', () => {
   test.use({ viewport: { width: 800, height: 3500 } });
