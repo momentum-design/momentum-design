@@ -62,6 +62,7 @@ const DEFAULTS = {
   TYPE_INTERNAL: BUTTON_TYPE_INTERNAL.ICON,
   TYPE: BUTTON_TYPE.BUTTON,
   INVERTED: false,
+  DISABLE_AUTO_ICON_FILL: false,
 } as const;
 
 export {

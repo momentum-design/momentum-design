@@ -60,12 +60,7 @@ class Icon extends Component {
 
   private readonly iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
 
-  @state() private abortController?: AbortController;
-
-  constructor() {
-    super();
-    this.abortController = new AbortController(); // Initialize AbortController
-  }
+  private abortController?: AbortController;
 
   /**
    * Parse the icon string to an html element, set the attributes and
@@ -95,47 +90,49 @@ class Icon extends Component {
    * then attempting to read the response body will reject with an AbortError exception.
    */
   private async getIconData() {
+    this.abortController?.abort();
+    const abortController = new AbortController();
+    this.abortController = abortController;
+    const iconName = this.name;
+    const isCurrentRequest = () =>
+      this.abortController === abortController && !abortController.signal.aborted && this.name === iconName;
+    const handleFailure = (error: unknown) => {
+      if (isCurrentRequest() && !(error instanceof Error && error.name === 'AbortError')) {
+        this.handleIconLoadedFailure(error);
+      }
+    };
+
     if (this.iconProviderContext.value) {
       const { fileExtension, url, cacheName, iconSet, cacheStrategy } = this.iconProviderContext.value;
-      if (iconSet === 'custom-icons' && url && fileExtension && this.name) {
-        // function to abort the fetch request and create a new signal
-        // (directly passing the abortcontroller to the fetch request per reference
-        // will not work due to JS call-by-sharing behavior)
-        const renewSignal = () => {
-          this.abortController?.abort();
-          this.abortController = new AbortController();
-          return this.abortController.signal;
-        };
-
+      if (iconSet === 'custom-icons' && url && fileExtension && iconName) {
         // fetch icon data (including caching logic)
         return assetFetch({
           url,
-          name: this.name,
+          name: iconName,
           fileExtension,
           cacheName,
           cacheStrategy,
-          renewSignal,
+          renewSignal: () => abortController.signal,
           assetType: 'icon',
         })
           .then(iconData => {
-            // parse the fetched icon string to an html element and set the attributes
-            const iconElement = this.prepareIconElement(iconData);
-            this.handleIconLoadedSuccess(iconElement as HTMLElement);
+            if (isCurrentRequest()) {
+              const iconElement = this.prepareIconElement(iconData);
+              this.handleIconLoadedSuccess(iconElement as HTMLElement);
+            }
           })
-          .catch(error => {
-            this.handleIconLoadedFailure(error);
-          });
+          .catch(handleFailure);
       }
 
-      if (iconSet === 'momentum-icons' && this.name) {
+      if (iconSet === 'momentum-icons' && iconName) {
         // dynamic import of the lit template from the momentum icons package
-        return import(`@momentum-design/icons/dist/ts/${this.name}.ts`)
+        return import(`@momentum-design/icons/dist/ts/${iconName}.ts`)
           .then(module => {
-            this.handleIconLoadedSuccess(module.default());
+            if (isCurrentRequest()) {
+              this.handleIconLoadedSuccess(module.default());
+            }
           })
-          .catch(error => {
-            this.handleIconLoadedFailure(error);
-          });
+          .catch(handleFailure);
       }
     }
 

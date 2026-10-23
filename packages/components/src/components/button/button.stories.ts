@@ -19,6 +19,7 @@ const render = (args: Args) =>
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
     ?active="${args.active}"
+    ?disable-auto-icon-fill="${args['disable-auto-icon-fill']}"
     ?disabled="${args.disabled}"
     ?soft-disabled="${args['soft-disabled']}"
     variant="${ifDefined(args.variant)}"
@@ -58,6 +59,9 @@ const meta: Meta = {
       options: Object.keys(iconsManifest),
     },
     active: {
+      control: 'boolean',
+    },
+    'disable-auto-icon-fill': {
       control: 'boolean',
     },
     'aria-label': {
@@ -113,6 +117,7 @@ export const Example: StoryObj = {
   args: {
     children: 'Click Me',
     active: false,
+    'disable-auto-icon-fill': false,
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
@@ -179,6 +184,23 @@ export const IconButton: StoryObj = {
     role: 'button',
     tabIndex: 0,
     'aria-label': 'icon button',
+  },
+};
+
+export const ActiveIconWithoutFilledVariant: StoryObj = {
+  args: {
+    ...IconButton.args,
+    active: true,
+    'prefix-icon': 'table-bold',
+    'aria-label': 'Table view',
+  },
+};
+
+export const PreserveActiveIcon: StoryObj = {
+  args: {
+    ...IconButton.args,
+    active: true,
+    'disable-auto-icon-fill': true,
   },
 };
 

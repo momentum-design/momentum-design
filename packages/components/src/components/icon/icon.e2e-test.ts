@@ -1,6 +1,6 @@
-import { expect } from '@playwright/test';
+import type { Route } from '@playwright/test';
 
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 
 import type { IconNames } from './icon.types';
 
@@ -56,6 +56,43 @@ const visualTestingSetup = async (args: SetupOptions) => {
   await icon.waitFor();
   return icon;
 };
+
+test('should keep the latest icon when a superseded cached request succeeds', async ({ componentsPage }) => {
+  let resolveOldRequest!: (route: Route) => void;
+  const oldRequest = new Promise<Route>(resolve => {
+    resolveOldRequest = resolve;
+  });
+  await componentsPage.page.route('**/superseded-icons/*.svg', async route => {
+    if (route.request().url().endsWith('/accessibility-regular.svg')) {
+      resolveOldRequest(route);
+      return;
+    }
+    await route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" data-test-icon="latest"></svg>',
+    });
+  });
+  await componentsPage.mount({
+    html: `<mdc-iconprovider icon-set="custom-icons" url="/superseded-icons"
+      cache-strategy="in-memory-cache" cache-name="superseded-icons">
+      <mdc-icon name="accessibility-regular"></mdc-icon>
+    </mdc-iconprovider>`,
+    clearDocument: true,
+  });
+  const oldRoute = await oldRequest;
+  const icon = componentsPage.page.locator('#root mdc-icon');
+  await componentsPage.setAttributes(icon, { name: 'placeholder-bold' });
+  await expect(icon.locator('svg')).toHaveAttribute('data-test-icon', 'latest');
+  const loadEvent = await componentsPage.waitForEvent(icon, 'load');
+
+  await oldRoute.fulfill({
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" data-test-icon="superseded"></svg>',
+  });
+
+  await expect(loadEvent).not.toEventEmitted();
+  await expect(icon.locator('svg')).toHaveAttribute('data-test-icon', 'latest');
+});
 
 test('mdc-icon', async ({ componentsPage }) => {
   const name = 'accessibility-regular';
