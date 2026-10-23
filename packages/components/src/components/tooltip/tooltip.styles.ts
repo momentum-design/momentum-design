@@ -4,6 +4,7 @@ const styles = css`
   :host {
     --mdc-tooltip-max-width: 400px;
     --mdc-popover-max-width: var(--mdc-tooltip-max-width);
+    --mdc-popover-width: max-content;
     --mdc-tooltip-padding: 0.75rem;
     --mdc-tooltip-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-tooltip-text-color-contrast: var(--mds-color-theme-inverted-text-primary-normal);
@@ -13,7 +14,7 @@ const styles = css`
     padding: var(--mdc-tooltip-padding);
     color: var(--mdc-tooltip-text-color);
     max-width: var(--mdc-tooltip-max-width);
-
+    min-width: fit-content;
     font-size: var(--mds-font-apps-body-midsize-regular-font-size);
     font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
     line-height: var(--mds-font-apps-body-midsize-regular-line-height);
