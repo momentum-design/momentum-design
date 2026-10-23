@@ -56,8 +56,6 @@ Structural requirements:
 - Place per-option `mdc-tooltip` siblings outside `mdc-select` and connect them via `triggerid` pointing at the option's `id`.
 - Optionally add `mdc-divider` after each `mdc-optgroup` to separate groups visually.
 
-An option can report “not selected” when it first loads; this does not mean a selection was removed. Select ignores that report unless it comes from the currently selected option, so it does not erase the requested value. Deselecting the current option still uses another selected option, the placeholder, or the first available option.
-
 Listen for `change` and `input` to react to a committed selection; both events fire with `{ value, label }` in their `detail`. `click`, `keydown`, and `focus` events also bubble from the host.
 
 ### Content guidance
