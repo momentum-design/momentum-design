@@ -31,25 +31,25 @@
 }
 
 /* A finite number resolves normally; `infinite` falls back to zero. */
-@property --_mdc-gradient-border-finite-turns {
+@property --mdc-gradient-border-finite-turns {
   syntax: '<number>';
   inherits: false;
   initial-value: 0;
 }
 
-@property --_mdc-gradient-border-settle-angle {
+@property --mdc-gradient-border-settle-angle {
   syntax: '<angle>';
   inherits: false;
   initial-value: 0deg;
 }
 
-@property --_mdc-gradient-border-fade-in-opacity {
+@property --mdc-gradient-border-fade-in-opacity {
   syntax: '<number>';
   inherits: false;
   initial-value: 1;
 }
 
-@property --_mdc-gradient-border-fade-out-opacity {
+@property --mdc-gradient-border-fade-out-opacity {
   syntax: '<number>';
   inherits: false;
   initial-value: 1;
@@ -69,38 +69,38 @@
 
 @keyframes mdc-gradient-border-settle {
   from {
-    --_mdc-gradient-border-settle-angle: 0deg;
+    --mdc-gradient-border-settle-angle: 0deg;
     animation-timing-function: linear;
   }
 
   /* Entrance starts with slope 5. Covering 15/17 of the travel in 60% of
      the time joins that curve to the linear phase at the same speed. */
   60% {
-    --_mdc-gradient-border-settle-angle: calc(360deg * var(--_mdc-gradient-border-finite-turns) * 15 / 17);
+    --mdc-gradient-border-settle-angle: calc(360deg * var(--mdc-gradient-border-finite-turns) * 15 / 17);
   }
 
   to {
-    --_mdc-gradient-border-settle-angle: calc(360deg * var(--_mdc-gradient-border-finite-turns));
+    --mdc-gradient-border-settle-angle: calc(360deg * var(--mdc-gradient-border-finite-turns));
   }
 }
 
 @keyframes mdc-gradient-border-fade-in {
   from {
-    --_mdc-gradient-border-fade-in-opacity: 0;
+    --mdc-gradient-border-fade-in-opacity: 0;
   }
 
   to {
-    --_mdc-gradient-border-fade-in-opacity: 1;
+    --mdc-gradient-border-fade-in-opacity: 1;
   }
 }
 
 @keyframes mdc-gradient-border-fade-out {
   from {
-    --_mdc-gradient-border-fade-out-opacity: 1;
+    --mdc-gradient-border-fade-out-opacity: 1;
   }
 
   to {
-    --_mdc-gradient-border-fade-out-opacity: calc(1 - var(--_mdc-gradient-border-finite));
+    --mdc-gradient-border-fade-out-opacity: calc(1 - var(--mdc-gradient-border-finite));
   }
 }
 
@@ -111,20 +111,20 @@
   --mdc-gradient-border-iteration-count: infinite;
   --mdc-gradient-border-fade-in-duration: var(--mds-motion-duration-slow, 600ms);
   --mdc-gradient-border-fade-out-duration: var(--mds-motion-duration-slow, 600ms);
-  --_mdc-gradient-border-fade-in-name: none;
-  --_mdc-gradient-border-fade-out-name: none;
-  --_mdc-gradient-border-fade-in-requested: 0s;
-  --_mdc-gradient-border-fade-out-requested: 0s;
+  --mdc-gradient-border-fade-in-name: none;
+  --mdc-gradient-border-fade-out-name: none;
+  --mdc-gradient-border-fade-in-requested: 0s;
+  --mdc-gradient-border-fade-out-requested: 0s;
 }
 
 .mdc-gradient-border-fade-in {
-  --_mdc-gradient-border-fade-in-name: mdc-gradient-border-fade-in;
-  --_mdc-gradient-border-fade-in-requested: max(0s, var(--mdc-gradient-border-fade-in-duration));
+  --mdc-gradient-border-fade-in-name: mdc-gradient-border-fade-in;
+  --mdc-gradient-border-fade-in-requested: max(0s, var(--mdc-gradient-border-fade-in-duration));
 }
 
 .mdc-gradient-border-fade-out {
-  --_mdc-gradient-border-fade-out-name: mdc-gradient-border-fade-out;
-  --_mdc-gradient-border-fade-out-requested: max(0s, var(--mdc-gradient-border-fade-out-duration));
+  --mdc-gradient-border-fade-out-name: mdc-gradient-border-fade-out;
+  --mdc-gradient-border-fade-out-requested: max(0s, var(--mdc-gradient-border-fade-out-duration));
 }
 
 /* Opaque end to end, so the ring reads as a steady hint. */
@@ -171,12 +171,12 @@
      once and never see the animation, which runs on this pseudo-element. The
      start angle is added here too, so it also applies when static. */
   .mdc-gradient-border-primary::after {
-    background: linear-gradient(calc(var(--mdc-gradient-border-start-angle) + var(--_mdc-gradient-border-angle, var(--mds-gradient-border-angle, 0deg))),
+    background: linear-gradient(calc(var(--mdc-gradient-border-start-angle) + var(--mdc-gradient-border-angle, var(--mds-gradient-border-angle, 0deg))),
         var(--mdc-gradient-border-stops));
   }
 
   .mdc-gradient-border-secondary::after {
-    background: conic-gradient(from calc(var(--mdc-gradient-border-start-angle) + var(--_mdc-gradient-border-angle, var(--mds-gradient-border-angle, 0deg))),
+    background: conic-gradient(from calc(var(--mdc-gradient-border-start-angle) + var(--mdc-gradient-border-angle, var(--mds-gradient-border-angle, 0deg))),
         var(--mdc-gradient-border-stops));
   }
 
@@ -191,32 +191,32 @@
   }
 
   .mdc-gradient-border-animated::after {
-    --_mdc-gradient-border-finite-turns: var(--mdc-gradient-border-iteration-count);
-    --_mdc-gradient-border-finite: min(1, round(up, var(--_mdc-gradient-border-finite-turns), 1));
-    --_mdc-gradient-border-total-duration: calc(var(--mdc-gradient-border-duration) * var(--_mdc-gradient-border-finite-turns));
-    --_mdc-gradient-border-fade-in-time: min(
-      var(--_mdc-gradient-border-fade-in-requested),
-      max(var(--_mdc-gradient-border-total-duration), calc(var(--_mdc-gradient-border-fade-in-requested) * (1 - var(--_mdc-gradient-border-finite))))
+    --mdc-gradient-border-finite-turns: var(--mdc-gradient-border-iteration-count);
+    --mdc-gradient-border-finite: min(1, round(up, var(--mdc-gradient-border-finite-turns), 1));
+    --mdc-gradient-border-total-duration: calc(var(--mdc-gradient-border-duration) * var(--mdc-gradient-border-finite-turns));
+    --mdc-gradient-border-fade-in-time: min(
+      var(--mdc-gradient-border-fade-in-requested),
+      max(var(--mdc-gradient-border-total-duration), calc(var(--mdc-gradient-border-fade-in-requested) * (1 - var(--mdc-gradient-border-finite))))
     );
-    --_mdc-gradient-border-fade-out-time: min(
-      var(--_mdc-gradient-border-fade-out-requested),
-      max(0s, calc(var(--_mdc-gradient-border-total-duration) - var(--_mdc-gradient-border-fade-in-time)))
+    --mdc-gradient-border-fade-out-time: min(
+      var(--mdc-gradient-border-fade-out-requested),
+      max(0s, calc(var(--mdc-gradient-border-total-duration) - var(--mdc-gradient-border-fade-in-time)))
     );
-    --_mdc-gradient-border-angle: calc(
-      var(--mds-gradient-border-angle) * (1 - var(--_mdc-gradient-border-finite)) +
-      var(--_mdc-gradient-border-settle-angle)
+    --mdc-gradient-border-angle: calc(
+      var(--mds-gradient-border-angle) * (1 - var(--mdc-gradient-border-finite)) +
+      var(--mdc-gradient-border-settle-angle)
     );
 
-    opacity: calc(var(--_mdc-gradient-border-fade-in-opacity) * var(--_mdc-gradient-border-fade-out-opacity));
+    opacity: calc(var(--mdc-gradient-border-fade-in-opacity) * var(--mdc-gradient-border-fade-out-opacity));
     animation:
       var(--mdc-gradient-border-duration) linear 0ms var(--mdc-gradient-border-iteration-count) mdc-gradient-border-rotate,
-      var(--_mdc-gradient-border-total-duration) var(--mds-motion-easing-entrance, cubic-bezier(0, 0, 0.2, 1))
+      var(--mdc-gradient-border-total-duration) var(--mds-motion-easing-entrance, cubic-bezier(0, 0, 0.2, 1))
       0ms 1 forwards mdc-gradient-border-settle,
-      var(--_mdc-gradient-border-fade-in-time) var(--mds-motion-easing-entrance, cubic-bezier(0, 0, 0.2, 1))
-      0ms 1 both var(--_mdc-gradient-border-fade-in-name),
-      var(--_mdc-gradient-border-fade-out-time) var(--mds-motion-easing-exit, cubic-bezier(0.5, 0, 1, 1))
-      calc(var(--_mdc-gradient-border-total-duration) - var(--_mdc-gradient-border-fade-out-time))
-      1 forwards var(--_mdc-gradient-border-fade-out-name);
+      var(--mdc-gradient-border-fade-in-time) var(--mds-motion-easing-entrance, cubic-bezier(0, 0, 0.2, 1))
+      0ms 1 both var(--mdc-gradient-border-fade-in-name),
+      var(--mdc-gradient-border-fade-out-time) var(--mds-motion-easing-exit, cubic-bezier(0.5, 0, 1, 1))
+      calc(var(--mdc-gradient-border-total-duration) - var(--mdc-gradient-border-fade-out-time))
+      1 forwards var(--mdc-gradient-border-fade-out-name);
   }
 }
 
