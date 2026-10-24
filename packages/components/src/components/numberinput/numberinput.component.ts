@@ -137,6 +137,7 @@ class NumberInput extends Input {
    * in `data`; pasted/dropped text arrives in `dataTransfer`. Deletions, caret navigation and IME
    * composition carry neither, so they pass through. The sign (`-`) and decimal point (`.`) are
    * numeric structural characters, so they are allowed and left to native range/step validation.
+   * The decimal point is allowed only when the step permits decimals.
    */
   private handleBeforeInput = (event: InputEvent) => {
     const inserted = event.data ?? event.dataTransfer?.getData('text') ?? '';
@@ -144,7 +145,17 @@ class NumberInput extends Input {
       return;
     }
 
-    if (!/^[\d.-]*$/.test(inserted)) {
+    let allowedCharacters = '\\d';
+
+    if (this.min === undefined || this.min < 0) {
+      allowedCharacters += '\\-';
+    }
+
+    if (this.step === DEFAULTS.STEP_ANY || (Number.isFinite(this.step) && !Number.isInteger(this.step))) {
+      allowedCharacters += '\\.';
+    }
+
+    if (!new RegExp(`^[${allowedCharacters}]*$`).test(inserted)) {
       event.preventDefault();
     }
   };
