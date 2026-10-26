@@ -1,6 +1,7 @@
 import { ReactiveController } from 'lit';
 
 import type { Component } from '../../models';
+import { composedContains, isBefore } from '../dom';
 
 /**
  * Types of changes that can occur in the stack
@@ -50,6 +51,8 @@ type PopPredicateFn = (item: StackedOverlayComponent, idx: number) => true | fal
  * @internal
  */
 const elementStack: StackedOverlayComponent[] = [];
+const eventOwners = new WeakMap<Event, StackedOverlayComponent | undefined>();
+const handledEvents = new WeakSet<Event>();
 
 /**
  * Initial z-index for the first element in the stack
@@ -81,15 +84,15 @@ export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
  *
  * ### Pop until specific overlay
  *
- * When the chain of nested popover (e.g.: submenus) opened and the user closes other than the last one,
- * we have to close all overlays stacked above the specific one. In this case, the `popItem` or directly the `pupUntil` method is used.
+ * When a nested overlay (e.g. a submenu) closes, `popItem` closes its same-group
+ * DOM/trigger descendants as well. Visual order and registration history do not imply nesting.
  *
  * ### Closing "sibling" overlays
  *
  * In some cases, multiple overlays can be opened from the same trigger (e.g.: tooltip, context menu, etc.), we can not close
  * all overlays above the specific one, because they independently opened.
  *
- * `popUntil` method can handle this case by skipping the overlays which share the same trigger ID as the specified one.
+ * `popItem` skips descendants which share the same non-empty trigger ID as the specified one.
  *
  * ### Manually removing overlays
  *
@@ -130,13 +133,68 @@ export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
  * ```
  */
 export class DepthManager implements ReactiveController {
+  private static controllers = new WeakMap<StackedOverlayComponent, DepthManager>();
+
   private readonly host: StackedOverlayComponent;
+
+  private explicitZIndex?: number;
+
+  /** Managed layers in ascending visual order; registration remains automatic-depth bookkeeping. */
+  public static getOrderedHosts(): StackedOverlayComponent[] {
+    const paths = new Map(
+      elementStack.map(host => {
+        const ancestors = elementStack.filter(parent => parent !== host && composedContains(parent, host));
+        ancestors.sort((a, b) => {
+          if (a === b) return 0;
+          return composedContains(a, b) ? -1 : 1;
+        });
+        return [host, [...ancestors, host]];
+      }),
+    );
+    return [...elementStack].sort((a, b) => {
+      const aPath = paths.get(a)!;
+      const bPath = paths.get(b)!;
+      // A child's local z-index cannot escape its ancestor's stacking context.
+      // Compare the first different branch, or place a descendant after its ancestor.
+      for (let index = 0; index < Math.min(aPath.length, bPath.length); index += 1) {
+        const first = aPath[index];
+        const second = bPath[index];
+        if (first !== second) {
+          const difference =
+            DepthManager.controllers.get(first)!.getHostZIndex() -
+            DepthManager.controllers.get(second)!.getHostZIndex();
+          if (difference) return difference;
+          if (first.getRootNode() === second.getRootNode()) return isBefore(first, second) ? -1 : 1;
+          return elementStack.indexOf(first) - elementStack.indexOf(second);
+        }
+      }
+      return aPath.length - bPath.length;
+    });
+  }
+
+  /** Finds the owning managed layer, including for standalone traps inside an overlay. */
+  public static getContainingHost(element: Element): StackedOverlayComponent | undefined {
+    let current: Element | null = element;
+    while (current) {
+      const controller = DepthManager.controllers.get(current as StackedOverlayComponent);
+      if (controller && 'zIndex' in current) return controller.host;
+      const parent: Node | null = current.assignedSlot || current.parentNode;
+      current = parent instanceof ShadowRoot ? parent.host : (parent as Element | null);
+      if (!(current instanceof Element)) return undefined;
+    }
+    return undefined;
+  }
+
+  private notifyMoved() {
+    [...elementStack].forEach(element => element.onComponentStackChanged?.('moved'));
+  }
 
   /**
    * Creates an instance of DepthManager.
    */
   constructor(host: StackedOverlayComponent) {
     this.host = host;
+    DepthManager.controllers.set(host, this);
     host.addController(this);
   }
 
@@ -144,7 +202,7 @@ export class DepthManager implements ReactiveController {
 
   public hostDisconnected() {
     // Remove this instance from the global stack on disconnect
-    this.remove([this.host]);
+    this.popHost();
   }
 
   /**
@@ -163,13 +221,14 @@ export class DepthManager implements ReactiveController {
     if (!this.has(this.host)) {
       elementStack.push(this.host);
       this.host.onComponentStackChanged?.('added');
+      this.notifyMoved();
       return true;
     }
     return false;
   }
 
   /**
-   * Pops all the items above the host and then pops the host itself
+   * Removes the host and its same-group nested descendants
    *
    * @returns The host if it was in the stack, undefined otherwise
    */
@@ -178,7 +237,7 @@ export class DepthManager implements ReactiveController {
   }
 
   /**
-   * Pops all the items above the specified item and then pops the item itself
+   * Removes an overlay and its same-group DOM/trigger descendants
    *
    * @param item - The item to pop
    * @returns The item if it was in the stack, undefined otherwise
@@ -187,43 +246,56 @@ export class DepthManager implements ReactiveController {
     if (!this.has(item)) {
       return undefined;
     }
-    const items = elementStack.filter(e => e.stackGroupName === item.stackGroupName);
-    const itemIdx = items.indexOf(item);
-    const toRemove: StackedOverlayComponent[] = [];
-    for (let i = items.length - 1; i >= itemIdx; i -= 1) {
-      const it = items[i];
-      // Skip siblings that share the same trigger (e.g.: tooltip + popover on same trigger)
-      if (it === item || it.triggerID !== item.triggerID) {
-        toRemove.push(it);
-      }
-    }
-    this.remove(toRemove);
+    const toRemove = new Set([item]);
+    // Follow existing trigger/DOM relationships, not opening time or visual rank.
+    // Repeat to include descendants whose popovers have been portaled elsewhere.
+    let previousSize: number;
+    do {
+      previousSize = toRemove.size;
+      elementStack.forEach(candidate => {
+        if (toRemove.has(candidate) || candidate.stackGroupName !== item.stackGroupName) return;
+        const trigger = candidate.triggerID
+          ? (candidate.getRootNode() as Document | ShadowRoot | Element).querySelector(
+              `#${CSS.escape(candidate.triggerID)}`,
+            )
+          : null;
+        const nested = [...toRemove].some(parent => {
+          if (parent.triggerID && parent.triggerID === candidate.triggerID) return false;
+          return composedContains(parent, candidate) || (trigger && composedContains(parent, trigger));
+        });
+        if (nested) toRemove.add(candidate);
+      });
+    } while (previousSize !== toRemove.size);
+    this.remove(
+      DepthManager.getOrderedHosts()
+        .reverse()
+        .filter(candidate => toRemove.has(candidate)),
+    );
     return item;
   }
 
   /**
-   * Removes the last element from the stack
+   * Removes the highest resolved layer from the stack.
    *
-   * @returns The last element in the stack
+   * @returns The highest resolved layer
    */
   public pop(): StackedOverlayComponent | undefined {
-    const popped = elementStack.pop();
-    popped?.onComponentStackChanged?.('removed');
+    const popped = this.peek();
+    if (popped) this.remove([popped]);
     return popped;
   }
 
   /**
    * Removes elements from the stack until the predicate function returns false
    *
-   * Note: it will remove the
-   *
    * @param predicateFn - The predicate function to test each element
    * @returns The removed elements
    */
   public popUntil(predicateFn: PopPredicateFn): StackedOverlayComponent[] {
     const poppedElements: StackedOverlayComponent[] = [];
-    for (let i = elementStack.length - 1; i >= 0; i -= 1) {
-      const item = elementStack[i];
+    const ordered = DepthManager.getOrderedHosts();
+    for (let i = ordered.length - 1; i >= 0; i -= 1) {
+      const item = ordered[i];
       const result = predicateFn(item, i);
 
       if (result === false) break;
@@ -233,13 +305,12 @@ export class DepthManager implements ReactiveController {
   }
 
   /**
-   * Returns the last element in the stack
-   * without removing it
+   * Returns the highest resolved layer without removing it.
    *
-   * @returns The last element in the stack
+   * @returns The highest resolved layer
    */
   public peek(): StackedOverlayComponent | undefined {
-    return elementStack.at(-1);
+    return DepthManager.getOrderedHosts().at(-1);
   }
 
   /**
@@ -253,7 +324,6 @@ export class DepthManager implements ReactiveController {
    */
   public remove(elements: StackedOverlayComponent[]): StackedOverlayComponent[] {
     const removedElements = elements.filter(el => elementStack.includes(el));
-    const updateStackFrom = removedElements.reduce((idx, el) => Math.min(idx, elementStack.indexOf(el)), Infinity);
 
     // Remove all elements from the stack first, before any notifications,
     // to prevent re-entrant mutations from corrupting indices.
@@ -265,10 +335,7 @@ export class DepthManager implements ReactiveController {
       el?.onComponentStackChanged?.('removed');
     });
 
-    // Notify elements about the move
-    for (let i = updateStackFrom; i < elementStack.length; i += 1) {
-      elementStack[i].onComponentStackChanged?.('moved');
-    }
+    if (removedElements.length) this.notifyMoved();
     return removedElements;
   }
 
@@ -283,14 +350,14 @@ export class DepthManager implements ReactiveController {
   }
 
   /**
-   * Gets the depth of the host element in the stack
+   * Gets the registration depth of the host (used only for automatic z-index).
    */
   public getHostDepth(): number {
     return this.getElementDepth(this.host);
   }
 
   /**
-   * Gets the depth of the element in the stack
+   * Gets the registration depth of the element (not its resolved visual rank).
    * @param element - The element to get the depth of
    */
   public getElementDepth(element: StackedOverlayComponent): number {
@@ -313,6 +380,8 @@ export class DepthManager implements ReactiveController {
    * on the first render cycle, before `pushHost()` runs in `updated()`.
    */
   public getItemZIndex(element: StackedOverlayComponent): number {
+    const explicit = DepthManager.controllers.get(element)?.explicitZIndex;
+    if (explicit !== undefined) return explicit;
     const depth = this.getElementDepth(element);
     return depth >= 0 ? BASE_Z_INDEX + depth * NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT : BASE_Z_INDEX;
   }
@@ -322,8 +391,25 @@ export class DepthManager implements ReactiveController {
    *
    * @returns True if host is on top, false otherwise
    */
-  public isHostOnTop(): boolean {
-    return this.peek() === this.host;
+  public isHostOnTop(event?: Event): boolean {
+    if (!event) return this.peek() === this.host;
+    if (!eventOwners.has(event)) eventOwners.set(event, this.peek());
+    return eventOwners.get(event) === this.host;
+  }
+
+  /** Consume a dismissal once, even when the owner listens on both host and document. */
+  public claimHostEvent(event: Event): boolean {
+    if (handledEvents.has(event) || !this.isHostOnTop(event)) return false;
+    handledEvents.add(event);
+    return true;
+  }
+
+  /** Updates the existing zIndex override without changing registration depth. */
+  public setHostZIndex(value: number): void {
+    const explicit = Number.isInteger(value) ? value : undefined;
+    if (explicit === this.explicitZIndex) return;
+    this.explicitZIndex = explicit;
+    if (this.has(this.host)) this.notifyMoved();
   }
 
   /**

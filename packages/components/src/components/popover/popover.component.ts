@@ -327,27 +327,18 @@ class Popover
   size: boolean = DEFAULTS.SIZE;
 
   /**
-   * The internal z-index of the popovere.
-   * @internal
-   */
-  private internalZIndex?: number;
-
-  /**
-   * The effective z-index of the popover.
+   * The effective z-index of the popover, also used for managed dismissal and eligible focus ordering.
    *
    * If no explicit `z-index` value is provided, then it automatically calculated
    * to ensure proper stacking order among multiple overlays.
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
   get zIndex() {
-    if (!Number.isInteger(this.internalZIndex)) {
-      return this.depthManager.getHostZIndex();
-    }
-    return this.internalZIndex!;
+    return this.depthManager.getHostZIndex();
   }
 
   set zIndex(value: number) {
-    this.internalZIndex = value;
+    this.depthManager.setHostZIndex(value);
   }
 
   /**
@@ -554,7 +545,7 @@ class Popover
     super.disconnectedCallback();
 
     this.removeAllListeners();
-    this.deactivateFocusTrap?.();
+    this.deactivateFocusTrap(this.focusBackToTrigger ? this.triggerElement : undefined);
     this.deactivatePreventScroll();
 
     this.moveElementBackAfterBackdropRemoval(this.triggerElement);
@@ -713,9 +704,10 @@ class Popover
       this.utils.updateAriaExpandedAttribute();
     }
 
-    if (changedProperties.has('focusTrap')) {
-      // if focusTrap turned false and the popover is visible, deactivate the focus trap
-      if (!this.focusTrap && this.visible) {
+    if ((changedProperties.has('focusTrap') || changedProperties.has('interactive')) && this.visible) {
+      if (this.focusTrap && this.interactive) {
+        if (!changedProperties.has('visible')) this.initializeFocusTrap();
+      } else {
         this.deactivateFocusTrap();
       }
     }
@@ -737,7 +729,7 @@ class Popover
    * @internal
    */
   protected onOutsidePopoverClick = (event: MouseEvent) => {
-    if (!this.depthManager.isHostOnTop()) return;
+    if (!this.depthManager.isHostOnTop(event)) return;
 
     const path = event.composedPath();
     const insidePopoverClick =
@@ -745,6 +737,7 @@ class Popover
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
+      if (!this.depthManager.claimHostEvent(event)) return;
       this.hide();
       PopoverEventManager.onClickOutside(this);
       if (clickedOnBackdrop) {
@@ -762,7 +755,11 @@ class Popover
    * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
+    if (
+      !this.visible ||
+      this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
+      !this.depthManager.claimHostEvent(event)
+    ) {
       return;
     }
 
@@ -791,9 +788,20 @@ class Popover
   /** @internal */
   onComponentStackChanged(changed: StackChange): void {
     if (changed === 'removed') {
-      this.hide();
-    } else if (changed === 'moved') {
-      this.requestUpdate('zIndex');
+      this.deactivateFocusTrap(this.focusBackToTrigger ? this.triggerElement : undefined);
+      this.visible = false;
+    } else {
+      this.refreshFocusTrap();
+      if (changed === 'moved') this.requestUpdate('zIndex');
+    }
+  }
+
+  /** Initialize eligible focus once and cancel any pending opening callback. @internal */
+  protected initializeFocusTrap(): void {
+    this.timers.clearTimeout(TIMEOUTS.FOCUS);
+    if (this.visible && this.isConnected && this.interactive && this.focusTrap) {
+      this.activateFocusTrap();
+      this.setInitialFocus(this.elementIndexToReceiveFocus ?? 0);
     }
   }
 
@@ -851,15 +859,11 @@ class Popover
       }
 
       // make sure popover is fully rendered before activating focus trap
-      setTimeout(() => {
-        if (this.interactive && this.focusTrap) {
-          this.activateFocusTrap?.();
-          this.setInitialFocus?.(this.elementIndexToReceiveFocus ?? 0);
-        }
-      }, 0);
+      this.timers.setTimeout(TIMEOUTS.FOCUS, () => this.initializeFocusTrap(), 0);
 
       PopoverEventManager.onShowPopover(this);
     } else {
+      this.timers.clearTimeout(TIMEOUTS.FOCUS);
       this.depthManager.popHost();
 
       // cleanup floating-ui on closing the popover
@@ -887,11 +891,7 @@ class Popover
       }
 
       this.deactivatePreventScroll();
-      this.deactivateFocusTrap?.();
-
-      if (this.focusBackToTrigger) {
-        triggerElement?.focus();
-      }
+      this.deactivateFocusTrap(this.focusBackToTrigger ? triggerElement : undefined);
 
       if (!this.keepConnectedTooltipOpen) {
         if (this.connectedTooltip) {
