@@ -1,180 +1,136 @@
 # Overlays
 
-There are many components in Momentum Design that create overlays. An overlay is
-any element that appears on top of the main content, often blocking interaction
-with the underlying content until it is dismissed.
+Momentum's overlay family includes Dialog and AnnouncementDialog, Popover and
+its derivatives (MenuPopover, Tooltip, Toggletip, Coachmark), and surfaces used
+by components such as Select and SearchPopover.
 
-- Dialog, and extends:
-  - Announcement dialog
-- Popover, and extends:
-  - Menu popover
-  - Tooltip
-  - Toggle
-  - Coachmark
+## Layer ordering
 
-Also, there are other components that create uses overlays, such as:
+Managed overlays use one resolved layer order for visual placement and
+dismissal. Opening time determines the automatic z-index, but an explicit
+`zIndex` property (or `z-index` attribute) also determines interaction order.
 
-- Select
-- Combobox
-- Search popover
+- An automatic overlay receives `1000 + 3 × registration index`.
+- An explicit integer overrides that automatic value.
+- Within the same managed parent context, the highest resolved value is on top.
+- A DOM-nested overlay is above its managed ancestor even when its own value is
+  lower. Its entire branch stays at the ancestor's level relative to unrelated
+  overlays; a high child value cannot escape a lower ancestor's context.
+- Equal values between branches follow DOM order when the hosts share a root:
+  the later host is above the earlier one. Otherwise registration order breaks
+  the tie.
+- Changing `zIndex` while open reevaluates dismissal and eligible focus
+  ownership without reopening the overlay. Removing the attribute returns to
+  automatic ordering.
 
-## Stacking overlays
+Registration bookkeeping is not sorted by resolved z-index. This avoids a
+feedback loop between automatic values and their ordering. When an overlay is
+removed, remaining automatic values are recalculated from their new registration
+indices; explicit values do not change.
 
-Depth of the overlays is managed using a stack. When an overlay is opened, it is
-added to the top of the stack. When an overlay is closed, it is removed from the
-stack.
+For example, opening an automatic Popover and then a Dialog with `z-index="1"`
+leaves the Popover above the Dialog. Opening later does not give that lower
+Dialog dismissal or focus ownership.
 
-### Opening overlays
+### Scope
 
-When an overlay is opened, it is added to the top of the stack and given focus.
-If there is another overlay already open, it remains in the stack but loses
-focus.
+This ordering applies to Momentum-managed layers in comparable CSS stacking
+contexts. A numeric z-index cannot override ancestor stacking contexts or the
+browser's native top layer. Momentum accounts for managed DOM ancestors, but it
+does not infer global browser paint order.
 
-An overlay can appear only once in the stack. If an attempt is made to open an
-overlay that is already in the stack, it will stay the same position in the
-stack.
+Dialog stays where it is rendered. Popover also stays in place unless
+`append-to` moves it into the identified container. Choose suitable containers
+when escaping clipping ancestors; `append-to` does not make arbitrary stacking
+contexts numerically comparable. Trigger nesting preserves cascading and focus
+return, not CSS ancestry: a portaled overlay is ordered numerically where it is
+actually placed.
 
-### Closing overlays
+### Backdrops and triggers
 
-When an overlay is closed, it is removed from the stack and focus is returned to
-the next overlay in the stack (if any).
+Each overlay retains these offsets from its resolved value:
 
-There are multiple ways to close an overlay:
+- overlay: `zIndex`
+- trigger, when raised above a Popover backdrop: `zIndex - 1`
+- backdrop: `zIndex - 2`
 
-- press the Escape key
-- click outside the overlay, on the backdrop (if present)
-- click on a close button inside the overlay
-- programmatically via the `hide()` method
+An automatic first overlay therefore uses 1000, 999, and 998. The next uses
+1003, 1002, and 1001. Explicit values retain the same offsets, including after a
+live property change. Leave enough space between explicit values if their
+backdrop/trigger bands must not overlap.
 
-#### Closing with Escape key
+## Dismissal
 
-When the Escape key is pressed, only the topmost overlay in the stack is closed.
+Escape and outside-click handlers act only for the top managed layer, subject to
+the component's dismissal settings. One event retains one dismissal owner, even
+if closing that layer exposes another one during event propagation.
 
-##### Open multiple overlays from a single element
+A component may also close through its close button, public visibility property,
+or `hide()` method where supported. Component-specific events and controlled
+visibility conventions are documented on the individual components.
 
-When multiple overlays are opened from a single trigger element (e.g., a button
-which opens an popover, but it also has a tooltip) the opening and closing order
-matters.
+## Nesting and lifecycle
 
-Depth manager can handle this scenario correctly but only if all "sibling"
-overlays have `triggerid` attribute with the same value.
+Closing or disconnecting an overlay removes its genuinely nested descendants
+within the same stack group. Nesting follows DOM containment and triggers inside
+another overlay, including chains whose Popovers have been moved with
+`append-to`. Current keyboard focus is not evidence of nesting.
 
-for example:
+Independent overlays are not descendants merely because they opened later or
+have a higher z-index. Hiding either independent overlay leaves the other open,
+regardless of opening order. This replaces the previous blanket rule that
+closing an overlay also closed later same-group registrations.
+
+### Same-trigger siblings
+
+Multiple overlays can share an opener, such as a Tooltip and Popover. Set their
+`triggerid` attributes to the same non-empty ID. Closing one does not cascade to
+the other as a nested descendant.
 
 ```html
-<mdc-button id="opener">Open dialog</mdc-button>
-<mdc-dialog triggerid="opener">...</mdc-dialog>
+<mdc-button id="opener">Open details</mdc-button>
+<mdc-popover triggerid="opener">...</mdc-popover>
 <mdc-tooltip triggerid="opener">...</mdc-tooltip>
 ```
 
-> Note: `triggerid` attribute is needed even if the overlay manually opened.
-
-#### Closing multiple overlays
-
-When there are multiple overlays open and not the topmost overlay is closed
-(e.g., programmatically, or by clicking a close button inside a dialog with open
-popover(s)), all overlays above it **within the same stack group** are also
-closed. Overlays belonging to a different group remain open.
-
 ### Stack groups
 
-Overlays can be assigned to a **stack group** using the `stack-group-name`
-attribute. Stack groups allow independent sets of overlays to coexist in the
-same global stack without interfering with each other.
+The `stack-group-name` attribute limits descendant cascading. A nested overlay
+in a different group is not removed by its ancestor's stack removal. Overlays
+without a group use the default group (an empty string).
 
-In a conventional stack, removing an element also removes every element above
-it. With stack groups, only the elements that belong to the **same group** are
-affected — elements from other groups are left untouched.
+For example, a Dialog may contain a warning Popover in group `warning` and a
+combobox dropdown in the default group. Dismissing the warning does not remove
+the independent dropdown. Group membership does not change resolved visual order
+or give an overlay focus ownership.
 
-#### How it works
+DOM removal still removes actual DOM children. Popover's `append-to` placeholder
+also removes its moved Popover when the original containing subtree is removed;
+a separate stack group does not override DOM lifecycle.
 
-When an overlay is closed (popped), the DepthManager:
+## Focus ownership
 
-1. Filters the global stack to find only the elements that share the same
-   `stack-group-name` as the overlay being closed.
-2. Removes the target overlay and all same-group elements above it from the
-   stack.
-3. Recalculates the z-index of the remaining elements to fill any gaps left by
-   the removal, ensuring continuous layering with no z-index holes.
+Only the highest eligible focus-managing layer has an active focus trap. A
+higher non-focus-trapping Tooltip does not suspend the trap below it. Dialog's
+`focus-trap` setting and Popover's `interactive` plus `focus-trap` settings
+control eligibility.
 
-Elements that do not specify a `stack-group-name` (or use an empty string) are
-all considered part of the **default group** and behave as before.
+Opening a lower eligible overlay registers its trap without moving focus away
+from the higher owner. Changes to z-index or focus eligibility reevaluate the
+owner. Initial focus and deferred activation respect that ownership.
 
-#### Example: Dialog with a warning popover and a combobox dropdown
+When the focus owner closes, focus returns to its available trigger/previous
+focus target if that target belongs to the resumed trap (or no trap remains).
+For a portaled menu chain, restoration skips targets in removed layers and
+follows trigger relationships to an available opener within the resumed trap.
+Otherwise focus moves into the resumed trap.
 
-Consider a dialog that contains a combobox and a warning popover. The warning
-popover is assigned to a separate group so that dismissing it does not cascade
-to the combobox dropdown:
+An overlay owns focus for restoration when it is the active trap or contains the
+actual focused element. This includes a non-trapping Popover inside a Dialog and
+an ancestor whose child just restored focus during a cascading close. A lower
+overlay that has neither ownership cannot restore focus on hide or disconnect.
 
-```
-Stack (bottom → top): [ Dialog, Warning Popover, Combobox Dropdown ]
-                        group: ""  group: "warning"   group: ""
-```
-
-When the warning popover is dismissed:
-
-1. Only elements in the `"warning"` group are considered — the warning popover
-   is removed.
-2. The dialog and combobox dropdown (both in the default group) are **not**
-   affected and remain open.
-3. Z-indices are recalculated so all remaining overlays layer correctly without
-   gaps.
-
-```
-Stack after removal:   [ Dialog, Combobox Dropdown ]
-                         group: ""  group: ""
-```
-
-Without stack groups, closing the warning popover (a middle element) would also
-close the combobox dropdown above it, since it would cascade upward through the
-entire stack.
-
-#### Usage
-
-Set the `stack-group-name` attribute on the overlay element:
-
-```html
-<mdc-popover stack-group-name="warning-overlay" trigger="manual">
-  ...
-</mdc-popover>
-```
-
-Overlays with the same `stack-group-name` value form a group. Closing any
-overlay in the group cascades only within that group. Overlays without a
-`stack-group-name` (or with an empty value) belong to the default group.
-
-#### Z-index recalculation
-
-When elements are removed from the middle of the stack, the remaining elements
-receive a `moved` notification. This triggers a z-index recalculation so that
-every overlay in the stack maintains continuous, gap-free layering based on its
-new position.
-
-## Layering components
-
-Overlays are layered using CSS `z-index` property which is calculated based on
-the position of the overlay in the stack.
-
-Z-index is incremented by 3 for each overlay in the stack, starting from a base
-value of 1000.
-
-This allows for proper layering of overlay, backdrops, and trigger elements, for
-example the first overlay in the stack will have the following z-index values:
-
-- 1000: z-index of the overlay element (e.g. popover, dialog, etc.)
-- 999: z-index of the trigger component (if any)
-- 998: z-index of the backdrop (if any)
-
-The next overlay will have z-index values of 1003, 1002, and 1001 respectively,
-and so on.
-
-### Overwriting z-index
-
-In some cases, it might be necessary to overwrite the calculated z-index of an
-overlay. It can be done by setting the `z-index` attribute on the overlay
-element.
-
-Backdrop and trigger elements will have their z-index adjusted accordingly.
-
-> ⚠️Setting a custom z-index might cause layering issues with other overlays in
-> the stack. ⚠️
+Standalone FocusTrap components retain activation ordering. Inside a managed
+overlay, they share its layer; the most recently activated trap within that
+layer owns focus. Spatial navigation uses the same active trap as Tab
+navigation.

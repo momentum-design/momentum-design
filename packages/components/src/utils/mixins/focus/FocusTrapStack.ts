@@ -1,80 +1,113 @@
+import { DepthManager } from '../../controllers/DepthManager';
+import { composedContains, getDomActiveElement } from '../../dom';
+
 /**
- * FocusTrapStack manages a stack of active focus traps,
- * ensuring only one focus trap is active at a time.
- *
- * This also makes sure there is only one keydown listener active at a time,
- * which is necessary to handle focus trapping correctly.
- *
- * Handling iFrames is supported, as long as there are focusable elements around the iFrame.
- * Otherwise it will not work as expected.
+ * Keeps one eligible trap and one Tab listener active. Managed overlays share
+ * DepthManager's layer order; standalone traps retain activation ordering.
  */
 export class FocusTrapStack {
   private static stack: Set<any> = new Set();
+
+  private static activeTrap: any;
 
   static get stackArray() {
     return Array.from(this.stack);
   }
 
   static getActiveTrap() {
-    return this.stackArray.at(-1);
+    return this.activeTrap;
   }
 
   private static currentKeydownListener: ((event: KeyboardEvent) => void) | null = null;
 
-  private static addKeydownListener(keydownListener: (event: KeyboardEvent) => void) {
-    this.currentKeydownListener = keydownListener;
-    document.addEventListener('keydown', keydownListener);
+  private static getNextTrap() {
+    const layers = DepthManager.getOrderedHosts();
+    const eligible = this.stackArray
+      .filter(trap => {
+        const layer = DepthManager.getContainingHost(trap);
+        return !layer || layers.includes(layer);
+      })
+      .reverse();
+    const latest = eligible[0];
+    if (!latest || !DepthManager.getContainingHost(latest)) return latest;
+
+    // A standalone trap inside an overlay shares that overlay's layer. Within
+    // one layer, the most recently activated (e.g. nested) trap takes precedence.
+    return [...layers]
+      .reverse()
+      .map(layer => eligible.find(trap => DepthManager.getContainingHost(trap) === layer))
+      .find(Boolean);
   }
 
-  private static removeKeydownListener() {
+  /** Reevaluate ownership after a managed layer changes, without re-registering traps. */
+  static refresh(moveFocus: boolean = false) {
+    const previous = this.activeTrap;
+    const next = this.getNextTrap();
+    if (previous === next) return;
+
+    previous?.setIsFocusTrapActivated(false);
+    this.activeTrap = next;
+    next?.setIsFocusTrapActivated(true);
+
     if (this.currentKeydownListener) {
       document.removeEventListener('keydown', this.currentKeydownListener);
       this.currentKeydownListener = null;
     }
-  }
-
-  /**
-   * Activates a focus trap by adding it to the stack.
-   * It deactivates all other traps in the stack to ensure only one trap is active
-   *
-   * @param trap - The focus trap to activate.
-   */
-  static activate(trap: any) {
-    // Deactivate all other traps
-    this.stackArray.forEach(activeTrap => {
-      if (activeTrap !== trap) {
-        activeTrap.setIsFocusTrapActivated(false);
-      }
-    });
-    this.stack.add(trap);
-
-    // remove the current keydown listener if it exists
-    // and add a new one for the current trap
-    this.removeKeydownListener();
-    this.addKeydownListener(trap.handleTabKeydown.bind(trap));
-  }
-
-  /**
-   * Deactivates a focus trap by removing it from the stack.
-   * Activates the previous trap in the stack if any.
-   *
-   * @param trap - The focus trap to deactivate.
-   */
-  static deactivate(trap: any) {
-    if (!this.stack.has(trap)) {
-      return;
+    if (next) {
+      this.currentKeydownListener = next.handleTabKeydown.bind(next);
+      document.addEventListener('keydown', this.currentKeydownListener!);
     }
 
-    this.stack.delete(trap);
-    this.removeKeydownListener();
+    if (moveFocus && previous && next && composedContains(previous, getDomActiveElement())) {
+      next.setInitialFocus();
+    }
+  }
 
-    // activate the previous trap in the stack if any
-    if (this.stack.size > 0) {
-      const lastTrap = this.stackArray.pop();
-      if (lastTrap) {
-        lastTrap.setIsFocusTrapActivated(true);
-        this.addKeydownListener(lastTrap.handleTabKeydown.bind(lastTrap));
+  static activate(trap: any) {
+    this.stack.delete(trap);
+    this.stack.add(trap);
+    this.refresh();
+  }
+
+  private static getRestoreTarget(next?: HTMLElement, target?: HTMLElement | null): HTMLElement | undefined {
+    let current = target;
+    let candidate: HTMLElement | undefined;
+    const layers = DepthManager.getOrderedHosts();
+    const visited = new Set<HTMLElement>();
+    // Skip targets inside removed layers. Trigger links lead portaled menu
+    // chains back to an available target within the resumed trap.
+    while (current && !visited.has(current)) {
+      visited.add(current);
+      const overlay = DepthManager.getContainingHost(current);
+      if (
+        !candidate &&
+        (!overlay || layers.includes(overlay)) &&
+        current.isConnected &&
+        current.getClientRects().length
+      ) {
+        candidate = current;
       }
+      if (candidate && (!next || composedContains(next, current))) return candidate;
+      if (!overlay?.triggerID) return undefined;
+      current = (overlay.getRootNode() as Document | ShadowRoot | Element).querySelector<HTMLElement>(
+        `#${CSS.escape(overlay.triggerID)}`,
+      );
+    }
+    return undefined;
+  }
+
+  /** Remove a trap; only its focus owner may restore focus into the resumed layer. */
+  static deactivate(trap: any, restoreTarget?: HTMLElement | null) {
+    const wasActive = this.activeTrap === trap || composedContains(trap, getDomActiveElement());
+    this.stack.delete(trap);
+    this.refresh();
+    if (!wasActive) return;
+
+    const next = this.activeTrap;
+    const target = this.getRestoreTarget(next, restoreTarget);
+    target?.focus({ preventScroll: true });
+    if (next && !composedContains(target || next, getDomActiveElement())) {
+      next.setInitialFocus();
     }
   }
 }

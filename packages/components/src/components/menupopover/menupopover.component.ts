@@ -11,6 +11,8 @@ import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { DepthManager } from '../../utils/controllers/DepthManager';
+import { FocusTrapStack } from '../../utils/mixins/focus/FocusTrapStack';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
@@ -130,7 +132,7 @@ class MenuPopover extends Popover {
   }
 
   protected override async isOpenUpdated(oldValue: boolean, newValue: boolean): Promise<void> {
-    if (oldValue === newValue || !this.triggerElement) return Promise.resolve();
+    if (oldValue === newValue || !this.triggerElement) return;
 
     // Set backdrop to true when the popover is opened with other than menu item.
     //
@@ -142,19 +144,11 @@ class MenuPopover extends Popover {
       );
     }
 
-    // if the current menupopover is closed, close all submenus
-    if (newValue === false) {
-      this.menuItemsWithSubMenus.forEach(item => {
-        const submenu = this.getSubMenuPopoverOfTarget(item);
-        if (submenu) {
-          submenu.hide();
-        }
-      });
-    }
-
     this.resetMenuNavigation();
 
-    return super.isOpenUpdated(oldValue, newValue);
+    await super.isOpenUpdated(oldValue, newValue);
+    // Menus must be ready for arrow navigation as soon as they become visible.
+    if (this.visible) this.initializeFocusTrap();
   }
 
   override async firstUpdated(changedProperties: PropertyValues) {
@@ -173,8 +167,10 @@ class MenuPopover extends Popover {
     if (this.menuItems.length > 0) {
       this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));
       this.menuItems[currentIndex].setAttribute('tabindex', '0');
-      this.menuItems[currentIndex].focus({ preventScroll: true });
-      this.menuItems[currentIndex].scrollIntoView({ block: 'nearest' });
+      if (FocusTrapStack.getActiveTrap() === this) {
+        this.menuItems[currentIndex].focus({ preventScroll: true });
+        this.menuItems[currentIndex].scrollIntoView({ block: 'nearest' });
+      }
     }
   }
 
@@ -202,15 +198,21 @@ class MenuPopover extends Popover {
   }
 
   /**
-   * Closes all menu popovers in the stack.
-   * This method is used to ensure that when a menu item is clicked,
-   * all other open popovers are closed, maintaining a clean user interface.
-   * It iterates through the overlay stack and hides each popover until the stack is empty.
-   *
-   * @param until - The popover to close until.
+   * Closes this menu chain without sweeping independent open menus.
    */
-  private closeAllMenuPopovers(until?: Element): void {
-    this.depthManager.popUntil(item => item !== until && isValidMenuPopover(item));
+  private closeAllMenuPopovers(): void {
+    let root: MenuPopover = this;
+    let parent = root.triggerElement ? DepthManager.getContainingHost(root.triggerElement) : undefined;
+    while (
+      parent &&
+      isValidMenuPopover(parent) &&
+      this.depthManager.has(parent) &&
+      parent.stackGroupName === root.stackGroupName
+    ) {
+      root = parent;
+      parent = root.triggerElement ? DepthManager.getContainingHost(root.triggerElement) : undefined;
+    }
+    this.depthManager.popItem(root);
   }
 
   /**
@@ -221,7 +223,7 @@ class MenuPopover extends Popover {
    * @param event - The mouse event that triggered the outside click.
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
-    if (!this.depthManager.isHostOnTop()) return;
+    if (!this.depthManager.isHostOnTop(event)) return;
 
     const path = event.composedPath();
     const insidePopoverClick =
@@ -229,6 +231,7 @@ class MenuPopover extends Popover {
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
+      if (!this.depthManager.claimHostEvent(event)) return;
       this.closeAllMenuPopovers();
       if (clickedOnBackdrop) {
         event.stopPropagation();
@@ -413,7 +416,7 @@ class MenuPopover extends Popover {
         break;
       }
       case ACTIONS.ESCAPE: {
-        if (this.depthManager.isHostOnTop()) {
+        if (this.depthManager.isHostOnTop(event)) {
           this.resetTabIndexAndSetFocus(0, currentIndex);
           isKeyHandled = true;
         }
