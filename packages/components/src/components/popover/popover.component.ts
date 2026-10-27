@@ -327,18 +327,27 @@ class Popover
   size: boolean = DEFAULTS.SIZE;
 
   /**
-   * The effective z-index of the popover, also used for managed dismissal and eligible focus ordering.
+   * The internal z-index of the popovere.
+   * @internal
+   */
+  private internalZIndex?: number;
+
+  /**
+   * The effective z-index of the popover.
    *
    * If no explicit `z-index` value is provided, then it automatically calculated
    * to ensure proper stacking order among multiple overlays.
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
   get zIndex() {
-    return this.depthManager.getHostZIndex();
+    if (!Number.isInteger(this.internalZIndex)) {
+      return this.depthManager.getHostZIndex();
+    }
+    return this.internalZIndex!;
   }
 
   set zIndex(value: number) {
-    this.depthManager.setHostZIndex(value);
+    this.internalZIndex = value;
   }
 
   /**
@@ -545,7 +554,7 @@ class Popover
     super.disconnectedCallback();
 
     this.removeAllListeners();
-    this.deactivateFocusTrap(this.focusBackToTrigger ? this.triggerElement : undefined);
+    this.deactivateFocusTrap?.();
     this.deactivatePreventScroll();
 
     this.moveElementBackAfterBackdropRemoval(this.triggerElement);
@@ -704,10 +713,9 @@ class Popover
       this.utils.updateAriaExpandedAttribute();
     }
 
-    if ((changedProperties.has('focusTrap') || changedProperties.has('interactive')) && this.visible) {
-      if (this.focusTrap && this.interactive) {
-        if (!changedProperties.has('visible')) this.initializeFocusTrap();
-      } else {
+    if (changedProperties.has('focusTrap')) {
+      // if focusTrap turned false and the popover is visible, deactivate the focus trap
+      if (!this.focusTrap && this.visible) {
         this.deactivateFocusTrap();
       }
     }
@@ -729,7 +737,7 @@ class Popover
    * @internal
    */
   protected onOutsidePopoverClick = (event: MouseEvent) => {
-    if (!this.depthManager.isHostOnTop(event)) return;
+    if (!this.depthManager.isHostOnTop()) return;
 
     const path = event.composedPath();
     const insidePopoverClick =
@@ -737,7 +745,6 @@ class Popover
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
-      if (!this.depthManager.claimHostEvent(event)) return;
       this.hide();
       PopoverEventManager.onClickOutside(this);
       if (clickedOnBackdrop) {
@@ -755,11 +762,7 @@ class Popover
    * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (
-      !this.visible ||
-      this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
-      !this.depthManager.claimHostEvent(event)
-    ) {
+    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
       return;
     }
 
@@ -788,20 +791,9 @@ class Popover
   /** @internal */
   onComponentStackChanged(changed: StackChange): void {
     if (changed === 'removed') {
-      this.deactivateFocusTrap(this.focusBackToTrigger ? this.triggerElement : undefined);
-      this.visible = false;
-    } else {
-      this.refreshFocusTrap();
-      if (changed === 'moved') this.requestUpdate('zIndex');
-    }
-  }
-
-  /** Initialize eligible focus once and cancel any pending opening callback. @internal */
-  protected initializeFocusTrap(): void {
-    this.timers.clearTimeout(TIMEOUTS.FOCUS);
-    if (this.visible && this.isConnected && this.interactive && this.focusTrap) {
-      this.activateFocusTrap();
-      this.setInitialFocus(this.elementIndexToReceiveFocus ?? 0);
+      this.hide();
+    } else if (changed === 'moved') {
+      this.requestUpdate('zIndex');
     }
   }
 
@@ -859,11 +851,15 @@ class Popover
       }
 
       // make sure popover is fully rendered before activating focus trap
-      this.timers.setTimeout(TIMEOUTS.FOCUS, () => this.initializeFocusTrap(), 0);
+      setTimeout(() => {
+        if (this.interactive && this.focusTrap) {
+          this.activateFocusTrap?.();
+          this.setInitialFocus?.(this.elementIndexToReceiveFocus ?? 0);
+        }
+      }, 0);
 
       PopoverEventManager.onShowPopover(this);
     } else {
-      this.timers.clearTimeout(TIMEOUTS.FOCUS);
       this.depthManager.popHost();
 
       // cleanup floating-ui on closing the popover
@@ -891,7 +887,11 @@ class Popover
       }
 
       this.deactivatePreventScroll();
-      this.deactivateFocusTrap(this.focusBackToTrigger ? triggerElement : undefined);
+      this.deactivateFocusTrap?.();
+
+      if (this.focusBackToTrigger) {
+        triggerElement?.focus();
+      }
 
       if (!this.keepConnectedTooltipOpen) {
         if (this.connectedTooltip) {

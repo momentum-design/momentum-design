@@ -3,7 +3,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
-import { getDomActiveElement } from '../../utils/dom';
 import { FocusTrapMixin } from '../../utils/mixins/focus/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
@@ -104,18 +103,27 @@ class Dialog
   visible: boolean = DEFAULTS.VISIBLE;
 
   /**
-   * The effective z-index of the dialog, also used for managed dismissal and eligible focus ordering.
+   * The internal z-index of the dialog.
+   * @internal
+   */
+  private internalZIndex?: number;
+
+  /**
+   * The effective z-index of the dialog.
    *
    * If no explicit `z-index` value is provided, then it automatically calculated
    * to ensure proper stacking order among multiple overlays.
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
   get zIndex() {
-    return this.depthManager.getHostZIndex();
+    if (!Number.isInteger(this.internalZIndex)) {
+      return this.depthManager.getHostZIndex();
+    }
+    return this.internalZIndex!;
   }
 
   set zIndex(value: number) {
-    this.depthManager.setHostZIndex(value);
+    this.internalZIndex = value;
   }
 
   /**
@@ -266,7 +274,7 @@ class Dialog
 
     // event listener can be added to the element directly, since dialog is a modal component
     // and it will not be allowed to be focused outside of it
-    this.addEventListener('keydown', this.onEscapeKeydown);
+    this.addEventListener('keydown', this.onEscapeKeydown.bind(this));
   }
 
   override disconnectedCallback() {
@@ -281,6 +289,7 @@ class Dialog
 
     this.deactivatePreventScroll();
 
+    this.deactivateFocusTrap?.();
     this.focusBackToTrigger();
 
     DialogEventManager.onDestroyedDialog(this);
@@ -345,13 +354,9 @@ class Dialog
     }
 
     if (changedProperties.has('focusTrap')) {
-      if (this.visible) {
-        if (this.focusTrap) {
-          this.activateFocusTrap();
-          this.setInitialFocus();
-        } else {
-          this.deactivateFocusTrap();
-        }
+      // if focusTrap turned false and the popover is visible, deactivate the focus trap
+      if (!this.focusTrap && this.visible) {
+        this.deactivateFocusTrap();
       }
     }
   }
@@ -416,11 +421,7 @@ class Dialog
    * @param event - The keyboard event.
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (
-      !this.visible ||
-      this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
-      !this.depthManager.claimHostEvent(event)
-    ) {
+    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
       return;
     }
 
@@ -435,11 +436,9 @@ class Dialog
   /** @internal */
   onComponentStackChanged(changed: StackChange): void {
     if (changed === 'removed') {
-      this.focusBackToTrigger();
       this.visible = false;
-    } else {
-      this.refreshFocusTrap();
-      if (changed === 'moved') this.requestUpdate('zIndex');
+    } else if (changed === 'moved') {
+      this.requestUpdate('zIndex');
     }
   }
 
@@ -461,7 +460,7 @@ class Dialog
         this.requestUpdate('zIndex');
       }
       // Store the currently focused element before opening the dialog
-      this.lastActiveElement = getDomActiveElement() as HTMLElement | null;
+      this.lastActiveElement = document.activeElement as HTMLElement;
 
       // create backdrop if enabled
       if (!this.hideBackdrop) {
@@ -473,11 +472,10 @@ class Dialog
       this.activatePreventScroll();
 
       await this.updateComplete;
-      if (!this.visible || !this.isConnected) return;
       if (this.focusTrap) {
-        this.activateFocusTrap();
-        this.setInitialFocus();
+        this.activateFocusTrap?.();
       }
+      this.setInitialFocus?.();
 
       // Set aria-expanded attribute on the trigger element to true if it exists
       this.triggerElement?.setAttribute('aria-expanded', 'true');
@@ -495,6 +493,7 @@ class Dialog
 
       this.deactivatePreventScroll();
 
+      this.deactivateFocusTrap?.();
       this.focusBackToTrigger();
 
       DialogEventManager.onHideDialog(this);
@@ -508,7 +507,13 @@ class Dialog
    * @internal
    */
   private focusBackToTrigger() {
-    this.deactivateFocusTrap(this.triggerElement || this.lastActiveElement);
+    // If the trigger element is defined, focus it
+    if (this.triggerElement) {
+      this.triggerElement.focus();
+    } else if (this.lastActiveElement && this.lastActiveElement.focus) {
+      // If the trigger element is not defined, focus the last active element
+      this.lastActiveElement.focus();
+    }
   }
 
   /**

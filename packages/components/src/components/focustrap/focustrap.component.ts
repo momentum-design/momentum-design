@@ -54,7 +54,13 @@ class FocusTrap extends FocusTrapMixin(Component) {
   private previouslyFocusedElement: HTMLElement | null = null;
 
   override disconnectedCallback() {
-    this.restorePreviousFocus();
+    const shouldRestoreFocus = !this.trapDisabled;
+
+    this.deactivateFocusTrap();
+
+    if (shouldRestoreFocus) {
+      this.restorePreviousFocus();
+    }
 
     super.disconnectedCallback();
   }
@@ -83,6 +89,7 @@ class FocusTrap extends FocusTrapMixin(Component) {
 
         this.dispatchEvent(new CustomEvent('focus-trap-activated', { bubbles: true, composed: true }));
       } else {
+        this.deactivateFocusTrap();
         this.restorePreviousFocus();
         this.dispatchEvent(new CustomEvent('focus-trap-deactivated', { bubbles: true, composed: true }));
       }
@@ -94,7 +101,9 @@ class FocusTrap extends FocusTrapMixin(Component) {
    * if `restoreFocusDisabled` is false.
    */
   private restorePreviousFocus() {
-    this.deactivateFocusTrap(this.restoreFocusDisabled ? undefined : this.previouslyFocusedElement);
+    if (!this.restoreFocusDisabled && this.previouslyFocusedElement) {
+      this.previouslyFocusedElement.focus({ preventScroll: true });
+    }
     this.previouslyFocusedElement = null;
   }
 
