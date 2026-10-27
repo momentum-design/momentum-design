@@ -2,7 +2,7 @@
 import { LitElement } from 'lit';
 
 import type { Component } from '../../models';
-import { OVERLAY_BACKDROP_Z_INDEX_OFFSET, OVERLAY_TRIGGER_Z_INDEX_OFFSET } from '../controllers/DepthManager';
+import { DepthManager, OVERLAY_BACKDROP_Z_INDEX_OFFSET, OVERLAY_TRIGGER_Z_INDEX_OFFSET } from '../controllers/DepthManager';
 
 import type { Constructor } from './index.types';
 
@@ -83,6 +83,7 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
      */
     protected createBackdrop(classNamePrefix: string): void {
       const backdrop = document.createElement('div');
+      DepthManager.registerBackdrop(backdrop, this);
       backdrop.classList.add(`${classNamePrefix}-backdrop`);
       const styleElement = document.createElement('style');
       const bgColor = this.isBackdropInvisible

@@ -1,6 +1,7 @@
 import { ReactiveController } from 'lit';
 
 import type { Component } from '../../models';
+import { getDomActiveElement } from '../dom';
 
 /**
  * Types of changes that can occur in the stack
@@ -50,6 +51,9 @@ type PopPredicateFn = (item: StackedOverlayComponent, idx: number) => true | fal
  * @internal
  */
 const elementStack: StackedOverlayComponent[] = [];
+const backdropHosts = new WeakMap<EventTarget, Element>();
+const eventOwners = new WeakMap<Event, StackedOverlayComponent | undefined>();
+const handledEvents = new WeakSet<Event>();
 
 /**
  * Initial z-index for the first element in the stack
@@ -132,6 +136,11 @@ export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
 export class DepthManager implements ReactiveController {
   private readonly host: StackedOverlayComponent;
 
+  /** Associates a separately rendered backdrop with its overlay's input context. @internal */
+  public static registerBackdrop(backdrop: Element, host: Element): void {
+    backdropHosts.set(backdrop, host);
+  }
+
   /**
    * Creates an instance of DepthManager.
    */
@@ -187,7 +196,7 @@ export class DepthManager implements ReactiveController {
     if (!this.has(item)) {
       return undefined;
     }
-    const items = elementStack.filter(e => e.stackGroupName === item.stackGroupName);
+    const items = elementStack.filter(e => (e.stackGroupName ?? '') === (item.stackGroupName ?? ''));
     const itemIdx = items.indexOf(item);
     const toRemove: StackedOverlayComponent[] = [];
     for (let i = items.length - 1; i >= itemIdx; i -= 1) {
@@ -215,15 +224,18 @@ export class DepthManager implements ReactiveController {
   /**
    * Removes elements from the stack until the predicate function returns false
    *
-   * Note: it will remove the
-   *
    * @param predicateFn - The predicate function to test each element
+   * @param stackGroupName - When provided, skip elements outside this group
    * @returns The removed elements
    */
-  public popUntil(predicateFn: PopPredicateFn): StackedOverlayComponent[] {
+  public popUntil(predicateFn: PopPredicateFn, stackGroupName?: string): StackedOverlayComponent[] {
     const poppedElements: StackedOverlayComponent[] = [];
-    for (let i = elementStack.length - 1; i >= 0; i -= 1) {
-      const item = elementStack[i];
+    const items =
+      stackGroupName === undefined
+        ? elementStack
+        : elementStack.filter(item => (item.stackGroupName ?? '') === stackGroupName);
+    for (let i = items.length - 1; i >= 0; i -= 1) {
+      const item = items[i];
       const result = predicateFn(item, i);
 
       if (result === false) break;
@@ -317,13 +329,60 @@ export class DepthManager implements ReactiveController {
     return depth >= 0 ? BASE_Z_INDEX + depth * NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT : BASE_Z_INDEX;
   }
 
-  /**
-   * Checks if host is at the top of the stack
-   *
-   * @returns True if host is on top, false otherwise
-   */
-  public isHostOnTop(): boolean {
-    return this.peek() === this.host;
+  /** Returns the last registered overlay in the specified group, defaulting to the host's group. */
+  public getStackTopHost(
+    stackGroupName: string = this.host.stackGroupName ?? '',
+  ): StackedOverlayComponent | undefined {
+    return elementStack.filter(element => (element.stackGroupName ?? '') === stackGroupName).at(-1);
+  }
+
+  private getContextHost(path: EventTarget[]): StackedOverlayComponent | undefined {
+    const latestFirst = [...elementStack].reverse();
+    for (const target of path) {
+      const host = latestFirst.find(
+        element =>
+          element === target ||
+          element === backdropHosts.get(target) ||
+          (target instanceof Element &&
+            !!element.triggerID &&
+            target.id === element.triggerID &&
+            target.getRootNode() === element.getRootNode()),
+      );
+      if (host) return host;
+    }
+    return undefined;
+  }
+
+  private getEventOwner(event: Event): StackedOverlayComponent | undefined {
+    let context = this.getContextHost(event.composedPath());
+    let focused: Node | null = getDomActiveElement();
+    // Background input belongs to the focused group, or the global top when focus is outside all groups.
+    while (!context && focused) {
+      context = this.getContextHost([focused]);
+      if (focused instanceof Element && focused.assignedSlot) {
+        focused = focused.assignedSlot;
+      } else if (focused instanceof ShadowRoot) {
+        focused = focused.host;
+      } else {
+        focused = focused.parentNode;
+      }
+    }
+    context ??= this.peek();
+    return context ? this.getStackTopHost(context.stackGroupName ?? '') : undefined;
+  }
+
+  /** Checks the host's group top, restricting input to one event-stable context group. */
+  public isHostOnTop(event?: Event): boolean {
+    if (!event) return this.getStackTopHost() === this.host;
+    if (!eventOwners.has(event)) eventOwners.set(event, this.getEventOwner(event));
+    return eventOwners.get(event) === this.host;
+  }
+
+  /** Prevent duplicate dismissal from host and document listeners for the same input. */
+  public claimHostEvent(event: Event): boolean {
+    if (handledEvents.has(event) || !this.isHostOnTop(event)) return false;
+    handledEvents.add(event);
+    return true;
   }
 
   /**
