@@ -15,10 +15,7 @@ export declare abstract class FocusTrapClassInterface {
 
   activateFocusTrap(): void;
 
-  deactivateFocusTrap(restoreTarget?: HTMLElement | null): void;
-
-  /** Reevaluate managed layer ownership without registering a new trap. @internal */
-  refreshFocusTrap(): void;
+  deactivateFocusTrap(): void;
 
   private setIsFocusTrapActivated(isActivated: boolean): void;
 }
@@ -60,21 +57,18 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * Activate the focus trap
      */
     public activateFocusTrap() {
+      this.setIsFocusTrapActivated(true);
       FocusTrapStack.activate(this);
     }
 
     /**
      * Deactivate the focus trap.
      */
-    public deactivateFocusTrap(restoreTarget?: HTMLElement | null) {
+    public deactivateFocusTrap() {
       this.setIsFocusTrapActivated(false);
-      FocusTrapStack.deactivate(this, restoreTarget);
-      this.focusTrapIndex = -1;
-    }
+      FocusTrapStack.deactivate(this);
 
-    /** @internal */
-    public refreshFocusTrap() {
-      FocusTrapStack.refresh(true);
+      this.focusTrapIndex = -1;
     }
 
     /**
@@ -94,7 +88,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     public setInitialFocus(elementIndexToReceiveFocus: number = 0) {
       this.setFocusableElements();
 
-      if (this.focusableElements.length === 0 || !this.focusTrap || !this.isFocusTrapActivated) {
+      if (this.focusableElements.length === 0 || !this.focusTrap) {
         return;
       }
 

@@ -298,17 +298,6 @@ export const findFocusable = (
   return [...matches];
 };
 
-/** Whether a node belongs to a container through light DOM, slots, or shadow hosts. */
-export const composedContains = (container: Element, node: Element | null): boolean => {
-  let current: Node | null = node;
-  while (current) {
-    if (current === container) return true;
-    current = current instanceof Element && current.assignedSlot ? current.assignedSlot : current.parentNode;
-    if (current instanceof ShadowRoot) current = current.host;
-  }
-  return false;
-};
-
 /**
  * Get the active element from the DOM, including shadow DOMs
  *

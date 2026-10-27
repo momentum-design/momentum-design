@@ -77,7 +77,6 @@ const TIMEOUTS = {
   OPEN: 'open',
   HOVER: 'hover',
   CLOSE: 'close',
-  FOCUS: 'focus',
 } as const;
 
 export { TAG_NAME, POPOVER_PLACEMENT, COLOR, STRATEGY, TRIGGER, BOUNDARY_ROOT, DEFAULTS, TIMEOUTS };
