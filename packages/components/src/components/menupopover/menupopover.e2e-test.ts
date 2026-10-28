@@ -383,6 +383,50 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('ArrowUp');
         await expect(menupopover.locator(menuItemSelector).nth(0)).toBeFocused();
       });
+
+      // Pressing on one menuitem and releasing on another (or outside) is handled inconsistently
+      // by the native `click` event across browsers (Chrome does not fire it, Firefox fires it
+      // targeting the press location). These steps assert the menu normalizes to "no action".
+      await test.step('Pressing on one menuitem and releasing on another does not trigger any action', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await triggerElement.click();
+        await expect(menupopover).toBeVisible();
+
+        const items = menupopover.locator(menuItemSelector);
+        const profileItem = items.nth(0);
+        const logoutItem = items.nth(3); // skips disabled Settings
+
+        const waitForAction = await componentsPage.waitForEvent(menupopover, 'action');
+        const profileBox = await profileItem.boundingBox();
+        const logoutBox = await logoutItem.boundingBox();
+        if (!profileBox || !logoutBox) throw new Error('Could not resolve menu item bounding boxes');
+
+        await componentsPage.page.mouse.move(profileBox.x + profileBox.width / 2, profileBox.y + profileBox.height / 2);
+        await componentsPage.page.mouse.down();
+        await componentsPage.page.mouse.move(logoutBox.x + logoutBox.width / 2, logoutBox.y + logoutBox.height / 2);
+        await componentsPage.page.mouse.up();
+
+        await expect(waitForAction).not.toEventEmitted();
+        await expect(menupopover).toBeVisible();
+      });
+
+      await test.step('Pressing on a menuitem and releasing outside the menu does not trigger any action', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await triggerElement.click();
+        await expect(menupopover).toBeVisible();
+
+        const profileItem = menupopover.locator(menuItemSelector).nth(0);
+        const waitForAction = await componentsPage.waitForEvent(menupopover, 'action');
+        const profileBox = await profileItem.boundingBox();
+        if (!profileBox) throw new Error('Could not resolve menu item bounding box');
+
+        await componentsPage.page.mouse.move(profileBox.x + profileBox.width / 2, profileBox.y + profileBox.height / 2);
+        await componentsPage.page.mouse.down();
+        await componentsPage.page.mouse.move(500, 350);
+        await componentsPage.page.mouse.up();
+
+        await expect(waitForAction).not.toEventEmitted();
+      });
     });
 
     // Keyboard Navigation
