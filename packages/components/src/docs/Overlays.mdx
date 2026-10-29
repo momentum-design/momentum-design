@@ -48,7 +48,8 @@ There are multiple ways to close an overlay:
 
 #### Closing with Escape key
 
-When the Escape key is pressed, only the topmost overlay in the stack is closed.
+Escape follows the [stack-group dismissal rules](#escape-and-outside-clicks)
+below.
 
 ##### Open multiple overlays from a single element
 
@@ -79,8 +80,8 @@ closed. Overlays belonging to a different group remain open.
 ### Stack groups
 
 Overlays can be assigned to a **stack group** using the `stack-group-name`
-attribute. Stack groups allow independent sets of overlays to coexist in the
-same global stack without interfering with each other.
+attribute. Stack groups allow sets of overlays in the same global stack to be
+dismissed independently.
 
 In a conventional stack, removing an element also removes every element above
 it. With stack groups, only the elements that belong to the **same group** are
@@ -142,6 +143,24 @@ Set the `stack-group-name` attribute on the overlay element:
 Overlays with the same `stack-group-name` value form a group. Closing any
 overlay in the group cascades only within that group. Overlays without a
 `stack-group-name` (or with an empty value) belong to the default group.
+
+#### Escape and outside clicks
+
+Escape and outside clicks select one stack group:
+
+1. Use the group of the nearest overlay, trigger, or backdrop receiving the input.
+2. For input outside those elements, use the focused overlay or trigger's group.
+3. If neither applies, use the most recently opened overlay's group.
+
+Only the most recently opened overlay in that group can handle dismissal,
+subject to its dismissal settings. A later overlay in another group does not
+block it. One Escape press or outside click does not dismiss overlays across
+multiple groups. Menu outside-click dismissal may close a menu chain, but stays
+within the selected group.
+
+Grouping does not change visual stacking or focus-trap behavior. A custom
+`z-index` changes visual placement, not dismissal order within a group. Assign
+different groups to overlays that should dismiss independently.
 
 #### Z-index recalculation
 

@@ -737,7 +737,7 @@ class Popover
    * @internal
    */
   protected onOutsidePopoverClick = (event: MouseEvent) => {
-    if (!this.depthManager.isHostOnTop()) return;
+    if (!this.depthManager.isHostOnTop(event)) return;
 
     const path = event.composedPath();
     const insidePopoverClick =
@@ -745,6 +745,7 @@ class Popover
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
+      if (!this.depthManager.claimHostEvent(event)) return;
       this.hide();
       PopoverEventManager.onClickOutside(this);
       if (clickedOnBackdrop) {
@@ -762,7 +763,11 @@ class Popover
    * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
+    if (
+      !this.visible ||
+      this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
+      !this.depthManager.claimHostEvent(event)
+    ) {
       return;
     }
 

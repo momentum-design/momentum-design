@@ -202,15 +202,15 @@ class MenuPopover extends Popover {
   }
 
   /**
-   * Closes all menu popovers in the stack.
+   * Closes all menu popovers in this stack group.
    * This method is used to ensure that when a menu item is clicked,
-   * all other open popovers are closed, maintaining a clean user interface.
-   * It iterates through the overlay stack and hides each popover until the stack is empty.
+   * other open menu popovers in the same group are closed, maintaining a clean user interface.
+   * It stops at the first non-menu overlay in this group.
    *
    * @param until - The popover to close until.
    */
   private closeAllMenuPopovers(until?: Element): void {
-    this.depthManager.popUntil(item => item !== until && isValidMenuPopover(item));
+    this.depthManager.popUntil(item => item !== until && isValidMenuPopover(item), this.stackGroupName);
   }
 
   /**
@@ -221,7 +221,7 @@ class MenuPopover extends Popover {
    * @param event - The mouse event that triggered the outside click.
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
-    if (!this.depthManager.isHostOnTop()) return;
+    if (!this.depthManager.isHostOnTop(event)) return;
 
     const path = event.composedPath();
     const insidePopoverClick =
@@ -229,6 +229,7 @@ class MenuPopover extends Popover {
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
+      if (!this.depthManager.claimHostEvent(event)) return;
       this.closeAllMenuPopovers();
       if (clickedOnBackdrop) {
         event.stopPropagation();
@@ -413,7 +414,7 @@ class MenuPopover extends Popover {
         break;
       }
       case ACTIONS.ESCAPE: {
-        if (this.depthManager.isHostOnTop()) {
+        if (this.depthManager.isHostOnTop(event)) {
           this.resetTabIndexAndSetFocus(0, currentIndex);
           isKeyHandled = true;
         }

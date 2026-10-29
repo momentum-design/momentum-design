@@ -421,7 +421,11 @@ class Dialog
    * @param event - The keyboard event.
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
+    if (
+      !this.visible ||
+      this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
+      !this.depthManager.claimHostEvent(event)
+    ) {
       return;
     }
 
