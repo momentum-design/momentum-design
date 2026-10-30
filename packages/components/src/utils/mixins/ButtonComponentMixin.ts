@@ -48,7 +48,7 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(superClas
     /**
      * The name of the icon to display before the button text (left side in LTR layouts).
      * When set without text content, creates an icon-only button.
-     * Icons automatically change to their filled variant when the button is in active state.
+     * On mdc-button, active icons use the filled variant when available, unless disable-auto-icon-fill is set.
      */
     @property({ type: String, attribute: 'prefix-icon', reflect: true })
     prefixIcon?: IconNames;
@@ -56,7 +56,7 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(superClas
     /**
      * The name of the icon to display after the button text (right side in LTR layouts).
      * When set without text content, creates an icon-only button.
-     * Icons automatically change to their filled variant when the button is in active state.
+     * On mdc-button, active icons use the filled variant when available, unless disable-auto-icon-fill is set.
      */
     @property({ type: String, attribute: 'postfix-icon', reflect: true })
     postfixIcon?: IconNames;

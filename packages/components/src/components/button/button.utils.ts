@@ -6,10 +6,6 @@ import type { IconNames } from '../icon/icon.types';
  * @param iconName - The name of the icon.
  * @returns The name of the icon without the suffix.
  */
-const getIconNameWithoutStyle = (iconName: IconNames): string => {
-  const iconParts = iconName.split('-');
-  const variants = ['bold', 'filled', 'regular', 'light'];
-  return iconParts.filter(part => !variants.includes(part)).join('-');
-};
+const getIconNameWithoutStyle = (iconName: IconNames): string => iconName.replace(/-(bold|filled|regular|light)$/, '');
 
 export { getIconNameWithoutStyle };
