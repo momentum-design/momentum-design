@@ -1,0 +1,956 @@
+{
+  "color": {
+    "charting": {
+      "foundations": {
+        "text": {
+          "axis": {
+            "title": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.70}",
+              "description": ""
+            },
+            "tick": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.70}",
+              "description": ""
+            }
+          },
+          "legend": {
+            "normal": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.70}",
+              "description": ""
+            },
+            "active": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.95}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.40}",
+              "description": ""
+            }
+          }
+        },
+        "outline": {
+          "axis-line": {
+            "normal": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.70}",
+              "description": ""
+            }
+          },
+          "gridline": {
+            "normal": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
+            }
+          },
+          "markline": {
+            "normal": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
+            },
+            "heavy": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.50}",
+              "description": ""
+            },
+            "active": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.90}",
+              "description": ""
+            }
+          },
+          "outline": {
+            "inactive": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.20}",
+              "description": ""
+            }
+          },
+          "baseline": {
+            "normal": {
+              "parent": "charting/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.46}",
+              "description": ""
+            }
+          }
+        }
+      },
+      "categorical": {
+        "gold": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.gold.60}",
+          "description": ""
+        },
+        "orange": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.core.orange.60}",
+          "description": ""
+        },
+        "pink": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.pink.60}",
+          "description": ""
+        },
+        "purple": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.purple.60}",
+          "description": ""
+        },
+        "violet": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.violet.60}",
+          "description": ""
+        },
+        "slate": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.slate.60}",
+          "description": ""
+        },
+        "cobalt": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.cobalt.60}",
+          "description": ""
+        },
+        "cyan": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.cyan.60}",
+          "description": ""
+        },
+        "mint": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.mint.60}",
+          "description": ""
+        },
+        "lime": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.decorative.lime.60}",
+          "description": ""
+        }
+      },
+      "status": {
+        "default": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.core.gray.60}",
+          "description": ""
+        },
+        "accent": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.core.blue.60}",
+          "description": ""
+        },
+        "success": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.core.green.60}",
+          "description": ""
+        },
+        "error": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.core.red.60}",
+          "description": ""
+        },
+        "notice": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.core.orange.60}",
+          "description": ""
+        },
+        "warning": {
+          "parent": "charting/light",
+          "type": "color",
+          "value": "{color.core.yellow.60}",
+          "description": ""
+        }
+      },
+      "sequential": {
+        "default": {
+          "1": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.10}",
+            "description": ""
+          },
+          "2": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.20}",
+            "description": ""
+          },
+          "3": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.30}",
+            "description": ""
+          },
+          "4": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.40}",
+            "description": ""
+          },
+          "5": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.50}",
+            "description": ""
+          },
+          "6": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.60}",
+            "description": ""
+          },
+          "7": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.70}",
+            "description": ""
+          },
+          "8": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.80}",
+            "description": ""
+          },
+          "9": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.90}",
+            "description": ""
+          },
+          "10": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.100}",
+            "description": ""
+          }
+        },
+        "positive": {
+          "1": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.10}",
+            "description": ""
+          },
+          "2": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.20}",
+            "description": ""
+          },
+          "3": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.30}",
+            "description": ""
+          },
+          "4": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.40}",
+            "description": ""
+          },
+          "5": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.50}",
+            "description": ""
+          },
+          "6": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.60}",
+            "description": ""
+          },
+          "7": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.70}",
+            "description": ""
+          },
+          "8": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.80}",
+            "description": ""
+          },
+          "9": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.90}",
+            "description": ""
+          },
+          "10": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.100}",
+            "description": ""
+          }
+        },
+        "negative": {
+          "1": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.10}",
+            "description": ""
+          },
+          "2": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.20}",
+            "description": ""
+          },
+          "3": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.30}",
+            "description": ""
+          },
+          "4": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.40}",
+            "description": ""
+          },
+          "5": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.50}",
+            "description": ""
+          },
+          "6": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.60}",
+            "description": ""
+          },
+          "7": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.70}",
+            "description": ""
+          },
+          "8": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.80}",
+            "description": ""
+          },
+          "9": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.90}",
+            "description": ""
+          },
+          "10": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.100}",
+            "description": ""
+          }
+        },
+        "warning": {
+          "1": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.10}",
+            "description": ""
+          },
+          "2": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.20}",
+            "description": ""
+          },
+          "3": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.30}",
+            "description": ""
+          },
+          "4": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.40}",
+            "description": ""
+          },
+          "5": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.50}",
+            "description": ""
+          },
+          "6": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.60}",
+            "description": ""
+          },
+          "7": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.70}",
+            "description": ""
+          },
+          "8": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.80}",
+            "description": ""
+          },
+          "9": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.90}",
+            "description": ""
+          },
+          "10": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.100}",
+            "description": ""
+          }
+        },
+        "violet": {
+          "1": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.10}",
+            "description": ""
+          },
+          "2": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.20}",
+            "description": ""
+          },
+          "3": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.30}",
+            "description": ""
+          },
+          "4": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.40}",
+            "description": ""
+          },
+          "5": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.50}",
+            "description": ""
+          },
+          "6": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.60}",
+            "description": ""
+          },
+          "7": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.70}",
+            "description": ""
+          },
+          "8": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.80}",
+            "description": ""
+          },
+          "9": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.90}",
+            "description": ""
+          },
+          "10": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.100}",
+            "description": ""
+          }
+        },
+        "cyan": {
+          "1": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.10}",
+            "description": ""
+          },
+          "2": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.20}",
+            "description": ""
+          },
+          "3": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.30}",
+            "description": ""
+          },
+          "4": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.40}",
+            "description": ""
+          },
+          "5": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.50}",
+            "description": ""
+          },
+          "6": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.60}",
+            "description": ""
+          },
+          "7": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.70}",
+            "description": ""
+          },
+          "8": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.80}",
+            "description": ""
+          },
+          "9": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.90}",
+            "description": ""
+          },
+          "10": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.cyan.100}",
+            "description": ""
+          }
+        },
+        "purple": {
+          "1": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.10}",
+            "description": ""
+          },
+          "2": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.20}",
+            "description": ""
+          },
+          "3": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.30}",
+            "description": ""
+          },
+          "4": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.40}",
+            "description": ""
+          },
+          "5": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.50}",
+            "description": ""
+          },
+          "6": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.60}",
+            "description": ""
+          },
+          "7": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.70}",
+            "description": ""
+          },
+          "8": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.80}",
+            "description": ""
+          },
+          "9": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.90}",
+            "description": ""
+          },
+          "10": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.100}",
+            "description": ""
+          }
+        }
+      },
+      "diverging": {
+        "blue": {
+          "light": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.60}",
+            "description": ""
+          },
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.70}",
+            "description": ""
+          },
+          "medium": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.80}",
+            "description": ""
+          },
+          "heavy": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.90}",
+            "description": ""
+          }
+        },
+        "red": {
+          "light": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.60}",
+            "description": ""
+          },
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.70}",
+            "description": ""
+          },
+          "medium": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.80}",
+            "description": ""
+          },
+          "heavy": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.90}",
+            "description": ""
+          }
+        },
+        "green": {
+          "light": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.60}",
+            "description": ""
+          },
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.70}",
+            "description": ""
+          },
+          "medium": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.80}",
+            "description": ""
+          },
+          "heavy": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.90}",
+            "description": ""
+          }
+        },
+        "violet": {
+          "light": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.60}",
+            "description": ""
+          },
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.70}",
+            "description": ""
+          },
+          "medium": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.80}",
+            "description": ""
+          },
+          "heavy": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.90}",
+            "description": ""
+          }
+        },
+        "orange": {
+          "light": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.orange.60}",
+            "description": ""
+          },
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.orange.70}",
+            "description": ""
+          },
+          "medium": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.orange.80}",
+            "description": ""
+          },
+          "heavy": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.orange.90}",
+            "description": ""
+          }
+        },
+        "midpoint": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.gray.50}",
+            "description": ""
+          }
+        }
+      },
+      "highlight": {
+        "red": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.red.5}",
+            "description": ""
+          }
+        },
+        "yellow": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.yellow.5}",
+            "description": ""
+          }
+        },
+        "orange": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.orange.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.orange.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.orange.5}",
+            "description": ""
+          }
+        },
+        "green": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.green.5}",
+            "description": ""
+          }
+        },
+        "blue": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.blue.5}",
+            "description": ""
+          }
+        },
+        "gray": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.gray.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.gray.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.core.gray.5}",
+            "description": ""
+          }
+        },
+        "purple": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.purple.10}",
+            "description": ""
+          }
+        },
+        "violet": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.violet.10}",
+            "description": ""
+          }
+        },
+        "slate": {
+          "normal": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.slate.10}",
+            "description": ""
+          },
+          "active": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.slate.20}",
+            "description": ""
+          },
+          "inactive": {
+            "parent": "charting/light",
+            "type": "color",
+            "value": "{color.decorative.slate.10}",
+            "description": ""
+          }
+        }
+      }
+    }
+  }
+}

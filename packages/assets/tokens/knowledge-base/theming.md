@@ -1,6 +1,6 @@
 ---
 title: Theming
-summary: How Momentum semantic color tokens resolve across themes and modes, how a theme is applied, and how to add one.
+summary: How Momentum semantic color tokens resolve across themes and modes, how a theme or charting mode is applied, and how to add one.
 tier: 2
 websitePath: foundations/theming
 ---
@@ -103,6 +103,22 @@ provider currently exposes the stable Webex mode and its brand accents as
 runtime-selectable classes; high-contrast and AAOS selectors are emitted by the
 build and can be applied the same way.
 
+## Charting colors
+
+Charting colors are a separate semantic set, not another mode of
+`color.theme.*`. Their keys live under `color.charting.*`, and only the
+primitive alias changes between modes:
+
+| Mode | Source | Selector |
+| --- | --- | --- |
+| Charting dark | `src/charting/dark.json` | `.mds-charting-dark` |
+| Charting light | `src/charting/light.json` | `.mds-charting-light` |
+
+The build is declared in `config/tokens/charting.json`. These selectors are not
+part of the stable theme bundles. Apply the charting selector alongside the
+product theme when a chart is rendered. The meaning of each charting group is
+catalogued in [Color](./color.md).
+
 ## Inverted and common
 
 Two token groups exist specifically to control theming behavior:
@@ -146,7 +162,7 @@ Consequences:
 
 ## Related
 
-- [Color](./color.md) — the semantic token catalogue these themes resolve.
+- [Color](./color.md) — the semantic token catalogue these themes and charting colors resolve.
 - [Glass](./glass.md) — glass material/blur tokens and how they behave per theme.
 - [`themeprovider`](../../../components/src/components/themeprovider/knowledge-base/themeprovider.component.md)
   component (Tier 3) — applying a theme at runtime.
