@@ -43,6 +43,23 @@ Minimal markup example:
 ></mdc-textarea>
 ```
 
+For a controlled React field, keep the string state current from `onInput`:
+
+```tsx
+import { useState } from 'react';
+import { Textarea } from '@momentum-design/components/dist/react';
+import type { TextareaInputEvent } from '@momentum-design/components/dist/react';
+
+function DescriptionField() {
+  const [value, setValue] = useState('');
+  const handleInput = (event: TextareaInputEvent) => setValue(event.target.value);
+
+  return <Textarea label="Description" value={value} onInput={handleInput} />;
+}
+```
+
+The wrapper's `onInput` reports each edit. Its `onChange` follows the native commit event, which usually fires when focus leaves the field. This differs from `onChange` on React's built-in `<textarea>`, which reports each edit. For a controlled Momentum field, update the supplied `value` from `onInput` so rerenders keep the displayed text current.
+
 Handle the character limit being exceeded by listening for `limitexceeded` and updating `help-text` and `help-text-type` so the validation message and screen-reader announcement stay in sync:
 
 ```js
