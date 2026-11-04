@@ -810,7 +810,6 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         aria-valuetext="${ifDefined(value ? String(parseInt(value, 10)) : undefined)}"
         aria-description="${this.localeSpinbuttonDescription}"
         .value="${live(value)}"
-        type="text"
         inputmode="numeric"
         placeholder="${placeholderMap[field]}"
         autocomplete="off"
