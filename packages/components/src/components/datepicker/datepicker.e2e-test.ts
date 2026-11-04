@@ -104,6 +104,137 @@ test.describe('mdc-datepicker', () => {
     });
 
     test.describe('spinbutton interaction', () => {
+      test('should expose date segment values as text and update them when edited', async ({ componentsPage }) => {
+        const datepicker = await setup({ componentsPage, label: 'Date', value: '2026-10-10' });
+
+        await Promise.all(
+          [
+            ['Month', '10'],
+            ['Day', '10'],
+            ['Year', '2026'],
+          ].map(([label, value]) =>
+            expect(datepicker.getByRole('spinbutton', { name: label, exact: true })).toHaveAttribute(
+              'aria-valuetext',
+              value,
+            ),
+          ),
+        );
+
+        const month = datepicker.getByRole('spinbutton', { name: 'Month', exact: true });
+        await month.press('ArrowDown');
+        await expect(month).toHaveAttribute('aria-valuetext', '9');
+      });
+
+      test('should enter an empty date through native input events without keydown events', async ({
+        componentsPage,
+      }) => {
+        const datepicker = await setup({ componentsPage, label: 'Date' });
+        const month = datepicker.getByRole('spinbutton', { name: 'Month', exact: true });
+        const day = datepicker.getByRole('spinbutton', { name: 'Day', exact: true });
+        const year = datepicker.getByRole('spinbutton', { name: 'Year', exact: true });
+
+        await month.focus();
+        await componentsPage.page.keyboard.insertText('10');
+        await expect(day).toBeFocused();
+        await componentsPage.page.keyboard.insertText('10');
+        await expect(year).toBeFocused();
+        await componentsPage.page.keyboard.insertText('2026');
+
+        await expect(datepicker).toHaveAttribute('value', '2026-10-10');
+        await expect(month).toHaveValue('10');
+        await expect(day).toHaveValue('10');
+        await expect(year).toHaveValue('2026');
+      });
+
+      test('should type a complete date into initially empty segments', async ({ componentsPage }) => {
+        const datepicker = await setup({ componentsPage, label: 'Date' });
+        await datepicker.getByRole('spinbutton', { name: 'Month', exact: true }).focus();
+        await componentsPage.page.keyboard.type('10/10/2026');
+
+        await expect(datepicker).toHaveAttribute('value', '2026-10-10');
+      });
+
+      test('should enter an empty date in locale order using single native digits', async ({ componentsPage }) => {
+        const datepicker = await setup({ componentsPage, label: 'Date', locale: 'en-GB' });
+        await datepicker.getByRole('spinbutton', { name: 'Day', exact: true }).focus();
+
+        await componentsPage.page.keyboard.insertText('1');
+        await componentsPage.page.keyboard.insertText('0');
+        await expect(datepicker.getByRole('spinbutton', { name: 'Month', exact: true })).toBeFocused();
+        await componentsPage.page.keyboard.insertText('1');
+        await componentsPage.page.keyboard.insertText('0');
+        await expect(datepicker.getByRole('spinbutton', { name: 'Year', exact: true })).toBeFocused();
+        await componentsPage.page.keyboard.insertText('2');
+        await componentsPage.page.keyboard.insertText('0');
+        await componentsPage.page.keyboard.insertText('2');
+        await componentsPage.page.keyboard.insertText('6');
+
+        await expect(datepicker).toHaveAttribute('value', '2026-10-10');
+      });
+
+      test('should accept replacement input without keydown or inserted text data', async ({ componentsPage }) => {
+        const datepicker = await setup({ componentsPage, label: 'Date' });
+        const month = datepicker.getByRole('spinbutton', { name: 'Month', exact: true });
+        await month.focus();
+        await month.evaluate(element => {
+          const input = element as HTMLInputElement;
+          input.value = '10';
+          input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertReplacementText' }));
+        });
+
+        await expect(month).toHaveAttribute('aria-valuetext', '10');
+        await expect(datepicker.getByRole('spinbutton', { name: 'Day', exact: true })).toBeFocused();
+      });
+
+      test('should clear a segment and allow it to be re-entered while preserving the other segments', async ({
+        componentsPage,
+      }) => {
+        const datepicker = await setup({ componentsPage, label: 'Date', value: '2026-10-10' });
+        const day = datepicker.getByRole('spinbutton', { name: 'Day', exact: true });
+        await day.focus();
+        await componentsPage.page.keyboard.press('Backspace');
+
+        await expect(day).toHaveValue('');
+        await expect(day).not.toHaveAttribute('aria-valuenow');
+        await expect(day).not.toHaveAttribute('aria-valuetext');
+        await expect(datepicker).toHaveAttribute('value', '');
+        await expect(datepicker.getByRole('spinbutton', { name: 'Month', exact: true })).toHaveValue('10');
+        await expect(datepicker.getByRole('spinbutton', { name: 'Year', exact: true })).toHaveValue('2026');
+
+        await componentsPage.page.keyboard.insertText('15');
+        await expect(datepicker).toHaveAttribute('value', '2026-10-15');
+      });
+
+      test('should emit one date input and change event when native input completes an empty date', async ({
+        componentsPage,
+      }) => {
+        const datepicker = await setup({ componentsPage, label: 'Date' });
+        const events: Array<{ type: string; value: string }> = [];
+        await componentsPage.page.exposeFunction('recordDateEvent', (event: { type: string; value: string }) => {
+          events.push(event);
+        });
+        await datepicker.evaluate(element => {
+          const recordEvent = (event: Event) => {
+            (window as any).recordDateEvent({ type: event.type, value: (event as CustomEvent).detail?.value });
+          };
+          element.addEventListener('input', recordEvent);
+          element.addEventListener('change', recordEvent);
+        });
+
+        await datepicker.getByRole('spinbutton', { name: 'Month', exact: true }).focus();
+        await componentsPage.page.keyboard.insertText('10');
+        await componentsPage.page.keyboard.insertText('10');
+        await componentsPage.page.keyboard.insertText('2026');
+        await componentsPage.page.keyboard.press('Tab');
+
+        await expect
+          .poll(() => events)
+          .toEqual([
+            { type: 'input', value: '2026-10-10' },
+            { type: 'change', value: '2026-10-10' },
+          ]);
+      });
+
       test('should increment month with ArrowUp', async ({ componentsPage }) => {
         const datepicker = await setup({
           componentsPage,
@@ -234,6 +365,52 @@ test.describe('mdc-datepicker', () => {
     });
 
     test.describe('calendar popover', () => {
+      test('should focus the entered date when opening the calendar after typing into an empty input', async ({
+        componentsPage,
+      }) => {
+        await componentsPage.page.clock.setFixedTime(new Date('2026-11-04T12:00:00Z'));
+        const datepicker = await setup({ componentsPage, label: 'Date' });
+        await datepicker.getByRole('spinbutton', { name: 'Month', exact: true }).focus();
+        await componentsPage.page.keyboard.type('10/10/2026');
+        await expect(datepicker).toHaveAttribute('value', '2026-10-10');
+
+        await componentsPage.page.keyboard.press('Tab');
+        await componentsPage.page.keyboard.press('Enter');
+        const calendar = datepicker.locator('mdc-calendar');
+        await expect(calendar.locator('[data-date="2026-10-10"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowRight');
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(datepicker).toHaveAttribute('value', '2026-10-11');
+        await expect(datepicker.locator('mdc-popover')).not.toHaveAttribute('visible');
+      });
+
+      for (const key of ['Enter', 'Space']) {
+        test(`should navigate across months and select with ${key} in the popover`, async ({ componentsPage }) => {
+          const datepicker = await setup({ componentsPage, label: 'Date', value: '2026-12-31' });
+          const trigger = datepicker.locator('mdc-button[part="icon-container"]');
+          const popover = datepicker.locator('mdc-popover');
+          const calendar = datepicker.locator('mdc-calendar');
+
+          await trigger.click();
+          await expect(calendar.locator('[data-date="2026-12-31"]')).toBeFocused();
+
+          await componentsPage.page.keyboard.press('ArrowDown');
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await expect(calendar.locator('[data-date="2027-01-10"]')).toBeFocused();
+          await componentsPage.page.keyboard.press(key);
+
+          await expect(datepicker).toHaveAttribute('value', '2027-01-10');
+          await expect(popover).not.toHaveAttribute('visible');
+          await expect(trigger).toBeFocused();
+
+          await trigger.click();
+          await expect(calendar.locator('[data-date="2027-01-10"]')).toBeFocused();
+        });
+      }
+
       test('should open calendar on button click', async ({ componentsPage }) => {
         const datepicker = await setup({
           componentsPage,
@@ -287,6 +464,35 @@ test.describe('mdc-datepicker', () => {
     });
 
     test.describe('disabled state', () => {
+      test('should prevent keyboard and native input edits while soft-disabled and allow edits after re-enabling', async ({
+        componentsPage,
+      }) => {
+        const datepicker = await setup({ componentsPage, label: 'Date', value: '2026-10-10' });
+        await datepicker.evaluate(element => element.setAttribute('soft-disabled', ''));
+        const month = datepicker.getByRole('spinbutton', { name: 'Month', exact: true });
+        await expect(month).toHaveAttribute('aria-disabled', 'true');
+
+        await month.focus();
+        await month.press('ArrowUp');
+        await componentsPage.page.keyboard.type('12');
+        await expect(month).toHaveValue('10');
+
+        await month.evaluate(element => {
+          const input = element as HTMLInputElement;
+          input.value = '12';
+          input.dispatchEvent(new InputEvent('input', { bubbles: true, data: '12', inputType: 'insertText' }));
+        });
+        await expect(month).toHaveValue('10');
+        await expect(month).toHaveAttribute('aria-valuetext', '10');
+        await expect(datepicker).toHaveAttribute('value', '2026-10-10');
+
+        await datepicker.evaluate(element => element.removeAttribute('soft-disabled'));
+        await month.focus();
+        await componentsPage.page.keyboard.insertText('12');
+        await expect(month).toHaveValue('12');
+        await expect(datepicker).toHaveAttribute('value', '2026-12-10');
+      });
+
       test('should not allow interaction when disabled', async ({ componentsPage }) => {
         const datepicker = await setup({
           componentsPage,

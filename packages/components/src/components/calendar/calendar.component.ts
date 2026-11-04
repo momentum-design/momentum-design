@@ -159,6 +159,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       if (dt) {
         this.displayMonth = dt.getMonth() + 1;
         this.displayYear = dt.getFullYear();
+        if (!this.gridHasFocus) this.focusedDate = this.value;
       }
     }
   }
@@ -374,6 +375,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   }
 
   private handleGridKeydown(event: KeyboardEvent): void {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
     const focusDt = this.focusedDate ? parseISO(this.focusedDate) : today();
     if (!focusDt) return;
 
@@ -536,8 +538,10 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     `;
   }
 
-  private handleGridFocusIn(): void {
+  private handleGridFocusIn(event: FocusEvent): void {
     this.gridHasFocus = true;
+    const target = event.target as HTMLElement;
+    if (target.dataset.date) this.focusedDate = target.dataset.date;
   }
 
   private handleGridFocusOut(): void {
