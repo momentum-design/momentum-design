@@ -93,7 +93,9 @@ test.describe('mdc-emptystate', () => {
     await expect(heading).toHaveText('Let’s chat 🤫');
     const assignedHeadingText = await emptyState
       .locator('slot[name="heading"]')
-      .evaluate(slot => slot.assignedElements().map(element => element.textContent?.trim()));
+      .evaluate((slot) =>
+        (slot as HTMLSlotElement).assignedElements().map((element) => element.textContent?.trim()),
+      );
 
     expect(assignedHeadingText).toEqual(['Let’s chat 🤫']);
   });

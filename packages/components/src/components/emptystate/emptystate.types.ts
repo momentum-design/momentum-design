@@ -1,5 +1,6 @@
 import type { ValueOf } from '../../utils/types';
 import type { TagName } from '../text/text.types';
+
 import { SIZE, LAYOUT } from './emptystate.constants';
 
 interface Events {}
