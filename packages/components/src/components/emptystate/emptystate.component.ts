@@ -19,6 +19,10 @@ import type { EmptyStateHeadingTagName, EmptyStateLayout, EmptyStateSize } from 
  * @slot actions - optional action buttons
  *
  * @cssproperty --mdc-emptystate-max-width - The maximum width of the empty state content
+ *
+ * @csspart content - The container for the illustration, text, and actions
+ * @csspart text-and-actions - The container for the heading, description, and action controls
+ * @csspart text - The container for the heading and description
  */
 class EmptyState extends Component {
   /**
