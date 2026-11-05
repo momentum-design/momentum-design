@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-appheader-height: 4rem;
+    --mdc-appheader-height: var(--mds-size-theme-lg-64);
   }
 
   :host::part(container) {
@@ -10,7 +10,7 @@ const styles = css`
     align-items: center;
     width: 100%;
     height: var(--mdc-appheader-height);
-    padding: 1rem;
+    padding: var(--mds-spacing-theme-pad-v-md) var(--mds-spacing-theme-pad-h-md);
   }
 
   :host::part(leading-section),
