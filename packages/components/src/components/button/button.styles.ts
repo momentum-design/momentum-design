@@ -2,8 +2,8 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-button-prefix-icon-size: 1rem;
-    --mdc-button-postfix-icon-size: 1rem;
+    --mdc-button-prefix-icon-size: var(--mds-size-theme-md-16);
+    --mdc-button-postfix-icon-size: var(--mds-size-theme-md-16);
     --mdc-button-line-height: var(--mds-font-lineheight-body-large);
 
     background: var(
@@ -18,18 +18,18 @@ const styles = css`
   }
 
   :host([size='64']) {
-    --mdc-button-prefix-icon-size: 2rem;
-    --mdc-button-postfix-icon-size: 2rem;
+    --mdc-button-prefix-icon-size: var(--mds-size-theme-md-32);
+    --mdc-button-postfix-icon-size: var(--mds-size-theme-md-32);
   }
 
   :host([size='52']) {
-    --mdc-button-prefix-icon-size: 1.75rem;
-    --mdc-button-postfix-icon-size: 1.75rem;
+    --mdc-button-prefix-icon-size: var(--mds-size-theme-md-28);
+    --mdc-button-postfix-icon-size: var(--mds-size-theme-md-28);
   }
 
   :host([size='40']) {
-    --mdc-button-prefix-icon-size: 1.25rem;
-    --mdc-button-postfix-icon-size: 1.25rem;
+    --mdc-button-prefix-icon-size: var(--mds-size-theme-md-20);
+    --mdc-button-postfix-icon-size: var(--mds-size-theme-md-20);
   }
 
   /* Apply icon size for prefix and postfix icons */
@@ -141,31 +141,31 @@ const styles = css`
   :host([size='32'][data-btn-type='icon']),
   :host([size='28'][data-btn-type='icon']),
   :host([size='24'][data-btn-type='icon']) {
-    border-radius: 6.25rem;
+    border-radius: var(--mds-radius-theme-full);
     aspect-ratio: 1;
     padding: unset;
   }
   :host([size='40']) {
     font-size: var(--mds-font-size-body-large);
-    padding: 0 1rem;
-    gap: 0.5rem;
+    padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-md);
+    gap: var(--mds-spacing-theme-gap-xs);
   }
   :host([size='32']) {
     font-size: var(--mds-font-size-body-large);
-    padding: 0 0.75rem;
+    padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-sm);
     gap: 0.375rem;
   }
   :host([size='28']) {
     font-size: var(--mds-font-size-body-midsize);
     line-height: var(--mds-font-lineheight-body-midsize);
-    padding: 0 0.75rem;
+    padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-sm);
     gap: 0.375rem;
   }
   :host([size='24']) {
     font-size: var(--mds-font-size-body-small);
     line-height: var(--mds-font-lineheight-body-small);
     padding: 0 0.625rem;
-    gap: 0.25rem;
+    gap: var(--mds-spacing-theme-gap-2xs);
   }
   :host([size='20']) {
     padding: 0.0625rem;

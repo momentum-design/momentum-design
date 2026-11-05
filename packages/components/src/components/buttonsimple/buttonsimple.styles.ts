@@ -11,7 +11,7 @@ const styles = [
       --mdc-button-border-color: transparent;
       --mdc-button-text-color: unset;
 
-      border: 0.0625rem solid var(--mdc-button-border-color);
+      border: var(--mds-border-theme-default) solid var(--mdc-button-border-color);
       cursor: pointer;
       user-select: none;
 
@@ -27,35 +27,35 @@ const styles = [
       --mdc-button-background: var(--mds-color-theme-text-primary-disabled);
     }
     :host([size='124']) {
-      --mdc-button-height: 7.75rem;
+      --mdc-button-height: var(--mds-size-theme-xl-124);
     }
     :host([size='88']) {
-      --mdc-button-height: 5.5rem;
+      --mdc-button-height: var(--mds-size-theme-xl-88);
     }
     :host([size='72']) {
-      --mdc-button-height: 4.5rem;
+      --mdc-button-height: var(--mds-size-theme-xl-72);
     }
     :host([size='64']) {
-      --mdc-button-height: 4rem;
+      --mdc-button-height: var(--mds-size-theme-lg-64);
     }
     :host([size='52']) {
-      --mdc-button-height: 3.25rem;
+      --mdc-button-height: var(--mds-size-theme-lg-52);
     }
     :host([size='40']) {
-      --mdc-button-height: 2.5rem;
+      --mdc-button-height: var(--mds-size-theme-lg-40);
     }
     :host([size='32']) {
-      --mdc-button-height: 2rem;
+      --mdc-button-height: var(--mds-size-theme-md-32);
     }
     :host([size='28']) {
-      --mdc-button-height: 1.75rem;
+      --mdc-button-height: var(--mds-size-theme-md-28);
       font-size: var(--mds-font-size-body-midsize);
     }
     :host([size='24']) {
-      --mdc-button-height: 1.5rem;
+      --mdc-button-height: var(--mds-size-theme-md-24);
     }
     :host([size='20']) {
-      --mdc-button-height: 1.25rem;
+      --mdc-button-height: var(--mds-size-theme-md-20);
     }
   `,
   ...hostFocusRingStyles(),
