@@ -20,13 +20,10 @@ const render = (args: Args) =>
   >`;
 
 const meta: Meta = {
-  title: 'Work In Progress/emptystate',
+  title: 'Components/emptystate',
   tags: ['autodocs'],
   component: 'mdc-emptystate',
   render,
-  parameters: {
-    badges: ['wip'],
-  },
   argTypes: {
     layout: {
       control: 'select',
