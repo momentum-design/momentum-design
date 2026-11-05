@@ -1090,14 +1090,30 @@
               "value": "linear-gradient(180deg, {color.gradient.default.light.secondary.0} 0%, {color.gradient.default.light.secondary.1} 100%)",
               "description": "linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%)"
             }
+          },
+          "tertiary": {
+            "normal": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.white-alpha.0}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.gray.30}",
+                "description": ""
+              }
+            }
           }
         },
         "reaction": {
           "normal": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.white-alpha.90} 0%, {color.core.white-alpha.0} 100%)",
-            "description": "linear-gradient(90deg, #ffffffe6 0%, #ffffff00 100%)\nUsed for background of meeting reaction"
+            "value": "linear-gradient(90deg, {color.core.white-alpha.100}e5 0%, {color.core.white-alpha.0} 100%)",
+            "description": "linear-gradient(90deg, #ffffffe5 0%, #ffffff00 100%)\nUsed for background of meeting reaction"
           }
         },
         "skeleton": {
@@ -1888,52 +1904,6 @@
               "value": "{color.core.gray.20}",
               "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
             }
-          }
-        },
-        "header": {
-          "0": {
-            "parent": "theme/stable/light",
-            "type": "color",
-            "value": "{color.core.white-alpha.5}",
-            "description": "",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {
-                  "type": "alpha",
-                  "value": "0.05",
-                  "space": "lch"
-                }
-              }
-            }
-          },
-          "1": {
-            "parent": "theme/stable/light",
-            "type": "color",
-            "value": "{color.core.white-alpha.0}",
-            "description": "",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {
-                  "type": "alpha",
-                  "value": "0",
-                  "space": "lch"
-                }
-              }
-            }
-          }
-        },
-        "navigation": {
-          "0": {
-            "parent": "theme/stable/light",
-            "type": "color",
-            "value": "{color.core.white-alpha.0}",
-            "description": ""
-          },
-          "1": {
-            "parent": "theme/stable/light",
-            "type": "color",
-            "value": "{color.core.gray.30}",
-            "description": ""
           }
         }
       },
@@ -3373,6 +3343,16 @@
             }
           }
         }
+      }
+    }
+  },
+  "shadow": {
+    "inner-shadow": {
+      "normal": {
+        "parent": "theme/stable/light",
+        "type": "color",
+        "value": "{color.core.white-alpha.0}",
+        "description": ""
       }
     }
   },

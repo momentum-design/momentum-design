@@ -1087,8 +1087,24 @@
             "normal": {
               "parent": "theme/fluid/dark",
               "type": "color",
-              "value": "linear-gradient(180deg, {color.gradient.default.dark.secondary.0} 0%, {color.gradient.default.dark.secondary.1} 100%)",
-              "description": "linear-gradient(180deg, {color.gradient.default.dark.secondary.0} 0%, {color.gradient.default.dark.secondary.1} 100%)"
+              "value": "linear-gradient(180deg, {color.core.gray.95} 0%, {color.core.black-alpha.60} 100%)",
+              "description": "linear-gradient(180deg, {color.core.gray.95} 0%, {color.core.black-alpha.60} 100%)"
+            }
+          },
+          "tertiary": {
+            "normal": {
+              "0": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.7}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/fluid/dark",
+                "type": "color",
+                "value": "{color.core.gray.95}",
+                "description": ""
+              }
             }
           }
         },
@@ -1096,8 +1112,8 @@
           "normal": {
             "parent": "theme/fluid/dark",
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.gray.95}e6 0%, {color.core.gray.95}00 100%)",
-            "description": "linear-gradient(90deg, #1a1a1ae6 0%, #1a1a1a00 100%)\nUsed for meeting reaction background  "
+            "value": "linear-gradient(90deg, {color.core.gray.95}e5 0%, {color.core.gray.95}00 100%)",
+            "description": "linear-gradient(90deg, #1a1a1ae5 0%, #1a1a1a00 100%)\nUsed for meeting reaction background  "
           }
         },
         "skeleton": {
@@ -1888,52 +1904,6 @@
               "value": "{color.core.gray.80}",
               "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
             }
-          }
-        },
-        "header": {
-          "0": {
-            "parent": "theme/fluid/dark",
-            "type": "color",
-            "value": "{color.core.gray.95}",
-            "description": "",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {
-                  "type": "alpha",
-                  "value": "0.5",
-                  "space": "lch"
-                }
-              }
-            }
-          },
-          "1": {
-            "parent": "theme/fluid/dark",
-            "type": "color",
-            "value": "{color.core.gray.95}",
-            "description": "",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {
-                  "type": "alpha",
-                  "value": "0",
-                  "space": "lch"
-                }
-              }
-            }
-          }
-        },
-        "navigation": {
-          "0": {
-            "parent": "theme/fluid/dark",
-            "type": "color",
-            "value": "{color.core.black-alpha.0}",
-            "description": ""
-          },
-          "1": {
-            "parent": "theme/fluid/dark",
-            "type": "color",
-            "value": "{color.core.gray.80}",
-            "description": ""
           }
         }
       },
@@ -3373,6 +3343,16 @@
             }
           }
         }
+      }
+    }
+  },
+  "shadow": {
+    "inner-shadow": {
+      "normal": {
+        "parent": "theme/fluid/dark",
+        "type": "color",
+        "value": "{color.core.white-alpha.20}",
+        "description": ""
       }
     }
   },
