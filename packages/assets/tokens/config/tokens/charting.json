@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "destination": "charting/dark",
+      "filters": {
+        "types": [
+          "charting"
+        ]
+      },
+      "cssSelector": ".mds-charting-dark",
+      "targets": [
+        "core/value.json",
+        "charting/dark.json"
+      ]
+    },
+    {
+      "destination": "charting/light",
+      "filters": {
+        "types": [
+          "charting"
+        ]
+      },
+      "cssSelector": ".mds-charting-light",
+      "targets": [
+        "core/value.json",
+        "charting/light.json"
+      ]
+    }
+  ],
+  "formats": [
+    "CSS_VARIABLES",
+    "SCSS_VARIABLES",
+    "WEB_JSON",
+    "MD_JSON_MINIMAL"
+  ],
+  "prefix": "mds",
+  "outputReferences": true
+}
