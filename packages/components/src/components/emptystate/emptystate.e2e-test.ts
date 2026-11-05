@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test';
 
-import { test } from '../../../config/playwright/setup';
-import type { ComponentsPage } from '../../../config/playwright/setup';
-import { DEFAULTS, LAYOUT, SIZE } from './emptystate.constants';
+import { test, type ComponentsPage } from '../../../config/playwright/setup';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
+
+import { DEFAULTS, LAYOUT, SIZE } from './emptystate.constants';
 import type { EmptyStateHeadingTagName, EmptyStateLayout, EmptyStateSize } from './emptystate.types';
 
 type SetupOptions = {
@@ -91,7 +91,11 @@ test.describe('mdc-emptystate', () => {
     const heading = emptyState.getByRole('heading', { name: 'Let’s chat', level: 3 });
     await expect(heading).toBeVisible();
     await expect(heading).toHaveText('Let’s chat 🤫');
-    await expect(emptyState.getByRole('heading', { name: 'Fallback heading' })).toHaveCount(0);
+    const assignedHeadingText = await emptyState
+      .locator('slot[name="heading"]')
+      .evaluate(slot => slot.assignedElements().map(element => element.textContent?.trim()));
+
+    expect(assignedHeadingText).toEqual(['Let’s chat 🤫']);
   });
 
   test('should allow the heading to be omitted for search or filter results', async ({ componentsPage }) => {

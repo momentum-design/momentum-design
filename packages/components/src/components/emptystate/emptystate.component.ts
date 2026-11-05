@@ -1,9 +1,11 @@
 import { CSSResult, html, nothing } from 'lit';
-import styles from './emptystate.styles';
-import { Component } from '../../models';
 import { property, state } from 'lit/decorators.js';
+
+import { Component } from '../../models';
+
 import { DEFAULTS } from './emptystate.constants';
 import type { EmptyStateHeadingTagName, EmptyStateLayout, EmptyStateSize } from './emptystate.types';
+import styles from './emptystate.styles';
 
 /**
  * Presents an empty view with required descriptive text. Add a heading for
