@@ -13,32 +13,32 @@ const styles = [
       --mdc-avatar-loading-overlay-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
     }
     :host([size='124']) {
-      width: 7.75rem;
-      height: 7.75rem;
+      width: var(--mds-size-theme-xl-124);
+      height: var(--mds-size-theme-xl-124);
     }
     :host([size='88']) {
-      width: 5.5rem;
-      height: 5.5rem;
+      width: var(--mds-size-theme-xl-88);
+      height: var(--mds-size-theme-xl-88);
     }
     :host([size='72']) {
-      width: 4.5rem;
-      height: 4.5rem;
+      width: var(--mds-size-theme-xl-72);
+      height: var(--mds-size-theme-xl-72);
     }
     :host([size='64']) {
-      width: 4rem;
-      height: 4rem;
+      width: var(--mds-size-theme-lg-64);
+      height: var(--mds-size-theme-lg-64);
     }
     :host([size='48']) {
-      width: 3rem;
-      height: 3rem;
+      width: var(--mds-size-theme-lg-48);
+      height: var(--mds-size-theme-lg-48);
     }
     :host([size='32']) {
-      width: 2rem;
-      height: 2rem;
+      width: var(--mds-size-theme-md-32);
+      height: var(--mds-size-theme-md-32);
     }
     :host([size='24']) {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: var(--mds-size-theme-md-24);
+      height: var(--mds-size-theme-md-24);
     }
     :host([size='124'])::part(loader) {
       transform: scale(1.5);
@@ -60,18 +60,18 @@ const styles = [
       transform: scale(0.3);
     }
     :host {
-      width: 2rem;
-      height: 2rem;
+      width: var(--mds-size-theme-md-32);
+      height: var(--mds-size-theme-md-32);
       background-color: var(--mdc-avatar-default-background-color);
       color: var(--mdc-avatar-default-foreground-color);
-      border-radius: 100vh;
+      border-radius: var(--mds-radius-theme-full);
       position: relative;
       display: grid;
       place-items: center;
       flex-shrink: 0;
     }
     :host::part(photo) {
-      border-radius: 100vh;
+      border-radius: var(--mds-radius-theme-full);
       height: 100%;
       width: 100%;
       object-fit: cover;
@@ -113,7 +113,7 @@ const styles = [
 
     :host::part(loading-wrapper) {
       position: absolute;
-      border-radius: 100vh;
+      border-radius: var(--mds-radius-theme-full);
       width: 100%;
       height: 100%;
       background-color: var(--mdc-avatar-loading-overlay-background-color);
@@ -122,10 +122,10 @@ const styles = [
     }
     :host::part(loader) {
       position: absolute;
-      width: 1rem;
+      width: var(--mds-size-theme-md-16);
       transform: scale(0.4);
       aspect-ratio: 1;
-      border-radius: 100vh;
+      border-radius: var(--mds-radius-theme-full);
       animation: loading-key 1s infinite linear alternate;
     }
     @keyframes loading-key {
@@ -158,7 +158,7 @@ const styles = [
     /* High Contrast Mode */
     @media (forced-colors: active) {
       :host {
-        outline: 0.125rem solid;
+        outline: var(--mds-border-theme-emphasis) solid;
       }
     }
   `,
