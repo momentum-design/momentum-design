@@ -2,12 +2,18 @@
 import { LitElement } from 'lit';
 
 import type { Component } from '../../models';
-import { DepthManager, OVERLAY_BACKDROP_Z_INDEX_OFFSET, OVERLAY_TRIGGER_Z_INDEX_OFFSET } from '../controllers/DepthManager';
+import {
+  OVERLAY_BACKDROP_Z_INDEX_OFFSET,
+  OVERLAY_STACK_GROUP_ATTRIBUTE,
+  OVERLAY_TRIGGER_Z_INDEX_OFFSET,
+} from '../controllers/DepthManager';
 
 import type { Constructor } from './index.types';
 
 export declare abstract class BackdropMixinInterface {
   abstract zIndex: number;
+
+  abstract stackGroupName: string;
 
   protected backdropElement: HTMLElement | null;
 
@@ -37,6 +43,8 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
      */
     abstract zIndex: number;
 
+    abstract stackGroupName: string;
+
     /**
      * Set this property to true to make the backdrop invisible.
      * This is useful for components that do want a backdrop which stops interaction,
@@ -64,6 +72,10 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
     override update(changedProperties: Map<string | number | symbol, unknown>): void {
       super.update(changedProperties);
 
+      if (changedProperties.has('stackGroupName') && this.backdropElement) {
+        this.backdropElement.setAttribute(OVERLAY_STACK_GROUP_ATTRIBUTE, this.stackGroupName ?? '');
+      }
+
       if (changedProperties.has('zIndex') && this.backdropElement) {
         // Update the backdrop z-index if the zIndex property changes
         this.backdropElement.style.zIndex = `${this.zIndex + OVERLAY_BACKDROP_Z_INDEX_OFFSET}`;
@@ -83,7 +95,7 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
      */
     protected createBackdrop(classNamePrefix: string): void {
       const backdrop = document.createElement('div');
-      DepthManager.registerBackdrop(backdrop, this);
+      backdrop.setAttribute(OVERLAY_STACK_GROUP_ATTRIBUTE, this.stackGroupName ?? '');
       backdrop.classList.add(`${classNamePrefix}-backdrop`);
       const styleElement = document.createElement('style');
       const bgColor = this.isBackdropInvisible

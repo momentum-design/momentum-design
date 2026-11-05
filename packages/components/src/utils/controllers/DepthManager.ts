@@ -51,9 +51,14 @@ type PopPredicateFn = (item: StackedOverlayComponent, idx: number) => true | fal
  * @internal
  */
 const elementStack: StackedOverlayComponent[] = [];
-const backdropHosts = new WeakMap<EventTarget, Element>();
-const eventOwners = new WeakMap<Event, StackedOverlayComponent | undefined>();
-const handledEvents = new WeakSet<Event>();
+const OVERLAY_EVENT_STATE = Symbol('overlayEventState');
+
+type OverlayInputEvent = Event & {
+  [OVERLAY_EVENT_STATE]?: {
+    owner: StackedOverlayComponent | undefined;
+    handled: boolean;
+  };
+};
 
 /**
  * Initial z-index for the first element in the stack
@@ -71,6 +76,8 @@ const NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT = 3;
 
 export const OVERLAY_BACKDROP_Z_INDEX_OFFSET = -2;
 export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
+/** @internal */
+export const OVERLAY_STACK_GROUP_ATTRIBUTE = 'data-mdc-overlay-group';
 
 /**
  * DepthManager is a controller that manages a stack of elements to control their depth (z-index).
@@ -135,11 +142,6 @@ export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
  */
 export class DepthManager implements ReactiveController {
   private readonly host: StackedOverlayComponent;
-
-  /** Associates a separately rendered backdrop with its overlay's input context. @internal */
-  public static registerBackdrop(backdrop: Element, host: Element): void {
-    backdropHosts.set(backdrop, host);
-  }
 
   /**
    * Creates an instance of DepthManager.
@@ -339,10 +341,11 @@ export class DepthManager implements ReactiveController {
   private getContextHost(path: EventTarget[]): StackedOverlayComponent | undefined {
     const latestFirst = [...elementStack].reverse();
     for (const target of path) {
+      const stackGroupName = target instanceof Element ? target.getAttribute(OVERLAY_STACK_GROUP_ATTRIBUTE) : null;
       const host = latestFirst.find(
         element =>
           element === target ||
-          element === backdropHosts.get(target) ||
+          (stackGroupName !== null && (element.stackGroupName ?? '') === stackGroupName) ||
           (target instanceof Element &&
             !!element.triggerID &&
             target.id === element.triggerID &&
@@ -371,17 +374,26 @@ export class DepthManager implements ReactiveController {
     return context ? this.getStackTopHost(context.stackGroupName ?? '') : undefined;
   }
 
+  private getEventState(event: OverlayInputEvent) {
+    const existingState = event[OVERLAY_EVENT_STATE];
+    if (existingState) return existingState;
+
+    const state = { owner: this.getEventOwner(event), handled: false };
+    Object.defineProperty(event, OVERLAY_EVENT_STATE, { value: state });
+    return state;
+  }
+
   /** Checks the host's group top, restricting input to one event-stable context group. */
   public isHostOnTop(event?: Event): boolean {
     if (!event) return this.getStackTopHost() === this.host;
-    if (!eventOwners.has(event)) eventOwners.set(event, this.getEventOwner(event));
-    return eventOwners.get(event) === this.host;
+    return this.getEventState(event).owner === this.host;
   }
 
   /** Prevent duplicate dismissal from host and document listeners for the same input. */
   public claimHostEvent(event: Event): boolean {
-    if (handledEvents.has(event) || !this.isHostOnTop(event)) return false;
-    handledEvents.add(event);
+    const state = this.getEventState(event);
+    if (state.handled || state.owner !== this.host) return false;
+    state.handled = true;
     return true;
   }
 

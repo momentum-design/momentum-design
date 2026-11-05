@@ -22,7 +22,12 @@ import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
 import { Timers } from '../../utils/controllers/Timers';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
-import { DepthManager, StackChange, StackedOverlayComponent } from '../../utils/controllers/DepthManager';
+import {
+  DepthManager,
+  OVERLAY_STACK_GROUP_ATTRIBUTE,
+  type StackChange,
+  type StackedOverlayComponent,
+} from '../../utils/controllers/DepthManager';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
@@ -796,6 +801,7 @@ class Popover
   /** @internal */
   onComponentStackChanged(changed: StackChange): void {
     if (changed === 'removed') {
+      this.backdropElement?.removeAttribute(OVERLAY_STACK_GROUP_ATTRIBUTE);
       this.hide();
     } else if (changed === 'moved') {
       this.requestUpdate('zIndex');
