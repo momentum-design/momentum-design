@@ -80,6 +80,7 @@ export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
 export const OVERLAY_STACK_GROUP_ATTRIBUTE = 'data-mdc-overlay-group';
 
 /**
+ * @remarks
  * DepthManager is a controller that manages a stack of elements to control their depth (z-index).
  *
  * It uses a global stack to keep track of the order of elements, allowing for proper layering of overlays.
