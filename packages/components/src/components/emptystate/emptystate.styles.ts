@@ -3,6 +3,9 @@ import { css } from 'lit';
 const styles = css`
   :host {
     --mdc-emptystate-max-width: 19.75rem;
+    --mdc-emptystate-align-items: center;
+    --mdc-emptystate-illustration-size: 5.5rem;
+    --mdc-emptystate-text-align: center;
 
     width: 100%;
     display: flex;
@@ -10,11 +13,17 @@ const styles = css`
     align-items: center;
   }
 
-  [part='content'] {
-    --mdc-emptystate-align-items: center;
-    --mdc-emptystate-illustration-size: 5.5rem;
-    --mdc-emptystate-text-align: center;
+  :host([layout='horizontal']) {
+    --mdc-emptystate-align-items: flex-start;
+    --mdc-emptystate-text-align: start;
+  }
 
+  :host([size='large']) {
+    --mdc-emptystate-max-width: 31rem;
+    --mdc-emptystate-illustration-size: 12rem;
+  }
+
+  [part='content'] {
     display: flex;
     flex-direction: column;
     align-items: var(--mdc-emptystate-align-items);
@@ -24,13 +33,6 @@ const styles = css`
 
   :host([layout='horizontal']) [part='content'] {
     flex-direction: row;
-    --mdc-emptystate-align-items: flex-start;
-    --mdc-emptystate-text-align: start;
-  }
-
-  :host([size='large']) [part='content'] {
-    --mdc-emptystate-max-width: 31rem;
-    --mdc-emptystate-illustration-size: 12rem;
   }
 
   ::slotted(mdc-illustration[slot='illustration']) {

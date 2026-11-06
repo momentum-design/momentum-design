@@ -8,10 +8,6 @@ import type { EmptyStateHeadingTagName, EmptyStateLayout, EmptyStateSize } from 
 import styles from './emptystate.styles';
 
 /**
- * Presents an empty view with required descriptive text. Add a heading for
- * views with no content yet or empty collections, and omit it when it would repeat a search or
- * filter result description.
- *
  * @tagname mdc-emptystate
  *
  * @dependency mdc-text
@@ -21,6 +17,9 @@ import styles from './emptystate.styles';
  * @slot actions - optional action buttons
  *
  * @cssproperty --mdc-emptystate-max-width - The maximum width of the empty state content
+ * @cssproperty --mdc-emptystate-align-items - Alignment of the empty state content and actions
+ * @cssproperty --mdc-emptystate-illustration-size - Size of a slotted illustration
+ * @cssproperty --mdc-emptystate-text-align - Text alignment of the heading and description
  *
  * @csspart content - The container for the illustration, text, and actions
  * @csspart text-and-actions - The container for the heading, description, and action controls
