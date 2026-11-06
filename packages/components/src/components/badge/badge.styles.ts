@@ -23,18 +23,18 @@ const styles = [
 
       --mdc-badge-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
 
-      --mdc-badge-dot-width: 0.75rem;
-      --mdc-badge-dot-height: 0.75rem;
+      --mdc-badge-dot-width: var(--mds-size-theme-sm-12);
+      --mdc-badge-dot-height: var(--mds-size-theme-sm-12);
 
       color: var(--mdc-badge-primary-foreground-color);
     }
     :host::part(badge-overlay) {
-      outline: 0.0625rem solid var(--mdc-badge-overlay-background-color);
+      outline: var(--mds-border-theme-default) solid var(--mdc-badge-overlay-background-color);
     }
     :host::part(badge-text) {
-      padding: 0 0.25rem;
-      border-radius: 6.25rem;
-      min-width: 1rem;
+      padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-2xs);
+      border-radius: var(--mds-radius-theme-full);
+      min-width: var(--mds-size-theme-md-16);
       display: flex;
       justify-content: center;
       background-color: var(--mdc-badge-primary-background-color);
@@ -42,12 +42,12 @@ const styles = [
     :host::part(badge-dot) {
       width: var(--mdc-badge-dot-width);
       height: var(--mdc-badge-dot-height);
-      border-radius: 50%;
+      border-radius: var(--mds-radius-theme-full);
       background-color: var(--mdc-badge-primary-background-color);
     }
     :host::part(badge-icon) {
       padding: 2px;
-      border-radius: 50%;
+      border-radius: var(--mds-radius-theme-full);
     }
     :host([type='icon'][variant='primary'])::part(badge-icon) {
       background-color: var(--mdc-badge-primary-background-color);
@@ -75,7 +75,7 @@ const styles = [
       :host::part(badge-dot),
       :host::part(badge-icon),
       :host::part(badge-text) {
-        outline: 0.125rem solid;
+        outline: var(--mds-border-theme-emphasis) solid;
       }
 
       :host::part(badge-dot) {
