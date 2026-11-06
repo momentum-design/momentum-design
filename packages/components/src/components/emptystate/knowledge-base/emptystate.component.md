@@ -7,13 +7,13 @@ component: emptystate
 
 ## Overview
 
-The `mdc-emptystate` gives people context when a view has no content and helps them decide what to do next. It supports first-use views, empty collections, and searches or filters that return no results.
+The `mdc-emptystate` gives people context when a view has no content and helps them decide what to do next. It supports views with no content yet, empty collections, and searches or filters that return no results.
 
 ### When to use
 
 - Use `mdc-emptystate` when a collection is empty and people need context or a next step.
 - Use `mdc-emptystate` when filters or a search query leave a view without results; explain how to adjust the query or filters when that helps.
-- Use `mdc-emptystate` for first-use views that can guide people toward creating or adding content.
+- Use `mdc-emptystate` for views with no content yet that can guide people toward creating or adding content.
 
 ### When not to use
 
@@ -43,11 +43,10 @@ import { EmptyState } from '@momentum-design/components/dist/react';
 - Place an optional illustration or icon in the `illustration` slot. An `mdc-illustration` needs an ancestor `mdc-illustrationprovider`; an `mdc-icon` does not.
 - Use the `heading` property for plain text headings, or the `heading` slot when the title needs rich content such as an inline decorative icon. Slotted heading content takes precedence over the property.
 - Place one or more action controls in the `actions` slot. Use controls such as `mdc-button` or `mdc-link` so the available next step is keyboard accessible.
-- Always set `description` to explain the empty state and the next step. Add a heading for first-use or empty collections; omit it for search or filter results when a title would repeat the description.
+- Always set `description` to explain the empty state and the next step.
 
 ### Content guidance
 
-- For first-use and empty collections, use a descriptive, situation-specific heading and a brief explanation or encouragement. Avoid starting the heading with “No”; explain what is happening and what the person can do next.
 - Keep the heading short and easy to scan. Use the description for supporting context.
 - For search or filter results, omit a redundant heading and use the description to suggest changing the search or clearing filters.
 - Keep the description focused on the purpose of the empty view. Use the action control’s label to say what it does.

@@ -9,7 +9,7 @@ import styles from './emptystate.styles';
 
 /**
  * Presents an empty view with required descriptive text. Add a heading for
- * first-use or empty collections, and omit it when it would repeat a search or
+ * views with no content yet or empty collections, and omit it when it would repeat a search or
  * filter result description.
  *
  * @tagname mdc-emptystate
@@ -46,8 +46,8 @@ class EmptyState extends Component {
   size: EmptyStateSize = DEFAULTS.SIZE;
 
   /**
-   * Heading text for first-use and empty-collection states. A heading slot
-   * takes precedence when consumers need rich heading content.
+   * The heading text. A heading slot takes precedence when consumers need rich
+   * heading content.
    * Omit it for search or filter results when it would repeat the description.
    */
   @property({ type: String, reflect: true })
