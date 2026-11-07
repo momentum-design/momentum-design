@@ -205,7 +205,10 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
 
       if (nextElement) {
         event.preventDefault();
-        nextElement.focus();
+
+        // TS's DOM typings omit `focusVisible`, so this force cast fills the gap.
+        const focusOptions = { focusVisible: true } as FocusOptions & { focusVisible: boolean };
+        nextElement.focus(focusOptions);
       }
     }
 
