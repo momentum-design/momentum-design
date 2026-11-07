@@ -3,7 +3,7 @@ import path from 'path';
 
 import { ActionType } from 'plop';
 
-import { folders, componentName } from '../constants';
+import { folders, componentClassName, componentName } from '../constants';
 
 export const AddToComponentExports: ActionType = {
   type: 'modify',
@@ -13,6 +13,7 @@ export const AddToComponentExports: ActionType = {
   pattern: /(};\n\n\/\/ Types Exports)/,
   data: {
     componentName,
+    componentClassName,
   },
-  template: `  {{sentenceCase ${componentName}}},\n$1`,
+  template: `  {{${componentClassName}}},\n$1`,
 };
