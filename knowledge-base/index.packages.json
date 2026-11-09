@@ -49,7 +49,7 @@
       "tier": 2,
       "path": "packages/assets/tokens/knowledge-base/color.md",
       "title": "Color",
-      "summary": "How Momentum color tokens are structured (usage, prominence, state), how they resolve across themes, and where each semantic color belongs.",
+      "summary": "How Momentum color tokens are structured (usage, prominence, state), how theme and charting colors resolve, and where each semantic color belongs.",
       "canonical": null,
       "websitePath": "foundations/color"
     },
@@ -93,7 +93,7 @@
       "tier": 2,
       "path": "packages/assets/tokens/knowledge-base/theming.md",
       "title": "Theming",
-      "summary": "How Momentum semantic color tokens resolve across themes and modes, how a theme is applied, and how to add one.",
+      "summary": "How Momentum semantic color tokens resolve across themes and modes, how a theme or charting mode is applied, and how to add one.",
       "canonical": null,
       "websitePath": "foundations/theming"
     },
