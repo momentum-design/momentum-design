@@ -114,10 +114,14 @@ primitive alias changes between modes:
 | Charting dark | `src/charting/dark.json` | `.mds-charting-dark` |
 | Charting light | `src/charting/light.json` | `.mds-charting-light` |
 
-The build is declared in `config/tokens/charting.json`. These selectors are not
-part of the stable theme bundles. Apply the charting selector alongside the
-product theme when a chart is rendered. The meaning of each charting group is
-catalogued in [Color](./color.md).
+`config/tokens/charting.json` still emits the standalone `.mds-charting-*`
+selectors. The same sources are compiled into the stable and fluid Webex theme
+bundles, and into each additional accent theme: dark outputs include
+`charting/dark.json`, light outputs include `charting/light.json`. Those entries
+live in `config/tokens/core.json` and `config/tokens/additional-themes.json`, so
+applying a stable, fluid, or accent theme class provides the charting custom
+properties. High-contrast and AAOS outputs stay limited to their own theme
+tokens. The meaning of each charting group is catalogued in [Color](./color.md).
 
 ## Inverted and common
 
