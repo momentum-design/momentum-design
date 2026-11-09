@@ -702,3 +702,54 @@ test('mdc-textarea', async ({ componentsPage }) => {
     });
   });
 });
+
+test('mdc-textarea input updates the host and form value before the host listener; change remains a separate commit event', async ({
+  componentsPage,
+}) => {
+  const form = await setup(
+    { componentsPage, id: 'test-mdc-textarea', name: 'description', label: 'Description' },
+    true,
+  );
+  const host = componentsPage.page.locator('mdc-textarea');
+  const textarea = host.locator('textarea');
+
+  await host.evaluate(element => {
+    type EventRecord = { type: string; value: string; formValue: string | null; targetIsHost: boolean };
+    const hostElement = element as HTMLElement & { eventLog: EventRecord[]; value: string };
+    hostElement.eventLog = [];
+    const recordEvent = (event: Event) => {
+      const formElement = hostElement.closest('form');
+      hostElement.eventLog.push({
+        type: event.type,
+        value: hostElement.value,
+        formValue: formElement ? (new FormData(formElement).get('description')?.toString() ?? null) : null,
+        targetIsHost: event.target === hostElement,
+      });
+    };
+    hostElement.addEventListener('input', recordEvent);
+    hostElement.addEventListener('change', recordEvent);
+  });
+
+  await textarea.fill('complete text');
+  await expect(host).toHaveJSProperty('value', 'complete text');
+  await expect
+    .poll(() =>
+      host.evaluate(element => (element as HTMLElement & { eventLog: Array<{ type: string }> }).eventLog.length),
+    )
+    .toBe(1);
+  expect(await host.evaluate(element => (element as HTMLElement & { eventLog: unknown[] }).eventLog)).toEqual([
+    { type: 'input', value: 'complete text', formValue: 'complete text', targetIsHost: true },
+  ]);
+
+  await textarea.evaluate(element => (element as HTMLTextAreaElement).blur());
+  await expect
+    .poll(() =>
+      host.evaluate(element => (element as HTMLElement & { eventLog: Array<{ type: string }> }).eventLog.length),
+    )
+    .toBe(2);
+  expect(await host.evaluate(element => (element as HTMLElement & { eventLog: unknown[] }).eventLog)).toEqual([
+    { type: 'input', value: 'complete text', formValue: 'complete text', targetIsHost: true },
+    { type: 'change', value: 'complete text', formValue: 'complete text', targetIsHost: true },
+  ]);
+  await expect(form.locator('mdc-textarea')).toHaveJSProperty('value', 'complete text');
+});

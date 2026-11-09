@@ -2,7 +2,16 @@ import path from 'path';
 
 import { ActionType } from 'plop';
 
-import { folders, ACTION, TYPE, componentName, componentNamePrefix, componentNameSeparator } from '../constants';
+import {
+  folders,
+  ACTION,
+  TYPE,
+  componentClassName,
+  componentDependencies,
+  componentName,
+  componentNamePrefix,
+  componentNameSeparator,
+} from '../constants';
 
 const base = `${path.posix.join(`${folders.templates}`, `${ACTION.ADD}`, `${TYPE.COMPONENT}`)}`;
 
@@ -13,6 +22,8 @@ export const AddComponent: ActionType = {
   destination: `${path.posix.join(`${folders.components}`, `{{${componentName}}}`)}`,
   data: {
     componentName,
+    componentClassName,
+    componentDependencies,
     prefix: componentNamePrefix,
     separator: componentNameSeparator,
   },

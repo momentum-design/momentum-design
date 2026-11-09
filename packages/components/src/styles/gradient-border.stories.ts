@@ -1,5 +1,7 @@
+import '@momentum-design/tokens/dist/css/motion/complete.css';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { keyed } from 'lit/directives/keyed.js';
 
 import '../components/button';
 import '../components/text';
@@ -25,6 +27,8 @@ const markdown = [
   '| `mdc-gradient-border-primary` | Draws the ring with the primary linear gradient. |',
   '| `mdc-gradient-border-secondary` | Draws the ring with the secondary conic gradient. |',
   '| `mdc-gradient-border-animated` | Makes the gradient travel around the ring. |',
+  '| `mdc-gradient-border-fade-in` | Fades the border in once when playback starts. |',
+  '| `mdc-gradient-border-fade-out` | Fades the border out at the end of finite playback. |',
   '',
   '### When to use',
   '',
@@ -76,6 +80,8 @@ const markdown = [
   '| `--mdc-gradient-border-start-angle` | `90deg` on primary, `180deg` on secondary |',
   '| `--mdc-gradient-border-duration` | `6s` |',
   '| `--mdc-gradient-border-iteration-count` | `infinite` |',
+  '| `--mdc-gradient-border-fade-in-duration` | `var(--mds-motion-duration-slow, 600ms)`, used when fade in is enabled |',
+  '| `--mdc-gradient-border-fade-out-duration` | `var(--mds-motion-duration-slow, 600ms)`, used when fade out is enabled |',
   '',
   '```css',
   '.panel.mdc-gradient-border-primary {',
@@ -90,15 +96,48 @@ const markdown = [
   'tokens, both ends are already transparent. A Momentum theme stylesheet must be loaded for the colour',
   'tokens to resolve.',
   '',
-  '`--mdc-gradient-border-start-angle` rotates where those stops begin. The animation is added on top',
-  'of it, so it positions a static ring and sets the starting point of an animated one. A single turn',
-  'therefore ends on the angle it began at and needs no `animation-fill-mode`.',
+  '`--mdc-gradient-border-start-angle` positions a static ring and sets the starting point of playback.',
+  '',
+  '### Finite and continuous playback',
+  '',
+  'With `infinite`, the border rotates at a constant speed. A finite, positive iteration count settles',
+  'to a stop once, at the end of the complete sequence. The total time is duration multiplied by turns;',
+  'duration is therefore an average time per turn during finite playback. Fractional turns are supported.',
+  '',
+  'Finite playback travels linearly for the first 60% of its time, then uses the entrance easing token',
+  'to decelerate. The travel split is matched to that token’s initial slope to avoid a speed jump.',
+  'The border holds its final angle. Whole turns finish at the starting angle.',
+  '',
+  '### Optional fades',
+  '',
+  'Fade in and fade out are independent modifiers. Fade in also works with `infinite`; fade out is',
+  'ignored for continuous playback because there is no scheduled end. Without fade out, a finite',
+  'sequence leaves the static border visible. Only the border fades; content stays visible.',
+  '',
+  'Fade times are included in finite playback and are clamped to fit, with fade in taking priority',
+  'if they would overlap. A zero duration makes an enabled fade instant; remove its class to disable it.',
+  'With animation disabled, omit both fade classes to show a static border.',
+  '',
+  'Load the motion stylesheet and apply `mds-motion` to the element or an ancestor to use the system',
+  'easings and fade durations. Matching fallback values support existing theme-only consumers.',
+  '',
+  '```js',
+  "import '@momentum-design/tokens/dist/css/motion/complete.css';",
+  '```',
+  '',
+  '```html',
+  '<div class="mds-motion mdc-gradient-border-secondary mdc-gradient-border-animated mdc-gradient-border-fade-in"',
+  '     style="--mdc-gradient-border-duration: 2s; --mdc-gradient-border-iteration-count: 2;">',
+  '  AI generated',
+  '</div>',
+  '```',
   '',
   '### Browser support',
   '',
   'Everything that paints the ring is behind `@supports (mask-composite: exclude)`. Engines without',
   'the unprefixed mask render the element unchanged rather than with a broken outline. Engines without',
-  'the Properties and Values API animate nothing and hold the first frame.',
+  'the Properties and Values API animate nothing and hold the first frame. Settling and optional fades',
+  'also require CSS `round()`; older engines retain the original constant-speed playback.',
 ].join('\n');
 
 const meta: Meta = {
@@ -121,6 +160,26 @@ const meta: Meta = {
 
 export default meta;
 
+const replay = ({ currentTarget }: Event) => {
+  const panel = (currentTarget as HTMLElement).parentElement?.querySelector('.gradientBorderStoryPanel');
+  panel?.classList.remove('mdc-gradient-border-animated');
+
+  // Let a frame paint without the animation before restarting it.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => panel?.classList.add('mdc-gradient-border-animated'));
+  });
+};
+
+const fadeDurations = {
+  '100ms': 'var(--mds-motion-duration-instant)',
+  '200ms': 'var(--mds-motion-duration-fast)',
+  '300ms': 'var(--mds-motion-duration-normal)',
+  '450ms': 'var(--mds-motion-duration-relaxed)',
+  '600ms': 'var(--mds-motion-duration-slow)',
+  '1200ms': 'var(--mds-motion-duration-sustained)',
+  '2400ms': 'var(--mds-motion-duration-extended)',
+};
+
 export const Example: StoryObj = {
   argTypes: {
     variant: {
@@ -139,13 +198,38 @@ export const Example: StoryObj = {
     },
     duration: {
       control: 'select',
-      options: ['1s', '3s', '6s', '12s'],
-      description: 'Length of one turn, assigned to `--mdc-gradient-border-duration`.',
+      options: ['1s', '2s', '3s', '6s', '12s'],
+      description: 'Time per turn; average time per turn when finite playback decelerates.',
     },
     iterationCount: {
       control: 'select',
       options: ['1', '2', '3', 'infinite'],
       description: 'Turns to play, assigned to `--mdc-gradient-border-iteration-count`.',
+    },
+    fadeIn: {
+      name: 'Fade in',
+      control: 'boolean',
+      description: 'Appear gradually when playback starts.',
+    },
+    fadeInDuration: {
+      name: 'Fade in time',
+      control: 'select',
+      options: Object.keys(fadeDurations),
+      mapping: fadeDurations,
+      if: { arg: 'fadeIn' },
+    },
+    fadeOut: {
+      name: 'Fade out',
+      control: 'boolean',
+      description: 'Disappear at the end of finite playback.',
+      if: { arg: 'iterationCount', neq: 'infinite' },
+    },
+    fadeOutDuration: {
+      name: 'Fade out time',
+      control: 'select',
+      options: Object.keys(fadeDurations),
+      mapping: fadeDurations,
+      if: { arg: 'iterationCount', neq: 'infinite' },
     },
   },
   args: {
@@ -154,19 +238,29 @@ export const Example: StoryObj = {
     width: '0.125rem',
     duration: '6s',
     iterationCount: 'infinite',
+    fadeIn: false,
+    fadeOut: false,
+    fadeInDuration: '600ms',
+    fadeOutDuration: '600ms',
   },
   render: args => html`
-    <div class="gradientBorderStoryCenter">
-      <div
-        class="gradientBorderStoryPanel gradientBorderStoryPanel__large mdc-gradient-border-${args.variant} ${args.animated
-          ? 'mdc-gradient-border-animated'
-          : ''}"
-        style="--mdc-gradient-border-width: ${args.width};
-               --mdc-gradient-border-duration: ${args.duration};
-               --mdc-gradient-border-iteration-count: ${args.iterationCount}"
-      >
-        AI generated
-      </div>
+    <div class="gradientBorderStoryCenter gradientBorderStoryCenter__stacked">
+      ${keyed(JSON.stringify(args), html`
+        <div
+          class="mds-motion gradientBorderStoryPanel gradientBorderStoryPanel__large mdc-gradient-border-${args.variant} ${args.animated
+            ? 'mdc-gradient-border-animated'
+            : ''} ${args.animated && args.fadeIn ? 'mdc-gradient-border-fade-in' : ''}
+            ${args.animated && args.fadeOut && args.iterationCount !== 'infinite' ? 'mdc-gradient-border-fade-out' : ''}"
+          style="--mdc-gradient-border-width: ${args.width};
+                 --mdc-gradient-border-duration: ${args.duration};
+                 --mdc-gradient-border-iteration-count: ${args.iterationCount};
+                 --mdc-gradient-border-fade-in-duration: ${args.fadeInDuration};
+                 --mdc-gradient-border-fade-out-duration: ${args.fadeOutDuration}"
+        >
+          AI generated
+        </div>
+      `)}
+      ${args.animated ? html`<mdc-button variant="secondary" @click="${replay}">Replay</mdc-button>` : ''}
     </div>
   `,
 };
@@ -188,25 +282,13 @@ export const Variants: StoryObj = {
   `,
 };
 
-/** A one-shot animation only plays on mount, so the story needs a way to run it again. */
-const replay = ({ currentTarget }: Event) => {
-  const panel = (currentTarget as HTMLElement).parentElement?.querySelector('.gradientBorderStoryPanel');
-  panel?.classList.remove('mdc-gradient-border-animated');
-
-  // Re-adding in the same frame is coalesced away, so wait for a frame to be painted without it.
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => panel?.classList.add('mdc-gradient-border-animated'));
-  });
-};
-
 export const SingleTurn: StoryObj = {
   parameters: {
     controls: { disable: true },
     docs: {
       description: {
         story: html`<mdc-text tagname="p">
-          The ring starts at 135° and makes exactly one turn. Because a turn is a full 360°, it lands back on its
-          starting angle and holds there.
+          The ring starts at 135°, makes one turn, and slows to a stop at its starting angle.
         </mdc-text>`,
       },
     },
@@ -214,7 +296,7 @@ export const SingleTurn: StoryObj = {
   render: () => html`
     <div class="gradientBorderStoryCenter gradientBorderStoryCenter__stacked">
       <div
-        class="gradientBorderStoryPanel gradientBorderStoryPanel__large mdc-gradient-border-secondary mdc-gradient-border-animated"
+        class="mds-motion gradientBorderStoryPanel gradientBorderStoryPanel__large mdc-gradient-border-secondary mdc-gradient-border-animated"
         style="--mdc-gradient-border-start-angle: 135deg;
                --mdc-gradient-border-duration: 3s;
                --mdc-gradient-border-iteration-count: 1"
@@ -224,4 +306,31 @@ export const SingleTurn: StoryObj = {
       <mdc-button variant="secondary" @click="${replay}">Replay</mdc-button>
     </div>
   `,
+};
+
+export const FadeInAndSettle: StoryObj = {
+  ...Example,
+  args: {
+    ...Example.args,
+    variant: 'secondary',
+    duration: '2s',
+    iterationCount: '2',
+    fadeIn: true,
+  },
+};
+
+export const FadeInAndLoop: StoryObj = {
+  ...FadeInAndSettle,
+  args: {
+    ...FadeInAndSettle.args,
+    iterationCount: 'infinite',
+  },
+};
+
+export const FadeInOut: StoryObj = {
+  ...FadeInAndSettle,
+  args: {
+    ...FadeInAndSettle.args,
+    fadeOut: true,
+  },
 };

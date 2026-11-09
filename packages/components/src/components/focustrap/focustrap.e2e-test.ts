@@ -7,6 +7,7 @@ type SetupOptions = {
   restoreFocusDisabled?: boolean;
   autoFocus?: boolean;
   shouldFocusTrapWrap?: boolean;
+  mouseFocusable?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -23,6 +24,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.autoFocus ? 'auto-focus' : ''}
         >
           <button id="inside-1">Inside 1</button>
+          ${restArgs.mouseFocusable ? '<input id="mouse-focus" aria-label="Mouse focus" />' : ''}
           <button id="inside-2">Inside 2</button>
           <button id="inside-3">Inside 3</button>
         </mdc-focustrap>
@@ -321,4 +323,15 @@ test('mdc-focustrap', async ({ componentsPage }) => {
       await expect(after).toBeFocused();
     });
   });
+});
+
+test('mdc-focustrap shows focus-visible after mouse click and Tab', async ({ componentsPage }) => {
+  const { inside2 } = await setup({ componentsPage, mouseFocusable: true });
+  const mouseFocusable = componentsPage.page.locator('#mouse-focus');
+
+  await mouseFocusable.click();
+  await componentsPage.page.keyboard.press('Tab');
+
+  await expect(inside2).toBeFocused();
+  expect(await inside2.evaluate(element => element.matches(':focus-visible'))).toBe(true);
 });

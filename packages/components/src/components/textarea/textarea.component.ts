@@ -20,8 +20,8 @@ import styles from './textarea.styles';
 /**
  * @tagname mdc-textarea
  *
- * @event input - (React: onInput) This event is dispatched when the value of the textarea field changes (every press).
- * @event change - (React: onChange) This event is dispatched when the value of the textarea field changes (on blur).
+ * @event input - (React: onInput) Dispatched for each edit after the component and form values are updated.
+ * @event change - (React: onChange) Re-dispatched when the native textarea commits a value change, usually on blur. In the React wrapper, this differs from React's native textarea onChange, which fires for each edit.
  * @event focus - (React: onFocus) This event is dispatched when the textarea receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the textarea loses focus.
  * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
