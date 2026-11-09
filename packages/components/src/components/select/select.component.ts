@@ -342,6 +342,9 @@ class Select
         break;
       }
       case 'unselected': {
+        if (option !== this.selectedOption) {
+          break;
+        }
         // when unselected, check if there is any other option is a selected option,
         // if there is no selected option, then reset it to placeholder or first option
         if (firstSelectedOption) {

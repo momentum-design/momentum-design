@@ -194,6 +194,37 @@ test.describe('mdc-calendar', () => {
   });
 
   test.describe('keyboard navigation', () => {
+    test('should select the date focused directly by assistive technology', async ({ componentsPage }) => {
+      const calendar = await setup({ componentsPage, value: '2026-10-10' });
+      const day15 = calendar.locator('[data-date="2026-10-15"]');
+
+      await day15.focus();
+      await componentsPage.page.keyboard.press('Enter');
+
+      await expect(calendar).toHaveAttribute('value', '2026-10-15');
+      await expect(day15).toHaveAttribute('aria-selected', 'true');
+    });
+
+    test('should navigate from the date focused directly by assistive technology', async ({ componentsPage }) => {
+      const calendar = await setup({ componentsPage, value: '2026-10-10' });
+      await calendar.locator('[data-date="2026-10-15"]').focus();
+
+      await componentsPage.page.keyboard.press('ArrowRight');
+
+      await expect(calendar.locator('[data-date="2026-10-16"]')).toBeFocused();
+    });
+
+    test('should leave VoiceOver modifier shortcuts to assistive technology', async ({ componentsPage }) => {
+      const calendar = await setup({ componentsPage, value: '2026-10-10' });
+      const selectedDay = calendar.locator('[data-date="2026-10-10"]');
+      await selectedDay.focus();
+
+      await componentsPage.page.keyboard.press('Control+Alt+ArrowRight');
+
+      await expect(selectedDay).toBeFocused();
+      await expect(calendar).toHaveAttribute('value', '2026-10-10');
+    });
+
     test('should navigate with arrow keys', async ({ componentsPage }) => {
       const calendar = await setup({ componentsPage, value: '2025-07-15' });
 

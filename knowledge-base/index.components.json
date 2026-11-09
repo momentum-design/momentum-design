@@ -293,6 +293,15 @@
       "component": "divider"
     },
     {
+      "id": "tier3/packages/components/src/components/emptystate/knowledge-base/emptystate.component",
+      "tier": 3,
+      "path": "packages/components/src/components/emptystate/knowledge-base/emptystate.component.md",
+      "title": "Empty state",
+      "summary": "Usage, guidelines, and accessibility for the `mdc-emptystate` component — a presentation for empty views with descriptive text and context-appropriate headings, illustrations, or actions.",
+      "canonical": null,
+      "component": "emptystate"
+    },
+    {
       "id": "tier3/packages/components/src/components/filterchip/knowledge-base/filterchip.component",
       "tier": 3,
       "path": "packages/components/src/components/filterchip/knowledge-base/filterchip.component.md",
