@@ -21,12 +21,12 @@ const styles = css`
   :host([data-btn-type='pill-with-icon'][size='32'])::part(anchor),
   :host([data-btn-type='pill'][size='28'])::part(anchor),
   :host([data-btn-type='pill-with-icon'][size='28'])::part(anchor) {
-    padding: 0 0.75rem;
+    padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-sm);
   }
 
   :host([data-btn-type='pill'][size='40'])::part(anchor),
   :host([data-btn-type='pill-with-icon'][size='40'])::part(anchor) {
-    padding: 0 1rem;
+    padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-md);
   }
 
   :host([disabled]) {
@@ -45,7 +45,7 @@ const styles = css`
     height: 100%;
     width: 100%;
     border-radius: inherit;
-    border: 1px solid transparent;
+    border: var(--mds-border-theme-default) solid transparent;
   }
 
   :host([variant='secondary'])::part(anchor) {
