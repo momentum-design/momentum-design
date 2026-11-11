@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 const styles = css`
   :host([selected]) {
-    border: 2px solid;
+    border: var(--mds-border-theme-emphasis) solid;
     --mdc-chip-background-color: var(--mds-color-theme-background-label-default-active);
   }
 
