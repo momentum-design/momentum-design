@@ -73,14 +73,6 @@ export const Example: StoryObj = {
   },
 };
 
-export const WebexLogoIntro: StoryObj = {
-  args: {
-    ...Example.args,
-    name: 'webex_logo_intro',
-    loop: 'false',
-  },
-};
-
 export const AnimationInButton: StoryObj = {
   render: (args: Args) => html`
     <mdc-button inverted>
