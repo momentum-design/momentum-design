@@ -202,38 +202,40 @@ class MenuPopover extends Popover {
   }
 
   /**
-   * Closes all menu popovers in this stack group.
+   * Closes all menu popovers in the stack.
    * This method is used to ensure that when a menu item is clicked,
-   * other open menu popovers in the same group are closed, maintaining a clean user interface.
-   * It stops at the first non-menu overlay in this group.
+   * all other open popovers are closed, maintaining a clean user interface.
+   * It iterates through the overlay stack and hides each popover until the stack is empty.
    *
    * @param until - The popover to close until.
    */
   private closeAllMenuPopovers(until?: Element): void {
-    this.depthManager.popUntil(item => item !== until && isValidMenuPopover(item), this.stackGroupName);
+    this.depthManager.popUntil(item => item !== until && isValidMenuPopover(item));
   }
 
   /**
    * Handles outside click events to close the popover.
    * This method checks if the click occurred outside the popover and its trigger element.
    * If so, it closes the popover by calling `closeAllMenuPopovers`.
-   * It also checks if the click was on the backdrop element (if present) to close the popover.
+   * A click on its own backdrop closes this menu and later same-group overlays, even when it is not on top.
    * @param event - The mouse event that triggered the outside click.
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
-    if (!this.depthManager.isHostOnTop(event)) return;
-
     const path = event.composedPath();
+
+    if (path[0] === this.backdropElement && this.depthManager.has(this)) {
+      this.depthManager.popHost();
+      event.stopPropagation();
+      return;
+    }
+
+    if (!this.depthManager.isHostOnTop()) return;
+
     const insidePopoverClick =
       this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
-    const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
-    if (!insidePopoverClick || clickedOnBackdrop) {
-      if (!this.depthManager.claimHostEvent(event)) return;
+    if (!insidePopoverClick) {
       this.closeAllMenuPopovers();
-      if (clickedOnBackdrop) {
-        event.stopPropagation();
-      }
     }
   };
 
@@ -414,7 +416,7 @@ class MenuPopover extends Popover {
         break;
       }
       case ACTIONS.ESCAPE: {
-        if (this.depthManager.isHostOnTop(event)) {
+        if (this.depthManager.isHostEscapeTarget()) {
           this.resetTabIndexAndSetFocus(0, currentIndex);
           isKeyHandled = true;
         }

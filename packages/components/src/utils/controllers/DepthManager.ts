@@ -51,14 +51,6 @@ type PopPredicateFn = (item: StackedOverlayComponent, idx: number) => true | fal
  * @internal
  */
 const elementStack: StackedOverlayComponent[] = [];
-const OVERLAY_EVENT_STATE = Symbol('overlayEventState');
-
-type OverlayInputEvent = Event & {
-  [OVERLAY_EVENT_STATE]?: {
-    owner: StackedOverlayComponent | undefined;
-    handled: boolean;
-  };
-};
 
 /**
  * Initial z-index for the first element in the stack
@@ -76,11 +68,8 @@ const NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT = 3;
 
 export const OVERLAY_BACKDROP_Z_INDEX_OFFSET = -2;
 export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
-/** @internal */
-export const OVERLAY_STACK_GROUP_ATTRIBUTE = 'data-mdc-overlay-group';
 
 /**
- * @remarks
  * DepthManager is a controller that manages a stack of elements to control their depth (z-index).
  *
  * It uses a global stack to keep track of the order of elements, allowing for proper layering of overlays.
@@ -199,7 +188,7 @@ export class DepthManager implements ReactiveController {
     if (!this.has(item)) {
       return undefined;
     }
-    const items = elementStack.filter(e => (e.stackGroupName ?? '') === (item.stackGroupName ?? ''));
+    const items = elementStack.filter(e => e.stackGroupName === item.stackGroupName);
     const itemIdx = items.indexOf(item);
     const toRemove: StackedOverlayComponent[] = [];
     for (let i = items.length - 1; i >= itemIdx; i -= 1) {
@@ -227,18 +216,15 @@ export class DepthManager implements ReactiveController {
   /**
    * Removes elements from the stack until the predicate function returns false
    *
+   * Note: it will remove the
+   *
    * @param predicateFn - The predicate function to test each element
-   * @param stackGroupName - When provided, skip elements outside this group
    * @returns The removed elements
    */
-  public popUntil(predicateFn: PopPredicateFn, stackGroupName?: string): StackedOverlayComponent[] {
+  public popUntil(predicateFn: PopPredicateFn): StackedOverlayComponent[] {
     const poppedElements: StackedOverlayComponent[] = [];
-    const items =
-      stackGroupName === undefined
-        ? elementStack
-        : elementStack.filter(item => (item.stackGroupName ?? '') === stackGroupName);
-    for (let i = items.length - 1; i >= 0; i -= 1) {
-      const item = items[i];
+    for (let i = elementStack.length - 1; i >= 0; i -= 1) {
+      const item = elementStack[i];
       const result = predicateFn(item, i);
 
       if (result === false) break;
@@ -332,37 +318,36 @@ export class DepthManager implements ReactiveController {
     return depth >= 0 ? BASE_Z_INDEX + depth * NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT : BASE_Z_INDEX;
   }
 
-  /** Returns the last registered overlay in the specified group, defaulting to the host's group. */
-  public getStackTopHost(
-    stackGroupName: string = this.host.stackGroupName ?? '',
-  ): StackedOverlayComponent | undefined {
-    return elementStack.filter(element => (element.stackGroupName ?? '') === stackGroupName).at(-1);
+  /**
+   * Checks if host is at the top of the stack
+   *
+   * @returns True if host is on top, false otherwise
+   */
+  public isHostOnTop(): boolean {
+    return this.peek() === this.host;
   }
 
-  private getContextHost(path: EventTarget[]): StackedOverlayComponent | undefined {
+  /**
+   * Checks whether the nearest overlay or trigger containing focus belongs to the host.
+   * Falls back to the top of the stack when focus is outside all registered overlays and triggers.
+   *
+   * @returns True if the host should handle Escape
+   */
+  public isHostEscapeTarget(): boolean {
     const latestFirst = [...elementStack].reverse();
-    for (const target of path) {
-      const stackGroupName = target instanceof Element ? target.getAttribute(OVERLAY_STACK_GROUP_ATTRIBUTE) : null;
-      const host = latestFirst.find(
+    let focused: Node | null = getDomActiveElement();
+    
+    while (focused) {
+      const target = focused;
+      const overlay = latestFirst.find(
         element =>
           element === target ||
-          (stackGroupName !== null && (element.stackGroupName ?? '') === stackGroupName) ||
           (target instanceof Element &&
             !!element.triggerID &&
             target.id === element.triggerID &&
             target.getRootNode() === element.getRootNode()),
       );
-      if (host) return host;
-    }
-    return undefined;
-  }
-
-  private getEventOwner(event: Event): StackedOverlayComponent | undefined {
-    let context = this.getContextHost(event.composedPath());
-    let focused: Node | null = getDomActiveElement();
-    // Background input belongs to the focused group, or the global top when focus is outside all groups.
-    while (!context && focused) {
-      context = this.getContextHost([focused]);
+      if (overlay) return overlay === this.host;
       if (focused instanceof Element && focused.assignedSlot) {
         focused = focused.assignedSlot;
       } else if (focused instanceof ShadowRoot) {
@@ -371,31 +356,7 @@ export class DepthManager implements ReactiveController {
         focused = focused.parentNode;
       }
     }
-    context ??= this.peek();
-    return context ? this.getStackTopHost(context.stackGroupName ?? '') : undefined;
-  }
-
-  private getEventState(event: OverlayInputEvent) {
-    const existingState = event[OVERLAY_EVENT_STATE];
-    if (existingState) return existingState;
-
-    const state = { owner: this.getEventOwner(event), handled: false };
-    Object.defineProperty(event, OVERLAY_EVENT_STATE, { value: state });
-    return state;
-  }
-
-  /** Checks the host's group top, restricting input to one event-stable context group. */
-  public isHostOnTop(event?: Event): boolean {
-    if (!event) return this.getStackTopHost() === this.host;
-    return this.getEventState(event).owner === this.host;
-  }
-
-  /** Prevent duplicate dismissal from host and document listeners for the same input. */
-  public claimHostEvent(event: Event): boolean {
-    const state = this.getEventState(event);
-    if (state.handled || state.owner !== this.host) return false;
-    state.handled = true;
-    return true;
+    return this.isHostOnTop();
   }
 
   /**

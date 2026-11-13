@@ -22,12 +22,7 @@ import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
 import { Timers } from '../../utils/controllers/Timers';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
-import {
-  DepthManager,
-  OVERLAY_STACK_GROUP_ATTRIBUTE,
-  type StackChange,
-  type StackedOverlayComponent,
-} from '../../utils/controllers/DepthManager';
+import { DepthManager, StackChange, StackedOverlayComponent } from '../../utils/controllers/DepthManager';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
@@ -742,20 +737,24 @@ class Popover
    * @internal
    */
   protected onOutsidePopoverClick = (event: MouseEvent) => {
-    if (!this.depthManager.isHostOnTop(event)) return;
-
     const path = event.composedPath();
-    const insidePopoverClick =
-      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
-    const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
-    if (!insidePopoverClick || clickedOnBackdrop) {
-      if (!this.depthManager.claimHostEvent(event)) return;
+    // A backdrop click closes its owner even when a later overlay is on top.
+    if (path[0] === this.backdropElement && this.depthManager.has(this)) {
       this.hide();
       PopoverEventManager.onClickOutside(this);
-      if (clickedOnBackdrop) {
-        event.stopPropagation();
-      }
+      event.stopPropagation();
+      return;
+    }
+
+    if (!this.depthManager.isHostOnTop()) return;
+
+    const insidePopoverClick =
+      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
+
+    if (!insidePopoverClick) {
+      this.hide();
+      PopoverEventManager.onClickOutside(this);
     }
   };
 
@@ -771,7 +770,7 @@ class Popover
     if (
       !this.visible ||
       this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
-      !this.depthManager.claimHostEvent(event)
+      !this.depthManager.isHostEscapeTarget()
     ) {
       return;
     }
@@ -801,7 +800,6 @@ class Popover
   /** @internal */
   onComponentStackChanged(changed: StackChange): void {
     if (changed === 'removed') {
-      this.backdropElement?.removeAttribute(OVERLAY_STACK_GROUP_ATTRIBUTE);
       this.hide();
     } else if (changed === 'moved') {
       this.requestUpdate('zIndex');

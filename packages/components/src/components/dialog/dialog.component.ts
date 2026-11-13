@@ -424,7 +424,7 @@ class Dialog
     if (
       !this.visible ||
       this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
-      !this.depthManager.claimHostEvent(event)
+      !this.depthManager.isHostEscapeTarget()
     ) {
       return;
     }
