@@ -48,7 +48,8 @@ There are multiple ways to close an overlay:
 
 #### Closing with Escape key
 
-When the Escape key is pressed, only the topmost overlay in the stack is closed.
+Escape follows the [stack-group dismissal rules](#escape-and-outside-clicks)
+below.
 
 ##### Open multiple overlays from a single element
 
@@ -142,6 +143,24 @@ Set the `stack-group-name` attribute on the overlay element:
 Overlays with the same `stack-group-name` value form a group. Closing any
 overlay in the group cascades only within that group. Overlays without a
 `stack-group-name` (or with an empty value) belong to the default group.
+
+#### Escape and outside clicks
+
+Dismissal follows the overlay you interact with, subject to its dismissal
+settings:
+
+1. **Escape** closes the overlay containing focus. Focus on an overlay's trigger
+   also counts, so a focused tooltip trigger inside a popover closes the tooltip,
+   not the popover. If focus is outside every overlay and trigger, Escape
+   targets the most recently opened overlay. Dialog only handles Escape when
+   the key event reaches the Dialog itself.
+2. **A backdrop click** closes the overlay that owns that backdrop, even if
+   another overlay opened later. If the most recently opened overlay hides on
+   outside click, the same click also closes it.
+3. **Other clicks** keep the existing behavior: only the most recently opened
+   overlay handles outside clicks.
+
+A custom `z-index` changes visual placement, not the dismissal target.
 
 #### Z-index recalculation
 

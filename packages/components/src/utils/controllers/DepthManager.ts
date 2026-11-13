@@ -1,6 +1,7 @@
 import { ReactiveController } from 'lit';
 
 import type { Component } from '../../models';
+import { getDomActiveElement } from '../dom';
 
 /**
  * Types of changes that can occur in the stack
@@ -69,6 +70,7 @@ export const OVERLAY_BACKDROP_Z_INDEX_OFFSET = -2;
 export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
 
 /**
+ * @remarks
  * DepthManager is a controller that manages a stack of elements to control their depth (z-index).
  *
  * It uses a global stack to keep track of the order of elements, allowing for proper layering of overlays.
@@ -324,6 +326,38 @@ export class DepthManager implements ReactiveController {
    */
   public isHostOnTop(): boolean {
     return this.peek() === this.host;
+  }
+
+  /**
+   * Checks whether the nearest overlay or trigger containing focus belongs to the host.
+   * Falls back to the top of the stack when focus is outside all registered overlays and triggers.
+   *
+   * @returns True if the host should handle Escape
+   */
+  public isHostEscapeTarget(): boolean {
+    const latestFirst = [...elementStack].reverse();
+    let focused: Node | null = getDomActiveElement();
+
+    while (focused) {
+      const target = focused;
+      const overlay = latestFirst.find(
+        element =>
+          element === target ||
+          (target instanceof Element &&
+            !!element.triggerID &&
+            target.id === element.triggerID &&
+            target.getRootNode() === element.getRootNode()),
+      );
+      if (overlay) return overlay === this.host;
+      if (focused instanceof Element && focused.assignedSlot) {
+        focused = focused.assignedSlot;
+      } else if (focused instanceof ShadowRoot) {
+        focused = focused.host;
+      } else {
+        focused = focused.parentNode;
+      }
+    }
+    return this.isHostOnTop();
   }
 
   /**
