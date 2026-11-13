@@ -1,14 +1,14 @@
-<svg width="172" height="92" viewBox="0 0 172 92" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="172" height="92" viewBox="0 0 172 92" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_30148_3540)">
 <g clip-path="url(#clip1_30148_3540)">
 <rect x="28.666" y="7.66675" width="114.667" height="67.0833" fill="url(#paint0_linear_30148_3540)"/>
 <path opacity="0.2" d="M140.467 10.5417L143.333 7.66675V74.7501L140.467 71.8751V10.5417Z" fill-rule="evenodd" clip-rule="evenodd" fill="url(#paint1_linear_30148_3540)"/>
 <path opacity="0.6" d="M31.5332 10.5417L28.6665 7.66675V74.7501L31.5332 71.8751V10.5417Z" fill-rule="evenodd" clip-rule="evenodd" fill="url(#paint2_linear_30148_3540)"/>
-<use xlink:href="#stroke0_30148_3540" stroke="black" stroke-opacity="0.24"/>
-<use xlink:href="#stroke0_30148_3540" stroke="url(#paint3_linear_30148_3540)"/>
+<rect x="28.916" y="7.91675" width="114.167" height="66.5833" stroke-width="0.5" stroke="black" stroke-opacity="0.24"/>
+<rect x="28.916" y="7.91675" width="114.167" height="66.5833" stroke-width="0.5" stroke="url(#paint3_linear_30148_3540)"/>
 <rect x="31.5332" y="10.5417" width="108.933" height="61.3333" fill="#222222"/>
 <rect x="31.5332" y="10.5417" width="108.933" height="61.3333" fill="url(#paint4_linear_30148_3540)"/>
-<rect x="31.5332" y="10.5417" width="108.933" height="61.3333" stroke="white" stroke-opacity="0.24" stroke-width="0.5"/>
+<rect x="31.5332" y="10.5417" width="108.933" height="61.3333" stroke-width="0.5" stroke="white" stroke-opacity="0.24"/>
 <rect x="28.666" y="7.66675" width="114.667" height="67.0833" fill="url(#paint5_linear_30148_3540)"/>
 <path d="M82.4 46.5417H81.4703V37.5251H78.1617V36.6775H85.7085V37.5251H82.4V46.5417ZM91.4371 46.5417H90.5074L86.816 36.6775H87.8003L90.9244 45.3181H91.0132L94.1373 36.6775H95.1216L91.4371 46.5417Z" fill="white" fill-opacity="0.24"/>
 </g>
@@ -82,6 +82,5 @@
 <clipPath id="clip1_30148_3540">
 <rect width="114.667" height="67.0833" fill="white" transform="translate(28.666 7.66675)"/>
 </clipPath>
-<path id="stroke0_30148_3540" d="M28.916 7.91675H143.083V74.5001H28.916V7.91675Z" stroke-width="0.5"/>
 </defs>
 </svg>
