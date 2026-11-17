@@ -1,14 +1,14 @@
-<svg width="1080" height="576" viewBox="0 0 1080 576" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="1080" height="576" viewBox="0 0 1080 576" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_23746_2133)">
 <g clip-path="url(#clip1_23746_2133)">
 <rect x="180" y="48" width="720" height="420" fill="url(#paint0_linear_23746_2133)"/>
 <path opacity="0.2" d="M882 66L900 48V468L882 450V66Z" fill-rule="evenodd" clip-rule="evenodd" fill="url(#paint1_linear_23746_2133)"/>
 <path opacity="0.6" d="M198 66L180 48V468L198 450V66Z" fill-rule="evenodd" clip-rule="evenodd" fill="url(#paint2_linear_23746_2133)"/>
-<use xlink:href="#stroke0_23746_2133" stroke="black" stroke-opacity="0.24"/>
-<use xlink:href="#stroke0_23746_2133" stroke="url(#paint3_linear_23746_2133)"/>
+<rect x="180.25" y="48.25" width="719.5" height="419.5" stroke-width="0.5" stroke="black" stroke-opacity="0.24"/>
+<rect x="180.25" y="48.25" width="719.5" height="419.5" stroke-width="0.5" stroke="url(#paint3_linear_23746_2133)"/>
 <rect x="198" y="66" width="684" height="384" fill="#222222"/>
 <rect x="198" y="66" width="684" height="384" fill="url(#paint4_linear_23746_2133)"/>
-<rect x="198" y="66" width="684" height="384" stroke="white" stroke-opacity="0.24" stroke-width="0.5"/>
+<rect x="198" y="66" width="684" height="384" stroke-width="0.5" stroke="white" stroke-opacity="0.24"/>
 <rect x="180" y="48" width="720" height="420" fill="url(#paint5_linear_23746_2133)"/>
 <path d="M539.553 223H538.623V213.983H535.314V213.136H542.861V213.983H539.553V223ZM548.59 223H547.66L543.969 213.136H544.953L548.077 221.776H548.166L551.29 213.136H552.274L548.59 223Z" fill="white" fill-opacity="0.24"/>
 </g>
@@ -82,6 +82,5 @@
 <clipPath id="clip1_23746_2133">
 <rect width="720" height="420" fill="white" transform="translate(180 48)"/>
 </clipPath>
-<path id="stroke0_23746_2133" d="M180.25 48.25H899.75V467.75H180.25V48.25Z" stroke-width="0.5"/>
 </defs>
 </svg>
