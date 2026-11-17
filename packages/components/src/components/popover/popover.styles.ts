@@ -27,6 +27,8 @@ const styles = css`
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mdc-popover-border-color);
     filter: var(--mdc-popover-elevation-3);
+    /* Keep fixed descendants' containing block consistent with Floating UI in WebKit. */
+    contain: layout;
     max-width: var(--mdc-popover-max-width);
     width: var(--mdc-popover-width, var(--mdc-popover-max-width));
   }
@@ -62,7 +64,6 @@ const styles = css`
     position: relative;
     cursor: default;
     padding: 0.75rem;
-    z-index: 9998;
     max-height: var(--mdc-popover-max-height);
   }
 
