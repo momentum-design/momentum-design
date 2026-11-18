@@ -1253,7 +1253,9 @@ class Popover
             @click="${this.hide}"
           ></mdc-button>`
         : nothing}
-      ${this.showArrow ? html`<div class="popover-arrow" part="popover-arrow"></div>` : nothing}
+      <div class="popover-surface">
+        ${this.showArrow ? html`<div class="popover-arrow" part="popover-arrow"></div>` : nothing}
+      </div>
       <div part="popover-content">
         <slot></slot>
       </div>

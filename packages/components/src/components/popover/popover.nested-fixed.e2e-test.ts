@@ -39,11 +39,20 @@ const fixtureHTML = `
   </div>
 `;
 
-const setup = async (componentsPage: ComponentsPage, { sized = true, short = false, fixed = false } = {}) => {
+const setup = async (
+  componentsPage: ComponentsPage,
+  { sized = true, short = false, fixed = false, transformed = false } = {},
+) => {
   const { page } = componentsPage;
   await page.setViewportSize({ width: 1000, height: short ? 480 : 760 });
   await componentsPage.mount({ html: fixtureHTML, clearDocument: true });
   const parent = page.locator('#outer-popover');
+  if (transformed) {
+    await page.locator('#fixed-overlay-fixture').evaluate((element: HTMLElement) => {
+      const { style } = element;
+      style.transform = 'translate(2rem, 1rem)';
+    });
+  }
   if (!sized) {
     await parent.evaluate(element => element.removeAttribute('size'));
     await page.locator('#scroll-end').evaluate((element: HTMLElement) => {
@@ -102,10 +111,14 @@ const expectSelectAnchored = async (dropdown: Locator, combobox: Locator, above 
 };
 
 test.describe('mdc-popover nested fixed overlays', () => {
-  test('should anchor a fixed tooltip inside an unsized filtered parent', async ({ componentsPage }) => {
-    const { tooltip, tooltipTrigger } = await setup(componentsPage, { sized: false });
-    await tooltipTrigger.hover();
-    await expectTooltipAnchored(tooltip, tooltipTrigger);
+  [false, true].forEach(transformed => {
+    test(`should anchor a fixed tooltip inside an unsized ${transformed ? 'transformed ' : ''}elevated parent`, async ({
+      componentsPage,
+    }) => {
+      const { tooltip, tooltipTrigger } = await setup(componentsPage, { sized: false, transformed });
+      await tooltipTrigger.hover();
+      await expectTooltipAnchored(tooltip, tooltipTrigger);
+    });
   });
 
   test('should paint the complete fixed tooltip beyond scrolling content', async ({ componentsPage }) => {
