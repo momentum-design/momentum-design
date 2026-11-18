@@ -761,6 +761,8 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
 
 export const DismissalWithLaterOverlays: StoryObj = {
   parameters: {
+    // Keep Reset viewport-fixed rather than contained by the Fluid theme's glass backdrop filter.
+    glassContainer: false,
     ...hideAllControls(true),
     ...describeStory(
       html`
@@ -811,14 +813,15 @@ export const DismissalWithLaterOverlays: StoryObj = {
 
     return html`
       <style>
+        .backgroundGradient:has(#later-overlay-examples) {
+          height: auto;
+          min-height: 100%;
+        }
         #later-dialog::part(dialog-close-btn) {
           display: none;
         }
       </style>
-      <div
-        id="later-overlay-examples"
-        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 2rem;"
-      >
+      <div id="later-overlay-examples" style="display: grid; gap: 2rem;">
         <section aria-labelledby="later-dialog-heading">
           <mdc-text id="later-dialog-heading" tagname="h3">1. Popover + Dialog</mdc-text>
           <div style="position: relative; min-height: 12rem;">
@@ -915,7 +918,10 @@ export const DismissalWithLaterOverlays: StoryObj = {
           </div>
         </section>
 
-        <mdc-button style="grid-column: 1 / -1; justify-self: start;" @click=${resetExamples}>
+        <mdc-button
+          style="position: fixed; inset-block-end: 1rem; inset-inline-end: 1rem; z-index: 2147483647;"
+          @click=${resetExamples}
+        >
           Reset examples
         </mdc-button>
       </div>
