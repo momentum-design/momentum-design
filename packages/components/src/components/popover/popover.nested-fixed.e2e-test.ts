@@ -8,7 +8,7 @@ const fixtureHTML = `
   <div id="fixed-overlay-fixture" class="mds-elevation" style="position: relative; width: 100%; height: 100%;">
     <style>
       #outer-trigger { position: absolute; inset-inline-start: 12rem; top: 7rem; }
-      #outer-popover { --mdc-popover-width: 16rem; --mdc-popover-max-width: 16rem; }
+      #outer-popover { --mdc-popover-max-width: 16rem; }
       #fixture-content { padding-top: 2rem; }
       #tooltip-trigger { margin-inline-start: 7rem; }
       #nested-select { margin-top: 2rem; }
@@ -104,6 +104,7 @@ const expectSelectAnchored = async (dropdown: Locator, combobox: Locator, above 
     const anchor = (await combobox.boundingBox())!;
     const alignment = rtl ? list.x + list.width - anchor.x - anchor.width : list.x - anchor.x;
     expect(Math.abs(alignment)).toBeLessThan(2);
+    expect(list.width).toBeCloseTo(anchor.width, 0);
     const gap = above ? anchor.y - list.y - list.height : list.y - anchor.y - anchor.height;
     expect(gap).toBeGreaterThanOrEqual(3);
     expect(gap).toBeLessThan(6);
