@@ -59,7 +59,7 @@ const styles = css`
     position: relative;
     cursor: default;
     padding: 0.75rem;
-    z-index: 9998;
+    /* A stacking context here clips nested fixed overlays in Safari's scrolling layer. */
     max-height: var(--mdc-popover-max-height);
   }
 
