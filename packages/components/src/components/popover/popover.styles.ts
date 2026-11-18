@@ -23,12 +23,8 @@ const styles = css`
     left: 0;
 
     box-sizing: content-box;
-    background-color: var(--mdc-popover-primary-background-color);
     border-radius: 0.5rem;
-    border: 0.0625rem solid var(--mdc-popover-border-color);
-    filter: var(--mdc-popover-elevation-3);
-    /* Keep fixed descendants' containing block consistent with Floating UI in WebKit. */
-    contain: layout;
+    border: 0.0625rem solid transparent;
     max-width: var(--mdc-popover-max-width);
     width: var(--mdc-popover-width, var(--mdc-popover-max-width));
   }
@@ -46,11 +42,10 @@ const styles = css`
   }
 
   :host([color='contrast']) {
-    background-color: var(--mdc-popover-inverted-background-color);
-    border-color: var(--mdc-popover-inverted-border-color);
     color: var(--mdc-popover-inverted-text-color);
   }
 
+  :host([color='contrast']) .popover-surface,
   :host([color='contrast']) .popover-arrow {
     background-color: var(--mdc-popover-inverted-background-color);
     border-color: var(--mdc-popover-inverted-border-color);
@@ -64,6 +59,7 @@ const styles = css`
     position: relative;
     cursor: default;
     padding: 0.75rem;
+    z-index: 9998;
     max-height: var(--mdc-popover-max-height);
   }
 
@@ -88,7 +84,22 @@ const styles = css`
     left: 0.75rem;
   }
 
+  /* Filter only the surface and arrow, not scrolling content or nested fixed overlays. */
+  .popover-surface {
+    position: absolute;
+    inset: -0.0625rem;
+    box-sizing: border-box;
+    background-color: var(--mdc-popover-primary-background-color);
+    border: inherit;
+    border-color: var(--mdc-popover-border-color);
+    border-radius: inherit;
+    filter: var(--mdc-popover-elevation-3);
+    pointer-events: none;
+    z-index: -1;
+  }
+
   .popover-arrow {
+    box-sizing: content-box;
     position: absolute;
     width: 1rem;
     height: 1rem;
