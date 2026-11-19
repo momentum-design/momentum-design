@@ -7,7 +7,7 @@ const styles = css`
     --mdc-buttongroup-border-radius: 1.25rem;
     --mdc-buttongroup-border-color: var(--mds-color-theme-outline-button-normal);
     --mdc-buttongroup-divider-color: var(--mds-color-theme-outline-secondary-normal);
-    --mdc-buttongroup-border-width: 1px;
+    --mdc-buttongroup-border-width: var(--mds-border-theme-default);
   }
 
   :host::part(container) {
@@ -23,7 +23,7 @@ const styles = css`
 
   ::slotted(mdc-button) {
     width: inherit;
-    border-radius: 0;
+    border-radius: var(--mds-radius-theme-none);
     border: none;
     box-sizing: border-box;
     position: relative;
@@ -88,19 +88,19 @@ const styles = css`
   }
 
   :host([compact][orientation='horizontal']) ::slotted(mdc-button) {
-    height: 1.5rem;
+    height: var(--mds-size-theme-md-24);
   }
   :host([compact][orientation='horizontal'][size='24']) ::slotted(mdc-button) {
-    width: 1.5rem;
+    width: var(--mds-size-theme-md-24);
   }
   :host([compact][orientation='horizontal'][size='28']) ::slotted(mdc-button) {
-    width: 1.75rem;
+    width: var(--mds-size-theme-md-28);
   }
   :host([compact][orientation='horizontal'][size='32']) ::slotted(mdc-button) {
-    width: 2rem;
+    width: var(--mds-size-theme-md-32);
   }
   :host([compact][orientation='horizontal'][size='40']) ::slotted(mdc-button) {
-    width: 2.5rem;
+    width: var(--mds-size-theme-lg-40);
   }
 `;
 
