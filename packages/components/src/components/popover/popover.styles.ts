@@ -31,6 +31,17 @@ const styles = css`
     width: var(--mdc-popover-width, var(--mdc-popover-max-width));
   }
 
+  /*
+   * Safari and Floating UI use different reference points for fixed overlays inside a filtered Popover.
+   * Use layout containment to give both the same reference point.
+   * Limit this rule to trees with elevation tokens.
+   */
+  @container style(--mds-elevation-3) {
+    :host {
+      contain: layout;
+    }
+  }
+
   :host([strategy='absolute']) {
     position: absolute;
   }
