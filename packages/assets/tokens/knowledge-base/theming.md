@@ -1,6 +1,6 @@
 ---
 title: Theming
-summary: How Momentum semantic color tokens resolve across themes and modes, how a theme is applied, and how to add one.
+summary: How Momentum semantic color tokens resolve across themes and modes, how a theme or charting mode is applied, and how to add one.
 tier: 2
 websitePath: foundations/theming
 ---
@@ -103,6 +103,26 @@ provider currently exposes the stable Webex mode and its brand accents as
 runtime-selectable classes; high-contrast and AAOS selectors are emitted by the
 build and can be applied the same way.
 
+## Charting colors
+
+Charting colors are a separate semantic set, not another mode of
+`color.theme.*`. Their keys live under `color.charting.*`, and only the
+primitive alias changes between modes:
+
+| Mode | Source | Selector |
+| --- | --- | --- |
+| Charting dark | `src/charting/dark.json` | `.mds-charting-dark` |
+| Charting light | `src/charting/light.json` | `.mds-charting-light` |
+
+`config/tokens/charting.json` still emits the standalone `.mds-charting-*`
+selectors. The same sources are compiled into the stable and fluid Webex theme
+bundles, and into each additional accent theme: dark outputs include
+`charting/dark.json`, light outputs include `charting/light.json`. Those entries
+live in `config/tokens/core.json` and `config/tokens/additional-themes.json`, so
+applying a stable, fluid, or accent theme class provides the charting custom
+properties. High-contrast and AAOS outputs stay limited to their own theme
+tokens. The meaning of each charting group is catalogued in [Color](./color.md).
+
 ## Inverted and common
 
 Two token groups exist specifically to control theming behavior:
@@ -146,7 +166,7 @@ Consequences:
 
 ## Related
 
-- [Color](./color.md) — the semantic token catalogue these themes resolve.
+- [Color](./color.md) — the semantic token catalogue these themes and charting colors resolve.
 - [Glass](./glass.md) — glass material/blur tokens and how they behave per theme.
 - [`themeprovider`](../../../components/src/components/themeprovider/knowledge-base/themeprovider.component.md)
   component (Tier 3) — applying a theme at runtime.
