@@ -170,9 +170,6 @@ class Select
   private animationFrameId?: number;
 
   /** @internal */
-  private listboxResizeObserver?: ResizeObserver;
-
-  /** @internal */
   private initialSelectedOption: Option | null = null;
 
   /** @internal */
@@ -200,13 +197,10 @@ class Select
     this.loop = 'false';
     this.initialFocus = 0;
     this.setupDebounceSearch();
-    this.requestUpdate();
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.listboxResizeObserver?.disconnect();
-    this.listboxResizeObserver = undefined;
     // cancel any pending debounced action and clear DOM timeouts
     this.debounceSearch?.cancel();
     // cancel any pending animation frames
@@ -411,22 +405,6 @@ class Select
 
   public override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
-
-    if (!this.listboxResizeObserver && this.isConnected) {
-      const [widthSizer, maxWidthSizer] = this.renderRoot.querySelectorAll<HTMLElement>('.listbox-size > div');
-      const popover = this.renderRoot.querySelector<HTMLElement>('mdc-popover')!;
-      this.listboxResizeObserver = new ResizeObserver(entries => {
-        entries.forEach(({ target, contentRect }) => {
-          const property =
-            target === widthSizer ? '--mdc-select-internal-listbox-width' : '--mdc-select-internal-listbox-max-width';
-          // Empty probes have no intrinsic width; let the real options size intrinsic keywords.
-          if (contentRect.width) popover.style.setProperty(property, `${contentRect.width}px`);
-          else popover.style.removeProperty(property);
-        });
-      });
-      this.listboxResizeObserver.observe(widthSizer);
-      this.listboxResizeObserver.observe(maxWidthSizer);
-    }
 
     if (
       changedProperties.has('disabled') ||
@@ -838,10 +816,6 @@ class Select
           @invalid=${this.setInputValidity}
           aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
         />
-        <div class="listbox-size" aria-hidden="true">
-          <div></div>
-          <div></div>
-        </div>
         <mdc-popover
           trigger="${TRIGGER.MANUAL}"
           triggerid="${TRIGGER_ID}"
