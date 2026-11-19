@@ -7,6 +7,7 @@ import {
   inline as inlineMiddleware,
   offset,
   OffsetOptions,
+  platform,
   shift,
   size,
 } from '@floating-ui/dom';
@@ -1177,6 +1178,19 @@ class Popover
           placement: adjustedPlacement,
           middleware,
           strategy: this.strategy,
+          platform: {
+            ...platform,
+            getOffsetParent: (element: Element) => {
+              // Safari uses filtered ancestors as reference points for fixed overlays.
+              // Floating UI skips them in WebKit. Use the browser's offset parent.
+              const { offsetParent } = this;
+              if (element === this && this.strategy === 'fixed' && offsetParent) {
+                const { filter, backdropFilter } = getComputedStyle(offsetParent);
+                if (filter !== 'none' || (backdropFilter && backdropFilter !== 'none')) return offsetParent;
+              }
+              return platform.getOffsetParent(element);
+            },
+          },
         });
 
         this.utils.updatePopoverStyle(x, y);

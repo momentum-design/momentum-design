@@ -1785,14 +1785,14 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
 };
 
 test.describe('mdc-popover fixed overlays', () => {
-  const setupFixedOverlays = async (componentsPage: ComponentsPage, elevation: number | null) => {
+  const setupFixedOverlays = async (componentsPage: ComponentsPage, elevation: number | null, style = '') => {
     await componentsPage.mount({
       html: `
         <div class="${elevation ? 'mds-elevation' : ''}" style="padding: 6rem 10rem;">
           <mdc-button id="outer-trigger">Open settings</mdc-button>
           <mdc-popover id="outer-popover" triggerid="outer-trigger" placement="bottom-start"
             interactive hide-on-escape focus-back-to-trigger
-            style="width: 16rem; ${elevation ? `--mdc-popover-elevation-3: var(--mds-elevation-${elevation});` : ''}">
+            style="width: 16rem; ${elevation ? `--mdc-popover-elevation-3: var(--mds-elevation-${elevation});` : ''} ${style}">
             <mdc-button id="tooltip-trigger">Details</mdc-button>
             <mdc-tooltip id="fixed-tooltip" triggerid="tooltip-trigger" strategy="fixed"
               placement="right" offset="8" delay="0,0">Settings details</mdc-tooltip>
@@ -1815,11 +1815,18 @@ test.describe('mdc-popover fixed overlays', () => {
     await expect(componentsPage.page.locator('#outer-popover')).toBeVisible();
   };
 
-  for (const elevation of [null, 1, 2, 3, 4]) {
-    test(`should anchor fixed overlays ${elevation ? `with elevation ${elevation}` : 'without elevation'}`, async ({
-      componentsPage,
-    }) => {
-      await setupFixedOverlays(componentsPage, elevation);
+  for (const { name, elevation, style } of [
+    ...[null, 1, 2, 3, 4].map(elevation => ({
+      name: elevation ? `with elevation ${elevation}` : 'without elevation',
+      elevation,
+      style: '',
+    })),
+    { name: 'with a custom filter', elevation: null, style: 'filter: brightness(1);' },
+    { name: 'with a backdrop filter', elevation: null, style: 'backdrop-filter: blur(0.25rem);' },
+    { name: 'with elevation disabled', elevation: 3, style: 'filter: none;' },
+  ]) {
+    test(`should anchor fixed overlays ${name}`, async ({ componentsPage }) => {
+      await setupFixedOverlays(componentsPage, elevation, style);
       const { page } = componentsPage;
       const tooltipTrigger = page.getByRole('button', { name: 'Details', exact: true });
       const tooltip = page.locator('#fixed-tooltip');
@@ -1867,6 +1874,21 @@ test.describe('mdc-popover fixed overlays', () => {
       await expect(page.getByRole('button', { name: 'Open settings', exact: true })).toBeFocused();
     });
   }
+
+  test('should keep fixed content viewport-relative when elevation is disabled', async ({ componentsPage }) => {
+    await setupFixedOverlays(componentsPage, 3, 'filter: none;');
+    await componentsPage.page.locator('#outer-popover').evaluate(element => {
+      element.insertAdjacentHTML(
+        'beforeend',
+        '<div id="fixed-content" style="position: fixed; top: 0; left: 0;">Fixed content</div>',
+      );
+    });
+    await expect(async () => {
+      const contentBox = (await componentsPage.page.locator('#fixed-content').boundingBox())!;
+      expect(Math.abs(contentBox.x)).toBeLessThan(1);
+      expect(Math.abs(contentBox.y)).toBeLessThan(1);
+    }).toPass();
+  });
 });
 
 test('mdc-popover', async ({ componentsPage }) => {
