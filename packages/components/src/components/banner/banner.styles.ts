@@ -4,11 +4,11 @@ const styles = css`
   :host {
     --mdc-banner-background-color: var(--mds-color-theme-background-solid-primary-normal);
     --mdc-banner-border-color: var(--mds-color-theme-outline-secondary-normal);
-    --mdc-banner-border-width: 1px;
+    --mdc-banner-border-width: var(--mds-border-theme-default);
     --mdc-banner-icon-color: var(--mds-color-theme-text-primary-normal);
     --mdc-banner-elevation: var(--mds-elevation-3);
-    --mdc-banner-padding: calc(0.75rem - var(--mdc-banner-border-width));
-    --mdc-banner-gap: 0.5rem;
+    --mdc-banner-padding: calc(var(--mds-spacing-theme-pad-v-sm) - var(--mdc-banner-border-width));
+    --mdc-banner-gap: var(--mds-spacing-theme-gap-xs);
 
     display: flex;
     padding: var(--mdc-banner-padding);
@@ -18,7 +18,7 @@ const styles = css`
     width: 100%;
     background-color: var(--mdc-banner-background-color);
     border: var(--mdc-banner-border-width) solid var(--mdc-banner-border-color);
-    border-radius: 0.5rem;
+    border-radius: var(--mds-radius-theme-sm);
     filter: var(--mdc-banner-elevation);
   }
 
