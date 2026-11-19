@@ -79,29 +79,6 @@ const styles = css`
     inset-inline-end: 0%;
   }
 
-  /* Resolve percentage/calc widths in the absolute dropdown's containing block. */
-  .listbox-size {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .listbox-size > div {
-    height: 0;
-    width: var(--mdc-select-listbox-width);
-  }
-
-  .listbox-size > div:first-child {
-    width: var(--mdc-popover-width, var(--mdc-select-listbox-width));
-  }
-
-  :host mdc-popover[strategy='fixed'] {
-    width: var(--mdc-select-internal-listbox-width, var(--mdc-popover-width, var(--mdc-select-listbox-width)));
-    max-width: var(--mdc-select-internal-listbox-max-width, var(--mdc-select-listbox-width));
-  }
-
   /* Popover height, width & padding overrides */
   :host mdc-popover {
     --mdc-popover-max-width: var(--mdc-select-listbox-width);
