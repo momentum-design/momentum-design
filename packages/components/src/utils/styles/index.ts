@@ -1,4 +1,4 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
 
 type FocusRingClassMode = 'focus-on-child' | 'parent-to-child';
 
@@ -27,7 +27,18 @@ const baseHostStyleVariables = css`
   }
 `;
 
+/*
+ * Mitigates the blue fringe on the inner edge of the focus ring on transparent elements with rounded corners.
+ * Every box-shadow layer shares the same anti-aliased edge at the border box, so the blue layers bleed through
+ * the black inner layer there. Repeating the inner color with half the spread overdraws the bleed, while its
+ * outer edge stays hidden below the opaque inner layer, so the ring looks the same.
+ * See LEARNINGS.md ("Focus ring: inner blue fringe").
+ */
+const focusRingInnerOverdrawLayer = '0 0 0 calc(var(--mdc-focus-ring-inner-width) / 2) var(--mdc-focus-ring-inner-color)';
+const focusRingInnerOverdraw = unsafeCSS(Array(8).fill(focusRingInnerOverdrawLayer).join(',\n    '));
+
 const focusRingBoxShadow = css`0 0 0 var(--mdc-focus-ring-inner-width) var(--mdc-focus-ring-inner-color),
+    ${focusRingInnerOverdraw},
     0 0 0 var(--mdc-focus-ring-middle-width) var(--mdc-focus-ring-middle-color),
     0 0 0 var(--mdc-focus-ring-outer-width) var(--mdc-focus-ring-outer-color)
   `;
