@@ -1784,6 +1784,113 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
   });
 };
 
+test.describe('mdc-popover fixed overlays', () => {
+  const setupFixedOverlays = async (componentsPage: ComponentsPage, elevation: number | null, style = '') => {
+    await componentsPage.mount({
+      html: `
+        <div class="${elevation ? 'mds-elevation' : ''}" style="padding: 6rem 10rem;">
+          <mdc-button id="outer-trigger">Open settings</mdc-button>
+          <mdc-popover id="outer-popover" triggerid="outer-trigger" placement="bottom-start"
+            interactive hide-on-escape focus-back-to-trigger
+            style="width: 16rem; ${elevation ? `--mdc-popover-elevation-3: var(--mds-elevation-${elevation});` : ''} ${style}">
+            <mdc-button id="tooltip-trigger">Details</mdc-button>
+            <mdc-tooltip id="fixed-tooltip" triggerid="tooltip-trigger" strategy="fixed"
+              placement="right" offset="8" delay="0,0">Settings details</mdc-tooltip>
+            <mdc-button id="nested-trigger">Open nested</mdc-button>
+            <mdc-popover id="fixed-popover" triggerid="nested-trigger" strategy="fixed"
+              placement="right-start" offset="8" hide-on-escape>Nested content</mdc-popover>
+            <mdc-select label="Example choice" placeholder="Choose an option" strategy="fixed"
+              style="--mdc-select-listbox-width: 12rem;">
+              <mdc-selectlistbox>
+                <mdc-option value="first" label="First option"></mdc-option>
+                <mdc-option value="second" label="Second option"></mdc-option>
+              </mdc-selectlistbox>
+            </mdc-select>
+          </mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    await componentsPage.page.getByRole('button', { name: 'Open settings', exact: true }).click();
+    await expect(componentsPage.page.locator('#outer-popover')).toBeVisible();
+  };
+
+  for (const { name, elevation, style } of [
+    ...[null, 1, 2, 3, 4].map(elevation => ({
+      name: elevation ? `with elevation ${elevation}` : 'without elevation',
+      elevation,
+      style: '',
+    })),
+    { name: 'with a custom filter', elevation: null, style: 'filter: brightness(1);' },
+    { name: 'with a backdrop filter', elevation: null, style: 'backdrop-filter: blur(0.25rem);' },
+    { name: 'with elevation disabled', elevation: 3, style: 'filter: none;' },
+  ]) {
+    test(`should anchor fixed overlays ${name}`, async ({ componentsPage }) => {
+      await setupFixedOverlays(componentsPage, elevation, style);
+      const { page } = componentsPage;
+      const tooltipTrigger = page.getByRole('button', { name: 'Details', exact: true });
+      const tooltip = page.locator('#fixed-tooltip');
+
+      await tooltipTrigger.hover();
+      await expect(tooltip).toBeVisible();
+      await expect(async () => {
+        const triggerBox = (await tooltipTrigger.boundingBox())!;
+        const tooltipBox = (await tooltip.boundingBox())!;
+        expect(Math.abs(tooltipBox.x - triggerBox.x - triggerBox.width - 8)).toBeLessThan(1);
+        expect(Math.abs(tooltipBox.y + tooltipBox.height / 2 - triggerBox.y - triggerBox.height / 2)).toBeLessThan(1);
+      }).toPass();
+
+      await page.mouse.move(0, 0);
+      await expect(tooltip).not.toBeVisible();
+      const nestedTrigger = page.getByRole('button', { name: 'Open nested', exact: true });
+      const nestedPopover = page.locator('#fixed-popover');
+      await nestedTrigger.click();
+      await expect(nestedPopover).toBeVisible();
+      await expect(async () => {
+        const triggerBox = (await nestedTrigger.boundingBox())!;
+        const popoverBox = (await nestedPopover.boundingBox())!;
+        expect(Math.abs(popoverBox.x - triggerBox.x - triggerBox.width - 8)).toBeLessThan(1);
+        expect(Math.abs(popoverBox.y - triggerBox.y)).toBeLessThan(1);
+      }).toPass();
+      await page.keyboard.press(KEYS.ESCAPE);
+      await expect(nestedPopover).not.toBeVisible();
+
+      const selectTrigger = page.getByRole('combobox', { name: 'Example choice' });
+      const listbox = page.getByRole('listbox');
+      await selectTrigger.click();
+      await expect(listbox).toBeVisible();
+      await expect(async () => {
+        const triggerBox = (await selectTrigger.boundingBox())!;
+        const listboxBox = (await listbox.boundingBox())!;
+        expect(Math.abs(listboxBox.x - triggerBox.x)).toBeLessThan(16);
+        expect(listboxBox.y).toBeGreaterThanOrEqual(triggerBox.y + triggerBox.height);
+        expect(listboxBox.y - triggerBox.y - triggerBox.height).toBeLessThan(32);
+      }).toPass();
+      await page.getByRole('option', { name: 'First option', exact: true }).click();
+      await expect(listbox).not.toBeVisible();
+      await expect(selectTrigger).toContainText('First option');
+      await page.keyboard.press(KEYS.ESCAPE);
+      await expect(page.locator('#outer-popover')).not.toBeVisible();
+      await expect(page.getByRole('button', { name: 'Open settings', exact: true })).toBeFocused();
+    });
+  }
+
+  test('should keep fixed content viewport-relative when elevation is disabled', async ({ componentsPage }) => {
+    await setupFixedOverlays(componentsPage, 3, 'filter: none;');
+    await componentsPage.page.locator('#outer-popover').evaluate(element => {
+      element.insertAdjacentHTML(
+        'beforeend',
+        '<div id="fixed-content" style="position: fixed; top: 0; left: 0;">Fixed content</div>',
+      );
+    });
+    await expect(async () => {
+      const contentBox = (await componentsPage.page.locator('#fixed-content').boundingBox())!;
+      expect(Math.abs(contentBox.x)).toBeLessThan(1);
+      expect(Math.abs(contentBox.y)).toBeLessThan(1);
+    }).toPass();
+  });
+});
+
 test('mdc-popover', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
