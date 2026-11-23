@@ -43,7 +43,6 @@ const setup = async (args: SetupOptions) => {
   return listbox;
 };
 
-// AI-Assisted
 /**
  * Registers a one-time change listener on the listbox element.
  * Must be awaited before performing the action that triggers the event
@@ -61,7 +60,6 @@ const setupChangeListener = async (listbox: Locator): Promise<void> => {
 /** Retrieves the event detail captured by a previously registered change listener. */
 const getChangeDetail = (listbox: Locator): Promise<ListBoxChangeEventDetail> =>
   listbox.evaluate((el: any) => el.pendingChangeDetail);
-// End AI-Assisted
 
 test('mdc-listbox', async ({ componentsPage }) => {
   /**
@@ -124,6 +122,29 @@ test('mdc-listbox', async ({ componentsPage }) => {
       // Select option with Enter
       await componentsPage.page.keyboard.press(KEYS.ENTER);
       await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    });
+
+    await test.step('keeps a focusable option when the focused option is removed', async () => {
+      const listbox = await setup({ componentsPage, children: defaultChildren() });
+      await componentsPage.page.locator('mdc-button').focus();
+      await componentsPage.actionability.pressTab();
+      await expect(listbox.locator('mdc-option').nth(0)).toBeFocused();
+      await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('tabindex', '0');
+
+      // Removing the focusable option (e.g. when a consumer filters the list) must
+      // re-assign tabindex="0" to the option that takes its place so the listbox
+      // stays reachable by keyboard.
+      await listbox
+        .locator('mdc-option')
+        .nth(0)
+        .evaluate(el => el.remove());
+
+      await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('tabindex', '0');
+
+      // The listbox remains keyboard reachable via Tab.
+      await componentsPage.page.locator('mdc-button').focus();
+      await componentsPage.actionability.pressTab();
+      await expect(listbox.locator('mdc-option').nth(0)).toBeFocused();
     });
 
     await test.step('spatial navigation', async () => {

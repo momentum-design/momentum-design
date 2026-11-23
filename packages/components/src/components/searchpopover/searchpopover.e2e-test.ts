@@ -295,7 +295,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(firstListItemInPopover).toBeFocused();
     });
 
-    // AI-Assisted: controlled/uncontrolled chip removal tests
+    // Controlled/uncontrolled chip removal tests
     const filterChip = searchpopover.locator('mdc-chip');
     await test.step('control-type attribute defaults to uncontrolled', async () => {
       await setup({
@@ -403,6 +403,5 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(waitForRemoved).toEventEmitted();
       await expect(filterChip).not.toBeAttached();
     });
-    // End AI-Assisted
   });
 });

@@ -2,6 +2,7 @@
 title: Theming
 summary: How Momentum semantic color tokens resolve across themes and modes, how a theme is applied, and how to add one.
 tier: 2
+websitePath: foundations/theming
 ---
 
 # Theming

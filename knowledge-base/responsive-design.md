@@ -2,6 +2,7 @@
 title: Responsive design
 summary: How to build adaptive UIs with Momentum — the consumer-owned breakpoint model, the shared responsive context provider, and the reflow and zoom bar every layout must clear.
 tier: 1
+websitePath: guidelines/responsive-design
 ---
 
 **Primary audience:** Product design and engineering.

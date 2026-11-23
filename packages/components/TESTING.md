@@ -96,6 +96,28 @@ recommended:
      yarn components test:e2e:firefox # run on firefox whithout snapshots
    ```
 
+### Visual regression screenshots
+
+Author visual assertions through `componentsPage.visualRegression.takeScreenshot(name, options)`
+(`config/playwright/setup/utils/visual-regression.ts`) instead of `page.screenshot()` or manual
+`page.emulateMedia()` calls. For the default `stickersheet` source, one call already produces every
+required variant for that fixture:
+
+- `<name>-high-contrast.png` — forced-colors mode, captured automatically, only on Chromium and msedge
+- `<name>-ltr.png` and `<name>-rtl.png` — normal contrast, one shot per direction
+
+Internally it toggles `forcedColors` on for the high-contrast shot, then resets it to `'none'` before taking
+the LTR/RTL pair. Two rules follow directly from that:
+
+- Call `takeScreenshot` **exactly once per visual fixture**. A second call for the same fixture reruns the
+  whole high-contrast/LTR/RTL sequence and produces snapshots that duplicate the first call's.
+- Never wrap a `takeScreenshot` call in your own `page.emulateMedia({ forcedColors: ... })`. The helper's own
+  reset overwrites a manual override, so the forced-colors case you meant to capture silently degrades to a
+  normal-contrast screenshot — same pixels, misleading name.
+
+Give the fixture one descriptive `name` (e.g. `mdc-checkboxtree`); the helper appends the `-ltr`/`-rtl`/
+`-high-contrast` suffix itself, so don't fold a variant into the name yourself.
+
 ### Update Visual Regression snapshots
 
 To update Visual Regression snapshots, follow the steps below to run E2E testing

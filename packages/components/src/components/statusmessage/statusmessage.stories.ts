@@ -1,4 +1,3 @@
-// AI-Assisted
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 
@@ -70,4 +69,3 @@ export const CustomIcon: StoryObj = {
   `,
   ...hideAllControls(),
 };
-// End AI-Assisted

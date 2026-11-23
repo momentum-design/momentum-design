@@ -63,7 +63,7 @@ class CardRadio extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabIn
    * ensuring only one card in the group can be selected at a time.
    * @default ''
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   name = '';
 
   constructor() {

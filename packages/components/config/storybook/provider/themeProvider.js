@@ -1,8 +1,11 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 
-import { themes } from '../themes';
+import { themes, isFluidTheme } from '../themes';
+
 import '../../../src/components/themeprovider';
+import '../../../src/styles/glass.css';
 import './overrides.css';
+import { descriptionBanner, getStoryDescription } from './storyDescription';
 
 const applyStyle = (element, className) => {
   element.classList.add(className);
@@ -17,6 +20,20 @@ const setCanvasBackgroundOnDocs = backgroundColor => {
 };
 
 const allThemeClasses = themes.map(t => t.themeclass);
+
+/**
+ * `backdrop-filter` on .glassContainer makes it the containing block for a dialog's `position: fixed`
+ * backdrop, which would then stop at the glass box instead of covering the viewport. The backdrop is
+ * appended to `dialog.parentElement`, so the dialog has to sit on the canvas before it is shown.
+ */
+const hoistDialogs = canvas => {
+  const glass = canvas.querySelector(':scope > .glassContainer');
+  if (!glass) return;
+
+  for (const dialog of glass.querySelectorAll('mdc-dialog')) {
+    if (!dialog.parentElement?.closest('mdc-dialog')) canvas.append(dialog);
+  }
+};
 
 const syncBodyTheme = themeClass => {
   const body = document.querySelector('body.sb-show-main');
@@ -36,6 +53,7 @@ export const withThemeProvider = (story, context) => {
   applyStyle(body, 'bodyOverride');
   applyStyle(body, 'mds-typography');
   applyStyle(body, 'mds-elevation');
+  applyStyle(body, 'mds-effect');
 
   // Mirror the active theme onto <body> so non-story chrome (e.g. the
   // knowledge-base Docs page rendered by `@momentum-design/storybook-addon-docs`)
@@ -45,7 +63,24 @@ export const withThemeProvider = (story, context) => {
   // This will set the all canvas in "Docs" with the current theme background color
   setCanvasBackgroundOnDocs(themeObject.backgroundColor);
 
+  const isFluid = isFluidTheme(themeObject.displayName);
+  const backgroundClass = isFluid ? 'backgroundImage' : 'backgroundGradient';
+  const docs = getStoryDescription(context);
+  // Stories that demonstrate glass themselves opt out, so they are not shown on top of more glass.
+  const glassContainer = context.parameters?.glassContainer !== false;
+  const storyContent = isFluid
+    ? html`<div class="fluidCanvas">
+        ${docs ? descriptionBanner(docs) : nothing}
+        ${glassContainer
+          ? html`<div class="glassContainer mdc-glass-border mdc-glass-overlay-background">${story()}</div>`
+          : story()}
+      </div>`
+    : story();
+
+  // Runs after lit has committed this render, so every re-render re-hoists a freshly created dialog.
+  if (isFluid) queueMicrotask(() => document.querySelectorAll('.fluidCanvas').forEach(hoistDialogs));
+
   return html` <mdc-themeprovider id="theme-provider" themeclass="${themeObject.themeclass}">
-    <div class="backgroundGradient">${story()}</div>
+    <div class="${backgroundClass}">${storyContent}</div>
   </mdc-themeprovider>`;
 };

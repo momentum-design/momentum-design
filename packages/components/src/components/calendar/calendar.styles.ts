@@ -15,6 +15,8 @@ const styles = css`
     --mdc-calendar-day-outside-month-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-calendar-day-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-calendar-range-bg: var(--mds-color-theme-background-accent-active);
+    --mdc-calendar-range-preview-bg: var(--mds-color-theme-background-accent-normal);
+    --mdc-calendar-range-preview-text-color: var(--mds-color-theme-common-text-primary-normal);
 
     display: flex;
     flex-direction: column;
@@ -70,7 +72,7 @@ const styles = css`
     display: contents;
   }
 
-  /* AI-Assisted: range fill is rendered via a ::before pseudo aligned to the
+  /* Range fill is rendered via a ::before pseudo aligned to the
      day-circle (1.75rem) instead of filling the full grid column, so the rounded
      ends line up with the today/selected circle. */
   .calendar-day-wrapper {
@@ -100,6 +102,10 @@ const styles = css`
     z-index: 1;
   }
 
+  .calendar-day-wrapper.range-preview::before {
+    background: var(--mdc-calendar-range-preview-bg);
+  }
+
   .calendar-day-wrapper.range-start::before,
   .calendar-day-wrapper.in-range:first-child::before {
     inset-inline-start: calc(50% - 0.875rem);
@@ -115,7 +121,6 @@ const styles = css`
     border-end-end-radius: 0.875rem;
     border-inline-end: 1px solid var(--mdc-calendar-day-selected-bg);
   }
-  /* End AI-Assisted */
 
   .calendar-day {
     display: flex;
@@ -180,6 +185,10 @@ const styles = css`
   .calendar-day-wrapper.in-range .calendar-day {
     color: var(--mdc-calendar-day-selected-text-color);
     font-weight: var(--mds-font-apps-body-small-bold-font-weight);
+  }
+
+  .calendar-day-wrapper.range-preview .calendar-day {
+    color: var(--mdc-calendar-range-preview-text-color);
   }
 
   .calendar-day.disabled {

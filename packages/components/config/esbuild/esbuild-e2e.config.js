@@ -10,8 +10,10 @@ const { config } = require('./configs/browser');
 const { publicPath, port } = require('./configs/e2e');
 
 // this replaces the dynamic import in the brand-visuals component with a normal import to make it work
-// in playwright for the time being. not needed anymore in case a BrandVisualProvider and
-// normal URL fetching will be done
+// in playwright, since esbuild does not resolve the dynamic import.
+// only the momentum-brand-visuals path (and the no-provider fallback) still goes through this import
+// — a BrandVisualProvider with a url fetches over HTTP and needs no rewriting, which is why the
+// provider e2e tests can assert against the real asset set served from /dist/brandvisuals.
 const replaceBrandVisualsDynamicImport = source => {
   const newSource = source.replace(
     '@momentum-design/brand-visuals/dist/ts/${this.name}.ts',
@@ -58,6 +60,7 @@ const iife = async () => {
       `${join(process.cwd(), 'src/components/themeprovider/themeprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/iconprovider/iconprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/illustrationprovider/illustrationprovider.e2e-test.utils.ts')}`,
+      `${join(process.cwd(), 'src/components/brandvisualprovider/brandvisualprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/buttonsimple/index.ts')}`,
       `${join(process.cwd(), 'src/components/formfieldwrapper/formfieldwrapper.subcomponent.ts')}`,
       `${join(process.cwd(), 'src/components/controltypeprovider/controltypeprovider.e2e-test.utils.ts')}`,

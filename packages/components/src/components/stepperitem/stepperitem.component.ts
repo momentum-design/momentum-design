@@ -1,4 +1,5 @@
 import { CSSResult, html, nothing } from 'lit';
+import type { PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -9,6 +10,7 @@ import providerUtils from '../../utils/provider';
 import Stepper from '../stepper/stepper.component';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 import styles from './stepperitem.styles';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
@@ -18,16 +20,18 @@ import type { StatusType, VariantType } from './stepperitem.types';
  * @tagname mdc-stepperitem
  *
  * @dependency mdc-icon
+ * @dependency mdc-spinner
  * @dependency mdc-text
  *
  * @event click - (React: onClick) This event is dispatched when the stepperitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the stepperitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the stepperitem.
  *
- * @csspart status-container - The container for the status icon or step number.
+ * @csspart status-container - The container for the status icon, step number, or loading spinner.
  * @csspart label-container - The container for the label and help text.
  * @csspart help-text-container - The container for the help text and error icon when applicable.
  * @csspart status-icon - The icon representing the status of the stepper item.
+ * @csspart status-spinner - The inset spinner displayed in place of the status indicator while loading.
  * @csspart step-number - The text representing the step number.
  * @csspart label - The text representing the label of the stepper item.
  * @csspart help-text - The text providing additional information about the stepper item.
@@ -39,7 +43,7 @@ import type { StatusType, VariantType } from './stepperitem.types';
  * @cssproperty --mdc-stepperitem-help-text-color - The color of the optional label text.
  * @cssproperty --mdc-stepperitem-label-container-background - The background color of the label container.
  */
-class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Component))) {
+class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(DisabledMixin(Component)))) {
   /**
    * The variant of the stepper item, which can be `inline` or `stacked`.
    * @default 'inline'
@@ -48,7 +52,10 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
   variant: VariantType = DEFAULT.VARIANT;
 
   /**
-   * The status of the stepper item, which can be `completed`, `current`, `not-started`, `error-current`, or `error-incomplete`.
+   * The status of the stepper item: `completed`, `current`, `loading`, `not-started`, `error-current`, or `error-incomplete`.
+   * Loading replaces the indicator with an inset spinner and sets aria-busy without changing disabled.
+   * Consumers must include the loading state in the accessible label and provide application live regions
+   * when progress announcements are needed.
    * @default 'not-started'
    */
   @property({ type: String, reflect: true })
@@ -83,12 +90,13 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
    */
   private readonly stepperContext = providerUtils.consume({ host: this, context: Stepper.Context });
 
-  override updated(changedProperties: Map<string, unknown>): void {
-    super.updated(changedProperties);
+  override willUpdate(changedProperties: Map<string, unknown>): void {
+    super.willUpdate(changedProperties);
 
     const context = this.stepperContext?.value;
-    if (!context || !context.variant) return;
-    this.variant = context.variant;
+    if (context?.variant && this.variant !== context.variant) {
+      this.variant = context.variant;
+    }
   }
 
   override connectedCallback(): void {
@@ -98,8 +106,21 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
 
   constructor() {
     super();
+    this.addEventListener('click', this.handleClick.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
+  }
+
+  /**
+   * Prevents pointer and programmatic click events from activating a disabled step.
+   *
+   * @param event - The click event dispatched on the stepper item.
+   */
+  private handleClick(event: MouseEvent): void {
+    if (!this.disabled) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
   }
 
   /**
@@ -111,6 +132,8 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
+    if (this.disabled) return;
+
     const action = this.getActionForKeyEvent(event);
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.classList.add('pressed');
@@ -143,6 +166,8 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
+    if (this.disabled) return;
+
     const action = this.getActionForKeyEvent(event);
 
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
@@ -155,6 +180,7 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
 
   /**
    * Renders the status icon based on the current status of the stepper item.
+   * - If the status is `loading`, it renders an inset spinner.
    * - If the status is `completed`, it renders a check icon.
    * - If the status is `current` or `error-current`, it renders a pencil icon.
    * - If the status is `not-started` or `error-incomplete`, it renders the step number.
@@ -162,6 +188,9 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
    * @returns A template literal that renders the status icon based on the current status of the stepper item.
    */
   private renderStatusIcon() {
+    if (this.status === STATUS.LOADING) {
+      return html`<mdc-spinner part="status-spinner"></mdc-spinner>`;
+    }
     if (this.status === STATUS.COMPLETED) {
       return html`<mdc-icon part="status-icon" name=${STATUS_ICON.COMPLETED} length-unit="rem" size="1"></mdc-icon>`;
     }
@@ -200,6 +229,25 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
       </div>`;
     }
     return helpTextContent;
+  }
+
+  public override update(changedProperties: PropertyValues<StepperItem>): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('status')) {
+      this.ariaBusy = this.status === STATUS.LOADING ? 'true' : null;
+    }
+
+    if (changedProperties.has('disabled')) {
+      this.tabIndex = this.disabled ? -1 : 0;
+      this.classList.remove('pressed');
+
+      if (this.disabled) {
+        this.setAttribute('aria-disabled', 'true');
+      } else {
+        this.removeAttribute('aria-disabled');
+      }
+    }
   }
 
   public override render() {

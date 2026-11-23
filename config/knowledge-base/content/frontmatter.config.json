@@ -22,6 +22,9 @@
           3
         ]
       },
+      "websitePath": {
+        "type": "string"
+      },
       "canonical": {
         "type": "string"
       }

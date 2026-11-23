@@ -415,7 +415,6 @@ export const HorizontalOrientation: StoryObj = {
   },
 };
 
-// AI-Assisted
 export const NestedList: StoryObj = {
   parameters: {
     docs: {
@@ -463,7 +462,6 @@ export const NestedList: StoryObj = {
     'aria-label': 'Grocery list with nested categories',
   },
 };
-// End AI-Assisted
 
 export const ScrollableListWithLongListItems: StoryObj = {
   parameters: {

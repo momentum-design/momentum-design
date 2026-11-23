@@ -1,0 +1,82 @@
+---
+title: {{sentenceCase componentClassName}}
+summary: Usage, guidelines, and accessibility for the {{prefix}}{{separator}}{{componentName}} component — <describe its form and defining behavior>.
+tier: 3
+component: {{componentName}}
+---
+
+## Overview
+
+The `{{prefix}}{{separator}}{{componentName}}` [describe what the component does] so [state the user benefit].
+
+### When to use
+
+- Use `{{prefix}}{{separator}}{{componentName}}` when [describe a specific scenario where it is the right choice].
+
+### When not to use
+
+- Do not use `{{prefix}}{{separator}}{{componentName}}` for [describe a misuse]. Use [alternative] instead.
+
+## Guidelines
+
+### Developer usage
+
+Import and use the component via its React wrapper or directly as a custom element:
+
+```tsx
+import '@momentum-design/components/dist/components/{{componentName}}/index.js';
+// or via React wrapper
+import { {{componentClassName}} } from '@momentum-design/components/dist/react';
+```
+
+Minimal markup example:
+
+```html
+<{{prefix}}{{separator}}{{componentName}}></{{prefix}}{{separator}}{{componentName}}>
+```
+
+<!-- Add required attributes or children to the example. -->
+
+### Composition
+
+<!-- Document meaningful slot, child, and nesting requirements; remove if not applicable. -->
+
+### Content guidance
+
+<!-- Document component-specific visible-copy guidance; remove if the component has no author-written text. -->
+
+### Property/Attribute details
+
+<!-- Add intent guidance for public properties only when the API table needs more context; remove if not applicable. -->
+
+### Limitations
+
+<!-- Document real implementation constraints with workarounds; remove if none apply. -->
+
+## Accessibility
+
+### Built-in features
+
+<!-- Document the semantics and accessibility behavior provided by the component. -->
+
+#### Internal ARIA managed by the component
+
+| Element | Attribute | Value |
+|---|---|---|
+| Host | `role` | [Value, or "None set"] |
+
+### Implementation requirements
+
+#### General
+
+<!-- Document accessibility responsibilities that consumers must satisfy. -->
+
+#### Labeling
+
+<!-- Explain how consumers provide accessible names for the component and its content. -->
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-...` | [Explain how it differs from or works with this component.] |

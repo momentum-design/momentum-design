@@ -325,7 +325,6 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
     });
 
     await test.step('"navback" event canceled also prevents falling back to browser history', async () => {
-      // AI-Assisted
       const locators = await setup({ componentsPage });
       const { keyboard } = componentsPage.page;
 
@@ -340,7 +339,6 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
 
       // window.history.back() was not triggered, so the pushed URL remains unchanged
       await expect(componentsPage.page).toHaveURL(/#pushed$/);
-      // End AI-Assisted
     });
 
     await test.step('"navnotarget" event emitted when no focusable element found in the given direction', async () => {
@@ -443,7 +441,6 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
 
     await test.step('data-spatial-{direction}', async () => {
       await test.step('it does nothing when it has no value', async () => {
-        // AI-Assisted
         const locators = await setup({ componentsPage });
         const { keyboard } = componentsPage.page;
 
@@ -459,11 +456,9 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
         // With empty value, normal navigation should apply — focus moves to btn2
         await keyboard.press('ArrowRight');
         await expect(locators.btn2).toBeFocused();
-        // End AI-Assisted
       });
 
       await test.step('it accepts id as value', async () => {
-        // AI-Assisted
         const locators = await setup({ componentsPage });
         const { keyboard } = componentsPage.page;
 
@@ -479,11 +474,9 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
         // Focus should jump to btn9 based on id value
         await keyboard.press('ArrowRight');
         await expect(locators.btn9).toBeFocused();
-        // End AI-Assisted
       });
 
       await test.step('it accepts css selector as value', async () => {
-        // AI-Assisted
         const locators = await setup({ componentsPage });
         const { keyboard } = componentsPage.page;
 
@@ -503,11 +496,9 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
         // Focus should jump to btn9 based on CSS selector value
         await keyboard.press('ArrowRight');
         await expect(locators.btn8).toBeFocused();
-        // End AI-Assisted
       });
 
       await test.step('when a group targeted an item in the group will be focused', async () => {
-        // AI-Assisted
         const locators = await setup({ componentsPage });
         const { keyboard } = componentsPage.page;
 
@@ -525,7 +516,6 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
         // we target group-3 and btn8 is to the right from btn-1
         await keyboard.press('ArrowRight');
         await expect(locators.btn8).toBeFocused();
-        // End AI-Assisted
       });
     });
   });

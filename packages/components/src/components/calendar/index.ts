@@ -1,4 +1,5 @@
 import '../button';
+import '../screenreaderannouncer';
 import '../text';
 import Calendar from './calendar.component';
 import { TAG_NAME } from './calendar.constants';

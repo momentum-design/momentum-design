@@ -15,7 +15,6 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
-import { getHostComposePath } from '../../utils/dom';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 import { FocusTrapMixin } from '../../utils/mixins/focus/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
@@ -738,19 +737,24 @@ class Popover
    * @internal
    */
   protected onOutsidePopoverClick = (event: MouseEvent) => {
-    if (!this.depthManager.isHostOnTop()) return;
-
     const path = event.composedPath();
-    const insidePopoverClick =
-      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
-    const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
-    if (!insidePopoverClick || clickedOnBackdrop) {
+    // A backdrop click closes its owner even when a later overlay is on top.
+    if (path[0] === this.backdropElement && this.depthManager.has(this)) {
       this.hide();
       PopoverEventManager.onClickOutside(this);
-      if (clickedOnBackdrop) {
-        event.stopPropagation();
-      }
+      event.stopPropagation();
+      return;
+    }
+
+    if (!this.depthManager.isHostOnTop()) return;
+
+    const insidePopoverClick =
+      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
+
+    if (!insidePopoverClick) {
+      this.hide();
+      PopoverEventManager.onClickOutside(this);
     }
   };
 
@@ -763,7 +767,11 @@ class Popover
    * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
+    if (
+      !this.visible ||
+      this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
+      !this.depthManager.isHostEscapeTarget()
+    ) {
       return;
     }
 
@@ -917,8 +925,13 @@ class Popover
   private isHoverWithinTrigger = (event: Event): boolean => {
     const { triggerElement } = this;
     const { relatedTarget } = event as MouseEvent;
+
     if (triggerElement && relatedTarget instanceof Element) {
-      return getHostComposePath(relatedTarget).includes(triggerElement);
+      return (
+        triggerElement === relatedTarget ||
+        // eslint-disable-next-line no-bitwise
+        !!(triggerElement.compareDocumentPosition(relatedTarget) & Node.DOCUMENT_POSITION_CONTAINED_BY)
+      );
     }
     return false;
   };
@@ -1098,11 +1111,22 @@ class Popover
         : Array.from(document.querySelectorAll(this.boundary));
     const rootBoundary = this.boundaryRoot;
 
+    let arrowOffset = 0;
+    if (this.showArrow) {
+      this.arrowElement = this.renderRoot.querySelector('div[part="popover-arrow"]');
+      if (this.arrowElement) {
+        const arrowLen = this.arrowElement.offsetHeight;
+        arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
+      }
+    }
+
     const middleware: ReturnType<typeof shift>[] = [];
 
     if (this.inline) {
       middleware.push(inlineMiddleware());
     }
+
+    middleware.push(offset(typeof this.offset === 'number' ? this.offset + arrowOffset : this.offset));
 
     middleware.push(
       shift({
@@ -1145,17 +1169,9 @@ class Popover
       );
     }
 
-    let arrowOffset = 0;
-    if (this.showArrow) {
-      this.arrowElement = this.renderRoot.querySelector('div[part="popover-arrow"]');
-      if (this.arrowElement) {
-        const arrowLen = this.arrowElement.offsetHeight;
-        arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
-        middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
-      }
+    if (this.showArrow && this.arrowElement) {
+      middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
     }
-
-    middleware.push(offset(typeof this.offset === 'number' ? this.offset + arrowOffset : this.offset));
 
     this.floatingUICleanupFunction = autoUpdate(
       triggerElement,

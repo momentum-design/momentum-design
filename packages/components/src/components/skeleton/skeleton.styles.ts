@@ -2,9 +2,11 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
+    --mdc-skeleton-animation-delay: 0s;
     --mdc-skeleton-background-color: var(--mds-color-theme-background-skeleton-normal);
     --mdc-skeleton-height: 100%;
     --mdc-skeleton-width: 100%;
+    position: relative;
     display: block;
     overflow: hidden;
     background-color: var(--mdc-skeleton-background-color);
@@ -12,32 +14,38 @@ const styles = css`
     width: var(--mdc-skeleton-width);
   }
 
-  :host([motion]) {
+  :host([motion])::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    pointer-events: none;
     background-image: linear-gradient(
       90deg,
       var(--mds-color-theme-background-skeleton-shimmer-0) 0%,
       var(--mds-color-theme-background-skeleton-shimmer-1) 50%,
       var(--mds-color-theme-background-skeleton-shimmer-2) 100%
     );
-    background-repeat: no-repeat;
-    background-size: 200% 100%;
     animation: skeleton-shimmer 2s linear infinite;
+    animation-delay: var(--mdc-skeleton-animation-delay);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    :host([motion]) {
+    :host([motion])::before {
       animation: none;
-      background-position: 50% 0;
+      transform: translateX(-25%);
     }
   }
 
   @keyframes skeleton-shimmer {
     0% {
-      background-position: 200% 0;
+      transform: translateX(-100%);
     }
 
     100% {
-      background-position: -200% 0;
+      transform: translateX(100%);
     }
   }
 

@@ -4,11 +4,13 @@ import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
-    height: 1.5rem;
-    gap: 0.25rem;
-    padding: 0 0.25rem 0 0.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid;
+    height: var(--mds-size-theme-md-24);
+    gap: var(--mds-spacing-theme-gap-2xs);
+    padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-2xs) var(--mds-spacing-theme-pad-none)
+      var(--mds-spacing-theme-pad-h-xs);
+    border-radius: var(--mds-radius-theme-xs);
+    border-style: solid;
+    border-width: var(--mds-border-theme-default);
     white-space: nowrap;
 
     --mdc-chip-color: var(--mds-color-theme-text-primary-normal);
@@ -34,9 +36,9 @@ const styles = css`
     cursor: auto;
   }
 
-  ::slotted(mdc-avatar[slot='prefix']){
-    width: 1.25rem;
-    height: 1.25rem;
+  ::slotted(mdc-avatar[slot='prefix']) {
+    width: var(--mds-size-theme-md-20);
+    height: var(--mds-size-theme-md-20);
   }
 `;
 

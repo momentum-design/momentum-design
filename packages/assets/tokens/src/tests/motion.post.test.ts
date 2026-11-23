@@ -1,4 +1,3 @@
-// AI-Assisted
 // @ts-nocheck
 const nodePath = require('path');
 const fs = require('fs');
@@ -102,4 +101,3 @@ describe('Motion tokens (post-build)', () => {
     checkNoEmpty(jsonMinimal);
   });
 });
-// End AI-Assisted

@@ -35,17 +35,21 @@ export const Variant1: StoryObj = {
 - Do not delete the Example story or rename it! It has to stay `Example`.
 - If you want to show other flows, variants etc., create new stories below the
   Example story for them (see code snippet above).
+- Do not manually add internal, derived, or read-only state to `argTypes`. When
+  the custom-elements manifest exposes a non-consumer field, use
+  [`hideControls`](../config/storybook/utils.ts) to remove it from Storybook.
+- Do not create a story solely to demonstrate RTL. Use Storybook's global
+  direction toggle instead. Add a direction-specific story only when the global
+  toggle cannot express the consumer scenario, such as mixed-direction content
+  or an intentional per-element `dir` override.
 
 ## Tagging and releasing of components
 
-To release a component / change its status, its advised to use the storybook
-parameter `badges` and the `title` attribute to move it into the right Story
-folder and tag it with the "stable" badge.
+To release a component or widget / change its status, use the `title` attribute
+to move it into the right Story folder.
 
-To release a component, the following 2 actions have to be done:
-
-- Change the `title` from `Work In Progress/*` to `Components/*`
-- Change the `badges` parameter from `wip` to `stable`
+To release it, change the `title` from `Work In Progress/*` to `Components/*` or
+`Widgets/*`, depending on its classification.
 
 Work in progress component:
 
@@ -55,9 +59,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-component',
   render,
-  parameters: {
-    badges: ['wip'],
-  },
   ...
 ```
 
@@ -69,8 +70,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-component',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   ...
 ```
+
+For a stable / released widget, use `Widgets/widget` as the title.

@@ -468,10 +468,12 @@
             }
           },
           "theme": {
-            "parent": "theme/stable/highcontrast/hc_light",
-            "type": "color",
-            "value": "{color.highcontrast.white.WindowTextColor}",
-            "description": ""
+            "normal": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            }
           },
           "input": {
             "normal": {
@@ -1052,7 +1054,7 @@
           "shimmer": {
             "0": {
               "type": "color",
-              "value": "{color.core.gray.80}",
+              "value": "{color.highcontrast.white.WindowColor}",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1066,12 +1068,12 @@
             },
             "1": {
               "type": "color",
-              "value": "{color.core.gray.80}",
+              "value": "{color.highcontrast.white.WindowColor}",
               "description": "Use for skeleton component"
             },
             "2": {
               "type": "color",
-              "value": "{color.core.gray.80}",
+              "value": "{color.highcontrast.white.WindowColor}",
               "$extensions": {
                 "studio.tokens": {
                   "modify": {
@@ -1122,6 +1124,12 @@
               "type": "color",
               "description": "Used for operation pop background. "
             }
+          },
+          "legacy": {
+            "parent": "theme/stable/highcontrast/hc_light",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowColor}",
+            "description": ""
           }
         },
         "input": {
@@ -1149,6 +1157,203 @@
               ]
             },
             "description": "Used for overlay background"
+          }
+        },
+        "app": {
+          "canvas": {
+            "parent": "theme/stable/highcontrast/hc_light",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowColor}",
+            "description": ""
+          }
+        },
+        "tertiary": {
+          "normal": {
+            "parent": "theme/stable/highcontrast/hc_light",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowColor}",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.05",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "glow": {
+          "accent": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              }
+            }
+          },
+          "large": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              }
+            }
+          },
+          "light": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "3": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "4": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "5": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0",
+                      "space": "lch"
+                    }
+                  }
+                },
+                "description": ""
+              }
+            }
+          },
+          "medium": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.25",
+                      "space": "lch"
+                    }
+                  }
+                },
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              }
+            }
+          },
+          "small": {
+            "stop": {
+              "0": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "0.75",
+                      "space": "lch"
+                    }
+                  }
+                },
+                "description": ""
+              },
+              "1": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "$extensions": {
+                  "studio.tokens": {
+                    "modify": {
+                      "type": "alpha",
+                      "value": "1",
+                      "space": "lch"
+                    }
+                  }
+                },
+                "description": ""
+              },
+              "2": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": ""
+              }
+            }
           }
         }
       },
@@ -1221,6 +1426,12 @@
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
               "value": "{color.highcontrast.white.HighlightColor}",
+              "description": ""
+            },
+            "disabled": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.ButtonFaceColor}",
               "description": ""
             }
           }
@@ -1372,14 +1583,6 @@
             "description": ""
           }
         },
-        "disabled": {
-          "normal": {
-            "parent": "theme/stable/highcontrast/hc_light",
-            "type": "color",
-            "value": "{color.highcontrast.white.WindowTextColor}",
-            "description": ""
-          }
-        },
         "share": {
           "selected": {
             "parent": "theme/stable/highcontrast/hc_light",
@@ -1390,7 +1593,7 @@
           "active": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": ""
           },
           "inactive": {
@@ -1606,6 +1809,52 @@
               "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
             }
           }
+        },
+        "header": {
+          "0": {
+            "parent": "theme/stable/highcontrast/hc_light",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowColor}",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.05",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/stable/highcontrast/hc_light",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowColor}",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "navigation": {
+          "0": {
+            "parent": "theme/stable/highcontrast/hc_light",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowColor}",
+            "description": ""
+          },
+          "1": {
+            "parent": "theme/stable/highcontrast/hc_light",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowColor}",
+            "description": ""
+          }
         }
       },
       "indicator": {
@@ -1644,40 +1893,6 @@
           "type": "color",
           "value": "{color.highcontrast.white.WindowTextColor}",
           "description": ""
-        }
-      },
-      "whiteboard": {
-        "stickyNote": {
-          "yellow": {
-            "parent": "theme/stable/highcontrast/hc_light",
-            "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
-          },
-          "red": {
-            "parent": "theme/stable/highcontrast/hc_light",
-            "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
-          },
-          "purple": {
-            "parent": "theme/stable/highcontrast/hc_light",
-            "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
-          },
-          "cyan": {
-            "parent": "theme/stable/highcontrast/hc_light",
-            "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
-          },
-          "mint": {
-            "parent": "theme/stable/highcontrast/hc_light",
-            "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
-          }
         }
       },
       "scrollbar": {
@@ -1752,13 +1967,13 @@
             "0": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             },
             "1": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             }
           },
@@ -1766,13 +1981,13 @@
             "0": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             },
             "1": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             }
           }
@@ -1782,13 +1997,13 @@
             "0": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             },
             "1": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             }
           },
@@ -1796,13 +2011,13 @@
             "0": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             },
             "1": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             }
           },
@@ -1810,13 +2025,13 @@
             "0": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             },
             "1": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             }
           },
@@ -1824,13 +2039,13 @@
             "0": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             },
             "1": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             }
           },
@@ -1838,13 +2053,13 @@
             "0": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             },
             "1": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "description": ""
             }
           }
@@ -1853,13 +2068,13 @@
           "0": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": ""
           },
           "1": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": ""
           }
         },
@@ -1867,20 +2082,20 @@
           "0": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": ""
           },
           "1": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": ""
           }
         },
         "default": {
           "parent": "theme/stable/highcontrast/hc_light",
           "type": "color",
-          "value": "{color.highcontrast.black.WindowTextColor}",
+          "value": "{color.highcontrast.white.WindowTextColor}",
           "description": ""
         }
       },
@@ -2229,6 +2444,12 @@
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
               "value": "{color.highcontrast.white.GrayTextColor}"
+            },
+            "pressed": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "description": ""
             }
           },
           "promotion": {
@@ -2288,7 +2509,7 @@
             }
           },
           "secondary": {
-            "primary": {
+            "normal": {
               "type": "color",
               "value": "{color.highcontrast.white.WindowTextColor}"
             },
@@ -2529,6 +2750,206 @@
               "value": "{color.highcontrast.white.ButtonFaceColor}"
             }
           }
+        },
+        "whiteboard": {
+          "stickyNote": {
+            "yellow": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "red": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "purple": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "cyan": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "mint": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            }
+          },
+          "pen": {
+            "black": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "red": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "purple": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "blue": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "green": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "yellow": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "white": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            }
+          }
+        },
+        "caption": {
+          "background": {
+            "dark": {
+              "green": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": "HEX: #0E2B20\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": "HEX: #0A274A\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": "HEX: #3B1840\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": "HEX: #36220C\nUsed for closed-caption component"
+              }
+            },
+            "light": {
+              "green": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": "HEX: #CEF5EB\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": "HEX: #DBF0FF\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": "HEX: #FCF2FC\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}",
+                "description": "HEX: #FFEBC2\nUsed for closed-caption component"
+              }
+            }
+          },
+          "text": {
+            "dark": {
+              "normal": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #000000 95%\nUsed for closed-caption component"
+              },
+              "green": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #3CC29A\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #64B4FA\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #F294F1\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #F2990A\nUsed for closed-caption component"
+              }
+            },
+            "light": {
+              "normal": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #FFFFFF 95%\nUsed for closed-caption component"
+              },
+              "green": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #185E46\nUsed for closed-caption component"
+              },
+              "blue": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #0353A8\nUsed for closed-caption component"
+              },
+              "purple": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #932099\nUsed for closed-caption component"
+              },
+              "yellow": {
+                "parent": "theme/stable/highcontrast/hc_light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}",
+                "description": "HEX: #7D4705\nUsed for closed-caption component"
+              }
+            }
+          }
         }
       },
       "gradientdivider": {
@@ -2651,6 +3072,406 @@
             "type": "color",
             "description": "Used for focus ring effect"
           }
+        }
+      },
+      "ai-hint": {
+        "primary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "description": ""
+            }
+          }
+        },
+        "secondary": {
+          "gradient": {
+            "0": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": ""
+            },
+            "1": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "2": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "3": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "description": ""
+            },
+            "4": {
+              "parent": "theme/stable/highcontrast/hc_light",
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": ""
+            }
+          }
+        }
+      }
+    }
+  },
+  "spacing": {
+    "theme": {
+      "pad-none": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "Flush padding on both axes."
+      },
+      "pad-v-2xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest v padding."
+      },
+      "pad-v-xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Compact v padding. Default control v pad."
+      },
+      "pad-v-sm": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard v padding."
+      },
+      "pad-v-md": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Roomy v padding. Cards, dialogs, headers."
+      },
+      "pad-v-lg": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy and large v padding."
+      },
+      "pad-v-xl": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large v padding."
+      },
+      "pad-v-2xl": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large v padding."
+      },
+      "pad-h-2xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest h padding."
+      },
+      "pad-h-xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Compact h padding. Chips, dense controls."
+      },
+      "pad-h-sm": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard h padding. Default control h pad."
+      },
+      "pad-h-md": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Roomy h padding. Buttons, sidenav, toast."
+      },
+      "pad-h-lg": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy and large h padding."
+      },
+      "pad-h-xl": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Large h padding."
+      },
+      "pad-h-2xl": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large h padding."
+      },
+      "gap-none": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "Collapsed layout space."
+      },
+      "gap-2xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Smallest sibling gap. Chips, icon clusters, compact controls."
+      },
+      "gap-xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Tight sibling gap. Icon-to-label, most control internals."
+      },
+      "gap-sm": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "Standard sibling gap. Lists, tabs, cards."
+      },
+      "gap-md": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Wide layout gap. Roomy stacks. Use pad-v-md / pad-h-md when 16px is padding."
+      },
+      "gap-lg": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.20}",
+        "description": "Between roomy stacks and section separation."
+      },
+      "gap-xl": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.24}",
+        "description": "Section or block separation."
+      },
+      "gap-2xl": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.32}",
+        "description": "Extra-large layout space."
+      }
+    }
+  },
+  "border": {
+    "theme": {
+      "none": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "No stroke. A side or state with no border — accordion, table, grabber."
+      },
+      "default": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.1}",
+        "description": "Default stroke weight — chips, banner, buttongroup, inputs."
+      },
+      "emphasis": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.2}",
+        "description": "Emphasis stroke weight — selected filterchip, heavier container chrome."
+      }
+    }
+  },
+  "radius": {
+    "theme": {
+      "none": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.0}",
+        "description": "No rounding; flat edge in compound shapes (accordion, combobox, nav joins)."
+      },
+      "2xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.2}",
+        "description": "Barely softened corners."
+      },
+      "xs": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.4}",
+        "description": "Compact rounding — chips, icons, inputchip, tab partials."
+      },
+      "sm": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.8}",
+        "description": "Default surface rounding — card, input, dialog, listitem, toast."
+      },
+      "md": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.12}",
+        "description": "More prominent rounding — statictoggle, softer bounded controls."
+      },
+      "lg": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.16}",
+        "description": "Larger corner radius above md, short of a pill."
+      },
+      "full": {
+        "parent": "theme/stable/highcontrast/hc_light",
+        "type": "dimension",
+        "value": "{dimension.full}",
+        "description": "True circle — avatar, radio, slider thumb, presence."
+      }
+    }
+  },
+  "size": {
+    "theme": {
+      "sm": {
+        "4": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.4}",
+          "description": "Micro fixed size — nav notch, indicator. Was size/xxs."
+        },
+        "8": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.8}",
+          "description": "Smallest icon slot — bullet, compact glyph. Was size/xs."
+        },
+        "12": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.12}",
+          "description": "Compact icon slot — badge, nav icon. Was size/sm."
+        }
+      },
+      "md": {
+        "16": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.16}",
+          "description": "Standard icon slot — avatar, badge, popover, radio. Was size/md and size/lg."
+        },
+        "20": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.20}",
+          "description": "Compact inline row — divider, chip icon, timepicker. Was size/xl."
+        },
+        "24": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.24}",
+          "description": "Compact control height — chip, alertchip, inputchip. Was size/2xl."
+        },
+        "28": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.28}",
+          "description": "Between compact and standard control — buttongroup, calendar, stepper. Was size/3xl."
+        },
+        "32": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.32}",
+          "description": "Default control height — input, select, tab, combobox. Was size/4xl."
+        },
+        "36": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.36}",
+          "description": "Table header, sidenav tab, and avatar placeholder."
+        }
+      },
+      "lg": {
+        "40": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.40}",
+          "description": "Large control / toolbar row — nav, datepicker trigger. Was size/5xl."
+        },
+        "48": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.48}",
+          "description": "Avatar, spinner, toggle track, and table body."
+        },
+        "52": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.52}",
+          "description": "Wide control minimum — input min-width. Was size/6xl."
+        },
+        "64": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.64}",
+          "description": "Chrome band — app header, searchfield, avatar lg. Was size/7xl."
+        }
+      },
+      "xl": {
+        "72": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.72}",
+          "description": "Large avatar tier. Was size/8xl."
+        },
+        "88": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.88}",
+          "description": "Extra-large avatar tier. Was size/9xl."
+        },
+        "100": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.100}",
+          "description": "Content min-height — textarea. Was size/10xl."
+        },
+        "124": {
+          "parent": "theme/stable/highcontrast/hc_light",
+          "type": "dimension",
+          "value": "{dimension.124}",
+          "description": "Max avatar / hero. Was size/11xl."
         }
       }
     }

@@ -872,7 +872,6 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(input).toHaveValue('Brazil');
       });
 
-      // AI-Assisted
       await test.step('should allow selecting the same option again after editing input in controlled mode (parent-controlled value)', async () => {
         const { input, dropdown, combobox } = await setup({
           componentsPage,
@@ -922,7 +921,6 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(input).toHaveValue('Austria');
         await expect(dropdown).not.toBeVisible();
       });
-      // End AI-Assisted
     });
 
     /**

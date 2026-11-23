@@ -11,12 +11,14 @@ const darkIndigoTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/d
 const darkJadeTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/dark-jade-stable.css"));
 const darkLavenderTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/dark-lavender-stable.css"));
 const darkRoseTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/dark-rose-stable.css"));
+const darkFluidTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/dark-fluid.css"));
 const lightTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-stable.css"));
 const lightBronzeTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-bronze-stable.css"));
 const lightIndigoTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-indigo-stable.css"));
 const lightJadeTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-jade-stable.css"));
 const lightLavenderTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-lavender-stable.css"));
 const lightRoseTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-rose-stable.css"));
+const lightFluidTheme = glob.sync(path.posix.join(distCSSFolder, "/theme/webex/light-fluid.css"));
 
 const effects = glob.sync(path.posix.join(distCSSFolder, "/effect/*.css"));
 const elevation = glob.sync(path.posix.join(distCSSFolder, "/elevation/*.css"));
@@ -29,12 +31,14 @@ const tokens = [
   ...darkJadeTheme,
   ...darkLavenderTheme,
   ...darkRoseTheme,
+  ...darkFluidTheme,
   ...lightTheme,
   ...lightBronzeTheme,
   ...lightIndigoTheme,
   ...lightJadeTheme,
   ...lightLavenderTheme,
   ...lightRoseTheme,
+  ...lightFluidTheme,
   ...typography,
   ...effects,
   ...elevation,

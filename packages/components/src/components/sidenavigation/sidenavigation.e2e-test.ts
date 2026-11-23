@@ -539,7 +539,6 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
   });
 });
 
-// AI-Assisted
 // Setup function to mount dropdown sidenavigation and return locators
 const setupDropdown = async (componentsPage: ComponentsPage, variant: string, expanded = true) => {
   const html = `
@@ -868,4 +867,3 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
     });
   });
 });
-// End AI-Assisted

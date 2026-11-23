@@ -3,15 +3,10 @@ const { createDocumentUrlSubstitutions } = require('./utils');
 /* eslint-disable global-require */
 module.exports = () => ({
   codeConnect: {
-    parser: 'react',
-    include: ['src/components/**/*.react.figma.tsx'],
+    include: ['src/components/**/*.react.figma.ts'],
     exclude: [],
-    importPaths: {
-      'dist/react/*': '@momentum-design/components/dist/react',
-    },
-    paths: {
-      '@momentum-design/components/dist/react': ['dist/react/*'],
-    },
+    label: 'React',
+    language: 'jsx',
     documentUrlSubstitutions: {
       ...createDocumentUrlSubstitutions(),
     },

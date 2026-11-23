@@ -1,4 +1,3 @@
-// AI-Assisted
 import type { TypedCustomEvent } from '../../utils/types';
 
 import type Verticaltablist from './verticaltablist.component';
@@ -10,4 +9,3 @@ interface Events {
 }
 
 export type { Events, VerticaltablistChangeEvent };
-// End AI-Assisted

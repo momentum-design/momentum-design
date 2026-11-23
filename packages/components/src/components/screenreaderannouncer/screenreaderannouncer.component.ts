@@ -10,14 +10,12 @@ import { DEFAULTS } from './screenreaderannouncer.constants';
 import styles from './screenreaderannouncer.styles';
 import { AriaLive } from './screenreaderannouncer.types';
 
-// AI-Assisted
 /**
  * Module-scope refcount: tracks how many live ScreenreaderAnnouncer instances
  * reference each identity. When the count drops to zero the DOM node created
  * by createAnnouncementAriaLiveRegion() is removed.
  */
 const identityRefCount = new Map<string, number>();
-// End AI-Assisted
 
 /**
  * @tagname mdc-screenreaderannouncer
@@ -254,7 +252,6 @@ class ScreenreaderAnnouncer extends Component {
     }, this.debounceTime);
   }
 
-  // AI-Assisted
   /**
    * Increments the refcount for the current identity.
    */
@@ -283,7 +280,6 @@ class ScreenreaderAnnouncer extends Component {
     }
     this.hasIdentityRef = false;
   }
-  // End AI-Assisted
 
   override connectedCallback(): void {
     super.connectedCallback();

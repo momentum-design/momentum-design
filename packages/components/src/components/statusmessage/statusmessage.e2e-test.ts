@@ -1,4 +1,3 @@
-// AI-Assisted
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 
@@ -114,4 +113,3 @@ test('mdc-statusmessage', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('statusmessage-default');
   });
 });
-// End AI-Assisted

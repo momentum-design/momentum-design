@@ -1,4 +1,3 @@
-// AI-Assisted
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
@@ -89,5 +88,3 @@ export const WithoutWrap: StoryObj = {
     shouldFocusTrapWrap: false,
   },
 };
-
-// End AI-Assisted

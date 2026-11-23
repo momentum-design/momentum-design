@@ -12,7 +12,7 @@ import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin'
 import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { CharacterLimitMixin } from '../../utils/mixins/CharacterLimitMixin';
 
-import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
+import type { AutoCapitalizeType, AutoCompleteType, InputModeType, InputType } from './input.types';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import styles from './input.styles';
 /**
@@ -127,6 +127,11 @@ class Input
   @property({ type: String }) autocomplete: AutoCompleteType = AUTO_COMPLETE.OFF;
 
   /**
+   * Hints at the type of data that might be entered by the user and the corresponding virtual keyboard.
+   */
+  @property({ type: String, reflect: true }) inputmode?: InputModeType;
+
+  /**
    * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).
    */
   @property({ type: String }) dirname?: string;
@@ -227,7 +232,7 @@ class Input
     }
   }
 
-  private setInputValidity() {
+  protected setInputValidity() {
     this.inputElement.setCustomValidity('');
     if (!this.inputElement.validity.valid && this.validationMessage) {
       this.inputElement.setCustomValidity(this.validationMessage);
@@ -269,6 +274,7 @@ class Input
    * @internal
    */
   protected onInput(event: Event) {
+    if (this.preventSoftDisabledChange(event, this.value)) return;
     this.updateValue();
     this.setInputValidity();
     this.checkValidity();
@@ -293,6 +299,7 @@ class Input
    * @internal
    */
   protected onChange(event: Event) {
+    if (this.preventSoftDisabledChange(event, this.value)) return;
     this.updateValue();
     this.setInputValidity();
     const EventConstructor = event.constructor as typeof Event;
@@ -305,6 +312,10 @@ class Input
    * @param event - Keyboard event
    */
   protected handleKeyDown(event: KeyboardEvent) {
+    if (this.softDisabled) {
+      if (this.getActionForKeyEvent(event) === ACTIONS.ENTER) event.preventDefault();
+      return;
+    }
     if (this.getActionForKeyEvent(event) === ACTIONS.ENTER && this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
       this.form?.requestSubmit();
     }
@@ -361,6 +372,7 @@ class Input
    * Clears the input field.
    */
   protected clearInputText() {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     this.value = '';
     // focus the input field after clearing the text
     this.inputElement?.focus();
@@ -385,7 +397,8 @@ class Input
         size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
         aria-label="${this.clearAriaLabel}"
         @click=${this.clearInputText}
-        ?disabled=${this.disabled || this.readonly || !showBtn}
+        ?disabled=${this.disabled || this.softDisabled || this.readonly || !showBtn}
+        ?soft-disabled=${this.softDisabled}
       ></mdc-button>
     `;
   }
@@ -401,8 +414,10 @@ class Input
       .value="${live(this.value)}"
       ?disabled="${this.disabled}"
       ?readonly="${this.readonly}"
+      aria-disabled="${this.disabled || this.softDisabled}"
       ?required="${this.required}"
       type="${type}"
+      aria-labelledby="${ifDefined(this.label ? DEFAULTS.HEADING_ID : undefined)}"
       aria-describedby="${ifDefined(
         this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : (this.dataAriaDescribedby ?? ''),
       )}"
@@ -412,10 +427,12 @@ class Input
       maxlength=${ifDefined(this.maxlength)}
       autocapitalize=${this.autocapitalize}
       autocomplete=${this.autocomplete}
+      inputmode=${ifDefined(this.inputmode)}
       dirname=${ifDefined(this.dirname)}
       pattern=${ifDefined(this.pattern)}
       list=${ifDefined(this.list)}
       size=${ifDefined(this.size)}
+      @beforeinput=${this.preventSoftDisabledInput}
       @input=${this.onInput}
       @change=${this.onChange}
       @keydown=${this.handleKeyDown}

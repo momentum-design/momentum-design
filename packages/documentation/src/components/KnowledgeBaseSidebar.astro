@@ -1,0 +1,130 @@
+---
+import manifest from '../generated/knowledge-base/manifest.json';
+
+type Props = {
+  currentPage: string;
+  section: string;
+};
+
+const { currentPage, section } = Astro.props as Props;
+const currentPageMatch = currentPage.endsWith('/') ? currentPage.slice(1, -1) : currentPage.slice(1);
+const currentSection = manifest.sections.find((item) => item.slug === section);
+---
+
+{currentSection && (
+  <nav aria-label={`${currentSection.title} pages`}>
+    <ul class="nav-groups">
+      <li>
+        <div class="nav-group">
+          <mdc-text class="nav-heading" tagname="h3" type="body-midsize-bold">{currentSection.title}</mdc-text>
+          <ul>
+            {currentSection.pages.map((routeIndex) => {
+              const page = manifest.routes[routeIndex];
+              const url = `${Astro.site?.pathname}${page.path}`;
+              const isCurrent = currentPageMatch === page.path;
+
+              return (
+                <li class="nav-link">
+                  <a href={url} aria-current={isCurrent ? 'page' : false}>
+                    <mdc-text tagname="span" type={isCurrent ? 'body-large-bold' : 'body-large-medium'}>{page.title}</mdc-text>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+)}
+
+<style>
+  nav {
+    width: 100%;
+    align-self: start;
+  }
+
+  .nav-groups {
+    position: sticky;
+    top: 0;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    overflow-x: visible;
+    overflow-y: auto;
+    max-height: calc(100vh - 4rem);
+  }
+
+  .nav-group {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+  }
+
+  .nav-group .nav-heading {
+    margin: 0 0 0.75rem;
+    padding: 0;
+    line-height: 1.1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mds-color-theme-text-secondary-normal, rgba(255, 255, 255, 0.7));
+  }
+
+  /* mdc-text sets text-transform from its type token (none); re-assert uppercase above it. */
+  mdc-text.nav-heading {
+    text-transform: uppercase;
+
+    &::part(text) {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .nav-group ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .nav-link a {
+    min-height: 2.75rem;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0 1rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--mds-color-theme-text-primary-normal, inherit);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    border-radius: 0.625rem;
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+
+  .nav-link a:hover,
+  .nav-link a:focus-visible {
+    background-color: var(--theme-bg-hover);
+    outline: none;
+  }
+
+  .nav-link a[aria-current='page'] {
+    color: var(--theme-text-accent);
+    background-color: var(--mds-color-theme-button-secondary-active-normal);
+    font-weight: 600;
+  }
+
+  @media (max-width: 800px) {
+    .nav-groups {
+      position: static;
+      margin: 0;
+      max-height: none;
+      overflow: visible;
+    }
+  }
+</style>
+
+<style is:global>
+  :root.theme-dark nav[aria-label$='pages'] .nav-link a[aria-current='page'] {
+    color: hsla(var(--color-base-white), 100%, 1);
+  }
+</style>

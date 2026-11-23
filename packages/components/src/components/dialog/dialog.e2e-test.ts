@@ -654,7 +654,6 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(closeButton).toBeFocused();
       });
 
-      // Start AI-Assisted
       await test.step('focus should pass correctly between different interactive components', async () => {
         const dialogWithFormElements = {
           id: 'dialog',
@@ -739,9 +738,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         }
         /* eslint-enable no-await-in-loop */
       });
-      // End AI-Assisted
 
-      // AI-Assisted
       await test.step('focus trap should include searchfield input when dialog contains a searchfield with delegatesFocus', async () => {
         /**
          * mdc-searchfield has a shadow root with delegatesFocus: true. Its internal container
@@ -805,7 +802,6 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.actionability.pressShiftTab();
         await expect(closeButton).toBeFocused();
       });
-      // End AI-Assisted
     });
 
     await test.step('spatial navigation', async () => {

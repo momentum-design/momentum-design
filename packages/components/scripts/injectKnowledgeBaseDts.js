@@ -1,4 +1,4 @@
-// AI-Assisted: Inject knowledge-base overviews into generated declaration files.
+// Inject knowledge-base overviews into generated declaration files.
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -211,4 +211,3 @@ function run() {
 }
 
 run();
-// End AI-Assisted

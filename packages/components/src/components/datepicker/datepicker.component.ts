@@ -2,6 +2,7 @@ import type { CSSResult, PropertyValueMap } from 'lit';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
 
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
@@ -193,6 +194,12 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   @property({ type: String, attribute: 'locale-next-month-label' })
   localeNextMonthLabel = '';
 
+  /**
+   * Localized announcement made after the range start date is selected.
+   */
+  @property({ type: String, attribute: 'locale-range-start-selected-label' })
+  localeRangeStartSelectedLabel = '';
+
   /** @internal */
   @query('#month-spinbutton') private monthInput!: HTMLInputElement;
 
@@ -201,6 +208,9 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   /** @internal */
   @query('#year-spinbutton') private yearInput!: HTMLInputElement;
+
+  /** @internal */
+  @query('mdc-calendar') private calendar?: HTMLElementTagNameMap['mdc-calendar'];
 
   /** @internal */
   @state() private displayPopover = false;
@@ -250,8 +260,21 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   protected override willUpdate(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.willUpdate(changedProperties);
 
+    if (
+      changedProperties.has('disabled') ||
+      changedProperties.has('softDisabled') ||
+      changedProperties.has('readonly')
+    ) {
+      if (this.disabled || this.softDisabled || this.readonly) {
+        this.closePopover();
+        if (this.pendingDigitTimeout) clearTimeout(this.pendingDigitTimeout);
+        this.pendingDigits = '';
+        this.parseValueToInternal();
+      }
+    }
+
     if (changedProperties.has('value') && !this.displayPopover) {
-      this.parseValueToInternal();
+      if (this.value !== this.internalToValue()) this.parseValueToInternal();
       this.syncFormValue();
     } else if (changedProperties.has('endValue') && !this.displayPopover) {
       this.syncFormValue();
@@ -275,7 +298,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     return buildISODate(this.internalMonth, this.internalDay, this.internalYear);
   }
 
-  // AI-Assisted: keep input spinbuttons aligned with valid min/max date boundaries.
+  // Keep input spinbuttons aligned with valid min/max date boundaries.
   private getParsedMin(): Date | undefined {
     return this.min ? (parseISO(this.min) ?? undefined) : undefined;
   }
@@ -349,7 +372,6 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (currentValue <= range.min) return range.isMinConstrained ? range.min : range.max;
     return currentValue - 1;
   }
-  // End AI-Assisted
 
   private syncFormValue(): void {
     const val = this.value || this.internalToValue();
@@ -366,6 +388,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   private commitValue(): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const newVal = this.internalToValue();
     if (newVal) {
       const clampedVal = this.clampValueToRange(newVal);
@@ -373,6 +396,10 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       if (clampedVal === this.value) return;
 
       this.value = clampedVal;
+      this.syncFormValue();
+      this.notifyValueChange();
+    } else if (this.value) {
+      this.value = '';
       this.syncFormValue();
       this.notifyValueChange();
     }
@@ -416,20 +443,26 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   // -- Popover handling --
 
   private handleCalendarButtonClick(): void {
-    if (this.disabled || this.readonly) return;
-    if (!this.displayPopover) {
-      this.flushPendingInput();
+    if (this.disabled || this.softDisabled || this.readonly) return;
+    if (this.displayPopover) {
+      this.closePopover();
+      return;
     }
-    this.displayPopover = !this.displayPopover;
+    this.flushPendingInput();
+    this.displayPopover = true;
   }
 
   private handleSelectTriggerClick(): void {
-    if (this.disabled || this.readonly) return;
-    this.displayPopover = !this.displayPopover;
+    if (this.disabled || this.softDisabled || this.readonly) return;
+    if (this.displayPopover) {
+      this.closePopover();
+      return;
+    }
+    this.displayPopover = true;
   }
 
   private handleSelectKeydown(event: KeyboardEvent): void {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.softDisabled || this.readonly) return;
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE || event.key === KEYS.ARROW_DOWN) {
       event.preventDefault();
       this.displayPopover = true;
@@ -448,7 +481,16 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     }, 0);
   }
 
+  private closePopover(focusTrigger = false): void {
+    if (this.effectiveSelectionMode === SELECTION_MODE.RANGE) {
+      this.calendar?.cancelRangeSelection(this.value, this.endValue);
+    }
+    this.displayPopover = false;
+    if (focusTrigger) this.focusBackToTrigger();
+  }
+
   private handleDateSelected(event: CustomEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) return;
     const { detail } = event;
     const mode = this.effectiveSelectionMode;
 
@@ -471,8 +513,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
     const rangeComplete = mode === SELECTION_MODE.RANGE && this.value && this.endValue;
     if (mode !== SELECTION_MODE.RANGE || rangeComplete) {
-      this.displayPopover = false;
-      this.focusBackToTrigger();
+      this.closePopover(true);
     }
   }
 
@@ -504,9 +545,9 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     }
   }
 
-  private setFieldValue(field: 'month' | 'day' | 'year', val: number): void {
+  private setFieldValue(field: 'month' | 'day' | 'year', val: number | ''): void {
     const maxDigits = field === 'year' ? 4 : 2;
-    const padded = String(val).padStart(maxDigits, '0');
+    const padded = val === '' ? '' : String(val).padStart(maxDigits, '0');
     switch (field) {
       case 'month':
         this.internalMonth = padded;
@@ -524,7 +565,11 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   private handleSpinbuttonKeydown(event: KeyboardEvent, field: 'month' | 'day' | 'year'): void {
-    if (this.readonly) return;
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    if (this.disabled || this.softDisabled || this.readonly) {
+      if (event.key === KEYS.ARROW_UP || event.key === KEYS.ARROW_DOWN) event.preventDefault();
+      return;
+    }
     const range = this.getFieldRange(field);
     const currentVal = parseInt(this.getFieldValue(field), 10) || 0;
 
@@ -556,15 +601,40 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       case KEYS.TAB:
         break;
       default: {
-        if (/^\d$/.test(event.key)) {
-          event.preventDefault();
-          this.handleDigitInput(event.key, field, range.min, range.max);
-        } else {
+        if (event.key.length === 1 && !/^\d$/.test(event.key)) {
           event.preventDefault();
         }
         break;
       }
     }
+  }
+
+  private handleSpinbuttonInput(event: InputEvent, field: 'month' | 'day' | 'year'): void {
+    if (this.preventSoftDisabledChange(event, this.getFieldValue(field))) return;
+    event.stopPropagation();
+    if (this.disabled || this.readonly || event.isComposing) return;
+
+    const input = event.target as HTMLInputElement;
+    const range = this.getFieldRange(field);
+    if (event.data && /^\d+$/.test(event.data)) {
+      if (event.inputType === 'insertReplacementText') this.pendingDigits = '';
+      this.handleDigitInput(event.data, field, range.min, range.max);
+    } else {
+      if (this.pendingDigitTimeout) clearTimeout(this.pendingDigitTimeout);
+      this.pendingDigits = '';
+      if (/^\d*$/.test(input.value)) {
+        const digits = input.value.slice(0, field === 'year' ? 4 : 2);
+        if (digits && !event.inputType?.startsWith('delete')) {
+          this.handleDigitInput(digits, field, range.min, range.max);
+        } else {
+          const value = digits ? Math.min(range.max, Math.max(range.min, parseInt(digits, 10))) : '';
+          this.setFieldValue(field, value);
+          this.commitValue();
+        }
+      }
+    }
+    // Native input can change the DOM even when the reactive value stays the same.
+    this.requestUpdate();
   }
 
   private handleDigitInput(digit: string, field: 'month' | 'day' | 'year', minVal: number, maxVal: number): void {
@@ -737,14 +807,20 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         aria-valuemin="${range.min}"
         aria-valuemax="${range.max}"
         aria-valuenow="${ifDefined(value ? parseInt(value, 10) : undefined)}"
+        aria-valuetext="${ifDefined(value ? String(parseInt(value, 10)) : undefined)}"
         aria-description="${this.localeSpinbuttonDescription}"
-        .value="${value}"
+        .value="${live(value)}"
+        inputmode="numeric"
         placeholder="${placeholderMap[field]}"
         autocomplete="off"
         ?disabled="${this.disabled}"
         ?readonly="${this.readonly}"
+        aria-disabled="${this.disabled || this.softDisabled}"
+        @beforeinput="${this.preventSoftDisabledInput}"
         tabindex="${this.disabled ? '-1' : '0'}"
         @keydown="${(e: KeyboardEvent) => this.handleSpinbuttonKeydown(e, field)}"
+        @input="${(e: InputEvent) => this.handleSpinbuttonInput(e, field)}"
+        @change="${(e: Event) => e.stopPropagation()}"
         @focus="${this.handleSpinbuttonFocus}"
       />
     `;
@@ -777,8 +853,10 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           prefix-icon="${CALENDAR_ICON}"
           aria-label="${this.localeCalendarLabel}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+          aria-disabled="${this.disabled || this.softDisabled}"
           aria-haspopup="dialog"
           ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
           size="20"
           @click="${this.handleCalendarButtonClick}"
         ></mdc-button>
@@ -801,6 +879,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         class="mdc-focus-ring"
         role="combobox"
         aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+        aria-disabled="${this.disabled || this.softDisabled}"
         aria-haspopup="dialog"
         aria-label="${this.localeCalendarLabel}"
         tabindex="${this.disabled ? '-1' : '0'}"
@@ -837,13 +916,11 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         @shown="${() => this.focusCalendarGrid()}"
         @closebyescape="${(event: Event) => {
           if (event.target === event.currentTarget) {
-            this.displayPopover = false;
-            this.focusBackToTrigger();
+            this.closePopover(true);
           }
         }}"
         @closebyoutsideclick="${() => {
-          this.displayPopover = false;
-          this.focusBackToTrigger();
+          this.closePopover(true);
         }}"
         exportparts="popover-content"
       >
@@ -857,6 +934,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           locale-today-label="${this.localeTodayLabel}"
           locale-prev-month-label="${this.localePrevMonthLabel}"
           locale-next-month-label="${this.localeNextMonthLabel}"
+          locale-range-start-selected-label="${this.localeRangeStartSelectedLabel}"
           @date-selected="${this.handleDateSelected}"
         ></mdc-calendar>
       </mdc-popover>

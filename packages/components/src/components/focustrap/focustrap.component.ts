@@ -1,4 +1,3 @@
-// AI-Assisted
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
@@ -116,4 +115,3 @@ class FocusTrap extends FocusTrapMixin(Component) {
 }
 
 export default FocusTrap;
-// End AI-Assisted

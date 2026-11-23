@@ -200,7 +200,7 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         await expect(componentsPage.page.getByText('Test Announcement 4')).not.toBeVisible();
       });
 
-      // AI-Assisted: add direct coverage for public announce(options) API
+      // Add direct coverage for public announce(options) API
       await test.step('make an announcement using public announce function', async () => {
         const { screenReaderAnnouncer } = await setup({ componentsPage });
 
@@ -227,7 +227,6 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         await expect(ariaLiveRegion.locator('div').first()).toHaveAttribute('aria-live', 'assertive');
         await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
       });
-      // End AI-Assisted
 
       await test.step('make multiple announcements', async () => {
         const { screenReaderAnnouncer } = await setup({ componentsPage });
@@ -307,7 +306,6 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
   });
 });
 
-// AI-Assisted
 test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPage }) => {
   await test.step('removes live-region div from document.body when last announcer disconnects', async () => {
     await componentsPage.mount({
@@ -404,4 +402,3 @@ test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPag
     expect(existsAfterAll).toBe(false);
   });
 });
-// End AI-Assisted

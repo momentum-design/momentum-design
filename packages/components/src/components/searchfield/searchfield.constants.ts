@@ -15,7 +15,5 @@ const DEFAULTS = {
 
 export { TAG_NAME, DEFAULTS };
 
-// AI-Assisted
 export const SUPPORTED_CHIP_TAGS = [CHIP_TAG, INPUT_CHIP_TAG, ALERT_CHIP_TAG];
 export const CHIP_SELECTOR = SUPPORTED_CHIP_TAGS.join(', ');
-// End AI-Assisted

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import '../brandvisualprovider';
 import { html } from 'lit';
 import brandVisualsManifest from '@momentum-design/brand-visuals/dist/manifest.json';
 import { action } from 'storybook/actions';
@@ -61,6 +62,23 @@ export const BrandVisualSvg: StoryObj = {
   args: {
     name: 'webex-app-icon-color-container',
     'alt-text': 'Webex app icon color logo',
+    style: 'width: 10rem;',
+  },
+};
+
+/**
+ * Wrapping the brandvisual in an `mdc-brandvisualprovider` with a `custom-brand-visuals` set
+ * resolves the asset over HTTP instead of through a dynamic import, so consumers can serve the
+ * brand visual set themselves rather than bundling it.
+ */
+export const BrandVisualFromProviderUrl: StoryObj = {
+  render: (args: Args) =>
+    html`<mdc-brandvisualprovider brand-visual-set="custom-brand-visuals" url="./brandvisuals/svg" file-extension="svg">
+      ${render(args)}
+    </mdc-brandvisualprovider>`,
+  args: {
+    name: 'cisco-logo-light-color',
+    'alt-text': 'Cisco logo',
     style: 'width: 10rem;',
   },
 };

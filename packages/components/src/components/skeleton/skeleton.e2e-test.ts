@@ -101,9 +101,30 @@ test('mdc-skeleton reduced motion', async ({ componentsPage }) => {
   await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
   const skeleton = await setup({ componentsPage, motion: true });
 
-  await expect(skeleton).toHaveCSS('animation-name', 'skeleton-shimmer');
+  await expect.poll(() => skeleton.evaluate(element => element.getAnimations({ subtree: true }).length)).toBe(1);
 
   await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(skeleton).toHaveCSS('animation-name', 'none');
+  await expect.poll(() => skeleton.evaluate(element => element.getAnimations({ subtree: true }).length)).toBe(0);
   await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
+  await expect.poll(() => skeleton.evaluate(element => element.getAnimations({ subtree: true }).length)).toBe(1);
+});
+
+test('should start partway through the shimmer cycle when a negative animation delay is provided', async ({
+  componentsPage,
+}) => {
+  await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
+  const skeleton = await setup({ componentsPage });
+
+  const elapsedTime = await skeleton.evaluate(
+    element =>
+      new Promise<number>(resolve => {
+        element.addEventListener('animationstart', event => resolve((event as AnimationEvent).elapsedTime), {
+          once: true,
+        });
+        (element as HTMLElement).style.setProperty('--mdc-skeleton-animation-delay', '-750ms');
+        element.setAttribute('motion', '');
+      }),
+  );
+
+  expect(elapsedTime).toBe(0.75);
 });

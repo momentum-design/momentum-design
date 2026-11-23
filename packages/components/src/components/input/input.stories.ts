@@ -12,7 +12,7 @@ import { disableControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Input from './input.component';
-import { AUTO_CAPITALIZE } from './input.constants';
+import { AUTO_CAPITALIZE, INPUT_MODE } from './input.constants';
 
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
@@ -51,6 +51,7 @@ const render = (args: Args) => {
     autocapitalize="${args.autocapitalize}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     autocomplete="${ifDefined(args.autocomplete)}"
+    inputmode="${ifDefined(args.inputmode)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
@@ -130,6 +131,10 @@ const meta: Meta = {
     },
     autocomplete: {
       control: 'text',
+    },
+    inputmode: {
+      control: 'select',
+      options: Object.values(INPUT_MODE),
     },
     dirname: {
       control: 'text',
@@ -418,7 +423,7 @@ export const InputWithCharacterCounter: StoryObj = {
 export const SlottedInputElement: StoryObj = {
   render: () => html`
     <mdc-input>
-      <input slot="input" type="number" aria-label="Custom aria-label on slotted input element" value="42" />
+      <input slot="input" type="tel" aria-label="Phone number" value="+1 202-555-0147" />
     </mdc-input>
   `,
   parameters: {
@@ -438,6 +443,57 @@ export const SlottedInputElement: StoryObj = {
     },
     controls: {
       disable: true,
+    },
+  },
+};
+
+export const AutofillContactsSafari: StoryObj = {
+  name: 'Autofill contacts (Safari)',
+  render: () => html`
+    <style>
+      .autofill-sandbox {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 22rem;
+      }
+
+      .autofill-sandbox input.native {
+        height: 2rem;
+        box-sizing: border-box;
+      }
+    </style>
+    <form class="autofill-sandbox">
+      <mdc-input label="First name" name="given-name" autocomplete="given-name"></mdc-input>
+      <mdc-input label="Email" name="email" autocomplete="email"></mdc-input>
+      <mdc-input
+        label="Email (extended)"
+        name="email-extra"
+        placeholder="Placeholder"
+        autocomplete="email"
+        trailing-button
+        required
+        help-text="Trailing button, placeholder, required, help text"
+      ></mdc-input>
+      <br />
+      <br />
+      <label>
+        Email (native, for comparison)
+        <input class="native" type="email" name="email-native" autocomplete="email" />
+      </label>
+      <label>
+        Email (native, color-scheme: dark)
+        <input class="native" type="email" name="email-native-dark" autocomplete="email" style="color-scheme: dark;" />
+      </label>
+    </form>
+  `,
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Sandbox for the Safari AutoFill contacts icon, includes a native input to compare against. Open this story in Safari.',
+      },
     },
   },
 };

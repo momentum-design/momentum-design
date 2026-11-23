@@ -11,6 +11,7 @@ const VARIANT = {
 const STATUS = {
   COMPLETED: 'completed',
   CURRENT: 'current',
+  LOADING: 'loading',
   ERROR_CURRENT: 'error-current',
   ERROR_INCOMPLETE: 'error-incomplete',
   NOT_STARTED: 'not-started',

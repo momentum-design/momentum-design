@@ -113,6 +113,15 @@
       "component": "brandvisual"
     },
     {
+      "id": "tier3/packages/components/src/components/brandvisualprovider/knowledge-base/brandvisualprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/brandvisualprovider/knowledge-base/brandvisualprovider.component.md",
+      "title": "Brandvisualprovider",
+      "summary": "Usage, guidelines, and accessibility for the mdc-brandvisualprovider component — a context provider that supplies brand visual source and caching to nested mdc-brandvisual components.",
+      "canonical": null,
+      "component": "brandvisualprovider"
+    },
+    {
       "id": "tier3/packages/components/src/components/bullet/knowledge-base/bullet.component",
       "tier": 3,
       "path": "packages/components/src/components/bullet/knowledge-base/bullet.component.md",
@@ -212,6 +221,15 @@
       "component": "checkbox"
     },
     {
+      "id": "tier3/packages/components/src/components/checkboxtree/knowledge-base/checkboxtree.component",
+      "tier": 3,
+      "path": "packages/components/src/components/checkboxtree/knowledge-base/checkboxtree.component.md",
+      "title": "Checkbox Tree",
+      "summary": "Usage, guidelines, and accessibility for the mdc-checkboxtree component — a recursive checkbox group with hierarchical selection and mixed parent states.",
+      "canonical": null,
+      "component": "checkboxtree"
+    },
+    {
       "id": "tier3/packages/components/src/components/chip/knowledge-base/chip.component",
       "tier": 3,
       "path": "packages/components/src/components/chip/knowledge-base/chip.component.md",
@@ -273,6 +291,15 @@
       "summary": "Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can host a centered text label or an interactive grabber button.",
       "canonical": null,
       "component": "divider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/emptystate/knowledge-base/emptystate.component",
+      "tier": 3,
+      "path": "packages/components/src/components/emptystate/knowledge-base/emptystate.component.md",
+      "title": "Empty state",
+      "summary": "Usage, guidelines, and accessibility for the `mdc-emptystate` component — a presentation for empty views with descriptive text and context-appropriate headings, illustrations, or actions.",
+      "canonical": null,
+      "component": "emptystate"
     },
     {
       "id": "tier3/packages/components/src/components/filterchip/knowledge-base/filterchip.component",
@@ -498,6 +525,15 @@
       "summary": "Usage, guidelines, and accessibility for the mdc-navmenuitem component — a navigation-styled menu item with leading icon, optional badge, and tooltip support.",
       "canonical": null,
       "component": "navmenuitem"
+    },
+    {
+      "id": "tier3/packages/components/src/components/numberinput/knowledge-base/numberinput.component",
+      "tier": 3,
+      "path": "packages/components/src/components/numberinput/knowledge-base/numberinput.component.md",
+      "title": "Number Input",
+      "summary": "Usage, guidelines, and accessibility for the mdc-numberinput component — a numeric text field with increment and decrement spinner buttons and native range and step validation.",
+      "canonical": null,
+      "component": "numberinput"
     },
     {
       "id": "tier3/packages/components/src/components/optgroup/knowledge-base/optgroup.component",

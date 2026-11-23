@@ -1,6 +1,6 @@
 import utils from '../../utils/tag-name';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
-import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import { VALIDATION, DEFAULTS as FFW_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
@@ -20,10 +20,22 @@ const AUTO_COMPLETE = {
   ON: 'on',
 } as const;
 
+const INPUT_MODE = {
+  NONE: 'none',
+  TEXT: 'text',
+  DECIMAL: 'decimal',
+  NUMERIC: 'numeric',
+  TEL: 'tel',
+  SEARCH: 'search',
+  EMAIL: 'email',
+  URL: 'url',
+} as const;
+
 const INPUT_TYPE = {
   PASSWORD: 'password',
   TEXT: 'text',
   SEARCH: 'search',
+  NUMBER: 'number',
 } as const;
 
 const PREFIX_TEXT_OPTIONS = {
@@ -32,6 +44,7 @@ const PREFIX_TEXT_OPTIONS = {
 };
 
 const DEFAULTS = {
+  HEADING_ID: FFW_DEFAULTS.HEADING_ID,
   VALIDATION: VALIDATION.DEFAULT,
   ICON_SIZE_VALUE: 1,
   ICON_SIZE_UNIT: 'rem',
@@ -44,4 +57,4 @@ const DEFAULTS = {
   INPUT_TYPE: INPUT_TYPE.TEXT,
 } as const;
 
-export { TAG_NAME, PREFIX_TEXT_OPTIONS, AUTO_CAPITALIZE, AUTO_COMPLETE, INPUT_TYPE, DEFAULTS };
+export { TAG_NAME, PREFIX_TEXT_OPTIONS, AUTO_CAPITALIZE, AUTO_COMPLETE, INPUT_MODE, INPUT_TYPE, DEFAULTS };

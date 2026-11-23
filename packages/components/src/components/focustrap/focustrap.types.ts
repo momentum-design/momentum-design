@@ -1,4 +1,3 @@
-// AI-Assisted
 interface Events {
   /** Fired when the focus trap is activated (React: onFocusTrapActivated) */
   onFocusTrapActivatedEvent: Event;
@@ -14,4 +13,3 @@ declare global {
 }
 
 export type { Events };
-// End AI-Assisted

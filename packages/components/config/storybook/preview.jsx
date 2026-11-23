@@ -70,6 +70,10 @@ function refactorCustomElements(customElements) {
   return customElements;
 }
 
+// Clone the raw manifest before `refactorCustomElements` mutates it, so the
+// component inspector addon can read the original slot / shadow-part names.
+const rawCustomElementsManifest = structuredClone(customElements);
+
 const refactoredCustomElements = refactorCustomElements(customElements);
 
 setCustomElementsManifest(refactoredCustomElements);
@@ -140,6 +144,7 @@ const preview = {
           'Setup',
           'Styling',
           'Attributes',
+          'Styles',
           'Providers',
           'Components',
           ['Docs', 'Accessibility', 'Example'],
@@ -155,6 +160,11 @@ const preview = {
     },
     direction: 'ltr',
     customElementsManifest: refactoredCustomElements,
+    componentInspector: {
+      customElements: rawCustomElementsManifest,
+      prefix: 'mdc-',
+      contentContainer: '.backgroundGradient',
+    },
   },
   decorators: [
     withSpatialNavigationProviderDecorator,

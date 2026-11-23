@@ -428,7 +428,6 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
 
   await test.step('mouse', async () => {
     await test.step('does not display popover when mouse hovers and leaves trigger within open delay', async () => {
-      // Start AI-Assisted
       const { popover, triggerButton } = await setup({
         componentsPage,
         id: 'popover-hover',
@@ -455,7 +454,6 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
 
       // Popover should still not be visible
       await expect(popover).not.toBeVisible();
-      // End AI-Assisted
     });
 
     await test.step('does not hide popover when mouse leaves trigger and enters trigger within close delay', async () => {
@@ -1008,7 +1006,6 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover.locator('#first')).toBeFocused();
     });
 
-    // AI-Assisted
     await test.step('Focus trap with list should respect roving tabindex', async () => {
       const { popover, triggerButton } = await setup({
         componentsPage,
@@ -1087,7 +1084,6 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
       await expect(listItem2).toBeFocused();
     });
-    // End AI-Assisted
 
     await test.step('Prevent outside scroll', async () => {
       await componentsPage.setAttributes(popover, {
@@ -1150,7 +1146,6 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover2).toBeVisible();
     });
 
-    // AI-Assisted
     await test.step('Backdrop click stops event propagation', async () => {
       await componentsPage.mount({
         html: `
@@ -1213,7 +1208,6 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover1).not.toBeVisible();
       await expect(popover2).toBeVisible();
     });
-    // End AI-Assisted
 
     await test.step('Element index to receive focus', async () => {
       const { popover, triggerButton } = await setup({
@@ -1231,12 +1225,10 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(triggerButton).toBeFocused();
       await componentsPage.page.keyboard.press(KEYS.ENTER);
       await expect(popover).toBeVisible();
-      // AI-Assisted
       // With elementIndexToReceiveFocus set to 1, the second element should receive focus
       await expect(popover.locator('#second')).toBeFocused();
       await componentsPage.actionability.pressTab();
       await expect(popover.locator('#last')).toBeFocused();
-      // End AI-Assisted
     });
 
     await test.step('Element index to receive focus defaults to 0', async () => {
@@ -1253,10 +1245,8 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(triggerButton).toBeFocused();
       await componentsPage.page.keyboard.press(KEYS.ENTER);
       await expect(popover).toBeVisible();
-      // AI-Assisted
       // Without elementIndexToReceiveFocus, the first element (index 0) should receive focus
       await expect(popover.locator('#first-default')).toBeFocused();
-      // End AI-Assisted
     });
   });
 
@@ -1848,6 +1838,56 @@ test('mdc-popover', async ({ componentsPage }) => {
       const centeredOffsetBBox = (await popover.boundingBox())!;
       expect(Math.floor(centeredOffsetBBox.x)).toEqual(132);
       expect(Math.floor(centeredOffsetBBox.y)).toEqual(227);
+    });
+
+    await test.step('should flip before its offset moves it outside the viewport', async () => {
+      await componentsPage.mount({
+        html: `
+          <div>
+            <button
+              id="viewport-edge-trigger"
+              style="position: fixed; top: 100px; left: 200px;"
+            >
+              Trigger
+            </button>
+            <mdc-popover
+              id="viewport-edge-popover"
+              triggerID="viewport-edge-trigger"
+              placement="top"
+              show-arrow
+              animation-frame
+              style="height: 40px;"
+            >
+              Popover content
+            </mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const trigger = componentsPage.page.locator('#viewport-edge-trigger');
+      const popover = componentsPage.page.locator('#viewport-edge-popover');
+
+      await trigger.click();
+      await expect(popover).toBeVisible();
+      await expect(async () => {
+        const [triggerBox, popoverBox] = await Promise.all([trigger.boundingBox(), popover.boundingBox()]);
+        // Popover is above the trigger.
+        expect(popoverBox!.y + popoverBox!.height).toBeLessThanOrEqual(triggerBox!.y);
+      }).toPass();
+      await componentsPage.visualRegression.takeScreenshot('mdc-popover-flip-top');
+
+      await trigger.evaluate((element: HTMLElement) => {
+        const { style } = element;
+        style.top = '50px';
+      });
+
+      await expect(async () => {
+        const [triggerBox, popoverBox] = await Promise.all([trigger.boundingBox(), popover.boundingBox()]);
+        // Popover is below the trigger.
+        expect(popoverBox!.y).toBeGreaterThanOrEqual(triggerBox!.y + triggerBox!.height);
+      }).toPass();
+      await componentsPage.visualRegression.takeScreenshot('mdc-popover-flip-bottom');
     });
   });
 

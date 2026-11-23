@@ -1,5 +1,4 @@
 /* eslint-disable no-await-in-loop */
-// AI-Assisted
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
@@ -404,4 +403,3 @@ test('mdc-verticaltablist', async ({ componentsPage }) => {
     });
   });
 });
-// End AI-Assisted

@@ -63,12 +63,6 @@ yarn generate
 
 The generator scaffolds `packages/<destinationFolderName>/<packageName>/` and adds a `yarn <packageName>` script alias to the root `package.json`. After it finishes, `yarn install` is run automatically (`generate` = `generate:plop && yarn install`). Implementation details (templates, actions, prompts) live in [config/plop](config/plop/).
 
-## AI-Assisted Code Marker Rule
-
-- For generated code files, start generated blocks with a comment that begins with // AI-Assisted.
-- End generated blocks with a comment that ends with // End AI-Assisted.
-- Apply this rule in code files. Do not add these markers to documentation-only markdown text unless explicitly requested.
-
 ## First-Time Setup
 
 Use the setup flow in [CONTRIBUTING.md](CONTRIBUTING.md#first-time-setup).

@@ -1,4 +1,3 @@
-// AI-Assisted
 import '../icon';
 import '../text';
 import StatusMessage from './statusmessage.component';
@@ -13,4 +12,3 @@ declare global {
 }
 
 export default StatusMessage;
-// End AI-Assisted

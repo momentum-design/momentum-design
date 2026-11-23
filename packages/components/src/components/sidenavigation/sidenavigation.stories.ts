@@ -359,7 +359,6 @@ const renderNestedSideNavigation = (args: Args) => {
   </div>`;
 };
 
-// AI-Assisted
 const renderDropdownSideNavigation = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
     <mdc-sidenavigation
@@ -476,7 +475,6 @@ const renderDropdownSideNavigation = (args: Args) => html`
     </mdc-sidenavigation>
   </div>
 `;
-// End AI-Assisted
 
 const meta: Meta = {
   title: 'Components/sidenavigation/sidenavigation',

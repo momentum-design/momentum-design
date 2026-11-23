@@ -31,18 +31,21 @@ class StepperConnector extends Component {
    */
   @property({ type: String, reflect: true }) orientation: OrientationType = DEFAULTS.ORIENTATION;
 
+  // AI-Assisted: Synchronize inherited configuration before rendering while keeping the provider authoritative.
   /**
    * @internal
    */
   private readonly stepperContext = providerUtils.consume({ host: this, context: Stepper.Context });
 
-  override updated(changedProperties: Map<string, unknown>): void {
-    super.updated(changedProperties);
+  override willUpdate(changedProperties: Map<string, unknown>): void {
+    super.willUpdate(changedProperties);
 
     const context = this.stepperContext?.value;
-    if (!context || !context.orientation) return;
-    this.orientation = context.orientation;
+    if (context?.orientation && this.orientation !== context.orientation) {
+      this.orientation = context.orientation;
+    }
   }
+  // End AI-Assisted
 
   public override render() {
     return html` <div part="connector"></div> `;

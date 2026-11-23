@@ -279,7 +279,6 @@ test('mdc-list', async ({ componentsPage }) => {
         await expect(list.locator('mdc-listitem[label="List Item 2"] mdc-button[variant="tertiary"]')).toBeFocused();
       });
 
-      // AI-Assisted
       await test.step('should be able to focus a dynamically added item in an initially empty list', async () => {
         const list = await setup({
           componentsPage,
@@ -306,7 +305,6 @@ test('mdc-list', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await expect(list.locator('mdc-listitem[label="Dynamically Added Item"]')).toBeFocused();
       });
-      // End AI-Assisted
     });
 
     await test.step('spatial navigation', async () => {
@@ -607,7 +605,6 @@ test('mdc-list', async ({ componentsPage }) => {
       await expect(listitems.nth(2)).toBeFocused();
     });
 
-    // AI-Assisted
     await test.step('should not scroll the list when Space is pressed on a focused listitem', async () => {
       // tabindex=-1 is needed here to stop Firefox from giving the scrollable region focus instead of the list items
       await componentsPage.mount({
@@ -634,7 +631,6 @@ test('mdc-list', async ({ componentsPage }) => {
       const scrollTopAfter = await container.evaluate(el => el.scrollTop);
       expect(scrollTopAfter).toBe(scrollTopBefore);
     });
-    // End AI-Assisted
   });
 
   await test.step('should keep the focus on interactive elements inside list items', async () => {

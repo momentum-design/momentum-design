@@ -14,6 +14,19 @@ Feature: StepperItem Accessibility and User Interaction
 
   Rule: ✅ Rendering and Visual States
 
+    Scenario: Show an inset spinner while loading
+      Given the stepperitem has status "loading"
+      When the stepperitem is rendered
+      Then an inset spinner should replace the status icon or step number inside the existing step circle
+      And the label, help text, and disabled state should be preserved
+      And the stepperitem should have aria-busy="true"
+
+    Scenario: Restore the status indicator after loading
+      Given the stepperitem has status "loading"
+      When status changes to "completed"
+      Then the completed indicator should replace the spinner
+      And the stepperitem should no longer have aria-busy
+
     Scenario: Render stepperitem with label-text only
       Given the stepperitem has a label-text "Step Label"
       When the stepperitem is rendered

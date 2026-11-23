@@ -2,6 +2,7 @@
 title: Color
 summary: How Momentum color tokens are structured (usage, prominence, state), how they resolve across themes, and where each semantic color belongs.
 tier: 2
+websitePath: foundations/color
 ---
 
 # Color

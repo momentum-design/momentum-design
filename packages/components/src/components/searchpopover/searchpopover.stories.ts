@@ -150,7 +150,6 @@ const meta: Meta = {
 
 export default meta;
 
-// AI-Assisted
 const filterCategories = [
   { label: 'Tropical', items: ['Mango', 'Pineapple', 'Kiwi', 'Banana'] },
   { label: 'Berries', items: ['Strawberry', 'Blueberry', 'Grapes'] },
@@ -198,7 +197,6 @@ const renderWithFilters = (args: Args) => {
     </mdc-searchpopover>
   `;
 };
-// End AI-Assisted
 
 export const Example: StoryObj = {
   args: {
@@ -229,7 +227,6 @@ export const Example: StoryObj = {
   },
 };
 
-// AI-Assisted
 export const WithFilters: StoryObj = {
   render: renderWithFilters,
   args: {
@@ -256,4 +253,3 @@ export const WithFilters: StoryObj = {
     },
   },
 };
-// End AI-Assisted

@@ -234,4 +234,3 @@ export const WithBasicChips: StoryObj = {
     </mdc-searchfield>
   `,
 };
-// End AI-Assisted

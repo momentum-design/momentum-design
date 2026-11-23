@@ -1,4 +1,3 @@
-// AI-Assisted
 import { css } from 'lit';
 
 const styles = css`
@@ -8,4 +7,3 @@ const styles = css`
 `;
 
 export default [styles];
-// End AI-Assisted

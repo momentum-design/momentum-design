@@ -44,6 +44,7 @@ const TOPIC_CONSTRAINTS_CONFIG_PATH = path.join(
   KNOWLEDGE_BASE_DIR,
   'topic-constraints.config.json',
 );
+const WEBSITE_PATHS_CONFIG_PATH = path.join(REPO_ROOT, 'config', KNOWLEDGE_BASE_DIR, 'website-paths.config.json');
 const GENERATOR_REL = `scripts/${KNOWLEDGE_BASE_DIR}/generate-index.js`;
 
 // Tier-sharded index files. Each shard contains only its own tier's topics so
@@ -57,12 +58,13 @@ const SHARDS = {
 const SHARD_TIERS = Object.keys(SHARDS).map(Number);
 const shardPath = (tier) => path.join(REPO_ROOT, KNOWLEDGE_BASE_DIR, SHARDS[tier].file);
 
-const ASSET_DIR_NAMES = new Set(['images']);
+const ALLOWED_SUBDIR_NAMES = new Set(['images', 'skills']);
 const COMPONENTS_TIER3_PREFIX = 'packages/components/src/components/';
 
 const TIER3_DIR_RE = new RegExp(`^${COMPONENTS_TIER3_PREFIX}(?<component>[^/]+)/${KNOWLEDGE_BASE_DIR}$`);
 const TIER2_DIR_RE = new RegExp(`^packages/(?<pkgPath>.+)/${KNOWLEDGE_BASE_DIR}$`);
 const TIER1_DIR_RE = new RegExp(`^${KNOWLEDGE_BASE_DIR}$`);
+const TIER1_SKILL_README_RE = new RegExp(`^${KNOWLEDGE_BASE_DIR}/skills/[^/]+/README\\.md$`);
 
 // Glob roots for tier discovery. `scripts/`, `config/`, `.github/`, `.vscode/`,
 // `scratch/` are intentionally excluded so the generator's own `knowledge-base`
@@ -70,13 +72,18 @@ const TIER1_DIR_RE = new RegExp(`^${KNOWLEDGE_BASE_DIR}$`);
 const TOPIC_FILE_EXTENSION = '.md';
 const KB_DIR_GLOBS = [
   `${KNOWLEDGE_BASE_DIR}/`,
+  `${KNOWLEDGE_BASE_DIR}/skills/*/`,
   `packages/*/${KNOWLEDGE_BASE_DIR}/`,
   `packages/*/*/${KNOWLEDGE_BASE_DIR}/`,
   `packages/components/src/components/*/${KNOWLEDGE_BASE_DIR}/`,
 ];
-// Derive the topic-file globs from the directory globs so the two stay in
-// lockstep; only `TOPIC_FILE_EXTENSION` and the dir list need to be edited.
-const TOPIC_GLOBS = KB_DIR_GLOBS.map((dir) => `${dir}*${TOPIC_FILE_EXTENSION}`);
+const TOPIC_GLOBS = [
+  `${KNOWLEDGE_BASE_DIR}/*${TOPIC_FILE_EXTENSION}`,
+  `${KNOWLEDGE_BASE_DIR}/skills/*/README${TOPIC_FILE_EXTENSION}`,
+  `packages/*/${KNOWLEDGE_BASE_DIR}/*${TOPIC_FILE_EXTENSION}`,
+  `packages/*/*/${KNOWLEDGE_BASE_DIR}/*${TOPIC_FILE_EXTENSION}`,
+  `packages/components/src/components/*/${KNOWLEDGE_BASE_DIR}/*${TOPIC_FILE_EXTENSION}`,
+];
 const GLOB_IGNORE = ['**/node_modules/**', '**/dist/**', '**/build/**', '**/.yarn/**'];
 
 function tierForFile(relPosix) {
@@ -88,7 +95,7 @@ function tierForFile(relPosix) {
     return { tier: 3, component };
   }
 
-  if (TIER1_DIR_RE.test(dir)) {
+  if (TIER1_DIR_RE.test(dir) || TIER1_SKILL_README_RE.test(relPosix)) {
     return { tier: 1 };
   }
 
@@ -154,6 +161,17 @@ function buildTierConstraints(topicConstraintsConfig) {
   );
 }
 
+function collectAllowedWebsitePaths() {
+  const raw = JSON.parse(fs.readFileSync(WEBSITE_PATHS_CONFIG_PATH, 'utf8'));
+  const sections = Array.isArray(raw.sections) ? raw.sections : [];
+
+  return new Set(
+    sections.flatMap((section) =>
+      (Array.isArray(section.pages) ? section.pages : []).map((page) => `${section.slug}/${page.slug}`),
+    ),
+  );
+}
+
 function discoverKbDirs() {
   const globOpts = { cwd: REPO_ROOT, ignore: GLOB_IGNORE };
   return Array.from(new Set(KB_DIR_GLOBS.flatMap((pattern) => glob.sync(pattern, globOpts))));
@@ -187,21 +205,23 @@ function discoverTopicFiles() {
  */
 function collectTopics({ topicConstraintsConfig }) {
   const tierConstraintsByTier = buildTierConstraints(topicConstraintsConfig);
+  const allowedWebsitePaths = collectAllowedWebsitePaths();
 
   const errors = [];
   const topics = [];
   const seenIds = new Set();
+  const seenWebsitePaths = new Map();
 
-  // Detect unexpected non-asset subdirectories inside any knowledge-base folder.
+  // Detect unexpected subdirectories inside any knowledge-base folder.
   // Use targeted globs that mirror TOPIC_GLOBS rather than `**/knowledge-base/`
   // to avoid a full recursive scan of the repo.
   for (const kbDir of discoverKbDirs()) {
     const entries = fs.readdirSync(path.join(REPO_ROOT, kbDir), { withFileTypes: true });
     for (const entry of entries) {
-      if (entry.isDirectory() && !ASSET_DIR_NAMES.has(entry.name)) {
+      if (entry.isDirectory() && !ALLOWED_SUBDIR_NAMES.has(entry.name)) {
         errors.push(
           `Unexpected subdirectory "${entry.name}" in ${kbDir}. ` +
-            `Only asset folders (${[...ASSET_DIR_NAMES].join(', ')}) are allowed; topic files must be flat.`,
+            `Only configured supporting folders (${[...ALLOWED_SUBDIR_NAMES].join(', ')}) are allowed; topic files must be flat.`,
         );
       }
     }
@@ -241,6 +261,7 @@ function collectTopics({ topicConstraintsConfig }) {
       continue;
     }
     const data = parsed.data || {};
+    const websitePath = typeof data.websitePath === 'string' ? data.websitePath.trim() : null;
 
     const constraints = tierConstraintsByTier[tierInfo.tier];
     if (constraints && constraints.allowedTopics.size > 0) {
@@ -281,6 +302,25 @@ function collectTopics({ topicConstraintsConfig }) {
     }
     seenIds.add(id);
 
+    if (websitePath) {
+      if (tierInfo.tier === 3) {
+        errors.push(`${relPosix}: websitePath is only supported for Tier 1 and Tier 2 topics.`);
+      } else if (!allowedWebsitePaths.has(websitePath)) {
+        errors.push(
+          `${relPosix}: websitePath "${websitePath}" is not defined in config/${KNOWLEDGE_BASE_DIR}/website-paths.config.json.`,
+        );
+      } else {
+        const existingPath = seenWebsitePaths.get(websitePath);
+        if (existingPath) {
+          errors.push(
+            `${relPosix}: websitePath "${websitePath}" is already used by ${existingPath}; published website paths must be unique.`,
+          );
+        } else {
+          seenWebsitePaths.set(websitePath, relPosix);
+        }
+      }
+    }
+
     const topic = {
       id,
       tier: tierInfo.tier,
@@ -289,6 +329,9 @@ function collectTopics({ topicConstraintsConfig }) {
       summary: data.summary,
       canonical: data.canonical || null,
     };
+    if (websitePath) {
+      topic.websitePath = websitePath;
+    }
     if (tierInfo.tier === 3) {
       topic.component = data.component;
     }
@@ -332,6 +375,7 @@ module.exports = {
   BODY_CONFIG_PATH,
   MARKDOWNLINT_CONFIG_PATH,
   TOPIC_CONSTRAINTS_CONFIG_PATH,
+  WEBSITE_PATHS_CONFIG_PATH,
   SHARDS,
   SHARD_TIERS,
   shardPath,

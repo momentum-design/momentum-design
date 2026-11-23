@@ -1,5 +1,6 @@
 ---
 import * as CONFIG from '../../config';
+import manifest from '../../generated/knowledge-base/manifest.json';
 import { getLanguageFromURL } from '../../languages';
 
 import MomentumLogo from './MomentumLogo.astro';
@@ -12,23 +13,54 @@ const currentPage = Astro.url.pathname;
 const currentPageMatch = currentPage.endsWith('/') ? currentPage.slice(1, -1) : currentPage.slice(1);
 const langCode = getLanguageFromURL(currentPage);
 
-const menu = CONFIG.MAIN_MENU[langCode];
+const staticMenu = CONFIG.MAIN_MENU[langCode];
+const staticMenuEntries = Object.entries(staticMenu).map(([name, item]) => ({
+  name,
+  index: item.index,
+  slug: item.index.split('/').pop() ?? '',
+}));
+const staticSlugs = new Set(staticMenuEntries.map((entry) => entry.slug));
+const generatedMenuEntries = manifest.sections
+  .filter((section) => !staticSlugs.has(section.slug))
+  .map((section) => ({
+    name: section.title,
+    index: manifest.routes[section.index].path,
+    slug: section.slug,
+  }));
+
+const orderIndex = (slug: string) => {
+  const position = CONFIG.HEADER_MENU_ORDER.indexOf(slug);
+  return position === -1 ? CONFIG.HEADER_MENU_ORDER.length : position;
+};
+const menuEntries = [...staticMenuEntries, ...generatedMenuEntries].sort(
+  (left, right) => orderIndex(left.slug) - orderIndex(right.slug),
+);
+
+function isCurrentPage(itemIndex: string) {
+  if (itemIndex === 'en') {
+    return currentPageMatch === itemIndex;
+  }
+
+  return currentPageMatch === itemIndex || currentPageMatch.startsWith(`${itemIndex}/`);
+}
 ---
 
 <header>
   <SkipToContent />
   <nav class="nav-wrapper" title="Top Navigation">
     <div class="logo flex">
-      <MomentumLogo height={40} />
+      <a href={`${Astro.site?.pathname  }en`} aria-label="Home">
+        <MomentumLogo height={40} />
+      </a>
     </div>
     <div class="main-menu" style={{ alignItems: 'center' }}>
       {
-        Object.entries(menu).map(([name, item]) => {
+        menuEntries.map((item) => {
           const url = Astro.site?.pathname + item.index;
           return (
             <li class="nav-link">
-              <a href={url} aria-current={currentPageMatch === url ? 'page' : false}>
-                {name}
+              <a href={url} aria-current={isCurrentPage(item.index) ? 'page' : false}>
+                {item.name}
               </a>
             </li>
           );
@@ -67,7 +99,6 @@ const menu = CONFIG.MAIN_MENU[langCode];
     line-height: 1;
     color: hsla(var(--color-base-white), 100%, 1);
     gap: 0.25em;
-    z-index: -1;
   }
 
   .logo a {

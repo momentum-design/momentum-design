@@ -2,6 +2,7 @@
 title: Motion
 summary: Momentum motion tokens — the duration, easing, delay, and stagger scales, the named animations built on them, and the principles for applying them.
 tier: 2
+websitePath: foundations/motion
 ---
 
 # Motion
@@ -14,25 +15,25 @@ The motion language for Momentum needs to feel snappy and professional. It shoul
 
 ### 1. Orientation over ornamentation (navigation)
 
-Value: Motion should serve as a map, not a decoration.  User: “I know where I am and where I want to go.”
+Value: Motion should serve as a map, not a decoration. User: “I know where I am and where I want to go.”
 Animations must provide spatial context, helping users understand where they are and where they are going within the application. By moving elements along logical axes, we reduce the cognitive "jump" between different views.
 
 ### 2. Informative by intent (status)
 
-Value: Every movement should carry a message.  User: “I understand what the system is doing right now.”
+Value: Every movement should carry a message. User: “I understand what the system is doing right now.”
 In a collaboration environment, state changes happen constantly (e.g., a colleague joining a call, a file finishing an upload). Animation should act as a silent narrator, providing "just-in-time" information without requiring a pop-up or a modal.
 
 ### 3. Purposeful vitality (brand)
 
-Value: Reflect the "Momentum" why of Wellbeing Intelligence.  User: “This tool feels good to use.”
+Value: Reflect the "Momentum" why of Wellbeing Intelligence. User: “This tool feels good to use.”
 Cisco’s brand is about the flow of information and the energy of collaboration. Our animations should feel "alive" but disciplined. We avoid mechanical, linear movements in favor of natural easing that mimics real-world physics—starting with purpose and ending with grace.
 
 ## Rules of thumb
 
-- **Enter vs Exit:**  Exits are faster than entrances
-- **Size relationship:**  Smaller elements = faster animations
-- **User-initiated:**  Faster feedback
-- **System-initiated:**  Slower feedback to draw attention
+- **Enter vs Exit:** Exits are faster than entrances
+- **Size relationship:** Smaller elements = faster animations
+- **User-initiated:** Faster feedback
+- **System-initiated:** Slower feedback to draw attention
 
 ## Token layers
 

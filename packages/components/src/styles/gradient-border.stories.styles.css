@@ -1,0 +1,47 @@
+/* Scaffolding for the Gradient Border stories only — not shipped. See copyStyles.js. */
+.gradientBorderStoryCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.gradientBorderStoryCenter__stacked {
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.gradientBorderStoryRow {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.gradientBorderStoryPanel {
+  box-sizing: border-box;
+  width: 11rem;
+  height: 7rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+
+  /* The ring inherits this, so the host element owns the corner radius. */
+  border-radius: var(--mds-radius-theme-lg);
+  background: var(--mds-color-theme-background-solid-primary-normal);
+  color: var(--mds-color-theme-text-primary-normal);
+  font-size: var(--mds-font-size-body-midsize);
+  line-height: var(--mds-font-lineheight-body-midsize);
+}
+
+.gradientBorderStoryPanel__large {
+  width: 16rem;
+  height: 10rem;
+  justify-content: center;
+}
+
+.gradientBorderStoryPanel__round {
+  width: 7rem;
+  justify-content: center;
+  border-radius: var(--mds-radius-theme-full);
+}

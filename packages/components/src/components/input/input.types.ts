@@ -1,10 +1,11 @@
 import type { OverrideEventTarget, TypedCustomEvent, ValueOf } from '../../utils/types';
 
 import type Input from './input.component';
-import { AUTO_CAPITALIZE, AUTO_COMPLETE, INPUT_TYPE } from './input.constants';
+import { AUTO_CAPITALIZE, AUTO_COMPLETE, INPUT_MODE, INPUT_TYPE } from './input.constants';
 
 type AutoCapitalizeType = ValueOf<typeof AUTO_CAPITALIZE>;
 type AutoCompleteType = ValueOf<typeof AUTO_COMPLETE>;
+type InputModeType = ValueOf<typeof INPUT_MODE>;
 type InputType = ValueOf<typeof INPUT_TYPE>;
 
 type InputInputEvent = OverrideEventTarget<InputEvent, Input>;
@@ -26,6 +27,7 @@ interface Events {
 export type {
   AutoCapitalizeType,
   AutoCompleteType,
+  InputModeType,
   InputType,
   InputInputEvent,
   InputChangeEvent,

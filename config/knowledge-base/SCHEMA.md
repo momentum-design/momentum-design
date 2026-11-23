@@ -8,7 +8,7 @@ flat markdown files.
 
 Example:
 
-```
+```text
 packages/components/src/components/button/knowledge-base/accessibility.md         ✅
 packages/components/src/components/button/knowledge-base/images/anatomy.png       ✅ (asset folder)
 packages/components/src/components/button/knowledge-base/a11y/contrast.md         ❌ (nested topic)
@@ -46,7 +46,7 @@ file only when tiers or rules change.
 
 High-level guidelines that describe the design system as a whole live at:
 
-```
+```text
 knowledge-base/<topic>.md
 ```
 
@@ -54,7 +54,7 @@ knowledge-base/<topic>.md
 
 Every package has it's own knowledge-base folder for guidelines that are related to that specific package:
 
-```
+```text
 packages/<package>/knowledge-base/<topic>.md
 ```
 
@@ -63,7 +63,7 @@ packages/<package>/knowledge-base/<topic>.md
 Every component has its own `knowledge-base/` folder co-located with its
 source:
 
-```
+```text
 packages/components/src/components/<component>/knowledge-base/<topic>.md
 ```
 
@@ -98,6 +98,12 @@ owner: button
 component: button
 ---
 ```
+
+`websitePath` is optional and currently applies only to Tier 1 and Tier 2
+topics. When present, it opts the topic into public website publishing. The
+value must match one of the configured paths in
+[`website-paths.config.json`](./website-paths.config.json). When absent, the
+topic remains valid knowledge-base content but is not published to the website.
 
 ## Index
 
@@ -143,7 +149,7 @@ The shards are kept in sync by:
 
 To regenerate after editing or adding topics, run:
 
-```
+```bash
 yarn knowledge-base:index
 ```
 

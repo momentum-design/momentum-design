@@ -1,7 +1,7 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_27131_1630)">
 <g clip-path="url(#clip1_27131_1630)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16C0 7.16344 7.16344 0 16 0ZM18.5732 15.9287L8.61523 23.7773L24.0869 15.9072L8.66211 8.23145L18.5732 15.9287Z" fill="url(#paint0_linear_27131_1630)"/>
+<path d="M16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16C0 7.16344 7.16344 0 16 0ZM18.5732 15.9287L8.61523 23.7773L24.0869 15.9072L8.66211 8.23145L18.5732 15.9287Z" fill-rule="evenodd" clip-rule="evenodd" fill="url(#paint0_linear_27131_1630)"/>
 </g>
 </g>
 <defs>

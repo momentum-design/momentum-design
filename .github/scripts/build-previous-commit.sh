@@ -26,7 +26,7 @@ else
   cd "$PREVIOUS_WORKTREE"
   
   echo "Installing dependencies for previous commit..."
-  if ! yarn install --frozen-lockfile; then
+  if ! yarn install --immutable; then
     echo "ERROR: Failed to install dependencies for previous commit"
     exit 1
   fi

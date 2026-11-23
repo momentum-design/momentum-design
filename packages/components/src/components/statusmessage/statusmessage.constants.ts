@@ -1,4 +1,3 @@
-// AI-Assisted
 import utils from '../../utils/tag-name';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
@@ -35,4 +34,3 @@ const DEFAULTS = {
 } as const;
 
 export { DEFAULTS, STATUSMESSAGE_ICON_NAME_BY_SEVERITY, STATUSMESSAGE_ICON_NAMES, STATUSMESSAGE_SEVERITY, TAG_NAME };
-// End AI-Assisted

@@ -2,6 +2,7 @@
 title: Typography
 summary: Typography token scale, type styles, and usage guidance for products built with @momentum-design/tokens — body, heading, and headline styles.
 tier: 2
+websitePath: foundations/typography
 ---
 
 # Typography

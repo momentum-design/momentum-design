@@ -13,7 +13,6 @@ import { VARIANT } from './datepicker.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
-// AI-Assisted
 const render = (args: Args) => html`
   <mdc-datepicker
     @change="${action('onchange')}"
@@ -41,11 +40,11 @@ const render = (args: Args) => html`
     locale-spinbutton-description="${ifDefined(args['locale-spinbutton-description'])}"
     locale-prev-month-label="${ifDefined(args['locale-prev-month-label'])}"
     locale-next-month-label="${ifDefined(args['locale-next-month-label'])}"
+    locale-range-start-selected-label="${ifDefined(args['locale-range-start-selected-label'])}"
     append-to="${ifDefined(args['append-to'])}"
     backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
   ></mdc-datepicker>
 `;
-// End AI-Assisted
 
 const meta: Meta = {
   title: 'Components/datepicker',
@@ -60,12 +59,10 @@ const meta: Meta = {
       control: 'text',
       description: 'Selected date as ISO string (yyyy-mm-dd)',
     },
-    // AI-Assisted
     'end-value': {
       control: 'text',
       description: 'Range end date as an ISO string (yyyy-mm-dd)',
     },
-    // End AI-Assisted
     variant: {
       control: 'select',
       options: Object.values(VARIANT),
@@ -112,6 +109,7 @@ const meta: Meta = {
     'locale-spinbutton-description': { control: 'text' },
     'locale-prev-month-label': { control: 'text' },
     'locale-next-month-label': { control: 'text' },
+    'locale-range-start-selected-label': { control: 'text' },
     'append-to': {
       control: 'text',
     },
@@ -141,7 +139,6 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
-  // AI-Assisted
   args: {
     label: 'Start date',
     variant: VARIANT.INPUT,
@@ -156,7 +153,6 @@ export const Example: StoryObj = {
     'locale-today-label': 'Today',
     'locale-spinbutton-description': 'Use arrow keys to change the value or type a number',
   },
-  // End AI-Assisted
 };
 
 export const InputWithValue: StoryObj = {
@@ -176,7 +172,6 @@ export const InputWithValue: StoryObj = {
 };
 
 export const DefaultVariant: StoryObj = {
-  // AI-Assisted
   args: {
     label: 'Date range',
     variant: VARIANT.DEFAULT,
@@ -185,12 +180,11 @@ export const DefaultVariant: StoryObj = {
     required: true,
     'help-text': 'Select a start and end date',
     'locale-today-label': 'Today',
+    'locale-range-start-selected-label': 'Start date selected. Select an end date.',
   },
-  // End AI-Assisted
 };
 
 export const DefaultWithValue: StoryObj = {
-  // AI-Assisted
   args: {
     label: 'Date range',
     value: '2025-07-13',
@@ -202,7 +196,6 @@ export const DefaultWithValue: StoryObj = {
     'help-text': 'Helper text',
     'locale-today-label': 'Today',
   },
-  // End AI-Assisted
 };
 
 export const WeekSelection: StoryObj = {

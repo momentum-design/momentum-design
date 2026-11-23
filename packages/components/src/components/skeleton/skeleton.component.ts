@@ -13,6 +13,8 @@ import type { SkeletonVariant } from './skeleton.types';
  *
  * @slot - Content to wrap (optional). When provided, skeleton takes dimensions of this content.
  *
+ * @cssproperty --mdc-skeleton-animation-delay - Delay of the two-second shimmer cycle (default: 0s).
+ *   Use a negative CSS time to start partway through the cycle and align instances with application-managed timing.
  * @cssproperty --mdc-skeleton-background-color - background color of the skeleton
  * @cssproperty --mdc-skeleton-height - height of the skeleton
  * @cssproperty --mdc-skeleton-width - width of the skeleton
