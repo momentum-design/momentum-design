@@ -446,3 +446,54 @@ export const SlottedInputElement: StoryObj = {
     },
   },
 };
+
+export const AutofillContactsSafari: StoryObj = {
+  name: 'Autofill contacts (Safari)',
+  render: () => html`
+    <style>
+      .autofill-sandbox {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 22rem;
+      }
+
+      .autofill-sandbox input.native {
+        height: 2rem;
+        box-sizing: border-box;
+      }
+    </style>
+    <form class="autofill-sandbox">
+      <mdc-input label="First name" name="given-name" autocomplete="given-name"></mdc-input>
+      <mdc-input label="Email" name="email" autocomplete="email"></mdc-input>
+      <mdc-input
+        label="Email (extended)"
+        name="email-extra"
+        placeholder="Placeholder"
+        autocomplete="email"
+        trailing-button
+        required
+        help-text="Trailing button, placeholder, required, help text"
+      ></mdc-input>
+      <br />
+      <br />
+      <label>
+        Email (native, for comparison)
+        <input class="native" type="email" name="email-native" autocomplete="email" />
+      </label>
+      <label>
+        Email (native, color-scheme: dark)
+        <input class="native" type="email" name="email-native-dark" autocomplete="email" style="color-scheme: dark;" />
+      </label>
+    </form>
+  `,
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Sandbox for the Safari AutoFill contacts icon, includes a native input to compare against. Open this story in Safari.',
+      },
+    },
+  },
+};
