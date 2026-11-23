@@ -5,7 +5,7 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = css`
   :host {
     cursor: pointer;
-    height: 1.5rem;
+    height: var(--mds-size-theme-md-24);
   }
 
   :host([color='default']:hover) {
