@@ -95,6 +95,7 @@
   "space": "./lottie/space.json",
   "success": "./lottie/success.json",
   "teams": "./lottie/teams.json",
+  "webex_logo_intro": "./lottie/webex_logo_intro.json",
   "webex_logo_loop": "./lottie/webex_logo_loop.json",
   "welcome": "./lottie/welcome.json"
 }
