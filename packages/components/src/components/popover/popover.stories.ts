@@ -759,6 +759,176 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
   `,
 };
 
+export const DismissalWithLaterOverlays: StoryObj = {
+  parameters: {
+    // Keep Reset viewport-fixed rather than contained by the Fluid theme's glass backdrop filter.
+    glassContainer: false,
+    ...hideAllControls(true),
+    ...describeStory(
+      html`
+        <p>The first two examples use separate stack groups. Use <b>Reset examples</b> between attempts.</p>
+        <ol>
+          <li>
+            <b>Popover + Dialog:</b> The Dialog opens after 200 ms, partly behind the Popover. Press Escape from the
+            Popover's trigger or button, or click its backdrop, to close the Popover. Use <b>Close Dialog</b> afterward
+            to restore scrolling.
+          </li>
+          <li>
+            <b>Popover + Tooltip:</b> The Tooltip opens after 200 ms without moving focus. The Popover's Escape and
+            backdrop dismissal still work.
+          </li>
+          <li>
+            <b>Hovered Tooltip:</b> Open the Popover, then hover the Tooltip trigger without clicking. Keep focus on the
+            Popover's trigger and press Escape: both close.
+          </li>
+        </ol>
+      `,
+      true,
+    ),
+  },
+  render: () => {
+    let openingTimer: number | undefined;
+    const cancelOpening = () => window.clearTimeout(openingTimer);
+    const openLater = (event: Event, id: string) => {
+      cancelOpening();
+      const popover = event.currentTarget as Popover;
+      const overlay = document.getElementById(id) as Popover | Dialog;
+      openingTimer = window.setTimeout(() => {
+        if (popover.isConnected && popover.visible) {
+          overlay.visible = true;
+        }
+      }, 200);
+    };
+    const closeDialog = () => {
+      const dialog = document.getElementById('later-dialog') as Dialog;
+      dialog.visible = false;
+    };
+    const resetExamples = () => {
+      cancelOpening();
+      document
+        .getElementById('later-overlay-examples')!
+        .querySelectorAll('mdc-popover, mdc-tooltip, mdc-dialog')
+        .forEach(overlay => overlay.removeAttribute('visible'));
+    };
+
+    return html`
+      <style>
+        .backgroundGradient:has(#later-overlay-examples) {
+          height: auto;
+          min-height: 100%;
+        }
+        #later-dialog::part(dialog-close-btn) {
+          display: none;
+        }
+      </style>
+      <div id="later-overlay-examples" style="display: grid; gap: 2rem;">
+        <section aria-labelledby="later-dialog-heading">
+          <mdc-text id="later-dialog-heading" tagname="h3">1. Popover + Dialog</mdc-text>
+          <div style="position: relative; min-height: 12rem;">
+            <mdc-button id="later-dialog-trigger">Open Popover</mdc-button>
+            <mdc-popover
+              id="later-dialog-options"
+              triggerID="later-dialog-trigger"
+              stack-group-name="dialog-example-popover"
+              placement="bottom-start"
+              interactive
+              backdrop
+              hide-on-escape
+              hide-on-outside-click
+              @shown=${(event: Event) => openLater(event, 'later-dialog')}
+              @hidden=${cancelOpening}
+            >
+              <mdc-button id="later-dialog-action">Popover button</mdc-button>
+            </mdc-popover>
+            <mdc-dialog
+              id="later-dialog"
+              stack-group-name="dialog-example-dialog"
+              hide-backdrop
+              .focusTrap=${false}
+              z-index="1"
+              header-text="Dialog"
+              close-button-aria-label="Close Dialog"
+              style="inset: auto; inset-block-start: 2rem; inset-inline-start: 2rem; transform: none; --mdc-dialog-width: 18rem;"
+              @close=${closeDialog}
+            >
+              <div slot="dialog-body">Dialog content.</div>
+              <mdc-button id="later-dialog-close" slot="footer-button-primary" @click=${closeDialog}>
+                Close Dialog
+              </mdc-button>
+            </mdc-dialog>
+          </div>
+        </section>
+
+        <section aria-labelledby="later-tooltip-heading">
+          <mdc-text id="later-tooltip-heading" tagname="h3">2. Popover + Tooltip</mdc-text>
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; min-height: 12rem;">
+            <mdc-button id="later-tooltip-options-trigger">Open Popover</mdc-button>
+            <mdc-popover
+              id="later-tooltip-options"
+              triggerID="later-tooltip-options-trigger"
+              stack-group-name="tooltip-example-popover"
+              placement="bottom-start"
+              interactive
+              backdrop
+              hide-on-escape
+              hide-on-outside-click
+              @shown=${(event: Event) => openLater(event, 'later-tooltip')}
+              @hidden=${cancelOpening}
+            >
+              <mdc-button id="later-tooltip-action">Popover button</mdc-button>
+            </mdc-popover>
+            <mdc-button id="later-tooltip-trigger">Tooltip trigger</mdc-button>
+            <mdc-tooltip
+              id="later-tooltip"
+              triggerID="later-tooltip-trigger"
+              stack-group-name="tooltip-example-tooltip"
+              placement="bottom"
+            >
+              Tooltip content.
+            </mdc-tooltip>
+          </div>
+        </section>
+
+        <section aria-labelledby="later-hover-heading">
+          <mdc-text id="later-hover-heading" tagname="h3">3. Hovered Tooltip</mdc-text>
+          <div style="min-height: 12rem;">
+            <mdc-button id="later-hover-options-trigger">Open Popover</mdc-button>
+            <mdc-popover
+              id="later-hover-options"
+              triggerID="later-hover-options-trigger"
+              stack-group-name="hover-focus-example"
+              placement="bottom-start"
+              interactive
+              backdrop
+              hide-on-escape
+              hide-on-outside-click
+            >
+              <mdc-button id="later-hover-trigger">Tooltip trigger</mdc-button>
+              <mdc-button id="later-hover-action">Popover button</mdc-button>
+              <mdc-tooltip
+                id="later-hover-tooltip"
+                triggerID="later-hover-trigger"
+                stack-group-name="hover-focus-example"
+                placement="top"
+                delay="200,0"
+              >
+                Tooltip content.
+              </mdc-tooltip>
+            </mdc-popover>
+          </div>
+        </section>
+
+        <mdc-button
+          style="position: fixed; inset-block-end: 1rem; inset-inline-end: 1rem; z-index: 2147483647;"
+          @click=${resetExamples}
+        >
+          Reset examples
+        </mdc-button>
+      </div>
+    `;
+  },
+};
+
 export const PopoverScrollOverflow: StoryObj = {
   args: {
     ...Example.args,
