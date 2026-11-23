@@ -737,19 +737,24 @@ class Popover
    * @internal
    */
   protected onOutsidePopoverClick = (event: MouseEvent) => {
-    if (!this.depthManager.isHostOnTop()) return;
-
     const path = event.composedPath();
-    const insidePopoverClick =
-      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
-    const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
-    if (!insidePopoverClick || clickedOnBackdrop) {
+    // A backdrop click closes its owner even when a later overlay is on top.
+    if (path[0] === this.backdropElement && this.depthManager.has(this)) {
       this.hide();
       PopoverEventManager.onClickOutside(this);
-      if (clickedOnBackdrop) {
-        event.stopPropagation();
-      }
+      event.stopPropagation();
+      return;
+    }
+
+    if (!this.depthManager.isHostOnTop()) return;
+
+    const insidePopoverClick =
+      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
+
+    if (!insidePopoverClick) {
+      this.hide();
+      PopoverEventManager.onClickOutside(this);
     }
   };
 
@@ -762,7 +767,11 @@ class Popover
    * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
+    if (
+      !this.visible ||
+      this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE ||
+      !this.depthManager.isHostEscapeTarget()
+    ) {
       return;
     }
 
