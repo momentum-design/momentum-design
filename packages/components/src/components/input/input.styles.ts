@@ -144,6 +144,16 @@ const styles = [
     :host([disabled])::part(character-counter) {
       color: var(--mds-color-theme-text-primary-disabled);
     }
+
+    input[part='input-text']::-webkit-contacts-auto-fill-button {
+      background-color: var(--mdc-input-text-color);
+    }
+
+    /* On hover, and on Safari's yellow autofilled background, use Safari's own icon color. */
+    input[part='input-text']::-webkit-contacts-auto-fill-button:hover,
+    input[part='input-text']:-webkit-autofill::-webkit-contacts-auto-fill-button {
+      background-color: revert;
+    }
   `,
   ...hostFocusRingStyles(true),
 ];

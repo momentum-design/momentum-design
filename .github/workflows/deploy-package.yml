@@ -34,7 +34,7 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Cache Dependencies
         uses: actions/cache@v5
@@ -210,6 +210,10 @@ jobs:
     if: ${{ needs.generate-package-matrix.outputs.packages != '[]' && needs.generate-package-matrix.outputs.packages != '' }}
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      id-token: write
+
     strategy:
       matrix:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
@@ -246,9 +250,6 @@ jobs:
         run: yarn md-automation -- --command increment-packages --packages ${{ matrix.package }}
         env:
            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Configure Yarn
-        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: ( ${{ matrix.package }} ) Deploy - NPMJS
         run: yarn workspace ${{ matrix.package }} publish:npmjs
