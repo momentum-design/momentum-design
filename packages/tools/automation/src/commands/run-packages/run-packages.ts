@@ -21,7 +21,7 @@ class RunPackages extends Command {
       .then((packages) => {
         workspaces = packages.collection.map((pack) => `${pack.package}`);
 
-        return Execute.run(`yarn workspaces foreach --from '?(${workspaces.join('|')})' run ${script}`);
+        return Execute.run(`yarn workspaces foreach --worktree --from '?(${workspaces.join('|')})' run ${script}`);
       })
       .then((output) => {
         Execute.emit(output);

@@ -50,7 +50,7 @@
       "dependencyTypes": [
         "packageManager"
       ],
-      "pinVersion": "yarn@3.2.4"
+      "pinVersion": "yarn@4.18.1"
     },
     {
       "label": "Ensure all yarn engines are not set",
