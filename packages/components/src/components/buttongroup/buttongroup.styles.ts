@@ -4,7 +4,7 @@ import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
-    --mdc-buttongroup-border-radius: 1.25rem;
+    --mdc-buttongroup-border-radius: var(--mds-radius-theme-full);
     --mdc-buttongroup-border-color: var(--mds-color-theme-outline-button-normal);
     --mdc-buttongroup-divider-color: var(--mds-color-theme-outline-secondary-normal);
     --mdc-buttongroup-border-width: var(--mds-border-theme-default);
