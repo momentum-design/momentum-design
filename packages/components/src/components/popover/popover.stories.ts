@@ -814,6 +814,76 @@ export const PopoverScrollOverflow: StoryObj = {
   `,
 };
 
+export const ScrollableWithFixedOverlays: StoryObj = {
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory(
+      html`
+        <mdc-text>
+          Open settings, hover over Details, or open the Notification sound list. In Safari, both fixed overlays should
+          remain fully visible outside the scrolling panel, including after scrolling.
+        </mdc-text>
+        <mdc-text>
+          Parent elevation is explicitly disabled to isolate clipping from the separate Safari positioning issue with
+          elevated parents. This is a regression fixture, not a recommendation to disable elevation in applications. The
+          dropdown has an explicit width to avoid the separate percentage-width issue.
+        </mdc-text>
+      `,
+      true,
+    ),
+  },
+  render: () => html`
+    <div id="scrollable-fixed-overlays-boundary" style="height: 28rem; padding: 2rem 8rem;">
+      <mdc-button id="scrollable-fixed-overlays-trigger">Open settings</mdc-button>
+      <mdc-popover
+        triggerID="scrollable-fixed-overlays-trigger"
+        placement="bottom-start"
+        boundary="#scrollable-fixed-overlays-boundary"
+        style="--mdc-popover-max-width: 16rem; --mdc-popover-elevation-3: none;"
+        interactive
+        size
+        show-arrow
+        close-button
+        close-button-aria-label="Close settings"
+        hide-on-escape
+        hide-on-outside-click
+        focus-back-to-trigger
+        aria-label="Settings"
+      >
+        <div style="padding-block-start: 2rem;">
+          <mdc-button id="scrollable-fixed-tooltip-trigger" style="margin-inline-start: 7rem;">Details</mdc-button>
+          <mdc-tooltip
+            triggerID="scrollable-fixed-tooltip-trigger"
+            strategy="fixed"
+            placement="right"
+            boundary="#scrollable-fixed-overlays-boundary"
+            color="contrast"
+            show-arrow
+            delay="0,0"
+          >
+            More details stay visible outside the scrollable settings panel.
+          </mdc-tooltip>
+          <mdc-select
+            label="Notification sound"
+            placeholder="Select a sound"
+            strategy="fixed"
+            boundary="#scrollable-fixed-overlays-boundary"
+            style="display: block; margin-block-start: 2rem; --mdc-select-listbox-width: 20rem;"
+          >
+            <mdc-selectlistbox>
+              <mdc-option value="chime" label="Chime"></mdc-option>
+              <mdc-option value="soft-tone" label="Soft tone"></mdc-option>
+              <mdc-option value="bright-tone" label="Bright tone"></mdc-option>
+              <mdc-option value="bell" label="Bell"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-select>
+          <mdc-button style="display: block; margin-block-start: 28rem;">End of settings</mdc-button>
+        </div>
+      </mdc-popover>
+    </div>
+  `,
+};
+
 export const PopoverInChangingList: StoryObj = {
   args: {
     ...Example.args,
