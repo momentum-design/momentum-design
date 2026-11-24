@@ -705,6 +705,73 @@ export const NestedMenu: StoryObj = {
   `,
 };
 
+export const ElevatedWithFixedOverlays: StoryObj = {
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory(
+      html`
+        <mdc-text>
+          Open settings, hover over Details, or open the Notification sound list. Each fixed overlay should stay next to
+          its trigger in Safari and other browsers.
+        </mdc-text>
+        <mdc-text>
+          The parent has elevation but does not scroll. This separates positioning from the Safari clipping issue in
+          scrollable panels. The dropdown has an explicit width to exclude the separate percentage-width issue.
+        </mdc-text>
+      `,
+      true,
+    ),
+  },
+  render: () => html`
+    <div id="elevated-fixed-overlays-boundary" class="mds-elevation" style="height: 28rem; padding: 2rem 8rem;">
+      <mdc-button id="elevated-fixed-overlays-trigger">Open settings</mdc-button>
+      <mdc-popover
+        triggerID="elevated-fixed-overlays-trigger"
+        placement="bottom-start"
+        boundary="#elevated-fixed-overlays-boundary"
+        style="--mdc-popover-max-width: 16rem;"
+        interactive
+        show-arrow
+        close-button
+        close-button-aria-label="Close settings"
+        hide-on-escape
+        hide-on-outside-click
+        focus-back-to-trigger
+        aria-label="Settings"
+      >
+        <div style="padding-block-start: 2rem;">
+          <mdc-button id="elevated-fixed-tooltip-trigger" style="margin-inline-start: 7rem;">Details</mdc-button>
+          <mdc-tooltip
+            triggerID="elevated-fixed-tooltip-trigger"
+            strategy="fixed"
+            placement="right"
+            boundary="#elevated-fixed-overlays-boundary"
+            color="contrast"
+            show-arrow
+            delay="0,0"
+          >
+            More details stay next to the Details button.
+          </mdc-tooltip>
+          <mdc-select
+            label="Notification sound"
+            placeholder="Select a sound"
+            strategy="fixed"
+            boundary="#elevated-fixed-overlays-boundary"
+            style="display: block; margin-block-start: 2rem; --mdc-select-listbox-width: 20rem;"
+          >
+            <mdc-selectlistbox>
+              <mdc-option value="chime" label="Chime"></mdc-option>
+              <mdc-option value="soft-tone" label="Soft tone"></mdc-option>
+              <mdc-option value="bright-tone" label="Bright tone"></mdc-option>
+              <mdc-option value="bell" label="Bell"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-select>
+        </div>
+      </mdc-popover>
+    </div>
+  `,
+};
+
 export const PopoverWithTooltipAndDialog: StoryObj = {
   args: {
     ...Example.args,
