@@ -14,7 +14,7 @@ const styles = css`
 
   :host([data-btn-type='pill'][size='24'])::part(anchor),
   :host([data-btn-type='pill-with-icon'][size='24'])::part(anchor) {
-    padding: 0 0.625rem;
+    padding: 0 var(--mds-spacing-theme-pad-h-xs);
   }
 
   :host([data-btn-type='pill'][size='32'])::part(anchor),
