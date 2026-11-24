@@ -53,7 +53,8 @@ The same step name is the same size for gap and padding.
 | Token | px | Use for |
 | --- | --- | --- |
 | `pad-none` / `gap-none` | 0 | Flush padding, or intentionally collapsed space |
-| `pad-v-2xs` / `pad-h-2xs` / `gap-2xs` | 4 | Smallest padding or sibling gap. Chips, icon clusters, compact controls |
+| `pad-v-3xs` / `pad-h-3xs` | 2 | Smallest padding. Dense inline elements where 4px is too large |
+| `pad-v-2xs` / `pad-h-2xs` / `gap-2xs` | 4 | Smaller padding or sibling gap. Chips, icon clusters, compact controls |
 | `pad-v-xs` / `pad-h-xs` / `gap-xs` | 8 | Compact padding. Default control v pad. Tight sibling gap, icon-to-label |
 | `pad-v-sm` / `pad-h-sm` / `gap-sm` | 12 | Standard padding. Default control h pad. Lists, tabs, cards |
 | `pad-v-md` / `pad-h-md` / `gap-md` | 16 | Roomy padding and wide layout gap |
