@@ -17,7 +17,7 @@ const styles = css`
     background-position: right;
   }
   :host::part(body) {
-    padding-top: 2rem !important;
+    padding-top: var(--mds-spacing-theme-pad-v-2xl) !important;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(0px, 1fr));
   }
@@ -27,14 +27,14 @@ const styles = css`
 
   :host mdc-illustration {
     width: auto;
-    margin-inline-start: 1rem;
-    margin-inline-end: 2rem;
+    margin-inline-start: var(--mds-spacing-theme-pad-h-md);
+    margin-inline-end: var(--mds-spacing-theme-pad-h-2xl);
   }
   :host::part(content-container) {
     color: var(--mdc-dialog-description-text-color);
     width: auto;
-    margin-inline-start: 2rem;
-    margin-inline-end: 1rem;
+    margin-inline-start: var(--mds-spacing-theme-pad-h-2xl);
+    margin-inline-end: var(--mds-spacing-theme-pad-h-md);
   }
 
   @media (max-width: 27rem) {
@@ -45,8 +45,8 @@ const styles = css`
       display: none;
     }
     :host::part(content-container) {
-      margin-inline-start: 0;
-      margin-inline-end: 0;
+      margin-inline-start: var(--mds-spacing-theme-pad-none);
+      margin-inline-end: var(--mds-spacing-theme-pad-none);
     }
   }
 `;
