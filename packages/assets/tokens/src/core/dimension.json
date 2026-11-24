@@ -6,7 +6,7 @@
       "description": "0px — Flush corners, collapsed gaps, and no stroke. Theme: radius/none, border/none, spacing/pad-none, spacing/gap-none."
     },
     "1": {
-      "value": "1px",
+      "value": "0.0625rem",
       "type": "dimension",
       "description": "1px — Default stroke. Theme: border/default."
     },
@@ -106,7 +106,7 @@
       "description": "124px — Maximum avatar / hero. Theme: size/xl/124."
     },
     "full": {
-      "value": "50%",
+      "value": "9999px",
       "type": "dimension",
       "description": "True circle. Theme: radius/full. Figma FLOAT cannot store %."
     }
