@@ -10,7 +10,7 @@ const styles = css`
       --mdc-button-background
     ); /* Using background instead of background-color since gradients are not supported in background-color */
     border-color: var(--mdc-button-border-color);
-    border-radius: 1.25rem;
+    border-radius: var(--mds-radius-theme-full);
     color: var(--mdc-button-text-color);
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     outline: none;
@@ -153,22 +153,21 @@ const styles = css`
   :host([size='32']) {
     font-size: var(--mds-font-size-body-large);
     padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-sm);
-    gap: 0.375rem;
+    gap: var(--mds-spacing-theme-gap-2xs);
   }
   :host([size='28']) {
     font-size: var(--mds-font-size-body-midsize);
     line-height: var(--mds-font-lineheight-body-midsize);
     padding: var(--mds-spacing-theme-pad-none) var(--mds-spacing-theme-pad-h-sm);
-    gap: 0.375rem;
+    gap: var(--mds-spacing-theme-gap-2xs);
   }
   :host([size='24']) {
     font-size: var(--mds-font-size-body-small);
     line-height: var(--mds-font-lineheight-body-small);
-    padding: 0 0.625rem;
+    padding: 0 var(--mds-spacing-theme-pad-h-xs);
     gap: var(--mds-spacing-theme-gap-2xs);
   }
   :host([size='20']) {
-    padding: 0.0625rem;
     aspect-ratio: 1;
   }
 
