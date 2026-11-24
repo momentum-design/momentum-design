@@ -24,7 +24,7 @@ const styles = [
     }
 
     :host::part(presence-content) {
-      border-radius: 50%;
+      border-radius: var(--mds-radius-theme-full);
       background-color: var(--mdc-presence-overlay-background-color);
       display: flex;
       justify-content: center;
@@ -41,8 +41,8 @@ const styles = [
       height: 1.5625rem;
     }
     :host([size='72'])::part(presence-content) {
-      width: 1.75rem;
-      height: 1.75rem;
+      width: var(--mds-size-theme-md-28);
+      height: var(--mds-size-theme-md-28);
     }
     :host([size='88'])::part(presence-content) {
       width: 2.125rem;
@@ -54,7 +54,7 @@ const styles = [
     }
 
     :host::part(mdc-presence-icon) {
-      border-radius: 50%;
+      border-radius: var(--mds-radius-theme-full);
     }
     :host::part(mdc-presence-icon__active) {
       color: var(--mdc-presence-active-background-color);
