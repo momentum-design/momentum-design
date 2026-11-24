@@ -46,7 +46,7 @@ const styles = [
       background-color: var(--mdc-badge-primary-background-color);
     }
     :host::part(badge-icon) {
-      padding: 2px;
+      padding: var(--mds-spacing-theme-pad-v-3xs);
       border-radius: var(--mds-radius-theme-full);
     }
     :host([type='icon'][variant='primary'])::part(badge-icon) {
