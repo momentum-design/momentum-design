@@ -18,13 +18,13 @@ const styles = [
       padding: unset;
       margin: unset;
       outline: none;
-      border-radius: 0.25rem;
+      border-radius: var(--mds-radius-theme-xs);
       position: relative;
       cursor: pointer;
     }
     :host::part(overlay) {
       position: absolute;
-      border-radius: 100vh;
+      border-radius: var(--mds-radius-theme-full);
       height: 100%;
       width: 100%;
       z-index: 1;
