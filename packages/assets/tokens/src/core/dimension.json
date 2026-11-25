@@ -6,14 +6,14 @@
       "description": "0px — Flush corners, collapsed gaps, and no stroke. Theme: radius/none, border/none, spacing/pad-none, spacing/gap-none."
     },
     "1": {
-      "value": "1px",
+      "value": "0.0625rem",
       "type": "dimension",
       "description": "1px — Default stroke. Theme: border/default."
     },
     "2": {
       "value": "0.125rem",
       "type": "dimension",
-      "description": "2px — Emphasis stroke; barely softened corners. Theme: border/emphasis, radius/2xs."
+      "description": "2px — Emphasis stroke; barely softened corners; small padding. Theme: border/emphasis, radius/2xs, spacing/pad-v-3xs, spacing/pad-h-2xs."
     },
     "4": {
       "value": "0.25rem",
@@ -106,9 +106,9 @@
       "description": "124px — Maximum avatar / hero. Theme: size/xl/124."
     },
     "full": {
-      "value": "50%",
+      "value": "9999px",
       "type": "dimension",
-      "description": "True circle. Theme: radius/full. Figma FLOAT cannot store %."
+      "description": "True circle. Theme: radius/full."
     }
   }
 }

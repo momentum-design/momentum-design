@@ -3,6 +3,7 @@ import path from 'path';
 import CONSTANTS from '../../../src/utils/tag-name/constants';
 
 export enum PROMPT_TYPE {
+  CHECKBOX = 'checkbox',
   INPUT = 'input',
 }
 
@@ -19,6 +20,8 @@ export enum TYPE {
 }
 
 export const componentName: string = 'componentName';
+export const componentClassName: string = 'componentClassName';
+export const componentDependencies: string = 'componentDependencies';
 export const componentNamePrefix: string = CONSTANTS.NAMESPACE.PREFIX;
 export const componentNameSeparator: string = CONSTANTS.NAMESPACE.SEPARATOR;
 
