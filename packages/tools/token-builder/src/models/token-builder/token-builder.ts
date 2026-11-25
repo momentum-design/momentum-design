@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import StyleDictionary from 'style-dictionary';
-import { registerTransforms } from '@tokens-studio/sd-transforms';
+import { registerTransforms, checkAndEvaluateMath } from '@tokens-studio/sd-transforms';
 
 import {
   Logger,
@@ -74,6 +74,18 @@ class TokenBuilder {
           'ts/color/modifiers': {
             format: 'hex',
           },
+        });
+
+        // sd-transforms rounds math results to 3 decimals (0.0625rem -> 0.063rem). Plain literals skip that.
+        const PLAIN_DIMENSION = /^-?\d*\.?\d+(px|rem|em)?$/;
+        StyleDictionary.registerTransform({
+          name: 'ts/resolveMath',
+          type: 'value',
+          transitive: true,
+          matcher: (token) => typeof token.value === 'string',
+          transformer: (token) => (PLAIN_DIMENSION.test(token.value)
+            ? token.value
+            : checkAndEvaluateMath(token.value)),
         });
 
         // Must be called AFTER registerTransforms — see AnimationParser.register() for details.
