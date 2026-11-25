@@ -12,6 +12,7 @@ const LISTBOX_ID = 'select-listbox';
 
 const DEFAULTS = {
   DISABLE_FLIP: false,
+  MATCH_TRIGGER_WIDTH: false,
 } as const;
 
 export { ARROW_ICON, DEFAULTS, TAG_NAME, TRIGGER_ID, LISTBOX_ID };

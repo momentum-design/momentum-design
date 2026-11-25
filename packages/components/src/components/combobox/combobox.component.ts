@@ -57,7 +57,7 @@ import type { ComboboxFilter, Placement } from './combobox.types';
  * @cssproperty --mdc-combobox-height - The height of the combobox trigger control
  * @cssproperty --mdc-combobox-icon-color - The icon color of the combobox
  * @cssproperty --mdc-combobox-listbox-height - The height of the listbox inside the combobox
- * @cssproperty --mdc-combobox-listbox-width - The width of the listbox inside the combobox
+ * @cssproperty --mdc-combobox-listbox-width - The width of the listbox inside the combobox. When set, it takes precedence over `match-trigger-width`.
  * @cssproperty --mdc-combobox-width - The width of the combobox
  * @cssproperty --mdc-combobox-hover-background-color - The background color of the combobox when hovered
  * @cssproperty --mdc-label-font-size - Font size for the label text.
@@ -157,6 +157,21 @@ class Combobox
    */
   @property({ type: String, reflect: true })
   strategy: PopoverStrategy = POPOVER_DEFAULTS.STRATEGY;
+
+  /**
+   * When `strategy` is `fixed`, makes the dropdown as wide as the combobox trigger.
+   * Without it, the default percentage-based listbox width resolves against the viewport
+   * (or the nearest ancestor that contains fixed elements) instead of the combobox.
+   * It has no effect when `strategy` is `absolute`.
+   *
+   * Precedence:
+   * - An explicit `--mdc-combobox-listbox-width` (inline style, alias custom property or stylesheet rule)
+   *   takes precedence and keeps the default behaviour.
+   * - An inherited `--mdc-popover-width` takes precedence over the trigger width.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'match-trigger-width' })
+  matchTriggerWidth: boolean = false;
 
   /**
    * The z-index of the popover within Combobox.

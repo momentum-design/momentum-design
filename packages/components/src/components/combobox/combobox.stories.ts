@@ -41,6 +41,7 @@ const render = (args: Args) =>
       help-text-type="${ifDefined(args['help-text-type'])}"
       info-icon-aria-label="${ifDefined(args['info-icon-aria-label'])}"
       label="${ifDefined(args.label)}"
+      ?match-trigger-width="${args['match-trigger-width']}"
       name="${ifDefined(args.name)}"
       no-result-text="${ifDefined(args['no-result-text'])}"
       placeholder="${ifDefined(args.placeholder)}"
@@ -101,6 +102,9 @@ const meta: Meta = {
     },
     label: {
       control: 'text',
+    },
+    'match-trigger-width': {
+      control: 'boolean',
     },
     name: {
       control: 'text',

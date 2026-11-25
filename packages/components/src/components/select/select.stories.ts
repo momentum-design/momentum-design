@@ -51,6 +51,7 @@ const render = (args: Args) =>
       ?readonly="${args.readonly}"
       boundary="${ifDefined(args.boundary)}"
       strategy="${ifDefined(args.strategy)}"
+      ?match-trigger-width="${args['match-trigger-width']}"
       popover-z-index="${ifDefined(args['popover-z-index'])}"
       backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
@@ -132,6 +133,9 @@ const meta: Meta = {
     strategy: {
       control: 'select',
       options: Object.values(STRATEGY),
+    },
+    'match-trigger-width': {
+      control: 'boolean',
     },
     'popover-z-index': {
       control: 'number',

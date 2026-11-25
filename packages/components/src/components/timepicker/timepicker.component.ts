@@ -41,6 +41,7 @@ import type { OptionLabelFormatter, Placement, TimeFormat } from './timepicker.t
  * @cssproperty --mdc-timepicker-height - The height of the timepicker trigger control.
  * @cssproperty --mdc-timepicker-width - Width of the timepicker component.
  * @cssproperty --mdc-timepicker-listbox-height - The max-height of the dropdown listbox. Default shows ~6 items.
+ * @cssproperty --mdc-timepicker-listbox-width - The width of the dropdown listbox (default: `100%`). When set, it takes precedence over `match-trigger-width`.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -91,6 +92,22 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    */
   @property({ type: String, reflect: true })
   strategy: PopoverStrategy = POPOVER_DEFAULTS.STRATEGY;
+
+  /**
+   * When `strategy` is `fixed`, makes the dropdown as wide as the timepicker trigger.
+   * Without it, the default percentage-based listbox width resolves against the viewport
+   * (or the nearest ancestor that contains fixed elements) instead of the timepicker.
+   * It has no effect when `strategy` is `absolute` or when `append-to` is set.
+   * The dropdown never becomes narrower than its options.
+   *
+   * Precedence:
+   * - An explicit `--mdc-timepicker-listbox-width` (inline style, alias custom property or stylesheet rule)
+   *   takes precedence and keeps the default behaviour.
+   * - An inherited `--mdc-popover-width` takes precedence over the trigger width.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'match-trigger-width' })
+  matchTriggerWidth: boolean = DEFAULTS.MATCH_TRIGGER_WIDTH;
 
   /**
    * Determines whether the dropdown should flip its position when it hits the boundary.
