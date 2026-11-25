@@ -13,7 +13,7 @@
     "2": {
       "value": "0.125rem",
       "type": "dimension",
-      "description": "2px — Emphasis stroke; barely softened corners. Theme: border/emphasis, radius/2xs."
+      "description": "2px — Emphasis stroke; barely softened corners; small padding. Theme: border/emphasis, radius/2xs, spacing/pad-v-3xs, spacing/pad-h-2xs."
     },
     "4": {
       "value": "0.25rem",
@@ -108,7 +108,7 @@
     "full": {
       "value": "9999px",
       "type": "dimension",
-      "description": "True circle. Theme: radius/full. Figma FLOAT cannot store %."
+      "description": "True circle. Theme: radius/full."
     }
   }
 }

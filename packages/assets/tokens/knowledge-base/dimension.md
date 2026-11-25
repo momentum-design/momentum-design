@@ -20,8 +20,7 @@ Use theme tokens in components and product layouts. Do not pick a core
 
 The `dimension.*` tokens form the primitive scale. Most numeric step names
 describe their pixel-equivalent size at the default root font size, while the
-source uses relative units where appropriate. `dimension.full` is the
-percentage-based primitive for circles and fully rounded shapes.
+source uses relative units where appropriate. `dimension.full` is a method for pill shaping objects.
 
 Theme tokens reference this scale. Select a spacing, border, radius, or
 size theme token. Do not use the core step directly.
@@ -98,7 +97,7 @@ Radius uses the same t-shirt words, starting one step below spacing.
 | `sm` | 8 | Default surfaces, inputs, dialogs, list items, and toasts |
 | `md` | 12 | More prominent rounding on bounded controls |
 | `lg` | 16 | Larger corner radius above `md`, short of a pill |
-| `full` | 50% | Circles such as avatars, radios, slider thumbs, and presence indicators |
+| `full` | 9999px | Circles such as avatars, radios, slider thumbs, and presence indicators |
 
 Authoritative sources:
 `packages/assets/tokens/src/theme/stable/light.json` and
