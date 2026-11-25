@@ -34,7 +34,7 @@
 </g>
 </g>
 <defs>
-<filter id="filter0_f_32014_1532" x="0.127577" y="15.6339" width="12.7292" height="11.8692" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_f_32014_1532" x="0.127577" y="15.6339" width="12.7253" height="11.8692" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="0.23504" result="effect1_foregroundBlur_32014_1532"/>
@@ -49,7 +49,7 @@
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="0.23504" result="effect1_foregroundBlur_32014_1532"/>
 </filter>
-<filter id="filter3_f_32014_1532" x="14.4362" y="15.8848" width="17.4011" height="16.2881" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter3_f_32014_1532" x="14.4362" y="15.8848" width="17.405" height="16.2881" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="0.23504" result="effect1_foregroundBlur_32014_1532"/>
@@ -74,7 +74,7 @@
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="0.23504" result="effect1_foregroundBlur_32014_1532"/>
 </filter>
-<filter id="filter8_f_32014_1532" x="13.9635" y="24.4509" width="4.7136" height="7.74558" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter8_f_32014_1532" x="13.9635" y="24.4509" width="4.70969" height="7.74558" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="0.23504" result="effect1_foregroundBlur_32014_1532"/>
