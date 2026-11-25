@@ -39,8 +39,8 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@microsoft/api-documenter": "^7.25.10",
-    "@microsoft/api-extractor": "^7.47.5",
+    "@microsoft/api-documenter": "^7.30.20",
+    "@microsoft/api-extractor": "~7.59.0",
     "@types/jest": "^29.5.12",
     "@types/node": "20.14.9",
     "@types/yargs": "^17.0.32",

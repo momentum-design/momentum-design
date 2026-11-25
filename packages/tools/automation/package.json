@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@momentum-design/telemetry": "workspace:^",
-    "tar": "^7.4.3",
+    "tar": "^7.5.23",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

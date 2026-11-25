@@ -6,6 +6,7 @@ import copy from 'rollup-plugin-copy';
 import { fileURLToPath } from 'url';
 // https://astro.build/config
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import path from 'path';
 import rehypeMdcText from './src/plugins/rehype-mdc-text.mjs';
 
@@ -72,12 +73,10 @@ export default defineConfig({
   ],
   site: 'https://momentum.design',
   markdown: {
-    // Keep Astro's built-in remark plugins (remark-gfm for tables, etc.);
-    // providing custom plugins otherwise replaces the default set in Astro 1.x.
-    extendDefaultPlugins: true,
+    // The unified processor keeps GFM (tables, etc.) and smartypants enabled by default.
     // Wrap knowledge-base article body text in <mdc-text>. Scoped to KB content
     // inside the plugin so inheriting MDX pages are not affected.
-    rehypePlugins: [rehypeMdcText],
+    processor: unified({ rehypePlugins: [rehypeMdcText] }),
   },
   vite: {
     plugins: [rewriteBareDynamicImports()],
