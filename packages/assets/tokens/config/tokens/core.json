@@ -47,56 +47,64 @@
       "destination": "theme/webex/dark-stable",
       "filters": {
         "types": [
-          "theme"
+          "theme",
+          "charting"
         ]
       },
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
         "core/value.json",
         "core/dimension.json",
-        "theme/stable/dark.json"
+        "theme/stable/dark.json",
+        "charting/dark.json"
       ]
     },
     {
       "destination": "theme/webex/light-stable",
       "filters": {
         "types": [
-          "theme"
+          "theme",
+          "charting"
         ]
       },
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
         "core/value.json",
         "core/dimension.json",
-        "theme/stable/light.json"
+        "theme/stable/light.json",
+        "charting/light.json"
       ]
     },
     {
       "destination": "theme/webex/dark-fluid",
       "filters": {
         "types": [
-          "theme"
+          "theme",
+          "charting"
         ]
       },
       "cssSelector": ".mds-theme-fluid-darkWebex",
       "targets": [
         "core/value.json",
         "core/dimension.json",
-        "theme/fluid/dark.json"
+        "theme/fluid/dark.json",
+        "charting/dark.json"
       ]
     },
     {
       "destination": "theme/webex/light-fluid",
       "filters": {
         "types": [
-          "theme"
+          "theme",
+          "charting"
         ]
       },
       "cssSelector": ".mds-theme-fluid-lightWebex",
       "targets": [
         "core/value.json",
         "core/dimension.json",
-        "theme/fluid/light.json"
+        "theme/fluid/light.json",
+        "charting/light.json"
       ]
     },
     {

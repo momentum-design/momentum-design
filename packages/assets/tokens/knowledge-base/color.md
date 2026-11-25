@@ -1,6 +1,6 @@
 ---
 title: Color
-summary: How Momentum color tokens are structured (usage, prominence, state), how they resolve across themes, and where each semantic color belongs.
+summary: How Momentum color tokens are structured (usage, prominence, state), how theme and charting colors resolve, and where each semantic color belongs.
 tier: 2
 websitePath: foundations/color
 ---
@@ -29,17 +29,19 @@ tokens, see [Glass](./glass.md).
 
 ## The token tiers
 
-Color tokens exist at two source levels. Consume the **theme** tier; never reach
+Color tokens exist at three source levels. Consume a semantic tier; never reach
 past it to a primitive.
 
 | Tier | Namespace | Example | Consume directly? |
 | --- | --- | --- | --- |
 | **Primitive** | `color.core.*`, `color.decorative.*` | `color.core.blue.70` | No — internal palette |
-| **Semantic (theme)** | `color.theme.*` | `color.theme.text.primary.normal` | **Yes** |
+| **Semantic (theme)** | `color.theme.*` | `color.theme.text.primary.normal` | **Yes** — product UI |
+| **Semantic (charting)** | `color.charting.*` | `color.charting.status.success` | **Yes** — charts and data visualizations |
 
-Primitives are the raw palette. Semantic theme tokens map *intent* onto those
-primitives and are the only tier that flips between themes. If you hardcode a
-primitive (or a hex value) in a component, theming and contrast break.
+Primitives are the raw palette. Semantic tokens map *intent* onto those
+primitives. Theme tokens flip with the product theme. Charting tokens flip
+between their own dark and light modes. If you hardcode a primitive (or a hex
+value) in a component, theming and contrast break.
 
 At build time each semantic token is compiled to a CSS custom property that
 components consume — `color.theme.text.primary.normal` becomes
@@ -266,6 +268,30 @@ visible.
 **Used by:** `calendar`, `radio` directly; most components inherit the focus
 ring from shared styling (`utils/styles`).
 
+### charting — `color.charting.*`
+
+Colors for charts and data visualizations. This namespace is separate from
+`color.theme.*` and has its own dark and light modes. See
+[Theming](./theming.md) for the selectors.
+
+| Group | Use for |
+| --- | --- |
+| `foundations.text` | Axis titles, axis ticks, and legend labels |
+| `foundations.outline` | Axes, gridlines, mark lines, inactive outlines, and baselines |
+| `categorical` | Unordered series, legends, and pie or donut segments |
+| `status` | Data annotations, thresholds, KPI markers, and conditional formatting |
+| `sequential` | Ordered quantitative ramps |
+| `diverging` | Values that extend in two directions from a midpoint |
+| `highlight` | Highlighted chart marks and their active or inactive states |
+
+`categorical` names an unordered series. `status` names a meaning such as
+success, warning, error, notice, accent, or default. Do not interchange them.
+
+**Used by:** no component currently consumes this group.
+
+Authoritative source: `packages/assets/tokens/src/charting/dark.json` and
+`packages/assets/tokens/src/charting/light.json`.
+
 ## Prominence and sentiment
 
 Two cross-cutting descriptors appear as variants across groups:
@@ -303,6 +329,9 @@ matching state token so behavior stays consistent across components and themes.
 - **Don't** restyle focus with anything other than `color.theme.focus.*`.
 - **Don't** pick a color by its resolved light-mode value — pick it by intent, so
   it resolves correctly in dark and high-contrast modes.
+- **Don't** use `color.charting.categorical.*` to communicate warning, error, or
+  success. Use `color.charting.status.*`.
+- **Don't** use charting tokens for general product UI. Use `color.theme.*`.
 
 ## Quick lookup — "I need a color for…"
 
@@ -320,6 +349,7 @@ matching state token so behavior stays consistent across components and themes.
 | A modal scrim | `overlay.*` |
 | A keyboard focus ring | `focus.default.*` |
 | A glass/translucent panel | see [Glass](./glass.md) |
+| A chart series or chart status color | `color.charting.categorical.*`, `color.charting.status.*` |
 
 ## Related
 
