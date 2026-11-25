@@ -125,6 +125,7 @@ packages/tools/figma-plugins/assets-export/dist
 
 packages/components/config/storybook/public
 packages/components/storybook-static
+packages/documentation/.astro
 packages/components/src/react
 
 packages/assets/utils/src/staticSite/public

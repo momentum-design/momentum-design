@@ -23,6 +23,19 @@
   ],
   "semverGroups": [
     {
+      "label": "api-extractor 7.60+ bundles TypeScript 6, which fails to resolve @types/node; stay on the 7.59 minor",
+      "packages": [
+        "**"
+      ],
+      "dependencyTypes": [
+        "dev"
+      ],
+      "dependencies": [
+        "@microsoft/api-extractor"
+      ],
+      "range": "~"
+    },
+    {
       "label": "use caret versions in production",
       "packages": [
         "**"
@@ -101,6 +114,16 @@
         "**"
       ],
       "pinVersion": "0.36.1"
+    },
+    {
+      "label": "The docs site runs on Astro 7, which requires Vite 8; Storybook tooling stays on Vite 5",
+      "dependencies": [
+        "vite"
+      ],
+      "packages": [
+        "@momentum-design/docs"
+      ],
+      "pinVersion": "^8.3.8"
     },
     {
       "label": "Dependencies should be the same version",
