@@ -153,6 +153,8 @@ jobs:
 
     outputs:
       packages: ${{ steps.generate-package-matrix.outputs.packages }}
+      postbuild-packages: ${{ steps.generate-package-matrix.outputs.postbuild-packages }}
+      run-e2e: ${{ steps.generate-package-matrix.outputs.run-e2e }}
 
     steps:
       - uses: actions/checkout@v6
@@ -184,12 +186,21 @@ jobs:
       - name: Build Automation Tooling
         run: yarn telemetry build && yarn automation build:cli
 
+      # The components e2e tests run sharded in the `test-e2e-components` job, so the generic
+      # `test-postbuild` matrix excludes that package.
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo "packages=$(yarn md-automation -- --command get-packages --changed ${{ github.event.pull_request.base.sha }} --dependent)" >> $GITHUB_OUTPUT
+        run: |
+          packages=$(yarn md-automation -- --command get-packages --changed ${{ github.event.pull_request.base.sha }} --dependent)
+          echo "packages=$packages" >> $GITHUB_OUTPUT
+          echo "postbuild-packages=$(echo "$packages" | jq -c 'map(select(. != "@momentum-design/components"))')" >> $GITHUB_OUTPUT
+          echo "run-e2e=$(echo "$packages" | jq -c 'index("@momentum-design/components") != null')" >> $GITHUB_OUTPUT
 
       - name: Display Package Matrix
-        run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
+        run: |
+          echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
+          echo "postbuild package matrix - ${{ steps.generate-package-matrix.outputs.postbuild-packages }}"
+          echo "run components e2e - ${{ steps.generate-package-matrix.outputs.run-e2e }}"
 
   build:
     name: Build
@@ -386,16 +397,13 @@ jobs:
   test-postbuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
     needs: [analyze-root, generate-package-matrix, build]
+    if: ${{ needs.generate-package-matrix.outputs.postbuild-packages != '[]' }}
     runs-on: ${{ matrix.os }}
-    # Safety net: previously this job could hang silently for hours (see "Stop Playwright Docker
-    # Browser Server" step below for the real fix) and would only ever be stopped by GitHub's
-    # default 6h job timeout. Fail fast instead so a regression is visible quickly.
-    timeout-minutes: 90
 
     strategy:
       matrix:
         os: [ubuntu-latest]
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.postbuild-packages) }}
     
     steps:
       - uses: actions/checkout@v6
@@ -427,12 +435,61 @@ jobs:
           pkg_name=${{ matrix.package }}
           ls -R packages/$(basename $pkg_name)/dist || echo "Dist is missing!"
 
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Test - Postbuild
+        run: yarn workspace ${{ matrix.package }} test:postbuild  
+
+  # The components e2e suite (4 browsers x 395 tests) takes ~34 min on a single runner, so it is
+  # split into one job per browser project and shard. The shard count is part of each `shard`
+  # value below (e.g. `1/2`); keep it consistent across all entries.
+  test-e2e-components:
+    name: ( @momentum-design/components / ${{ matrix.project }} ${{ matrix.shard }} ) Test - E2E
+    needs: [analyze-root, generate-package-matrix, build]
+    if: ${{ needs.generate-package-matrix.outputs.run-e2e == 'true' }}
+    runs-on: ubuntu-latest
+    # Safety net: previously this job could hang silently for hours (see "Stop Playwright Docker
+    # Browser Server" step below for the real fix) and would only ever be stopped by GitHub's
+    # default 6h job timeout. Fail fast instead so a regression is visible quickly.
+    timeout-minutes: 30
+
+    strategy:
+      # Let every shard finish so the merged report contains all failures.
+      fail-fast: false
+      matrix:
+        project: [chrome, msedge, firefox, webkit]
+        shard: ['1/2', '2/2']
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          allow-unsafe-pr-checkout: true
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Download Dist
+        uses: actions/download-artifact@v8
+        with:
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
 
       - name: Log in to GitHub Container Registry
-        if: ${{ matrix.package == '@momentum-design/components' }}
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
@@ -448,22 +505,97 @@ jobs:
       # reap it, and the "Stop" step below (which always runs, and is itself bounded by a
       # `docker stop --time` grace period) guarantees cleanup regardless of test outcome.
       - name: Start Playwright Docker Browser Server
-        if: ${{ matrix.package == '@momentum-design/components' }}
         run: |
-          yarn workspace ${{ matrix.package }} test:e2e:docker:serve:ci
-          yarn workspace ${{ matrix.package }} test:e2e:docker:wait
+          yarn workspace @momentum-design/components test:e2e:docker:serve:ci
+          yarn workspace @momentum-design/components test:e2e:docker:wait
 
-      - name: Test - Postbuild
-        run: yarn workspace ${{ matrix.package }} test:postbuild  
+      - name: Test - E2E
+        run: yarn workspace @momentum-design/components test:e2e:docker:shard --project=${{ matrix.project }} --shard=${{ matrix.shard }}
 
       - name: Stop Playwright Docker Browser Server
-        if: ${{ always() && matrix.package == '@momentum-design/components' }}
-        run: yarn workspace ${{ matrix.package }} test:e2e:docker:stop || docker kill mdc-pw-server || true
+        if: ${{ always() }}
+        run: yarn workspace @momentum-design/components test:e2e:docker:stop || docker kill mdc-pw-server || true
+
+      # `overwrite` lets "Re-run failed jobs" replace the blob of a previous attempt, while the
+      # blobs of shards that already passed stay available for the merged report.
+      - name: Upload Playwright Blob Report
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-blob-report-${{ strategy.job-index }}
+          path: packages/components/blob-report/
+          retention-days: 3
+          overwrite: true
+
+  test-e2e-components-report:
+    name: ( @momentum-design/components ) Test - E2E Report
+    needs: test-e2e-components
+    if: ${{ !cancelled() && needs.test-e2e-components.result != 'skipped' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          allow-unsafe-pr-checkout: true
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Download Playwright Blob Reports
+        uses: actions/download-artifact@v8
+        with:
+          pattern: playwright-blob-report-*
+          path: packages/components/all-blob-reports
+          merge-multiple: true
+
+      # Each shard's blob reporter writes `report-<project>-<shard index>.zip`. `merge-reports`
+      # reads these ZIPs directly, so they must not be extracted. Keep the lists in sync with
+      # the `test-e2e-components` matrix.
+      - name: Verify all E2E shard blob reports are present
+        run: |
+          missing=()
+          for project in chrome msedge firefox webkit; do
+            for shard in 1 2; do
+              report="report-${project}-${shard}.zip"
+              [ -f "packages/components/all-blob-reports/$report" ] || missing+=("$report")
+            done
+          done
+          if [ "${#missing[@]}" -ne 0 ]; then
+            echo "::error::Missing blob reports: ${missing[*]}. Some shards may have failed or blobs may have expired."
+            exit 1
+          fi
+          echo "✓ All 8 blob reports present"
+
+      - name: Merge Playwright Reports
+        run: yarn workspace @momentum-design/components test:e2e:merge-reports all-blob-reports
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v7
-        if: ${{ !cancelled() && matrix.package == '@momentum-design/components' }}
+        if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: packages/components/playwright-report/
           retention-days: 30
+          overwrite: true
+
+      # `playwright merge-reports` exits 0 even when the merged tests failed, and a shard that
+      # crashed or timed out never uploads a blob, so the shard job results decide the outcome.
+      - name: Fail if any shard failed
+        if: ${{ needs.test-e2e-components.result != 'success' }}
+        run: |
+          echo "::error::Components e2e shards finished with result '${{ needs.test-e2e-components.result }}'"
+          exit 1

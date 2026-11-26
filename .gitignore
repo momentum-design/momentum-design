@@ -117,6 +117,7 @@ dist
 # Playwright Test Results & Report
 test-results/
 playwright-report/
+blob-report/
 tests-out/
 
 ### SPECIAL CASES ###

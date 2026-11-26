@@ -1,6 +1,7 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
-import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
+
+import { githubActionsReporterOptions } from './reporters';
 
 /**
  * Read environment variables from file.
@@ -9,15 +10,6 @@ import { devices } from '@playwright/test';
 // require('dotenv').config();
 
 const url = 'http://localhost:4000';
-
-const githubActionsReporterOptions: GitHubActionOptions = {
-  title: 'Playwright E2E Test results',
-  useDetails: true,
-  showAnnotations: true,
-  showTags: true,
-  showError: true,
-  includeResults: ['fail', 'flaky'],
-};
 
 /**
  * See https://playwright.dev/docs/test-configuration.
