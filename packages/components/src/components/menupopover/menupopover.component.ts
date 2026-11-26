@@ -217,25 +217,22 @@ class MenuPopover extends Popover {
    * Handles outside click events to close the popover.
    * This method checks if the click occurred outside the popover and its trigger element.
    * If so, it closes the popover by calling `closeAllMenuPopovers`.
-   * A click on its own backdrop closes this menu and later same-group overlays, even when it is not on top.
+   * It also checks if the click was on the backdrop element (if present) to close the popover.
    * @param event - The mouse event that triggered the outside click.
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
-    const path = event.composedPath();
-
-    if (path[0] === this.backdropElement && this.depthManager.has(this)) {
-      this.depthManager.popHost();
-      event.stopPropagation();
-      return;
-    }
-
     if (!this.depthManager.isHostOnTop()) return;
 
+    const path = event.composedPath();
     const insidePopoverClick =
       this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
+    const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
-    if (!insidePopoverClick) {
+    if (!insidePopoverClick || clickedOnBackdrop) {
       this.closeAllMenuPopovers();
+      if (clickedOnBackdrop) {
+        event.stopPropagation();
+      }
     }
   };
 
@@ -416,7 +413,7 @@ class MenuPopover extends Popover {
         break;
       }
       case ACTIONS.ESCAPE: {
-        if (this.depthManager.isHostEscapeTarget()) {
+        if (this.depthManager.isHostOnTop()) {
           this.resetTabIndexAndSetFocus(0, currentIndex);
           isKeyHandled = true;
         }
