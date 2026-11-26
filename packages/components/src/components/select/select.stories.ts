@@ -568,3 +568,40 @@ export const SelectCountriesList: StoryObj = {
     ),
   },
 };
+
+export const SelectWithMatchTriggerWidth: StoryObj = {
+  render: () => html`
+    <div style="width: 20rem; display: flex; flex-direction: column; gap: 2rem;">
+      <mdc-select label="Fixed dropdown" placeholder="Select a city" strategy="fixed">
+        <mdc-selectlistbox>
+          <mdc-option value="london" label="London, UK"></mdc-option>
+          <mdc-option value="losangeles" label="Los Angeles, CA"></mdc-option>
+          <mdc-option value="newyork" label="New York, NY"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-select>
+      <mdc-select
+        label="Fixed dropdown with match-trigger-width"
+        placeholder="Select a city"
+        strategy="fixed"
+        match-trigger-width
+      >
+        <mdc-selectlistbox>
+          <mdc-option value="london" label="London, UK"></mdc-option>
+          <mdc-option value="losangeles" label="Los Angeles, CA"></mdc-option>
+          <mdc-option value="newyork" label="New York, NY"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-select>
+    </div>
+  `,
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory(
+      html`With <code>strategy="fixed"</code>, the default dropdown width is resolved against the viewport (or the
+        nearest ancestor with a <code>filter</code>), so the first dropdown spans the whole screen. Set
+        <code>match-trigger-width</code> to make the dropdown as wide as the select trigger, as in the second example.
+        An explicit <code>--mdc-select-listbox-width</code> or an inherited <code>--mdc-popover-width</code> still takes
+        precedence.`,
+      true,
+    ),
+  },
+};
