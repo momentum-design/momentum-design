@@ -102,8 +102,12 @@ test.describe('mdc-popover nested fixed overlays', () => {
     await expectTooltipAnchored(tooltip, tooltipTrigger);
     await componentsPage.visualRegression.takeScreenshot('mdc-popover-nested-fixed-tooltip', {
       assertionAfterSwitchingDirection: async () => {
-        await tooltipTrigger.hover();
         const rtl = (await page.locator('html').getAttribute('dir')) === 'rtl';
+        if (rtl) {
+          await page.mouse.move(0, 0);
+          await expect(tooltip).not.toBeVisible();
+        }
+        await tooltipTrigger.hover();
         await expectTooltipAnchored(tooltip, tooltipTrigger, rtl);
       },
     });
