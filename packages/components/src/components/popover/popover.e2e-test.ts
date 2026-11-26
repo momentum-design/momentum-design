@@ -1875,6 +1875,7 @@ test('mdc-popover', async ({ componentsPage }) => {
         // Popover is above the trigger.
         expect(popoverBox!.y + popoverBox!.height).toBeLessThanOrEqual(triggerBox!.y);
       }).toPass();
+      await componentsPage.waitForStablePosition(popover);
       await componentsPage.visualRegression.takeScreenshot('mdc-popover-flip-top');
 
       await trigger.evaluate((element: HTMLElement) => {
@@ -1887,6 +1888,7 @@ test('mdc-popover', async ({ componentsPage }) => {
         // Popover is below the trigger.
         expect(popoverBox!.y).toBeGreaterThanOrEqual(triggerBox!.y + triggerBox!.height);
       }).toPass();
+      await componentsPage.waitForStablePosition(popover);
       await componentsPage.visualRegression.takeScreenshot('mdc-popover-flip-bottom');
     });
   });

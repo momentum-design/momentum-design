@@ -202,7 +202,6 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
             await expect(waitForToggleAfterExpanded).toEventEmitted();
           });
 
-          // todo: webkit hover issue - investigate later (works locally in Safari, not in e2e test)
           if (variant === 'flexible-on-hover' && test.info().project.name !== 'webkit') {
             await test.step('Focus outside of sidenavigation hides grabber button (variant flexible-on-hover only)', async () => {
               await componentsPage.page.mouse.move(0, 0);
@@ -220,6 +219,16 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
             await test.step('Moving mouse away from sidenavigation hides grabber button (variant flexible-on-hover only)', async () => {
               await componentsPage.page.mouse.move(0, 0);
               await expect(toggleButton).toHaveCSS('opacity', '0');
+            });
+          } else if (variant === 'flexible-on-hover') {
+            // Collapsing via mouse resets the hover/focus tracking of the grabber button. WebKit only re-fires
+            // `mouseenter` on the following click if it already processed the pointer leaving the collapsed sidenavigation,
+            // which is a race. Re-focusing via keyboard makes the grabber button visible regardless of the hover state.
+            await test.step('Re-focus grabber button via keyboard to keep it visible (variant flexible-on-hover only)', async () => {
+              await componentsPage.actionability.pressShiftTab();
+              await componentsPage.actionability.pressTab();
+              await expect(toggleButton).toBeFocused();
+              await expect(sidenav).toHaveAttribute('data-grabber-visible');
             });
           }
         }

@@ -346,8 +346,11 @@ test('mdc-select', async ({ componentsPage }) => {
     await expect(tooltip).toBeVisible();
     await expect(tooltip).toHaveText('White and Black are the biggest colors on the spectrum');
 
-    // Wait for tooltip positioning to stabilize (floating-ui may recompute position)
-    await componentsPage.page.waitForTimeout(500);
+    // The chevron swaps to arrow-up asynchronously (icon load + re-render), which pending icon request tracking can miss
+    await expect(select.locator('mdc-icon svg[data-name="arrow-up-bold"]')).toBeVisible();
+
+    // floating-ui may recompute the tooltip position (flip) after it becomes visible
+    await componentsPage.waitForStablePosition(tooltip);
 
     // Visual regression snapshot of the tooltip
     await componentsPage.visualRegression.takeScreenshot('mdc-select', {
