@@ -441,6 +441,9 @@ class ComponentsPage {
 
                   let previousRect = readRect();
                   let identicalFrames = 0;
+                  // Provide a 10x timeout buffer: if we need N identical frames to prove stability,
+                  // allow up to 10*N animation frames before timing out. With default frames=5,
+                  // this gives ~50 frames (~830ms at 60fps) before we give up with 'moving' status.
                   let remainingFrames = requiredFrames * 10;
 
                   const onFrame = () => {
