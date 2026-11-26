@@ -1,3 +1,5 @@
+import { platform } from '@floating-ui/dom';
+
 import { ROLE } from '../../utils/roles';
 
 import type Popover from './popover.component';
@@ -225,6 +227,30 @@ export class PopoverUtils {
       top: arrowY != null ? `${arrowY}px` : '',
       [staticSide]: `${-this.popover.arrowElement.offsetHeight / 2 - arrowPixelDiff}px`,
     });
+  }
+
+  /**
+   * Returns the offset parent that Floating UI uses to position the popover.
+   *
+   * In WebKit, Floating UI skips ancestors with `filter` or `backdrop-filter`, but Safari uses them
+   * as the containing block for fixed elements. For a fixed popover, use the native offset parent
+   * when it has a filter, unless Floating UI found a nearer containing block (e.g. in a shadow root).
+   *
+   * @param element - The element to get the offset parent for.
+   * @returns The offset parent of the element.
+   */
+  async getOffsetParent(element: Element): Promise<Element | Window> {
+    const defaultParent = await platform.getOffsetParent(element);
+    const nativeParent = this.popover.offsetParent;
+
+    // Only the fixed popover itself needs the fix; Floating UI also calls this for the arrow.
+    if (element !== this.popover || this.popover.strategy !== 'fixed' || !nativeParent) return defaultParent;
+    if (defaultParent instanceof Element && !defaultParent.contains(nativeParent)) return defaultParent;
+
+    const { filter, backdropFilter } = getComputedStyle(nativeParent);
+    // Unprefixed `backdropFilter` is undefined before Safari 18.
+    const hasFilter = filter !== 'none' || (!!backdropFilter && backdropFilter !== 'none');
+    return hasFilter ? nativeParent : defaultParent;
   }
 
   /**

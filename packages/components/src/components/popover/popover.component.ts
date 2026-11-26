@@ -1178,25 +1178,7 @@ class Popover
           placement: adjustedPlacement,
           middleware,
           strategy: this.strategy,
-          platform: {
-            ...platform,
-            getOffsetParent: async (element: Element) => {
-              // Safari uses filtered containing blocks that Floating UI skips.
-              // Keep any nearer containing block found inside a shadow root.
-              const fallback = await platform.getOffsetParent(element);
-              const { offsetParent } = this;
-              if (
-                element === this &&
-                this.strategy === 'fixed' &&
-                offsetParent &&
-                (!(fallback instanceof Element) || fallback.contains(offsetParent))
-              ) {
-                const { filter, backdropFilter } = getComputedStyle(offsetParent);
-                if (filter !== 'none' || (backdropFilter && backdropFilter !== 'none')) return offsetParent;
-              }
-              return fallback;
-            },
-          },
+          platform: { ...platform, getOffsetParent: element => this.utils.getOffsetParent(element) },
         });
 
         this.utils.updatePopoverStyle(x, y);
