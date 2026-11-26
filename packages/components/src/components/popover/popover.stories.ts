@@ -820,13 +820,11 @@ export const ScrollableWithFixedOverlays: StoryObj = {
     ...describeStory(
       html`
         <mdc-text>
-          Open settings, hover over Details, or open the Notification sound list. In Safari, both fixed overlays should
-          remain fully visible outside the scrolling panel, including after scrolling.
+          A scrollable, unelevated settings panel with a fixed tooltip and a dropdown wider than the panel. Both
+          overlays can extend beyond the panel without being clipped.
         </mdc-text>
         <mdc-text>
-          Parent elevation is explicitly disabled to isolate clipping from the separate Safari positioning issue with
-          elevated parents. This is a regression fixture, not a recommendation to disable elevation in applications. The
-          dropdown has an explicit width to avoid the separate percentage-width issue.
+          Open settings, hover over Details, or select a notification sound. Scroll the panel and repeat.
         </mdc-text>
       `,
       true,
@@ -861,7 +859,7 @@ export const ScrollableWithFixedOverlays: StoryObj = {
             show-arrow
             delay="0,0"
           >
-            More details stay visible outside the scrollable settings panel.
+            Notification sounds help you notice new messages while you work.
           </mdc-tooltip>
           <mdc-select
             label="Notification sound"
