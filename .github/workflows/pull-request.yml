@@ -562,6 +562,16 @@ jobs:
           path: packages/components/all-blob-reports
           merge-multiple: true
 
+      - name: Extract Playwright Blob Reports
+        run: |
+          cd packages/components/all-blob-reports
+          for f in *.zip; do
+            if [ -f "$f" ]; then
+              unzip -o "$f" -d .
+              rm "$f"
+            fi
+          done
+
       - name: Verify all E2E shard blob reports are present
         run: |
           expected_blob_count=8
