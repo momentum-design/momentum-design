@@ -73,6 +73,10 @@ const setup = async (options: ToastSetupOptions) => {
 
 test.describe('Toast Feature Scenarios', () => {
   test('mdc-toast', async ({ componentsPage }) => {
+    // This single test covers all scenarios (stickersheet screenshots, a11y scans and many mounts). On
+    // WebKit in CI it already needs ~30s on slower runners, so the default 30s timeout is hit intermittently.
+    test.setTimeout(60_000);
+
     /**
      *  VISUAL REGRESSION AND ACCESSIBILITY
      */

@@ -9,6 +9,10 @@ import type { VirtualizedListE2E } from './helpers/virtualizedlist.e2e-test.util
 import type VirtualizedList from './virtualizedlist.component';
 
 test('mdc-virtualizedlist', async ({ componentsPage }) => {
+  // This single test covers all scenarios. On WebKit in CI it takes ~25s, so the default 30s timeout
+  // is hit intermittently on slower runners.
+  test.setTimeout(60_000);
+
   type SetupOptions = {
     itemHeight?: number;
     listHeader?: string;
