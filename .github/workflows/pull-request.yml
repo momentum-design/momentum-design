@@ -524,7 +524,7 @@ jobs:
         with:
           name: playwright-blob-report-${{ strategy.job-index }}
           path: packages/components/blob-report/
-          retention-days: 1
+          retention-days: 3
           overwrite: true
 
   test-e2e-components-report:
@@ -561,6 +561,16 @@ jobs:
           pattern: playwright-blob-report-*
           path: packages/components/all-blob-reports
           merge-multiple: true
+
+      - name: Verify all E2E shard blob reports are present
+        run: |
+          expected_blob_count=8
+          actual_blob_count=$(find packages/components/all-blob-reports -name "blob-report.json" | wc -l)
+          if [ "$actual_blob_count" -ne "$expected_blob_count" ]; then
+            echo "::error::Expected $expected_blob_count blob reports but found $actual_blob_count. Some shards may have failed or blobs may have expired."
+            exit 1
+          fi
+          echo "✓ All $expected_blob_count blob reports present"
 
       - name: Merge Playwright Reports
         run: yarn workspace @momentum-design/components test:e2e:merge-reports all-blob-reports

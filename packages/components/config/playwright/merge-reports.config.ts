@@ -7,6 +7,7 @@ import { githubActionsReporterOptions } from './reporters';
  * into a single HTML report and GitHub job summary. See TESTING.md.
  */
 const config: PlaywrightTestConfig = {
+  testDir: '../../src',
   reporter: [
     ['html', { open: 'never' }],
     ['@estruyf/github-actions-reporter', githubActionsReporterOptions],
