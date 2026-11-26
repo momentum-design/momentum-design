@@ -562,25 +562,23 @@ jobs:
           path: packages/components/all-blob-reports
           merge-multiple: true
 
-      - name: Extract Playwright Blob Reports
-        run: |
-          cd packages/components/all-blob-reports
-          for f in *.zip; do
-            if [ -f "$f" ]; then
-              unzip -o "$f" -d .
-              rm "$f"
-            fi
-          done
-
+      # Each shard's blob reporter writes `report-<project>-<shard index>.zip`. `merge-reports`
+      # reads these ZIPs directly, so they must not be extracted. Keep the lists in sync with
+      # the `test-e2e-components` matrix.
       - name: Verify all E2E shard blob reports are present
         run: |
-          expected_blob_count=8
-          actual_blob_count=$(find packages/components/all-blob-reports -name "blob-report.json" | wc -l)
-          if [ "$actual_blob_count" -ne "$expected_blob_count" ]; then
-            echo "::error::Expected $expected_blob_count blob reports but found $actual_blob_count. Some shards may have failed or blobs may have expired."
+          missing=()
+          for project in chrome msedge firefox webkit; do
+            for shard in 1 2; do
+              report="report-${project}-${shard}.zip"
+              [ -f "packages/components/all-blob-reports/$report" ] || missing+=("$report")
+            done
+          done
+          if [ "${#missing[@]}" -ne 0 ]; then
+            echo "::error::Missing blob reports: ${missing[*]}. Some shards may have failed or blobs may have expired."
             exit 1
           fi
-          echo "✓ All $expected_blob_count blob reports present"
+          echo "✓ All 8 blob reports present"
 
       - name: Merge Playwright Reports
         run: yarn workspace @momentum-design/components test:e2e:merge-reports all-blob-reports
