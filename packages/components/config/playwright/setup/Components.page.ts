@@ -401,6 +401,83 @@ class ComponentsPage {
   }
 
   /**
+   * Waits until the element behind `locator` has reached its final on-screen placement.
+   *
+   * A floating-ui popover (popover, tooltip, ...) is positioned more than once: first when it becomes
+   * visible, while its lazily rendered content may still be missing and the measured size is therefore
+   * wrong, and again once the real size is known - which is when `flip()` can still move it to the opposite
+   * side of the trigger. The first placement is motionless as well, so waiting for equal bounding boxes alone
+   * would pass on it. What sets it apart is that it overflows a scroll container or the viewport, which is the
+   * very reason `flip()` wants to move it. Settling therefore requires both a rect that stays unchanged across
+   * consecutive animation frames and an element that nothing clips.
+   *
+   * @param locator - Playwright locator of the element whose placement should be final
+   * @param options - optional configuration object with:
+   *  - `frames`: number of consecutive animation frames the rect has to stay unchanged (defaults to 5)
+   *  - `timeout`: max wait in ms (defaults to 10000)
+   *
+   * @example
+   * ```ts
+   * await expect(tooltip).toBeVisible();
+   * await componentsPage.waitForStablePosition(tooltip);
+   * await componentsPage.visualRegression.takeScreenshot('mdc-select', { source: 'userflow', fileNameSuffix: 'tooltip' });
+   * ```
+   */
+  async waitForStablePosition(locator: Locator, options?: { frames?: number; timeout?: number }) {
+    const frames = options?.frames ?? 5;
+    const timeout = options?.timeout ?? 10_000;
+
+    await test.step('Waiting for element to settle into a stable, fully visible position', async () => {
+      await expect
+        .poll(
+          () =>
+            locator.evaluate(
+              (element, requiredFrames) =>
+                new Promise<'settled' | 'clipped' | 'moving'>(resolve => {
+                  const readRect = () => {
+                    const { height, width, x, y } = element.getBoundingClientRect();
+                    return `${x},${y},${width},${height}`;
+                  };
+
+                  let previousRect = readRect();
+                  let identicalFrames = 0;
+                  let remainingFrames = requiredFrames * 10;
+
+                  const onFrame = () => {
+                    const currentRect = readRect();
+
+                    identicalFrames = currentRect === previousRect ? identicalFrames + 1 : 0;
+                    previousRect = currentRect;
+                    remainingFrames -= 1;
+
+                    if (identicalFrames < requiredFrames) {
+                      if (remainingFrames > 0) {
+                        requestAnimationFrame(onFrame);
+                      } else {
+                        resolve('moving');
+                      }
+                      return;
+                    }
+
+                    // intersectionRatio honours the clip rect of every overflow ancestor, so anything
+                    // below 1 means a scroll container or the viewport still cuts the element off.
+                    new IntersectionObserver(([entry], observer) => {
+                      observer.disconnect();
+                      resolve(entry.intersectionRatio >= 0.99 ? 'settled' : 'clipped');
+                    }).observe(element);
+                  };
+
+                  requestAnimationFrame(onFrame);
+                }),
+              frames,
+            ),
+          { timeout, message: 'Expected element to settle into a stable, fully visible position' },
+        )
+        .toBe('settled');
+    });
+  }
+
+  /**
    * Check if a promise times out after a certain amount of time
    *
    * @param promise - Promise to check if it times out
