@@ -1,8 +1,9 @@
 import os from 'os';
 
 import type { PlaywrightTestConfig } from '@playwright/test';
-import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
+
+import { githubActionsReporterOptions } from '../reporters';
 
 /**
  * Read environment variables from file.
@@ -16,15 +17,6 @@ if (os.platform() === 'linux') {
 } else {
   url = 'http://host.docker.internal:4000';
 }
-
-const githubActionsReporterOptions: GitHubActionOptions = {
-  title: 'Playwright E2E Test results',
-  useDetails: true,
-  showAnnotations: true,
-  showTags: true,
-  showError: true,
-  includeResults: ['fail', 'flaky'],
-};
 
 const DEFAULT_TIMEOUT = 30 * 1000;
 

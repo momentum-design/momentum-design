@@ -38,6 +38,15 @@ environments versus GitHub Workflow:
 - On Github Workflow:
   - GitHub Workflow build the Playwright Docker image to run all tests,
     including snapshot tests.
+  - The e2e suite is sharded into 8 parallel `Test - E2E` jobs (4 browser
+    projects × 2 shards, see `test-e2e-components` in `pull-request.yml`). Each
+    job uploads a Playwright blob report, and the `Test - E2E Report` job merges
+    them into the single `playwright-report` artifact and job summary. To change
+    the shard count, update the `shard` matrix values (e.g. `1/3`, `2/3`, `3/3`).
+  - Reproduce a single shard locally with
+    `yarn test:e2e:docker:shard --project=chrome --shard=1/2` (Docker required),
+    and merge the resulting `blob-report` with
+    `yarn test:e2e:merge-reports blob-report`.
 - Playwright projects:
   - Default = Functional tests and Snapshot tests (Docker required)
   - Skip Snapshot = Snapshot tests (Recommend for local)
