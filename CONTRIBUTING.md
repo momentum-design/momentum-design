@@ -49,8 +49,9 @@ More specific information is provided in each sub-package.
     upstream git@github.com:momentum-design/momentum-design.git (push)
     ```
 
-6. Run `yarn` in the root of the repo
-7. Run `yarn build` in the root of the repo
+6. Install and select the Node.js version pinned in [.nvmrc](.nvmrc). With [nvm](https://github.com/nvm-sh/nvm), run `nvm install && nvm use` from the repository root. Node.js 24.18.0 or newer is required; CI uses the exact pinned version.
+7. Run `yarn` in the root of the repo
+8. Run `yarn build` in the root of the repo
 
 ## Executing scripts in the packages
 
