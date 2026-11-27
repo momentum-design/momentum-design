@@ -7,6 +7,7 @@ import {
   inline as inlineMiddleware,
   offset,
   OffsetOptions,
+  platform,
   shift,
   size,
 } from '@floating-ui/dom';
@@ -1177,6 +1178,7 @@ class Popover
           placement: adjustedPlacement,
           middleware,
           strategy: this.strategy,
+          platform: { ...platform, getOffsetParent: element => this.utils.getOffsetParent(element) },
         });
 
         this.utils.updatePopoverStyle(x, y);
