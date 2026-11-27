@@ -73,7 +73,7 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-select-height - The height of the select trigger control.
  * @cssproperty --mdc-select-width - The width of the select.
  * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
- * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
+ * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`). When set, it takes precedence over `match-trigger-width`.
  */
 class Select
   extends ListNavigationMixin(
@@ -133,6 +133,21 @@ class Select
    */
   @property({ type: String, reflect: true, attribute: 'strategy' })
   strategy: PopoverStrategy = POPOVER_DEFAULTS.STRATEGY;
+
+  /**
+   * When `strategy` is `fixed`, makes the dropdown as wide as the select trigger.
+   * Without it, the default percentage-based listbox width resolves against the viewport
+   * (or the nearest ancestor that contains fixed elements) instead of the select.
+   * It has no effect when `strategy` is `absolute`.
+   *
+   * Precedence:
+   * - An explicit `--mdc-select-listbox-width` (inline style, alias custom property or stylesheet rule)
+   *   takes precedence and keeps the default behaviour.
+   * - An inherited `--mdc-popover-width` takes precedence over the trigger width.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'match-trigger-width' })
+  matchTriggerWidth: boolean = DEFAULTS.MATCH_TRIGGER_WIDTH;
 
   /**
    * The z-index of the popover within Select.

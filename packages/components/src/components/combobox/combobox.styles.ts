@@ -103,6 +103,15 @@ const styles = css`
     max-height: var(--mdc-popover-max-height);
     outline: none;
   }
+
+  /* match-trigger-width: 'initial' drops the default listbox width, so only a consumer-set value is used */
+  :host([match-trigger-width][strategy='fixed']) {
+    --mdc-combobox-listbox-width: initial;
+  }
+  :host([match-trigger-width][strategy='fixed']) mdc-popover {
+    width: var(--mdc-popover-width, var(--mdc-combobox-listbox-width, var(--mdc-popover-internal-trigger-width)));
+    max-width: var(--mdc-combobox-listbox-width, none);
+  }
   /* High Contrast Mode */
   @media (forced-colors: active) {
     :host::part(combobox-button-icon) {

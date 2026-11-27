@@ -146,6 +146,15 @@ const styles = css`
     padding: 0.75rem 0.5rem;
   }
 
+  /* match-trigger-width: 'initial' drops the default listbox width, so only a consumer-set value is used */
+  :host([match-trigger-width][strategy='fixed']) {
+    --mdc-timepicker-listbox-width: initial;
+  }
+  :host([match-trigger-width][strategy='fixed']) mdc-popover {
+    width: var(--mdc-popover-width, var(--mdc-timepicker-listbox-width, var(--mdc-popover-internal-trigger-width)));
+    max-width: var(--mdc-timepicker-listbox-width, none);
+  }
+
   /* Listbox container */
   :host::part(listbox) {
     display: flex;

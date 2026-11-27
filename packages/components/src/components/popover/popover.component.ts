@@ -1137,17 +1137,21 @@ class Popover
     }
 
     if (this.size) {
-      // expose a CSS variable for the available height
-      // so that it can be used in other components styles
+      // expose CSS variables for the available height and the trigger width
+      // so that they can be used in other components styles
       const setInternalAvailableHeight = (availableHeight: number) => {
         this.style.setProperty('--mdc-popover-internal-available-height', `${availableHeight}px`);
+      };
+      const setInternalTriggerWidth = (triggerWidth: number) => {
+        this.style.setProperty('--mdc-popover-internal-trigger-width', `${triggerWidth}px`);
       };
       const popoverContent = this.renderRoot.querySelector('[part="popover-content"]') as HTMLElement;
       middleware.push(
         size({
           boundary,
           rootBoundary,
-          apply({ availableHeight }) {
+          apply({ availableHeight, rects }) {
+            setInternalTriggerWidth(rects.reference.width);
             if (!popoverContent) return;
             Object.assign(popoverContent.style, {
               maxHeight: `${availableHeight}px`,

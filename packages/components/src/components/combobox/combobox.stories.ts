@@ -41,6 +41,7 @@ const render = (args: Args) =>
       help-text-type="${ifDefined(args['help-text-type'])}"
       info-icon-aria-label="${ifDefined(args['info-icon-aria-label'])}"
       label="${ifDefined(args.label)}"
+      ?match-trigger-width="${args['match-trigger-width']}"
       name="${ifDefined(args.name)}"
       no-result-text="${ifDefined(args['no-result-text'])}"
       placeholder="${ifDefined(args.placeholder)}"
@@ -101,6 +102,9 @@ const meta: Meta = {
     },
     label: {
       control: 'text',
+    },
+    'match-trigger-width': {
+      control: 'boolean',
     },
     name: {
       control: 'text',
@@ -715,6 +719,43 @@ export const ComboboxWithMultiplePopovers: StoryObj = {
         pressed while the combobox is focused, and the combobox dropdown should remain open after the warning popover is
         dismissed.
       </p> `,
+      true,
+    ),
+  },
+};
+
+export const ComboboxWithMatchTriggerWidth: StoryObj = {
+  render: () => html`
+    <div style="width: 20rem; display: flex; flex-direction: column; gap: 2rem;">
+      <mdc-combobox label="Fixed dropdown" placeholder="Select a city" strategy="fixed">
+        <mdc-selectlistbox>
+          <mdc-option value="london" label="London, UK"></mdc-option>
+          <mdc-option value="losangeles" label="Los Angeles, CA"></mdc-option>
+          <mdc-option value="newyork" label="New York, NY"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-combobox>
+      <mdc-combobox
+        label="Fixed dropdown with match-trigger-width"
+        placeholder="Select a city"
+        strategy="fixed"
+        match-trigger-width
+      >
+        <mdc-selectlistbox>
+          <mdc-option value="london" label="London, UK"></mdc-option>
+          <mdc-option value="losangeles" label="Los Angeles, CA"></mdc-option>
+          <mdc-option value="newyork" label="New York, NY"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-combobox>
+    </div>
+  `,
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory(
+      html`With <code>strategy="fixed"</code>, the default dropdown width is resolved against the viewport (or the
+        nearest ancestor with a <code>filter</code>), so the first dropdown spans the whole screen. Set
+        <code>match-trigger-width</code> to make the dropdown as wide as the combobox trigger, as in the second example.
+        An explicit <code>--mdc-combobox-listbox-width</code> or an inherited <code>--mdc-popover-width</code> still
+        takes precedence.`,
       true,
     ),
   },
