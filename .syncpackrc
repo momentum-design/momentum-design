@@ -56,7 +56,7 @@
       "dependencyTypes": [
         "nodeEngine"
       ],
-      "preferVersion": "20.0.0"
+      "preferVersion": "24.18.0"
     },
     {
       "label": "Ensure all package manager are in the same range",
